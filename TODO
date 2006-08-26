@@ -1,0 +1,6 @@
+08-25-2006 Aurélien Croc
+	* Add the duplex support
+	* Add a support for non symetric resolution
+	* Add a support for custom page size
+	* Add other compressin algorithms (0x13 for text!) ?
+	* Stop sending the job if a SIGTERM is received

@@ -1,0 +1,41 @@
+HOW-TO INSTALL AND USE THIS DRIVER:
+===================================
+
+Introduction:
+------------
+
+	This driver is usable by all printer devices which understand the SPL II
+language. It covers several _Samsung_ and _Xerox_ printers like the ML-2250
+which uses it as a native printer language (Check the technical
+documentation for more information).
+
+Requested:
+----------
+
+	To use this driver you need.... a SPL II printer! Last but not least you
+need CUPS. It has been tested with CUPS V. 1.1.23 and worked fine of course..
+
+	If you're using a distribution with a real package manager you need to
+install the cups developement package (libcups...-devel or something like that).
+
+Installation:
+-------------
+
+	If you're CUPS installation is not locate in /usr, please edit and
+update the Makefile.
+
+	Then, perform the compilation by doing:
+
+		$ make
+
+	If no errors appear you can install the filter and the drivers in the
+super user environment:
+
+		$ su
+		Password: (Enter the root password and try again if it fails :)
+		# make install
+
+	To finish you have to visit http://localhost:631 with your favourite
+browser and add a new printer by selecting the correct printer in the list.
+
+	and HAVE FUN ;-)

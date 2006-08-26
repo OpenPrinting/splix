@@ -1,0 +1,144 @@
+#include <font.defs>
+#include <media.defs>
+
+// Information about the printer family
+Manufacturer "Samsung"
+Version "1.0"
+
+// Filter to use
+Filter application/vnd.cups-raster 100 rastertospl2
+
+// Supported resolutions
+*Resolution k 1 0 0 0 "600dpi/600 DPI"
+
+// Supported paper format
+HWMargins 12.5 12.5 0.0 0.0
+*MediaSize Letter
+MediaSize Legal
+MediaSize A4
+MediaSize Executive
+MediaSize Ledger
+MediaSize A3
+MediaSize Env10
+MediaSize Monarch
+MediaSize C5
+MediaSize DL
+MediaSize B4
+MediaSize B5
+MediaSize EnvISOB5
+// Not listed
+// JPost
+// JDouble
+MediaSize A5
+MediaSize A6
+MediaSize EnvISOB6
+// Custom
+MediaSize C6
+MediaSize Folio
+
+// Supported input slots
+*InputSlot 1 "Auto/Automatic Selection"
+InputSlot 2 "Manual/Manual Feed"
+
+// Font included in the printer ROM
+Font *
+
+
+
+//
+// Defining PJL variables
+//
+
+// Supported paper type
+Option "MediaType/Paper Type" PickOne AnySetup 10
+   *Choice "OFF/Use Printer Default" ""
+   Choice "NORMAL/Plain Paper" ""
+   Choice "THICK/Thick Paper" ""
+   Choice "THIN/Thin Paper" ""
+   Choice "BOND/Bond" ""
+   Choice "OHP/Transparency" ""
+   Choice "Card/Card Stock" ""
+   Choice "LABEL/Label" ""
+   Choice "USED/Preprinted" ""
+   Choice "COLOR/Colored Paper" ""
+   Choice "ENV/Envelope" ""
+
+// Power save
+Option "PowerSave/Power Save" PickOne AnySetup 10
+   Choice "False/Off" ""
+   *Choice "5/5 Minutes" ""
+   Choice "10/10 Minutes" ""
+   Choice "15/15 Minutes" ""
+   Choice "30/30 Minutes" ""
+   Choice "45/45 Minutes" ""
+   Choice "60/1 Hour" ""
+
+// Toner density
+Option "TonerDensity/Toner Density" PickOne AnySetup 10
+   Choice "1/Light" ""
+   *Choice "3/Medium" ""
+   Choice "5/Dark" ""
+
+// Toner Save
+Option "EconoMode/Toner Save" PickOne AnySetup 10
+   *Choice "0/Use Printer Default" ""
+  Choice "ON/Save" ""
+  Choice "OFF/Standard" ""
+
+// Reprint when Jam
+Option "JamRecovery/Reprint When Jam" Boolean AnySetup 10
+   *Choice "False/Off" ""
+   Choice "True/On" ""
+
+// SRT Mode
+Option "SRTMode/SRT Mode" PickOne AnySetup 10
+   *Choice "NORMAL/Normal" ""
+   Choice "ENHANCE/Text enhance" ""
+   Choice "GRAY/Image enhance" ""
+
+Attribute PJL beginPJL "<1B>%-12345X"
+Attribute PJL endPJL "<09><1B>%-12345X"
+
+
+// Specific printer definition
+{
+	ModelName "ML-1710"
+	Resolution k 1 0 0 0 "300dpi/300 DPI"
+
+	Attribute General compVersion "11"
+	Attribute General docHeaderValues "<0><0><1><0><0>"
+
+	PCFileName "ml1710.ppd"
+}
+{
+	ModelName "ML-2010"
+	Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+
+	Attribute General compVersion "11"
+	Attribute General docHeaderValues "<0><0><0><2><1>"
+
+	PCFileName "ml2010.ppd"
+}
+{
+	ModelName "ML-2250"
+	Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+
+	InputSlot 3 "Multi/Multi-Purpose Tray"
+	InputSlot 4 "Upper/Tray 1"
+	InputSlot 5 "Lower/Tray 2"
+	InputSlot 6 "Envelope/Envelope Tray"
+	InputSlot 7 "Tray3/Tray 3"
+	// But tray 2, Envelope and Tray3 are options...
+	Installable "OptionTray2/Tray 2 Installed"
+	UIConstraints "*OptionTray2 False *InputSlot Lower"
+	Installable "OptionTrayEnv/Envelope Tray Installed"
+	UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
+	Installable "OptionTray3/Tray 3 Installed"
+	UIConstraints "*OptionTray3 False *InputSlot Tray3"
+
+	Attribute General compVersion "11"
+	Attribute General docHeaderValues "<0><0><1><0><0>"
+
+	PCFileName "ml2250.ppd"
+}
+
