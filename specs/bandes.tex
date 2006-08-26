@@ -88,7 +88,7 @@ Pour pouvoir décompresser les données, des informations indispensables
 sont données au travers d'un en-tête dont la description se trouve
 dans la table \ref{tab:entete_compression}. À la différence des autres
 en-têtes, celui-ci peut être écrit sans s'occuper de savoir si la
-machine est en mode \emph{petit-boution}\footnote{little-endian} ou
+machine est en mode \emph{petit-boutien}\footnote{little-endian} ou
 \emph{gros-boutien}\footnote{big-endian}. En effet, lorsque la
 signature de l'en-tête est écrite ($0x9ABCDEF$), l'imprimante détecte
 le type des prochaines données. Il suffit donc d'écrire naturellement
@@ -117,7 +117,7 @@ La signification des diverses entrées apparaîtra par la suite.
 \subsection{L'algorithme de compression}
 L'algorithme de compression vise à rechercher et à réduire des séquences
 d'octets similaires. Pour ce faire, une \emph{table de pointeurs} de $64$
-entrées va être dressée, puis le début des données vont être recopiées
+entrées va être dressée, puis le début des données va être recopié
 en brut. Ensuite, pour chaque entrée de la table, on va comparer les
 prochaines données à compresser avec celles pointées, relativement à la
 position courante. La séquence pointée qui offre la meilleure
@@ -155,7 +155,7 @@ de un ; et c'est le seul pointeur qui correspond. Malheureusement, si la
 longueur de la séquence est \emph{inférieure à 3}, la compression n'est pas
 bénéfique. Il est alors préférable d'écrire les données telles quelles.
 
-Cela est valable pour les quatres autres caractères. En revanche, pour ce qui
+Cela est valable pour les quatre autres caractères. En revanche, pour ce qui
 est du septième caractère, le quatrième pointeur révèle une séquence de trois
 caractères.
 
@@ -163,7 +163,7 @@ Le caractère suivant sera écrit en brut tandis que le quatrième
 pointeur représente, là encore, bien la séquence qui suit, d'une taille de
 sept octets.
 
-Enfin, pour la fin, le premier pointeur représente bien la séquence de quatres
+Enfin, pour la fin, le premier pointeur représente bien la séquence de quatre
 octets.
 \medskip
 
@@ -186,7 +186,7 @@ se trouve le début des données en brut. La quantité de données représentée
 est en rapport avec le plus grand des pointeurs (en valeur absolue). Si
 celui-ci est plus petit que $128$, alors il y aura autant de données en brut
 que sa valeur. En revanche, si sa valeur est plus grande que $128$, il n'y aura
-que $128$ octets de recopiés en brut. Enfin, la quantité de données bruts
+que $128$ octets de recopiés en brut. Enfin, la quantité de données brutes
 sera recopiée au bon emplacement dans l'en-tête de compression.
 
 La suite représente les données compressées. Si une séquence de données
@@ -230,7 +230,7 @@ Soit six octets de moins que la forme décompressée.
 
 \section{La somme de contrôle}
 Pour pouvoir contrôler l'altération des données durant le trajet, une somme de
-contrôle est placée à la fin des données compressées (Il est à noter que cette
+contrôle est placée à la fin des données compressées (il est à noter que cette
 somme de contrôle doit être comptée dans la quantité de données qui suivent
 l'en-tête de la bande qui est indiquée dans cet en-tête !). Cette somme est
 codée sur 32-Bits en grand-boutien et est la somme simple des octets entre
