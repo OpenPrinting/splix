@@ -1,0 +1,184 @@
+\section{Une première approche}
+\begin{figure}[!ht]
+\input{Images/figure_globale.pstex_t}
+\caption{Schéma global du format}
+\label{fig:schema_general}
+\end{figure}
+
+La figure \ref{fig:schema_general} représente le schéma général d'un
+document QPDL. On peut y distinguer quatres parties différentes :
+\begin{enumerate}
+	\item Les balises de début et de fin d'une tâche : les balises 
+		\textbf{JCL}~;
+	\item L'en-tête \textbf{PJL}\footnote{Printer Job Language} décrivant
+		les réglages de l'imprimante nécessaires pour l'impression
+		de la tâche (taille du papier, qualité de l'impression,
+		\ldots)~;
+	\item Les blocs d'information de début et de fin de page~;
+	\item Les bandes d'impression qui représentent plusieurs lignes de 
+		points de la page sous forme d'une carte de points.
+\end{enumerate}
+
+Les prochaines sections décriront tour à tour chacunes de ces parties.
+
+
+
+
+\section{Les balises JCL}
+Ces balises marquent le début et la fin d'une impression. Leurs valeurs se
+trouvent dans le fichier PPD\footnote{Portable Printer Description} associé
+à l'imprimante sous le nom \textbf{JCLBegin} et \textbf{JCLEnd}.
+\medskip
+
+Par exemple, certaines imprimantes utilisent les balises suivantes : 
+\texttt{\^{}[\%-12345X} et \texttt{$\backslash$t\^{}[\%12345X}
+\footnote{\texttt{$\backslash$t} est le caractère \emph{tabulation} (9) tandis 
+que \texttt{\^{}[} est le caractère d'\emph{échappement} (27).}.
+
+
+
+
+\section{L'en-tête PJL}
+PJL est un langage dont les specifications sont disponibles librement sur 
+Internet et sa mise en \oe uvre ne nécessite aucune remarque particulière.
+
+Voici ici une liste \emph{non exhaustive} des options utilisables :
+Papertype, Density, Powersave, Powersavetime, Ret, JamRecovery, Reprint,
+Altitude, \ldots.
+
+La dernière commande sera celle qui donne la main au code QPDL : 
+\texttt{@PJL ENTER LANGUAGE = QPDL$\backslash$n}
+\footnote{\texttt{$\backslash$n} est le caractère \emph{retour chariot (10).}}
+\medskip
+
+Enfin, un petit exemple d'un en-tête complet JPL possible :
+\begin{verbatim}
+@PJL DEFAULT SERVICEDATE=20060524
+@PJL SET PAPERTYPE = BOND
+@PJL SET DENSITY = 3
+@PJL SET ECONOMODE = ON
+@PJL SET POWERSAVE = ON
+@PJL SET POWERSAVETIME = 5
+@PJL SET RET = OFF
+@PJL SET JAMRECOVERY = OFF
+@PJL SET REPRINT = ON
+@PJL SET ALTITUDE = LOW
+@PJL ENTER LANGUAGE = QPDL
+\end{verbatim}
+
+
+
+
+\section{Les blocs d'information de début et de fin de page}
+
+
+\subsection{L'en-tête}
+Avant tout début de page se situe un en-tête fournissant des informations
+indispensables à la bonne interprétation des données.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{Adresse} & \textbf{Description} & \textbf{Type} \\
+\hline
+\hline
+0x0 & Valeur fixe $0$ & Octet \\
+0x1 & Résolution divisée par $100$ (horizontale ou verticale ?) & Octet \\
+0x2 & Nombre de copies & 16-Bits BE\footnote{Big endian} \\
+0x4 & Type de papier (cf. table \ref{tab:liste_papiers}) & Octet \\
+0x5 & Largeur du papier si \emph{Custom} sinon $0$ & 16-Bits BE \\
+0x7 & Longueur du papier si \emph{Custom} sinon $0$ & 16-Bits BE \\
+0x9 & Bac de feuille à utiliser (cf. table \ref{tab:bac_feuille}) & Octet \\
+0xA & Valeur fixe (?) $0$ & Octet \\
+0xB & Duplex ($0$ ou $1$) & Octet \\
+0xC & Duplex tumble ($0$ ou $1$) & Octet \\
+0xD & Valeur fixe (?) $0$ & Octet \\
+0xE & Valeur fixe (?) $1$ & Octet \\
+0xF & Valeur fixe (?) $0$ & 16-Bits BE\\
+\hline
+\end{tabular}
+\caption{Description de l'en-tête d'une nouvelle page}
+\label{tab:entete_page}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| c | c || c | c || c | c || c | c |}
+\hline
+\textbf{Code} & \textbf {Description} & \textbf{Code} & \textbf {Description} &
+\textbf{Code} & \textbf {Description} & \textbf{Code} & \textbf {Description} \\
+\hline
+\hline
+0 & Letter & 1 & Legal & 2 & A4 & 3 & Executive \\
+4 & Ledger & 5 & A3 & 6 & Com10 & 7 & Monarch \\
+8 & C5 & 9 & DL & 10 & JB4 & 11 & JB5 \\
+12 & B5 & 13 & Not listed & 14 & JPost & 15 & JDouble \\
+16 & A5 & 17 & A6 & 18 & JB6 & 21 & Custom \\
+23 & C6 & 24 & Folio & & & &  \\
+\hline
+\end{tabular}
+\caption{Codes associés aux différents formats de papier}
+\label{tab:liste_papiers}
+\end{table}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| c | c || c | c |}
+\hline
+\textbf{Code} & \textbf{Description} & \textbf{Code} & \textbf{Description} \\
+\hline
+\hline
+1 & Auto & 2 & Manuel \\
+3 & Multi & 4 & Haut \\
+5 & Bas & 6 & Enveloppes \\
+7 & Troisième & & \\
+\hline
+\end{tabular}
+\caption{Codes associés aux différents types de sources de feuilles}
+\label{tab:bac_feuille}
+\end{table}
+
+La description de cet en-tête est donnée dans la table \ref{tab:entete_page}.
+
+Certains champs ont encore des significations peu claires. Par exemple, dans
+le cas où le type de papier est défini comme étant \emph{personnalisé}, 
+les deux mots de 16-Bits qui suivent ce champ définissent les dimensions du
+papier mais l'algorithme permettant de passer d'une dimension en centimètre
+à ce champ n'est pas encore connu. Les valeurs \emph{0xA, 0xD - 0x10} ont 
+sûrement une utilité propre mais n'est pas encore connue. Une hypothèse serait
+que certains de ces octets soient utilisés pour définir une résolution
+horizontale (le champ de résolution serait alors la résolution verticale), 
+pour le cas des imprimantes qui peuvent avoir des résolutions non symétriques.
+\bigskip
+
+Il semblerait que le véritable algorithme de calcul de la résolution soit :
+
+\begin{equation*}
+\frac{\textrm{bitsDe32À63}(\textrm{résolution} \times \textrm{0x}51EB851F)
+\times 32 + \frac{\textrm{résolution}}{\textrm{0x}80000000}}{1024}
+\end{equation*}
+
+Cependant, avec les résolutions usuelles de 300ppp, 600ppp ou 1200ppp, on
+obtient 3, 6 ou 12 ; ce qui est équivalent à diviser la résolution par $100$.
+
+
+\subsection{Le pied de page}
+La description de la fin d'une page est donnée dans le tableau
+\ref{tab:fin_page}.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{Adresse} & \textbf{Description} & \textbf{Type} \\
+\hline
+\hline
+0x0 & Valeur fixe $1$ & Octet \\
+0x1 & Nombre de copies & 16-Bits BE \\
+\hline
+\end{tabular}
+\caption{Description de la fin d'une page}
+\label{tab:fin_page}
+\end{table}

@@ -1,0 +1,49 @@
+\ProvidesPackage{perso}
+\RequirePackage{verbatim}
+
+\newwrite\remarque@out
+\long\def\remarque{%
+    \begingroup
+    \@bsphack
+    \immediate\openout \remarque@out \jobname.data
+    \let\do\@makeother\dospecials\catcode`\^^M\active
+    \def\verbatim@processline{\immediate\write\remarque@out{\the\verbatim@line}}
+    \verbatim@start}
+\def\endremarque{%
+    \immediate\closeout\remarque@out\@esphack\endgroup
+    \vspace{1cm}
+
+    \vline \hspace{0.5cm}
+    \begin{minipage}{12cm}
+        {\it\centering %
+            \underline{Remarque} : \\
+            \input{\jobname.data}
+        }
+    \end{minipage}
+
+    \vspace{1cm}
+}
+
+\newwrite\exemple@out
+\long\def\exemple{%
+    \begingroup
+    \@bsphack
+    \immediate\openout \exemple@out \jobname.data
+    \let\do\@makeother\dospecials\catcode`\^^M\active
+    \def\verbatim@processline{\immediate\write\exemple@out{\the\verbatim@line}}
+    \verbatim@start}
+\def\endexemple{%
+    \immediate\closeout\exemple@out\@esphack\endgroup
+    \bigskip
+
+    \begin{center}
+        \fcolorbox{Black}{Gainsboro}{
+        \begin{minipage}{10cm}
+            \begin{center}
+                \input{\jobname.data}
+            \end{center}
+        \end{minipage}}
+    \end{center}
+    \bigskip
+
+}
