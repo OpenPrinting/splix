@@ -48,6 +48,14 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	// Create the document
+	document = new Raster(argv[1], argv[2], argv[3], argv[4], 
+		argv[5], argv[6]);
+	if (document->load()) {
+		delete document;
+		return 1;
+	}
+
 	// Open the PPD file
 	ppd = ppdOpenFile(getenv("PPD"));
 	ppdMarkDefaults(ppd);
@@ -60,14 +68,6 @@ int main(int argc, char **argv)
 
 	// Create the printer
 	printer = new Printer(ppd);
-
-	// Create the document
-	document = new Raster(argv[1], argv[2], argv[3], argv[4], 
-		argv[5], argv[6]);
-	if (document->load()) {
-		delete document;
-		return 1;
-	}
 
 	// Convert and print
 	DEBUG("Génération du code....");
