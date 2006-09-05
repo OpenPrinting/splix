@@ -1,6 +1,6 @@
 *PPD-Adobe: "4.3"
 *% PPD file for ML-1710 with CUPS.
-*% Created by the CUPS PPD Compiler v1.0.1.
+*% Created by the CUPS PPD Compiler v1.1svn.
 *FormatVersion: "4.3"
 *FileVersion: "1.0"
 *LanguageVersion: French
@@ -28,7 +28,7 @@
 *General compVersion: "11"
 *General docHeaderValues: "<0><0><1><0><0>"
 *% CUPS attributes...
-*cupsVersion: 1.1
+*cupsVersion: 1.2
 *cupsModelNumber: "0"
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-raster 100 rastertospl2"
@@ -173,13 +173,6 @@
 *JamRecovery False/Désactivé: ""
 *JamRecovery True/Activé: ""
 *CloseUI: *JamRecovery
-*OpenUI *SRTMode/Optimisation texte / image: PickOne
-*OrderDependency: 10.0 AnySetup *SRTMode
-*DefaultSRTMode: NORMAL
-*SRTMode NORMAL/Normal: ""
-*SRTMode ENHANCE/Document texte: ""
-*SRTMode GRAY/Image: ""
-*CloseUI: *SRTMode
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -216,4 +209,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1710.ppd, 11259 bytes.
+*% End of ml1710.ppd, 11036 bytes.

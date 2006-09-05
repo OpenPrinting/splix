@@ -90,17 +90,21 @@ Option "JamRecovery/Reprint When Jam" Boolean AnySetup 10
    *Choice "False/Off" ""
    Choice "True/On" ""
 
-// SRT Mode
-Option "SRTMode/SRT Mode" PickOne AnySetup 10
-   *Choice "NORMAL/Normal" ""
-   Choice "ENHANCE/Text enhance" ""
-   Choice "GRAY/Image enhance" ""
 
 Attribute PJL beginPJL "<1B>%-12345X"
 Attribute PJL endPJL "<09><1B>%-12345X"
 
 
 // Specific printer definition
+{
+	ModelName "ML-1610"
+	Resolution k 1 0 0 0 "300dpi/300 DPI"
+
+	Attribute General compVersion "11"
+	Attribute General docHeaderValues "<0><0><1><0><0>"
+
+	PCFileName "ml1610.ppd"
+}
 {
 	ModelName "ML-1710"
 	Resolution k 1 0 0 0 "300dpi/300 DPI"
@@ -122,6 +126,12 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 {
 	ModelName "ML-2250"
 	Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+
+	// SRT Mode
+	Option "SRTMode/SRT Mode" PickOne AnySetup 10
+	   *Choice "NORMAL/Normal" ""
+	   Choice "ENHANCE/Text enhance" ""
+	   Choice "GRAY/Image enhance" ""
 
 	InputSlot 3 "Multi/Multi-Purpose Tray"
 	InputSlot 4 "Upper/Tray 1"
