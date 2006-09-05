@@ -223,3 +223,6 @@ msgstr "45 minutes"
 msgid "1 Hour"
 msgstr "1 heure"
 
+msgid "ML-1610"
+msgstr "TRANSLATE ML-1610"
+
