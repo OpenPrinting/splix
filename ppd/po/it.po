@@ -1,0 +1,241 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-09-22 11:18+0100\n"
+"Last-Translator: Emilio Scalise <emisca@email.it>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "English"
+msgstr "Inglese"
+
+msgid "ISOLatin1"
+msgstr "ISOLatin1"
+
+msgid "Samsung"
+msgstr "Samsung"
+
+msgid "ML-1610"
+msgstr "ML-1610"
+
+msgid "Letter - 8.5x11in"
+msgstr "Letter - 8.5x11in"
+
+msgid "Legal - 8.5x14in"
+msgstr "Legal - 8.5x14in"
+
+msgid "A4 - 210x297mm"
+msgstr "A4 - 210x297mm"
+
+msgid "Executive - 7.25x10.5in"
+msgstr "Executive - 7.25x10.5in"
+
+msgid "Ledger - 17x11in"
+msgstr "Ledger - 17x11in"
+
+msgid "A3 - 297x420mm"
+msgstr "A3 - 297x420mm"
+
+msgid "#10 Envelope - 4.13x9.5in"
+msgstr "Buste lettera #10 - 4.13x9.5in"
+
+msgid "Monarch - 3.875x7.5in"
+msgstr "Monarch - 3.875x7.5in"
+
+msgid "C5 - 162x229mm"
+msgstr "C5 - 162x229mm"
+
+msgid "DL - 110x220mm"
+msgstr "DL - 110x220mm"
+
+msgid "B4 - 257x364mm"
+msgstr "B4 - 257x364mm"
+
+msgid "B5 - 182x257mm"
+msgstr "B5 - 182x257mm"
+
+msgid "ISOB5 Envelope - 176x250mm"
+msgstr "Buste Lettera ISOB5 - 176x250mm"
+
+msgid "A5 - 148x210mm"
+msgstr "A5 - 148x210mm"
+
+msgid "A6 - 105x148mm"
+msgstr "A6 - 105x148mm"
+
+msgid "ISOB6 Envelope - 176x125mm"
+msgstr "Buste lettera ISOB6 - 176x125mm"
+
+msgid "C6 - 114x162mm"
+msgstr "C6 - 114x162mm"
+
+msgid "Folio - 210x330mm"
+msgstr "Folio - 210x330mm"
+
+msgid "Resolution"
+msgstr "Risoluzione"
+
+msgid "600 DPI"
+msgstr "600 DPI"
+
+msgid "300 DPI"
+msgstr "300 DPI"
+
+msgid "InputSlot"
+msgstr "Slot di Input"
+
+msgid "Automatic Selection"
+msgstr "Selezione Automatica"
+
+msgid "Manual Feed"
+msgstr "Alimentazione Manuale"
+
+msgid "Paper Type"
+msgstr "Tipo Carta"
+
+msgid "Use Printer Default"
+msgstr "Usa Default Stampante"
+
+msgid "Plain Paper"
+msgstr "Carta Semplice"
+
+msgid "Thick Paper"
+msgstr "Carta Spessa"
+
+msgid "Thin Paper"
+msgstr "Carta Sottile"
+
+#, fuzzy
+msgid "Bond"
+msgstr "Adesivo"
+
+msgid "Transparency"
+msgstr "Lucido"
+
+#, fuzzy
+msgid "Card Stock"
+msgstr "Biglietti Da Visita"
+
+msgid "Label"
+msgstr "Etichette"
+
+msgid "Preprinted"
+msgstr "Prestampati"
+
+msgid "Colored Paper"
+msgstr "Carta Colorata"
+
+msgid "Envelope"
+msgstr "Busta da Lettera"
+
+msgid "Power Save"
+msgstr "Risparmio Energetico"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "5 Minutes"
+msgstr "5 Minuti"
+
+msgid "10 Minutes"
+msgstr "10 Minuti"
+
+msgid "15 Minutes"
+msgstr "15 Minuti"
+
+msgid "30 Minutes"
+msgstr "30 Minuti"
+
+msgid "45 Minutes"
+msgstr "45 Minuti"
+
+msgid "1 Hour"
+msgstr "1 Ora"
+
+msgid "Toner Density"
+msgstr "Densità del Toner"
+
+msgid "Light"
+msgstr "Leggera"
+
+msgid "Medium"
+msgstr "Media"
+
+msgid "Dark"
+msgstr "Scura"
+
+msgid "Toner Save"
+msgstr "Risparmio Toner"
+
+msgid "Save"
+msgstr "Risparmio"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Reprint When Jam"
+msgstr "Ristampa se Inceppata"
+
+msgid "On"
+msgstr "On"
+
+msgid "ML-1710"
+msgstr "ML-1710"
+
+msgid "ML-2010"
+msgstr "ML-2010"
+
+msgid "1200 DPI"
+msgstr "1200 DPI"
+
+msgid "ML-2250"
+msgstr "ML-2250"
+
+msgid "Multi-Purpose Tray"
+msgstr "Caricatore Multifunzione"
+
+msgid "Tray 1"
+msgstr "Caricatore 1"
+
+msgid "Tray 2"
+msgstr "Caricatore 2"
+
+msgid "Envelope Tray"
+msgstr "Caricatore Buste"
+
+msgid "Tray 3"
+msgstr "Caricatore 3"
+
+msgid "SRT Mode"
+msgstr "Modo SRT"
+
+msgid "Normal"
+msgstr "Normale"
+
+msgid "Text enhance"
+msgstr "Migliora il Testo"
+
+msgid "Image enhance"
+msgstr "Migliora le Immagini"
+
+msgid "Installable Options"
+msgstr "Opzioni Installabili"
+
+msgid "Tray 2 Installed"
+msgstr "Caricatore 2 Installato"
+
+msgid "Not Installed"
+msgstr "Non Installato"
+
+msgid "Installed"
+msgstr "Installato"
+
+msgid "Envelope Tray Installed"
+msgstr "Caricatore Buste Installato"
+
+msgid "Tray 3 Installed"
+msgstr "Caricatore 3 Installato"
+

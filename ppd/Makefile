@@ -10,7 +10,7 @@ DRIVERS		:= ml1610 ml1710 ml2010 ml2250
 DRIVERSEXT	:= ppd
 POEXT		:= po
 PODIR		:= po
-LANGUAGES 	:= fr
+LANGUAGES 	:= fr it de
 
 # === DON'T CHANGE ANYTHING AFTER THIS MESSAGE ====
 
