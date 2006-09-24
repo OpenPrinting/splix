@@ -1,0 +1,242 @@
+# translation of de.po to
+# Marcel Hilzinger <mhilzinger@linuxnewmedia.de>, 2006.
+msgid "English"
+msgstr ""
+"German"
+"Last-Translator: Marcel Hilzinger <mhilzinger@linuxnewmedia.de>\n"
+"PO-Revision-Date: 2006-09-15 11:11+0200\n"
+"Project-Id-Version: de\n"
+"Language-Team:  <de@li.org>\n"
+"Language-Team:  <de@li.org>\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.2\n"
+"MIME-Version: 1.0\n"
+"Language-Team:  <de@li.org>\n"
+"Language-Team:  <de@li.org>\n"
+"Language-Team:  <de@li.org>\n"
+
+msgid "English"
+msgstr "Deutsch"
+
+msgid "ISOLatin1"
+msgstr "ISOLatin1"
+
+msgid "Samsung"
+msgstr "Samsung"
+
+msgid "ML-2250"
+msgstr "ML-2250"
+
+msgid "ML-1710"
+msgstr "ML-1710"
+
+msgid "ML-2010"
+msgstr "ML-2010"
+
+msgid "Letter - 8.5x11in"
+msgstr "Letter - 8.5x11in"
+
+msgid "Legal - 8.5x14in"
+msgstr "Legal - 8.5x14in"
+
+msgid "A4 - 210x297mm"
+msgstr "A4 - 210x297mm"
+
+msgid "Executive - 7.25x10.5in"
+msgstr "Executive - 7.25x10.5in"
+
+msgid "Ledger - 17x11in"
+msgstr "Ledger - 17x11in"
+
+msgid "A3 - 297x420mm"
+msgstr "A3 - 297x420mm"
+
+msgid "#10 Envelope - 4.13x9.5in"
+msgstr "Umschlag #10 - 4.13x9.5in"
+
+msgid "Monarch - 3.875x7.5in"
+msgstr "Monarch - 3.875x7.5in"
+
+msgid "C5 - 162x229mm"
+msgstr "C5 - 162x229mm"
+
+msgid "DL - 110x220mm"
+msgstr "DL - 110x220mm"
+
+msgid "B4 - 257x364mm"
+msgstr "B4 - 257x364mm"
+
+msgid "B5 - 182x257mm"
+msgstr "B5 - 182x257mm"
+
+msgid "ISOB5 Envelope - 176x250mm"
+msgstr "Umschlag ISOB5 - 176x250mm"
+
+msgid "A5 - 148x210mm"
+msgstr "A5 - 148x210mm"
+
+msgid "A6 - 105x148mm"
+msgstr "A6 - 105x148mm"
+
+msgid "ISOB6 Envelope - 176x125mm"
+msgstr "Umschlag ISOB6 - 176x125mm"
+
+msgid "C6 - 114x162mm"
+msgstr "C6 - 114x162mm"
+
+msgid "Folio - 210x330mm"
+msgstr "Folio - 210x330mm"
+
+msgid "Resolution"
+msgstr "Auflösung"
+
+msgid "300 DPI"
+msgstr "300 DPI"
+
+msgid "600 DPI"
+msgstr "600 PPP"
+
+msgid "1200 DPI"
+msgstr "1200 PPP"
+
+msgid "InputSlot"
+msgstr "Eingabefach"
+
+msgid "Automatic Selection"
+msgstr "Automatische Auswahl"
+
+msgid "Manual Feed"
+msgstr "Manueller Einzug"
+
+msgid "Multi-Purpose Tray"
+msgstr "Multifunktionaler Schacht"
+
+msgid "Tray 1"
+msgstr "Fach 1"
+
+msgid "Tray 2"
+msgstr "Fach 2"
+
+msgid "Envelope Tray"
+msgstr "Umschlagfach"
+
+msgid "Tray 3"
+msgstr "Fach 3"
+
+msgid "Paper Type"
+msgstr "Papiertyp"
+
+msgid "Use Printer Default"
+msgstr "Grundeinstellungen des Druckers"
+
+msgid "Plain Paper"
+msgstr "Normalpapier"
+
+msgid "Thick Paper"
+msgstr "Dickes Papier"
+
+msgid "Thin Paper"
+msgstr "Dünnes Papier"
+
+msgid "Bond"
+msgstr "Kartoniertes Papier"
+
+msgid "Transparency"
+msgstr "Transparenz"
+
+msgid "Card Stock"
+msgstr "Visitenkarten"
+
+msgid "Label"
+msgstr "Etiketten"
+
+msgid "Preprinted"
+msgstr "Vorgedrucktes Papier"
+
+msgid "Colored Paper"
+msgstr "Farbiges Papier"
+
+msgid "Envelope"
+msgstr "Umschlag/Couvert"
+
+msgid "Power Save"
+msgstr "Energiesparmodus"
+
+msgid "On"
+msgstr "Ein"
+
+msgid "Off"
+msgstr "Aus"
+
+msgid "Toner Density"
+msgstr "Tonerdichte"
+
+msgid "Light"
+msgstr "Hell"
+
+msgid "Medium"
+msgstr "Normal"
+
+msgid "Dark"
+msgstr "Dunkel"
+
+msgid "Toner Save"
+msgstr "Toner Sparmodus"
+
+msgid "Save"
+msgstr "Sparen"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Reprint When Jam"
+msgstr "Druck nach Papierstau fortsetzen"
+
+msgid "SRT Mode"
+msgstr "Optimierter Text-/Bilderdruck"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Text enhance"
+msgstr "Für Text optimiert"
+
+msgid "Image enhance"
+msgstr "Für Bilder optimiert"
+
+msgid "Installable Options"
+msgstr "Optionale Module"
+
+msgid "Tray 2 Installed"
+msgstr "Fach 2 vorhanden"
+
+msgid "Not Installed"
+msgstr "Nicht vorhanden"
+
+msgid "Installed"
+msgstr "Vorhanden"
+
+msgid "Envelope Tray Installed"
+msgstr "Spezielles Fach für Umschläge"
+
+msgid "Tray 3 Installed"
+msgstr "Fach 3 vorhanden"
+
+msgid "5 Minutes"
+msgstr "5 Minuten"
+
+msgid "10 Minutes"
+msgstr "10 Minuten"
+
+msgid "15 Minutes"
+msgstr "15 Minuten"
+
+msgid "30 Minutes"
+msgstr "30 Minuten"
+
+msgid "45 Minutes"
+msgstr "45 Minuten"
+
+msgid "1 Hour"
+msgstr "1 Stunde"
+
