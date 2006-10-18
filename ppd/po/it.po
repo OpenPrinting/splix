@@ -1,5 +1,5 @@
-# Project-Id-Version: 
-# POT-Creation-Date: 
+# Project-Id-Version:
+# POT-Creation-Date:
 # PO-Revision-Date: 2006-09-22 11:18+0100
 # Last-Translator: Emilio Scalise <emisca@email.it>
 # Language-Team:
@@ -106,14 +106,12 @@ msgstr "Carta Spessa"
 msgid "Thin Paper"
 msgstr "Carta Sottile"
 
-#, fuzzy
 msgid "Bond"
 msgstr "Adesivo"
 
 msgid "Transparency"
 msgstr "Lucido"
 
-#, fuzzy
 msgid "Card Stock"
 msgstr "Biglietti Da Visita"
 
@@ -236,4 +234,22 @@ msgstr "Caricatore Buste Installato"
 
 msgid "Tray 3 Installed"
 msgstr "Caricatore 3 Installato"
+
+msgid "ML-1510"
+msgstr "ML-1510"
+
+msgid "ML-1520"
+msgstr "ML-1520"
+
+msgid "ML-1740"
+msgstr "ML-1740"
+
+msgid "ML-1750"
+msgstr "ML-1750"
+
+msgid "ML-2150"
+msgstr "ML-2150"
+
+msgid "ML-2550"
+msgstr "ML-2550"
 
