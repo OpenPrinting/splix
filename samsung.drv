@@ -97,58 +97,85 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 
 // Specific printer definition
 {
-	ModelName "ML-1610"
-	Resolution k 1 0 0 0 "300dpi/300 DPI"
-
 	Attribute General compVersion "11"
 	Attribute General docHeaderValues "<0><0><1><0><0>"
+	{
+		Resolution k 1 0 0 0 "300dpi/300 DPI"
+		{
+			ModelName "ML-1510"
+			PCFileName "ml1510.ppd"
+		}
+		{
+			ModelName "ML-1520"
+			PCFileName "ml1520.ppd"
+		}
+		{
+			ModelName "ML-1610"
+			PCFileName "ml1610.ppd"
+		}
+		{
+			ModelName "ML-1710"
+			PCFileName "ml1710.ppd"
+		}
+		{
+			ModelName "ML-1740"
+			PCFileName "ml1740.ppd"
+		}
+		{
+			// SRT Mode
+			Option "SRTMode/SRT Mode" PickOne AnySetup 10
+			  *Choice "NORMAL/Normal" ""
+			   Choice "ENHANCE/Text enhance" ""
+			   Choice "GRAY/Image enhance" ""
+			ModelName "ML-1750"
+			PCFileName "ml1750.ppd"
+		}
+	}
+	{
+		Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+		{
+			// Oficio 
+			ModelName "ML-2010"
+			Attribute General docHeaderValues "<0><0><0><2><1>"
+			PCFileName "ml2010.ppd"
+		}
+		{
+			// Multi-tray
+			InputSlot 3 "Multi/Multi-Purpose Tray"
+			InputSlot 4 "Upper/Tray 1"
+			InputSlot 5 "Lower/Tray 2"
+			InputSlot 6 "Envelope/Envelope Tray"
+			InputSlot 7 "Tray3/Tray 3"
+			// But tray 2, Envelope and Tray3 are options...
+			Installable "OptionTray2/Tray 2 Installed"
+			UIConstraints "*OptionTray2 False *InputSlot Lower"
+			Installable "OptionTrayEnv/Envelope Tray Installed"
+			UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
+			Installable "OptionTray3/Tray 3 Installed"
+			UIConstraints "*OptionTray3 False *InputSlot Tray3"
 
-	PCFileName "ml1610.ppd"
-}
-{
-	ModelName "ML-1710"
-	Resolution k 1 0 0 0 "300dpi/300 DPI"
-
-	Attribute General compVersion "11"
-	Attribute General docHeaderValues "<0><0><1><0><0>"
-
-	PCFileName "ml1710.ppd"
-}
-{
-	ModelName "ML-2010"
-	Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-
-	Attribute General compVersion "11"
-	Attribute General docHeaderValues "<0><0><0><2><1>"
-
-	PCFileName "ml2010.ppd"
-}
-{
-	ModelName "ML-2250"
-	Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-
-	// SRT Mode
-	Option "SRTMode/SRT Mode" PickOne AnySetup 10
-	   *Choice "NORMAL/Normal" ""
-	   Choice "ENHANCE/Text enhance" ""
-	   Choice "GRAY/Image enhance" ""
-
-	InputSlot 3 "Multi/Multi-Purpose Tray"
-	InputSlot 4 "Upper/Tray 1"
-	InputSlot 5 "Lower/Tray 2"
-	InputSlot 6 "Envelope/Envelope Tray"
-	InputSlot 7 "Tray3/Tray 3"
-	// But tray 2, Envelope and Tray3 are options...
-	Installable "OptionTray2/Tray 2 Installed"
-	UIConstraints "*OptionTray2 False *InputSlot Lower"
-	Installable "OptionTrayEnv/Envelope Tray Installed"
-	UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
-	Installable "OptionTray3/Tray 3 Installed"
-	UIConstraints "*OptionTray3 False *InputSlot Tray3"
-
-	Attribute General compVersion "11"
-	Attribute General docHeaderValues "<0><0><1><0><0>"
-
-	PCFileName "ml2250.ppd"
+			// SRT Mode
+			Option "SRTMode/SRT Mode" PickOne AnySetup 10
+			  *Choice "NORMAL/Normal" ""
+			   Choice "ENHANCE/Text enhance" ""
+			   Choice "GRAY/Image enhance" ""
+			{
+				ModelName "ML-2250"
+				PCFileName "ml2250.ppd"
+			}
+			{
+				// Add duplex here!
+				Resolution k 1 0 0 0 "300dpi/300 DPI"
+				{
+					ModelName "ML-2150"
+					PCFileName "ml2150.ppd"
+				}
+				{
+					ModelName "ML-2550"
+					PCFileName "ml2550.ppd"
+				}
+			}
+		}
+	}
 }
 

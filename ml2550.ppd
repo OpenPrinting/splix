@@ -1,17 +1,17 @@
 *PPD-Adobe: "4.3"
-*% PPD file for ML-2010 with CUPS.
+*% PPD file for ML-2550 with CUPS.
 *% Created by the CUPS PPD Compiler v1.1svn.
 *FormatVersion: "4.3"
 *FileVersion: "1.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
-*PCFileName: "ml2010.ppd"
+*PCFileName: "ml2550.ppd"
 *Product: "(ESP Ghostscript)"
 *Product: "(GNU Ghostscript)"
 *Manufacturer: "Samsung"
-*ModelName: "Samsung ML-2010"
-*ShortNickName: "Samsung ML-2010"
-*NickName: "Samsung ML-2010, 1.0"
+*ModelName: "Samsung ML-2550"
+*ShortNickName: "Samsung ML-2550"
+*NickName: "Samsung ML-2550, 1.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -27,12 +27,17 @@
 *PJL endPJL: "<09><1B>%-12345X"
 *General compVersion: "11"
 *General docHeaderValues: "<0><0><1><0><0>"
-*General docHeaderValues: "<0><0><0><2><1>"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-raster 100 rastertospl2"
+*UIConstraints: *OptionTray2 False *InputSlot Lower
+*UIConstraints: *InputSlot Lower *OptionTray2 False
+*UIConstraints: *OptionTrayEnv False *InputSlot Envelope
+*UIConstraints: *InputSlot Envelope *OptionTrayEnv False
+*UIConstraints: *OptionTray3 False *InputSlot Tray3
+*UIConstraints: *InputSlot Tray3 *OptionTray3 False
 *OpenUI *PageSize: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -121,12 +126,18 @@
 *DefaultResolution: 600dpi
 *Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
 *Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*Resolution 300dpi/300 DPI: "<</HWResolution[300 300]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
 *CloseUI: *Resolution
 *OpenUI *InputSlot: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
 *DefaultInputSlot: Auto
 *InputSlot Auto/Automatic Selection: "<</MediaPosition 1>>setpagedevice"
 *InputSlot Manual/Manual Feed: "<</MediaPosition 2>>setpagedevice"
+*InputSlot Multi/Multi-Purpose Tray: "<</MediaPosition 3>>setpagedevice"
+*InputSlot Upper/Tray 1: "<</MediaPosition 4>>setpagedevice"
+*InputSlot Lower/Tray 2: "<</MediaPosition 5>>setpagedevice"
+*InputSlot Envelope/Envelope Tray: "<</MediaPosition 6>>setpagedevice"
+*InputSlot Tray3/Tray 3: "<</MediaPosition 7>>setpagedevice"
 *CloseUI: *InputSlot
 *OpenUI *MediaType/Paper Type: PickOne
 *OrderDependency: 10.0 AnySetup *MediaType
@@ -174,6 +185,33 @@
 *JamRecovery False/Off: ""
 *JamRecovery True/On: ""
 *CloseUI: *JamRecovery
+*OpenUI *SRTMode/SRT Mode: PickOne
+*OrderDependency: 10.0 AnySetup *SRTMode
+*DefaultSRTMode: NORMAL
+*SRTMode NORMAL/Normal: ""
+*SRTMode ENHANCE/Text enhance: ""
+*SRTMode GRAY/Image enhance: ""
+*CloseUI: *SRTMode
+*OpenGroup: InstallableOptions/Installable Options
+*OpenUI *OptionTray2/Tray 2 Installed: Boolean
+*OrderDependency: 10.0 AnySetup *OptionTray2
+*DefaultOptionTray2: False
+*OptionTray2 False/Not Installed: ""
+*OptionTray2 True/Installed: ""
+*CloseUI: *OptionTray2
+*OpenUI *OptionTrayEnv/Envelope Tray Installed: Boolean
+*OrderDependency: 10.0 AnySetup *OptionTrayEnv
+*DefaultOptionTrayEnv: False
+*OptionTrayEnv False/Not Installed: ""
+*OptionTrayEnv True/Installed: ""
+*CloseUI: *OptionTrayEnv
+*OpenUI *OptionTray3/Tray 3 Installed: Boolean
+*OrderDependency: 10.0 AnySetup *OptionTray3
+*DefaultOptionTray3: False
+*OptionTray3 False/Not Installed: ""
+*OptionTray3 True/Installed: ""
+*CloseUI: *OptionTray3
+*CloseGroup: InstallableOptions
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -210,4 +248,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2010.ppd, 10942 bytes.
+*% End of ml2550.ppd, 12643 bytes.

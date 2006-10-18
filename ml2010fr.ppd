@@ -26,6 +26,7 @@
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
 *General compVersion: "11"
+*General docHeaderValues: "<0><0><1><0><0>"
 *General docHeaderValues: "<0><0><0><2><1>"
 *% CUPS attributes...
 *cupsVersion: 1.2
@@ -209,4 +210,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2010.ppd, 11040 bytes.
+*% End of ml2010.ppd, 11084 bytes.
