@@ -1,19 +1,12 @@
-# translation of de.po to
-# Marcel Hilzinger <mhilzinger@linuxnewmedia.de>, 2006.
-msgid "English"
-msgstr ""
-"German"
-"Last-Translator: Marcel Hilzinger <mhilzinger@linuxnewmedia.de>\n"
-"PO-Revision-Date: 2006-09-15 11:11+0200\n"
-"Project-Id-Version: de\n"
-"Language-Team:  <de@li.org>\n"
-"Language-Team:  <de@li.org>\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
-"MIME-Version: 1.0\n"
-"Language-Team:  <de@li.org>\n"
-"Language-Team:  <de@li.org>\n"
-"Language-Team:  <de@li.org>\n"
+#
+# Last-Translator: Marcel Hilzinger <mhilzinger@linuxnewmedia.de>
+# PO-Revision-Date: 2006-09-15 11:11+0200
+# Project-Id-Version: de
+# Content-Transfer-Encoding: 8bit
+# X-Generator: KBabel 1.11.2
+# MIME-Version: 1.0
+# Language-Team:  <de@li.org>
+#
 
 msgid "English"
 msgstr "Deutsch"
@@ -239,4 +232,25 @@ msgstr "45 Minuten"
 
 msgid "1 Hour"
 msgstr "1 Stunde"
+
+msgid "ML-1510"
+msgstr "ML-1510"
+
+msgid "ML-1520"
+msgstr "ML-1520"
+
+msgid "ML-1610"
+msgstr "ML-1610"
+
+msgid "ML-1740"
+msgstr "ML-1740"
+
+msgid "ML-1750"
+msgstr "ML-1750"
+
+msgid "ML-2150"
+msgstr "ML-2150"
+
+msgid "ML-2550"
+msgstr "ML-2550"
 
