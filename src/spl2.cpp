@@ -106,7 +106,10 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 	header[0xb] = _printer->duplex() >> 8;		// Duplex
 	header[0xc] = _printer->duplex();		// Duplex
 	header[0xd] = 0;				// ??? XXX
-	header[0xe] = 1;				// ??? XXX
+	if (_printer->resolution() == 300)
+		header[0xe] = 0;			// ??? XXX
+	else
+		header[0xe] = 1;			// ??? XXX
 	header[0xf] = 0;				// ??? XXX
 	header[0x10] = 0;				// ??? XXX
 	fwrite((char *)&header, 1, sizeof(header), _output);
@@ -185,10 +188,17 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 			header[0x4] = band->height() >> 8;	// Band height
 			header[0x5] = band->height();		// Band height
 			header[0x6] = _printer->compVersion();	// Comp version
-			header[0x7] = (size + 4) >> 24;		// data length
-			header[0x8] = (size + 4) >> 16;		// data length
-			header[0x9] = (size + 4) >> 8;		// data length
-			header[0xa] = (size + 4);			// data length
+			if (_printer->resolution() == 300) {
+				header[0x7] = size >> 24;	// data length
+				header[0x8] = size >> 16;	// data length
+				header[0x9] = size >> 8;	// data length
+				header[0xa] = size;		// data length
+			} else {
+				header[0x7] = (size + 4) >> 24;	// data length
+				header[0x8] = (size + 4) >> 16;	// data length
+				header[0x9] = (size + 4) >> 8;	// data length
+				header[0xa] = (size + 4);	// data length
+			}
 			fwrite((char *)&header, 1, 0xb, _output);
 
 			// Write the data
@@ -196,11 +206,13 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 			delete[] data;
 
 			// Write the checksum
-			header[0x0] = checksum >> 24;
-			header[0x1] = checksum >> 16;
-			header[0x2] = checksum >> 8;
-			header[0x3] = checksum;
-			fwrite((char *)&header, 1, 0x4, _output);
+			if (_printer->resolution() != 300) {
+				header[0x0] = checksum >> 24;
+				header[0x1] = checksum >> 16;
+				header[0x2] = checksum >> 8;
+				header[0x3] = checksum;
+				fwrite((char *)&header, 1, 0x4, _output);
+			}
 
 			band->clean();
 			bandNumber++;
