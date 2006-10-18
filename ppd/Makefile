@@ -6,7 +6,7 @@
 #
 
 SOURCE		:= samsung.drv
-DRIVERS		:= ml1610 ml1710 ml2010 ml2250
+DRIVERS		:= ml1510 ml1520 ml1610 ml1710 ml1740 ml1750 ml2010 ml2150 ml2250 ml2550
 DRIVERSEXT	:= ppd
 POEXT		:= po
 PODIR		:= po
