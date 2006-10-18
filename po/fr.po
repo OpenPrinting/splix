@@ -223,6 +223,24 @@ msgstr "45 minutes"
 msgid "1 Hour"
 msgstr "1 heure"
 
+msgid "ML-1510"
+msgstr "ML-1510"
+
+msgid "ML-1520"
+msgstr "ML-1520"
+
 msgid "ML-1610"
-msgstr "TRANSLATE ML-1610"
+msgstr "ML-1610"
+
+msgid "ML-1740"
+msgstr "ML-1740"
+
+msgid "ML-1750"
+msgstr "ML-1750"
+
+msgid "ML-2150"
+msgstr "ML-2150"
+
+msgid "ML-2550"
+msgstr "ML-2550"
 
