@@ -77,24 +77,24 @@
 *PageRegion Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
-*ImageableArea Letter/Letter - 8.5x11in: "12.50 12.50 612.00 792.00"
-*ImageableArea Legal/Legal - 8.5x14in: "12.50 12.50 612.00 1008.00"
-*ImageableArea A4/A4 - 210x297mm: "12.50 12.50 595.00 842.00"
-*ImageableArea Executive/Executive - 7.25x10.5in: "12.50 12.50 522.00 756.00"
-*ImageableArea Ledger/Ledger - 17x11in: "12.50 12.50 1224.00 792.00"
-*ImageableArea A3/A3 - 297x420mm: "12.50 12.50 842.00 1191.00"
-*ImageableArea Env10/Umschlag #10 - 4.13x9.5in: "12.50 12.50 297.00 684.00"
-*ImageableArea Monarch/Monarch - 3.875x7.5in: "12.50 12.50 279.00 540.00"
-*ImageableArea C5/C5 - 162x229mm: "12.50 12.50 459.00 649.00"
-*ImageableArea DL/DL - 110x220mm: "12.50 12.50 312.00 624.00"
-*ImageableArea B4/B4 - 257x364mm: "12.50 12.50 729.00 1032.00"
-*ImageableArea B5/B5 - 182x257mm: "12.50 12.50 516.00 729.00"
-*ImageableArea EnvISOB5/Umschlag ISOB5 - 176x250mm: "12.50 12.50 499.00 709.00"
-*ImageableArea A5/A5 - 148x210mm: "12.50 12.50 420.00 595.00"
-*ImageableArea A6/A6 - 105x148mm: "12.50 12.50 297.00 420.00"
-*ImageableArea EnvISOB6/Umschlag ISOB6 - 176x125mm: "12.50 12.50 499.00 354.00"
-*ImageableArea C6/C6 - 114x162mm: "12.50 12.50 323.00 459.00"
-*ImageableArea Folio/Folio - 210x330mm: "12.50 12.50 595.00 935.00"
+*ImageableArea Letter/Letter - 8.5x11in: "12.50 12.50 599.50 779.50"
+*ImageableArea Legal/Legal - 8.5x14in: "12.50 12.50 599.50 995.50"
+*ImageableArea A4/A4 - 210x297mm: "12.50 12.50 582.50 829.50"
+*ImageableArea Executive/Executive - 7.25x10.5in: "12.50 12.50 509.50 743.50"
+*ImageableArea Ledger/Ledger - 17x11in: "12.50 12.50 1211.50 779.50"
+*ImageableArea A3/A3 - 297x420mm: "12.50 12.50 829.50 1178.50"
+*ImageableArea Env10/Umschlag #10 - 4.13x9.5in: "12.50 12.50 284.50 671.50"
+*ImageableArea Monarch/Monarch - 3.875x7.5in: "12.50 12.50 266.50 527.50"
+*ImageableArea C5/C5 - 162x229mm: "12.50 12.50 446.50 636.50"
+*ImageableArea DL/DL - 110x220mm: "12.50 12.50 299.50 611.50"
+*ImageableArea B4/B4 - 257x364mm: "12.50 12.50 716.50 1019.50"
+*ImageableArea B5/B5 - 182x257mm: "12.50 12.50 503.50 716.50"
+*ImageableArea EnvISOB5/Umschlag ISOB5 - 176x250mm: "12.50 12.50 486.50 696.50"
+*ImageableArea A5/A5 - 148x210mm: "12.50 12.50 407.50 582.50"
+*ImageableArea A6/A6 - 105x148mm: "12.50 12.50 284.50 407.50"
+*ImageableArea EnvISOB6/Umschlag ISOB6 - 176x125mm: "12.50 12.50 486.50 341.50"
+*ImageableArea C6/C6 - 114x162mm: "12.50 12.50 310.50 446.50"
+*ImageableArea Folio/Folio - 210x330mm: "12.50 12.50 582.50 922.50"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter - 8.5x11in: "612.00 792.00"
 *PaperDimension Legal/Legal - 8.5x14in: "612.00 1008.00"
@@ -209,4 +209,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1710.ppd, 11002 bytes.
+*% End of ml1710.ppd, 11001 bytes.

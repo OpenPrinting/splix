@@ -1,13 +1,3 @@
-#
-# Last-Translator: Marcel Hilzinger <mhilzinger@linuxnewmedia.de>
-# PO-Revision-Date: 2006-09-15 11:11+0200
-# Project-Id-Version: de
-# Content-Transfer-Encoding: 8bit
-# X-Generator: KBabel 1.11.2
-# MIME-Version: 1.0
-# Language-Team:  <de@li.org>
-#
-
 msgid "English"
 msgstr "Deutsch"
 
