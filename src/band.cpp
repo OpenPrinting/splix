@@ -29,7 +29,7 @@
  * Méthodes internes
  * Internal methods
  */
-unsigned char *Band::_algorithm0(unsigned long *size)
+unsigned char *Band::_algorithm0(size_t *size)
 {
 	unsigned char *tmp;
 
@@ -39,7 +39,7 @@ unsigned char *Band::_algorithm0(unsigned long *size)
 	return tmp;
 }
 
-unsigned char *Band::_algorithm11(unsigned long *size)
+unsigned char *Band::_algorithm11(size_t *size)
 {
 	struct BandArray band;
 	unsigned char *output;
@@ -48,7 +48,7 @@ unsigned char *Band::_algorithm11(unsigned long *size)
         band.array = output;
 	band.next = output + 8;
 	band.prev = output;
-	*(unsigned long *)output = 0x09ABCDEF;
+	*(uint32_t *)output = 0x09ABCDEF;
 
 	calcOccurs(_band, _height, _width, 0x11);
 	compressBand(&band, _band, _width, _height);
@@ -121,7 +121,7 @@ int Band::addLine(unsigned char *line, unsigned long width)
  * Export a band
  */
 
-unsigned char* Band::exportBand(int algorithm, unsigned long *size)
+unsigned char* Band::exportBand(int algorithm, size_t *size)
 {
 	if (algorithm == 0)
 		return _algorithm0(size);

@@ -23,6 +23,8 @@
 #include "document.h"
 #include "error.h"
 #include "band.h"
+#include <stdint.h>
+
 
 /*
  * Constructeur - Destructeur
@@ -166,8 +168,9 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 
 		// Compress and send the band if it's complete
 		if (band->isFull()) {
-			unsigned long size, checksum = 0;
+			uint32_t checksum = 0;
 			unsigned char *data;
+			size_t size;
 
 			// Compress
 			if (!(data = band->exportBand(_printer->compVersion(), 

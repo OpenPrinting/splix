@@ -19,13 +19,14 @@
  * 
  */
 #include "compress.h"
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 
-static long ptrArray[0x40];
-static unsigned long maxSizeArray[0x40];
+static int32_t ptrArray[0x40];
+static uint32_t maxSizeArray[0x40];
 
 #define COMPRESS_SAMPLE_RATE   0x800
 
@@ -34,14 +35,14 @@ static int _compare(const void *n1, const void *n2)
 {
     // n2 and n1 has been exchanged since the first
     // element of the array MUST be the biggest
-    return *(unsigned long *)n2 - *(unsigned long*)n1;
+    return *(uint32_t *)n2 - *(uint32_t *)n1;
 }
 
 int calcOccurs(unsigned char *band, unsigned long bandHeight, 
         unsigned long bandWidth, unsigned long number)
 {
-    unsigned long occurs[COMPRESS_SAMPLE_RATE * 2];
-    unsigned int i, j, size;
+    uint32_t occurs[COMPRESS_SAMPLE_RATE * 2];
+    size_t i, j, size;
 
     size = bandWidth * bandHeight;
 
@@ -61,7 +62,7 @@ int calcOccurs(unsigned char *band, unsigned long bandHeight,
     }
 
     // Order the array
-    qsort(occurs, COMPRESS_SAMPLE_RATE, sizeof(long)*2, _compare);
+    qsort(occurs, COMPRESS_SAMPLE_RATE, sizeof(uint32_t)*2, _compare);
 
     // Get the first 0x40 elements
     for (i=0; i < 0x40; i++)
@@ -72,11 +73,11 @@ int calcOccurs(unsigned char *band, unsigned long bandHeight,
         for (i=0; i < 0x40; i++)
             maxSizeArray[i] = 0x202;
     } else {
-        unsigned long l;
+        uint32_t l;
 
         l = 0x6464 / (number << 6);
         for (i=0; i < 0x40; i++) {
-            unsigned long v = 0x202 - l * i;
+            uint32_t v = 0x202 - l * i;
 
             if (v < 3)
                 v = 3;
@@ -92,18 +93,18 @@ int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
 {
     unsigned char *out, *endOut, *in, *endIn, *rawDataPtr = 0;
     size_t max, repCnt, maxRepCnt, rawDataNr = 0;
-    long lastPtr = 0;
+    int32_t lastPtr = 0;
     size_t i, maxPtr;
 
     // Initialize some variables
     out = bandArray->next;
-    endOut = bandArray->next + bandWidth * bandHeight; // TODO
+    endOut = bandArray->next + bandWidth * bandHeight;
     in = beginIn;
     endIn = beginIn + bandWidth * bandHeight;
 
     // Print the table
     for (i=0; i < 0x40; i++) {
-        *(short *)out = ~(short)ptrArray[i];
+        *(int16_t *)out = ~(int16_t)ptrArray[i];
         out += 2;
         if (ptrArray[i] < lastPtr)
             lastPtr = ptrArray[i];
@@ -113,7 +114,7 @@ int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
     lastPtr = ~lastPtr;
     if (lastPtr > 0x80)
         lastPtr = 0x80;
-    *(unsigned long *)(bandArray->prev + 4) = lastPtr;
+    *(uint32_t *)(bandArray->prev + 4) = lastPtr;
     for (i=0; i < lastPtr; i++) {
         *out = *in;
         out++;

@@ -21,6 +21,8 @@
 #ifndef BAND_H_
 #define BAND_H_
 
+#include <sys/types.h>
+#include <stdint.h>
 
 class Band
 {
@@ -32,8 +34,8 @@ class Band
 		unsigned long	_clipping;
 		
 	protected:
-		unsigned char*	_algorithm0(unsigned long *size);
-		unsigned char*	_algorithm11(unsigned long *size);
+		unsigned char*	_algorithm0(size_t *size);
+		unsigned char*	_algorithm11(size_t *size);
 
 	public:
 		Band(unsigned long bandWidth, unsigned long bandHeight);
@@ -54,7 +56,7 @@ class Band
 		void		clean() {_line = 0;}
 		int		addLine(unsigned char *line, unsigned long width);
 
-		unsigned char*	exportBand(int algorithm, unsigned long *size);
+		unsigned char*	exportBand(int algorithm, size_t *size);
 
 		bool		isFull() const 
 				{return _line == _height ? true : false;}
