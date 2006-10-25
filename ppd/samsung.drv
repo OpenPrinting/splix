@@ -12,7 +12,7 @@ Filter application/vnd.cups-raster 100 rastertospl2
 *Resolution k 1 0 0 0 "600dpi/600 DPI"
 
 // Supported paper format
-HWMargins 12.5 12.5 0.0 0.0
+HWMargins 12.5 12.5 12.5 12.5
 *MediaSize Letter
 MediaSize Legal
 MediaSize A4
