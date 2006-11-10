@@ -99,8 +99,8 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 // Specific printer definition
 {
 	Attribute General compVersion "11"
-	Attribute General docHeaderValues "<0><0><1><0><0>"
 	{
+		Attribute General docHeaderValues "<0><0><1><0><0>"
 		Resolution k 1 0 0 0 "300dpi/300 DPI"
 		{
 			ModelName "ML-1510"
@@ -133,14 +133,21 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		}
 	}
 	{
-		Resolution k 1 0 0 0 "1200dpi/1200 DPI"
 		{
+			// 1200x1200 DPI
+			Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
 			// Oficio 
 			ModelName "ML-2010"
 			Attribute General docHeaderValues "<0><0><0><2><1>"
 			PCFileName "ml2010.ppd"
 		}
 		{
+			Attribute General docHeaderValues "<0><0><1><0><0>"
+
+			// 1200x1200 DPI
+			Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+
 			// Multi-tray
 			InputSlot 3 "Multi/Multi-Purpose Tray"
 			InputSlot 4 "Upper/Tray 1"
