@@ -37,12 +37,11 @@ update: $(patsubst %, $(PODIR)/%.$(POEXT), $(LANGUAGES))
 
 .PHONY:
 install:
-	install -d -m 755 ${CUPSPREFIX}/${CUPSPPD}/samsung
-	 
+	install -d -m 755 ${CUPSPPD}/samsung
 	for filename in ${DRIVERS}; do \
-		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPREFIX}/${CUPSPPD}/samsung;\
+		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/samsung;\
 		for lang in ${LANGUAGES}; do \
-			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPREFIX}/${CUPSPPD}/samsung;\
+			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/samsung;\
 		done; \
 	done \
 

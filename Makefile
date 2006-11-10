@@ -4,15 +4,14 @@
 #  This project has been placed under the GPL Licence.
 #
 
-CXXFLAGS	:= -O2
-LDFLAGS		:= 
-CUPSPREFIX	:= /usr
-CUPSFILTER	:= lib/cups/filter
-CUPSPPD		:= share/cups/model
+CXXFLAGS	:= -O2 `cups-config --cflags` 
+LDFLAGS		:= `cups-config --ldflags`
+CUPSFILTER	:= `cups-config --serverbin`/filter
+CUPSPPD		:= `cups-config --datadir`/model
 
-# === DON'T CHANGE ANYTHNG AFTER THIS MESSAGE ====
+# === DON'T CHANGE ANYTHING AFTER THIS MESSAGE ====
 
-export CXXFLAGS LDFLAGS CUPSPREFIX CUPSFILTER CUPSPPD
+export CXXFLAGS LDFLAGS CUPSFILTER CUPSPPD
 
 all: src ppd 
 

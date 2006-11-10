@@ -20,7 +20,7 @@ rastertospl2: $(OBJECTS) rastertospl2.o raster.o
 	$(CXX) $(CXXFLAGS) -c $<
 
 install: rastertospl2
-	install -m 755 -s rastertospl2 ${CUPSPREFIX}/${CUPSFILTER}
+	install -m 755 -s rastertospl2 ${CUPSFILTER}
 
 .PHONY: clean distclean
 clean:
