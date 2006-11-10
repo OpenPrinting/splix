@@ -18,7 +18,7 @@
  *  $Id$
  *
  * ---
- *  Thanks to Keith White for  modifications, corrections and adds.
+ *  Thanks to Keith White for his modifications, corrections and adds.
  * 
  */
 #include "spl2.h"
