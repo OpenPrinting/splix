@@ -29,7 +29,8 @@ class Printer
 	protected:
 		ppd_file_t*	_ppd;
 		
-		unsigned long	_resolution;
+		unsigned long	_xresolution;
+		unsigned long	_yresolution;
 		unsigned char	_paperType;
 		unsigned char	_paperSource;
 		unsigned short	_duplex;
@@ -46,7 +47,8 @@ class Printer
 		char*		_docHeaderValues;
 		
 	protected:
-		long double	_convert(long double d) const;
+		long double	_convertX(long double d) const;
+		long double	_convertY(long double d) const;
 		char*		_convertStr(const char *str) const;
 
 	public:
@@ -64,15 +66,22 @@ class Printer
 		void		setMarginY(long double f) {_marginY = f;}
 		void		setAreaX(long double f) {_areaX = f;}
 		void		setAreaY(long double f) {_areaY = f;}
-		void		setResolution(unsigned long res) 
-				{_resolution = res;}
+		void		setResolution(unsigned long xres, unsigned long
+					yres) 
+				{_xresolution = xres; _yresolution = yres;}
 
-		long double	pageSizeX() const {return _convert(_pageSizeX);}
-		long double	pageSizeY() const {return _convert(_pageSizeY);}
-		long double	marginX() const {return _convert(_marginX);};
-		long double	marginY() const {return _convert(_marginY);};
-		long double	areaX() const {return _convert(_areaX);}
-		long double	areaY() const {return _convert(_areaY);}
+		long double	pageSizeX() const 
+				{return _convertX(_pageSizeX);}
+		long double	pageSizeY() const 
+				{return _convertY(_pageSizeY);}
+		long double	marginX() const 
+				{return _convertX(_marginX);};
+		long double	marginY() const 
+				{return _convertY(_marginY);};
+		long double	areaX() const 
+				{return _convertX(_areaX);}
+		long double	areaY() const 
+				{return _convertY(_areaY);}
 		unsigned long	resolution() const {return _resolution;}
 		unsigned long 	bandHeight() const {return 0x80;}
 
@@ -80,6 +89,9 @@ class Printer
 		unsigned char	paperSource() const {return _paperSource;}
 		unsigned short	duplex() const {return _duplex;}
 		unsigned char	compVersion() const {return _compVersion;}
+
+		char		docHeaderValues(unsigned long val) const
+				{return _docHeaderValues[val];}
 };
 
 #endif /* PRINTER_H_ */
