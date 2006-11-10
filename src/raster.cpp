@@ -95,7 +95,7 @@ int Raster::loadPage(Printer *printer)
 	_page++;
 
 	// Configure the printer 
-	printer->setResolution(_header.HWResolution[0]);
+	printer->setResolution(_header.HWResolution[0],_header.HWResolution[1]);
 	printer->setPageSizeX(_header.PageSize[0]);
 	printer->setPageSizeY(_header.PageSize[1]);
 	printer->setMarginX(_header.ImagingBoundingBox[0]);
@@ -117,8 +117,17 @@ int Raster::readLine()
 		return -1;
 	if (!_lineBuffer)
 		_lineBuffer = new unsigned char[_lineSize];
-	if (_line == _height)
-		return 0;
+
+	/*
+	 * so that we can round up to bandHeight, we return an empty line
+	 * after reading more than _height lines.
+	 * -- Keith White
+	 */
+	if (_line >= _height) {
+		memset(_lineBuffer, 0x00, _lineSize);
+		return _lineSize;
+	}
+
 	if (cupsRasterReadPixels(_ras, _lineBuffer, _lineSize) < 1) {
 		ERROR(_("Raster::readLine: Cannot read image data"));
 		return -1;
