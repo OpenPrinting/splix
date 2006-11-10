@@ -67,11 +67,17 @@ msgstr "Folio - 210x330mm"
 msgid "Resolution"
 msgstr "Risoluzione"
 
+msgid "1200 DPI"
+msgstr "1200 DPI"
+
 msgid "600 DPI"
 msgstr "600 DPI"
 
 msgid "300 DPI"
 msgstr "300 DPI"
+
+msgid "1200x600 DPI"
+msgstr "1200x600 DPI"
 
 msgid "InputSlot"
 msgstr "Slot di Input"
@@ -174,9 +180,6 @@ msgstr "ML-1710"
 
 msgid "ML-2010"
 msgstr "ML-2010"
-
-msgid "1200 DPI"
-msgstr "1200 DPI"
 
 msgid "ML-2250"
 msgstr "ML-2250"
