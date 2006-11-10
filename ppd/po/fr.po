@@ -74,13 +74,16 @@ msgid "Resolution"
 msgstr "Résolution"
 
 msgid "300 DPI"
-msgstr "300 DPI"
+msgstr "300 PPP"
 
 msgid "600 DPI"
 msgstr "600 PPP"
 
 msgid "1200 DPI"
 msgstr "1200 PPP"
+
+msgid "1200x600 DPI"
+msgstr "1200x600 PPP"
 
 msgid "InputSlot"
 msgstr "Source du papier"

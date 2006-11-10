@@ -82,6 +82,9 @@ msgstr "600 PPP"
 msgid "1200 DPI"
 msgstr "1200 PPP"
 
+msgid "1200x600 DPI"
+msgstr "1200x600 PPP"
+
 msgid "InputSlot"
 msgstr "Eingabefach"
 
