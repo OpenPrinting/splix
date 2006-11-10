@@ -16,6 +16,9 @@
  *  59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  *  $Id$
+ *
+ * ---
+ *  Thanks to Keith White for  modifications, corrections and adds.
  * 
  */
 #include "spl2.h"
@@ -95,7 +98,7 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 
 	// Send page header FIXME
 	header[0x0] = 0;				// Signature
-	header[0x1] = _printer->resolution() / 100;	// Resolution
+	header[0x1] = _printer->resolutionY() / 100;	// Y Resolution
 	header[0x2] = nrCopies >> 8;			// Number of copies 8-15
 	header[0x3] = nrCopies;				// Number of copies 0-7
 	header[0x4] = _printer->paperType();		// Paper type
@@ -107,13 +110,14 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 	header[0xa] = 0;				// ??? XXX
 	header[0xb] = _printer->duplex() >> 8;		// Duplex
 	header[0xc] = _printer->duplex();		// Duplex
-	header[0xd] = 0;				// ??? XXX
-	if (_printer->resolution() == 300)
-		header[0xe] = 0;			// ??? XXX
+
+	header[0xd] = _printer->docHeaderValues(2);
+	header[0xe] = _printer->docHeaderValues(3);	// 0 = checksum absent?
+	header[0xf] = _printer->docHeaderValues(4);
+	if (_printer->resolutionY() != _printer->resolutionX())
+		header[0x10] = _printer->resolutionX() / 100;
 	else
-		header[0xe] = 1;			// ??? XXX
-	header[0xf] = 0;				// ??? XXX
-	header[0x10] = 0;				// ??? XXX
+		header[0x10] = 0;
 	fwrite((char *)&header, 1, sizeof(header), _output);
 
 	// Get the width, height, clipping X and clipping Y values
@@ -150,6 +154,9 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 	for (;clippingY; clippingY--)
 		document->readLine();
 	
+	// Round up height to a multiple of bandHeight
+	height += _printer->bandHeight() - (height % _printer->bandHeight());
+
 	// Read and create each band
 	for (i=0; i < height; i++) {
 		int res;
@@ -191,17 +198,10 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 			header[0x4] = band->height() >> 8;	// Band height
 			header[0x5] = band->height();		// Band height
 			header[0x6] = _printer->compVersion();	// Comp version
-			if (_printer->resolution() == 300) {
-				header[0x7] = size >> 24;	// data length
-				header[0x8] = size >> 16;	// data length
-				header[0x9] = size >> 8;	// data length
-				header[0xa] = size;		// data length
-			} else {
-				header[0x7] = (size + 4) >> 24;	// data length
-				header[0x8] = (size + 4) >> 16;	// data length
-				header[0x9] = (size + 4) >> 8;	// data length
-				header[0xa] = (size + 4);	// data length
-			}
+			header[0x7] = (size + 4) >> 24;		// data length
+			header[0x8] = (size + 4) >> 16;		// data length
+			header[0x9] = (size + 4) >> 8;		// data length
+			header[0xa] = (size + 4);		// data length
 			fwrite((char *)&header, 1, 0xb, _output);
 
 			// Write the data
@@ -209,24 +209,14 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 			delete[] data;
 
 			// Write the checksum
-			if (_printer->resolution() != 300) {
-				header[0x0] = checksum >> 24;
-				header[0x1] = checksum >> 16;
-				header[0x2] = checksum >> 8;
-				header[0x3] = checksum;
-				fwrite((char *)&header, 1, 0x4, _output);
-			}
+			header[0x0] = checksum >> 24;
+			header[0x1] = checksum >> 16;
+			header[0x2] = checksum >> 8;
+			header[0x3] = checksum;
+			fwrite((char *)&header, 1, 0x4, _output);
 
 			band->clean();
 			bandNumber++;
-
-			// Check if the last band has the same height
-			if (height - i < band->height()) {
-				delete band;
-				band = new Band((unsigned long)
-					_printer->pageSizeX(), height - i + 1);
-				band->setClipping(clippingX);
-			}
 		}
 	}
 	delete band;
