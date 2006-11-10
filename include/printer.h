@@ -82,7 +82,8 @@ class Printer
 				{return _convertX(_areaX);}
 		long double	areaY() const 
 				{return _convertY(_areaY);}
-		unsigned long	resolution() const {return _resolution;}
+		unsigned long	resolutionX() const {return _xresolution;}
+		unsigned long	resolutionY() const {return _yresolution;}
 		unsigned long 	bandHeight() const {return 0x80;}
 
 		unsigned char	paperType() const {return _paperType;}
