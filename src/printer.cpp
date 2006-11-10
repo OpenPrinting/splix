@@ -28,9 +28,14 @@
  * Fonctions internes
  * Internal functions
  */
-long double Printer::_convert(long double d) const
+long double Printer::_convertX(long double d) const
 {
-	return d * _resolution / 72.;
+	return d * _xresolution / 72.;
+}
+
+long double Printer::_convertY(long double d) const
+{
+	return d * _yresolution / 72.;
 }
 
 char *Printer::_convertStr(const char *str) const
@@ -89,13 +94,31 @@ Printer::Printer(ppd_file_t *ppd)
 	_docHeaderValues = NULL;
 
 	// Get the resolution
-	if ((choice = ppdFindMarkedChoice(_ppd, "Resolution")))
-		_resolution = strtol(choice->choice, (char **)NULL, 10);
-	else
-		_resolution = 600;
+	if ((choice = ppdFindMarkedChoice(_ppd, "Resolution"))) {
+		if (!strcmp("300dpi", choice->choice)) {
+			_xresolution = 300;
+			_yresolution = 300;
+		} else if (!strcmp("600dpi", choice->choice)) {
+			_xresolution = 600;
+			_yresolution = 600;
+		} else if (!strcmp("1200dpi", choice->choice)) {
+			_xresolution = 1200;
+			_yresolution = 1200;
+		} else if (!strcmp("1200x600pi", choice->choice)) {
+			_xresolution = 1200;
+			_yresolution = 600;
+		} else {
+			_xresolution = 600;
+			_yresolution = 600;
+		}
+	} else {
+		_xresolution = 600;
+		_yresolution = 600;
+	}
 
 	// Get the paper type
-	if ((choice = ppdFindMarkedChoice(_ppd, "MediaSize"))) {
+	if ((choice = ppdFindMarkedChoice(_ppd, "MediaSize")) || (choice = 
+		ppdFindMarkedChoice(_ppd, "PageSize"))) {
 		if (!(strcmp(choice->choice, "Letter")))
 			_paperType = 0;
 		else if (!(strcmp(choice->choice, "Legal")))
@@ -192,7 +215,8 @@ Printer::Printer(ppd_file_t *ppd)
 
 Printer::Printer()
 {
-	_resolution = 600;
+	_xresolution = 600;
+	_yresolution = 600;
 	_paperType = 2;
 	_paperSource = 1;
 	_duplex = 0x0100;
