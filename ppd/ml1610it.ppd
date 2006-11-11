@@ -25,13 +25,12 @@
 *% Driver-defined attributes...
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
-*General compVersion: "11"
 *General docHeaderValues: "<0><0><1><0><0>"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
 *cupsManualCopies: False
-*cupsFilter: "application/vnd.cups-raster 100 rastertospl2"
+*cupsFilter: "application/vnd.cups-raster 0 rastertospl2"
 *OpenUI *PageSize: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -115,12 +114,6 @@
 *PaperDimension C6/C6 - 114x162mm: "323.00 459.00"
 *PaperDimension Folio/Folio - 210x330mm: "595.00 935.00"
 *RequiresPageRegion All: True
-*OpenUI *Resolution: PickOne
-*OrderDependency: 10.0 AnySetup *Resolution
-*DefaultResolution: 600dpi
-*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*Resolution 300dpi/300 DPI: "<</HWResolution[300 300]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*CloseUI: *Resolution
 *OpenUI *InputSlot: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
 *DefaultInputSlot: Auto
@@ -173,6 +166,17 @@
 *JamRecovery False/Off: ""
 *JamRecovery True/On: ""
 *CloseUI: *JamRecovery
+*OpenUI *ColorModel/Modo di colore: PickOne
+*OrderDependency: 10.0 AnySetup *ColorModel
+*DefaultColorModel: Gray
+*ColorModel Gray/Gradazione di grigio: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
+*CloseUI: *ColorModel
+*OpenUI *Resolution: PickOne
+*OrderDependency: 10.0 AnySetup *Resolution
+*DefaultResolution: 600dpi
+*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*Resolution 300dpi/300 DPI: "<</HWResolution[300 300]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*CloseUI: *Resolution
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -209,4 +213,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1610.ppd, 11020 bytes.
+*% End of ml1610.ppd, 11238 bytes.

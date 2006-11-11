@@ -6,14 +6,10 @@ Manufacturer "Samsung"
 Version "1.0"
 
 // Filter to use
-Filter application/vnd.cups-raster 100 rastertospl2
-
-// Supported resolutions
-*Resolution k 1 0 0 0 "600dpi/600 DPI"
+Filter application/vnd.cups-raster 0 rastertospl2
 
 // Supported paper format
 HWMargins 0.16in 0.55cm 0.16in 0.55cm
-// HWMargins 12.5 12.5 12.5 12.5
 *MediaSize Letter
 MediaSize Legal
 MediaSize A4
@@ -64,41 +60,52 @@ Option "MediaType/Paper Type" PickOne AnySetup 10
    Choice "COLOR/Colored Paper" ""
    Choice "ENV/Envelope" ""
 
-// Power save
-Option "PowerSave/Power Save" PickOne AnySetup 10
-   Choice "False/Off" ""
-   *Choice "5/5 Minutes" ""
-   Choice "10/10 Minutes" ""
-   Choice "15/15 Minutes" ""
-   Choice "30/30 Minutes" ""
-   Choice "45/45 Minutes" ""
-   Choice "60/1 Hour" ""
-
-// Toner density
-Option "TonerDensity/Toner Density" PickOne AnySetup 10
-   Choice "1/Light" ""
-   *Choice "3/Medium" ""
-   Choice "5/Dark" ""
-
-// Toner Save
-Option "EconoMode/Toner Save" PickOne AnySetup 10
-   *Choice "0/Use Printer Default" ""
-  Choice "ON/Save" ""
-  Choice "OFF/Standard" ""
-
-// Reprint when Jam
-Option "JamRecovery/Reprint When Jam" Boolean AnySetup 10
-   *Choice "False/Off" ""
-   Choice "True/On" ""
-
-
 Attribute PJL beginPJL "<1B>%-12345X"
 Attribute PJL endPJL "<09><1B>%-12345X"
 
 
-// Specific printer definition
+// Specific black & white printer definition
 {
-	Attribute General compVersion "11"
+	//
+	// Defining PJL variables
+	//
+
+	// Power save
+	Option "PowerSave/Power Save" PickOne AnySetup 10
+	   Choice "False/Off" ""
+	   *Choice "5/5 Minutes" ""
+	   Choice "10/10 Minutes" ""
+	   Choice "15/15 Minutes" ""
+	   Choice "30/30 Minutes" ""
+	   Choice "45/45 Minutes" ""
+	   Choice "60/1 Hour" ""
+
+	// Toner density
+	Option "TonerDensity/Toner Density" PickOne AnySetup 10
+	   Choice "1/Light" ""
+	   *Choice "3/Medium" ""
+	   Choice "5/Dark" ""
+
+	// Toner Save
+	Option "EconoMode/Toner Save" PickOne AnySetup 10
+	   *Choice "0/Use Printer Default" ""
+	  Choice "ON/Save" ""
+	  Choice "OFF/Standard" ""
+
+	// Reprint when Jam
+	Option "JamRecovery/Reprint When Jam" Boolean AnySetup 10
+	   *Choice "False/Off" ""
+	   Choice "True/On" ""
+
+
+
+	// Black & White support
+	ColorDevice false
+	*ColorModel Gray/Grayscale k chunky 17
+
+	// Supported resolutions
+	*Resolution k 1 0 0 0 "600dpi/600 DPI"
+
 	{
 		Attribute General docHeaderValues "<0><0><1><0><0>"
 		Resolution k 1 0 0 0 "300dpi/300 DPI"
@@ -184,6 +191,64 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 				}
 			}
 		}
+	}
+}
+
+// Specific color printer definition
+{
+	// Color definition
+	ColorDevice true
+	ColorModel Gray/Grayscale k chunky 17
+	*ColorModel CMYK/Color cmyk planar 17
+
+	// Supported resolutions
+	*Resolution - 1 0 0 0 "600dpi/600 DPI"
+
+	Attribute General docHeaderValues "<0><0><1><0><0>"
+
+	{
+		Resolution - 1 0 0 0 "300dpi/300 DPI"
+		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+
+		ModelName "CLP-300"
+		PCFileName "clp300.ppd"
+	}
+	{
+		//
+		// Defining PJL variables
+		//
+
+		// Reprint when Jam
+		Option "JamRecovery/Reprint When Jam" Boolean AnySetup 10
+		   *Choice "False/Off" ""
+		   Choice "True/On" ""
+
+		// Multi-tray
+		InputSlot 3 "Multi/Multi-Purpose Tray"
+		InputSlot 4 "Upper/Tray 1"
+		InputSlot 5 "Lower/Tray 2"
+		// But tray 2 is optional..
+		Installable "OptionTray2/Tray 2 Installed"
+		UIConstraints "*OptionTray2 False *InputSlot Lower"
+
+
+		// Add Duplex here! (see constraints in clp-510)
+
+		{
+			ModelName "CLP-500"
+			PCFileName "clp500.ppd"
+		}
+		{
+			ModelName "CLP-510"
+			PCFileName "clp510.ppd"
+		}
+	}
+	{
+		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+		Resolution - 1 0 0 0 "1200dpi/600 DPI"
+
+		ModelName "CLP-60"
+		PCFileName "clp600.ppd"
 	}
 }
 

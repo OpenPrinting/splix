@@ -247,3 +247,24 @@ msgstr "ML-2150"
 msgid "ML-2550"
 msgstr "ML-2550"
 
+msgid "CLP-300"
+msgstr "CLP-300"
+
+msgid "Color Mode"
+msgstr "Mode de couleur"
+
+msgid "Grayscale"
+msgstr "Niveau de gris"
+
+msgid "Color"
+msgstr "Couleur"
+
+msgid "CLP-510"
+msgstr "CLP-510"
+
+msgid "CLP-60"
+msgstr "CLP-60"
+
+msgid "CLP-500"
+msgstr "TRANSLATE CLP-500"
+
