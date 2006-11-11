@@ -111,9 +111,9 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 	header[0xb] = _printer->duplex() >> 8;		// Duplex
 	header[0xc] = _printer->duplex();		// Duplex
 
-	header[0xd] = _printer->docHeaderValues(2);
-	header[0xe] = _printer->docHeaderValues(3);	// 0 = checksum absent?
-	header[0xf] = _printer->docHeaderValues(4);
+	header[0xd] = _printer->docHeaderValues(1);
+	header[0xe] = _printer->docHeaderValues(2);	// 0 = checksum absent?
+	header[0xf] = _printer->docHeaderValues(3);
 	if (_printer->resolutionY() != _printer->resolutionX())
 		header[0x10] = _printer->resolutionX() / 100;
 	else
