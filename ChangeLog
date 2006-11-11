@@ -1,3 +1,7 @@
+Sat Nov 11 18:28:57 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		Color support for CLP-300, CLP-500, CLP-510 and CLP-600
+
 Sat Nov 11 14:27:18 2006 Aurélien Croc <programmation AT ap2c DOT org>
 	* Bug fix:
 		margins are now correct
