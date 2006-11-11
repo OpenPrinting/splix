@@ -1,8 +1,15 @@
+Sat Nov 11 14:27:18 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		margins are now correct
+
+	--- RELEASE OF THE VERSION V. 0.0.2 ---
+
 Fri Nov 10 17:35:12 2006 Aurélien Croc <programmation AT ap2c DOT org>
 	* Bug fix:
 		Last band bug
 		Makefile bug for FreeBSD users
-	* Add support for asymetric resolutions (1200x600 DPI)
+	* Add: 
+		support for asymetric resolutions (1200x600 DPI)
 		
 Sun Sep 24 13:45:40 2006 Aurélien Croc <programmation AT ap2c DOT org>
 	* Bug fix:
