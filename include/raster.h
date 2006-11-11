@@ -44,6 +44,8 @@ class Raster : public Document
 		unsigned long	_line;
 		unsigned long	_page;
 
+		bool		_color;
+
 
 		unsigned char*	_lineBuffer;
 
@@ -65,6 +67,9 @@ class Raster : public Document
 		virtual unsigned long	height() const  {return _height;}
 		virtual unsigned long	lineSize() const {return _lineSize;}
 		virtual unsigned char*	lineBuffer() const {return _lineBuffer;}
+
+	public:
+		virtual bool		isColor() const {return _color;}
 };
 
 #endif /* RASTER_H_ */

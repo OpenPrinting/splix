@@ -192,10 +192,10 @@ Printer::Printer(ppd_file_t *ppd)
 	_duplex = 0x0100;
 
 	// Get the compression version
-	attr = ppdFindAttr(_ppd, "General", "compVersion");
+/*	attr = ppdFindAttr(_ppd, "General", "compVersion");
 	if (attr)
 		_compVersion = strtol(attr->value, (char **)NULL, 16);
-	else
+	else*/
 		_compVersion = 0x11;
 
 	// Get the doc header values

@@ -69,6 +69,8 @@ class Printer
 		void		setResolution(unsigned long xres, unsigned long
 					yres) 
 				{_xresolution = xres; _yresolution = yres;}
+		void		setCompVersion(unsigned char v) 
+				{_compVersion = v;}
 
 		long double	pageSizeX() const 
 				{return _convertX(_pageSizeX);}

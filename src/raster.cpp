@@ -102,6 +102,11 @@ int Raster::loadPage(Printer *printer)
 	printer->setMarginY(_header.ImagingBoundingBox[1]);
 	printer->setAreaX(_header.PageSize[0] - _header.ImagingBoundingBox[0]);
 	printer->setAreaY(_header.PageSize[1] - _header.ImagingBoundingBox[1]);
+
+	// Get some document informations
+	_color = _header.cupsColorSpace == CUPS_CSPACE_K ? false : true;
+	printer->setCompVersion(_header.cupsCompression);
+
 	return 0;
 }
 

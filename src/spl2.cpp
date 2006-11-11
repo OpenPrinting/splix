@@ -82,7 +82,7 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 {
 	unsigned long width, height, clippingX, clippingY;
 	unsigned long bandNumber;
-	unsigned long i;
+	unsigned long i, color=1;
 	char header[0x11];
 	char errors=0;
 	Band *band;
@@ -191,18 +191,28 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 				checksum += data[j];
 
 			// Write the header
-			header[0x0] = 0xC;			// Signature
-			header[0x1] = bandNumber;		// Band number
-			header[0x2] = band->width() >> 8;	// Band width
-			header[0x3] = band->width();		// Band width
-			header[0x4] = band->height() >> 8;	// Band height
-			header[0x5] = band->height();		// Band height
-			header[0x6] = _printer->compVersion();	// Comp version
-			header[0x7] = (size + 4) >> 24;		// data length
-			header[0x8] = (size + 4) >> 16;		// data length
-			header[0x9] = (size + 4) >> 8;		// data length
-			header[0xa] = (size + 4);		// data length
-			fwrite((char *)&header, 1, 0xb, _output);
+			if (!document->isColor() || (color == 1)) {
+				header[0x0] = 0xC;		// Signature
+				header[0x1] = bandNumber;	// Band number
+				header[0x2] = band->width() >> 8; // Band width
+				header[0x3] = band->width();	// Band width
+				header[0x4] = band->height() >> 8;// Band height
+				header[0x5] = band->height();	// Band height
+				fwrite((char *)&header, 1, 0x6, _output);
+			}
+			
+			// Print the color plane
+			if (document->isColor()) {
+				header[0x0] = color;		// Color plane
+				fwrite((char *)&header, 1, 0x1, _output);
+			}
+
+			header[0x0] = _printer->compVersion();	// Comp version
+			header[0x1] = (size + 4) >> 24;		// data length
+			header[0x2] = (size + 4) >> 16;		// data length
+			header[0x3] = (size + 4) >> 8;		// data length
+			header[0x4] = (size + 4);		// data length
+			fwrite((char *)&header, 1, 0x5, _output);
 
 			// Write the data
 			fwrite(data, 1, size, _output);
@@ -215,8 +225,19 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 			header[0x3] = checksum;
 			fwrite((char *)&header, 1, 0x4, _output);
 
+			// Last color plane? => next band?
+			if (document->isColor()) {
+				color++;
+				if (color == 5) {
+					header[0x0] = 0;
+					fwrite((char *)&header, 1, 1, _output);
+					color = 1;
+					bandNumber++;
+				}
+			} else
+				bandNumber++;
+
 			band->clean();
-			bandNumber++;
 		}
 	}
 	delete band;
