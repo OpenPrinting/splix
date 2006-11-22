@@ -1,0 +1,58 @@
+%
+%       specs.tex             Droits de copie, 2006, Aurélien Croc
+%
+% Ceci est le fichier principal du présent rapport
+%
+% $Id$
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{fancyhdr}
+\usepackage[svgnames]{xcolor}
+\usepackage{perso}
+\usepackage[dvips]{graphicx}
+\usepackage[dvips]{hyperref}
+%\makeindex
+\graphicspath{{Images/}}
+
+\newcommand{\version}{1}
+% Définitions des données contenues dans le PDF
+\hypersetup{%
+   pdfauthor=Aurélien Croc,%
+   pdfcreator=LaTeX,%
+   pdfsubject=Technical Specification of the SPL2 Language,%
+   pdftitle=Technical Specification of the SPL2 Language%
+}
+\author{Aurélien Croc}
+\title{Technical Specification of the SPL2 Language}
+\date{\today}
+
+% Définition de l'en-tête et du pied-de-page
+\pagestyle{fancyplain}
+\setlength{\headheight}{0.5cm}
+
+\begin{document}
+	\input{pagedegarde.tex}
+	\input{introduction.tex}
+	\newpage
+	\tableofcontents
+    \newpage   
+	\listoffigures
+    \vspace{2cm}
+   
+	\listoftables
+	\newpage
+	\input{entete.tex}
+    \input{bandes.tex}
+    \input{conclusion}
+
+
+\end{document}

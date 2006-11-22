@@ -1,0 +1,183 @@
+\section{Overview}
+\begin{figure}[!ht]
+\input{Images/figure_globale-en.pstex_t}
+\caption{Global format overview}
+\label{fig:schema_general}
+\end{figure}
+
+Figure \ref{fig:schema_general}
+represents the general overview of a QPDL document.
+We can identify four main parts:
+\begin{enumerate}
+	\item The markers at the beginning and end of a job: the \textbf{JCL} markers;
+	\item The \textbf{PJL header}\footnote{Printer Job Language}
+		describes the necessary printing instructions for the job
+		(paper thickness, print quality, \ldots);
+	\item Begin page and end page records;
+	\item The printing bands which represent several lines of dots
+		in the form of an array.
+\end{enumerate}
+
+The following sections describe each of these parts.
+
+
+\section{The JCL Markers}
+These mark the beginning and end of a print job.
+Their values are found in the PPD\footnote{Portable Printer Description}
+file associated with the printer under the names \textbf{JCLBegin} and \textbf{JCLEnd}.
+\medskip
+
+For example, some printers use these markers:
+\texttt{\^{}[\%-12345X} and \texttt{$\backslash$t\^{}[\%12345X}
+\footnote{\texttt{$\backslash$t} is the \emph{tab} character (9) and
+\texttt{\^{}[} is the \emph{escape} character (27).}.
+
+
+\section{The PJL Header}
+PJL is a language whose specifications are freely available
+on the Internet and hence doesn't require any particular comment.
+
+Here is a \emph{non exhaustive} list of the options available:
+Papertype, Density, Powersave, Powersavetime, Ret, JamRecovery, Reprint,
+Altitude, \ldots.
+
+The last command in the header indicates the start of the QPDL code:
+\texttt{@PJL ENTER LANGUAGE = QPDL$\backslash$n}
+\footnote{\texttt{$\backslash$n} is the \emph{linefeed (10)} character.}
+\medskip
+
+Finally, a small example of a possible JPL header:
+\begin{verbatim}
+@PJL DEFAULT SERVICEDATE=20060524
+@PJL SET PAPERTYPE = BOND
+@PJL SET DENSITY = 3
+@PJL SET ECONOMODE = ON
+@PJL SET POWERSAVE = ON
+@PJL SET POWERSAVETIME = 5
+@PJL SET RET = OFF
+@PJL SET JAMRECOVERY = OFF
+@PJL SET REPRINT = ON
+@PJL SET ALTITUDE = LOW
+@PJL ENTER LANGUAGE = QPDL
+\end{verbatim}
+
+
+
+
+\section{Begin page and end page records}
+
+
+\subsection{The Header}
+Preceding all pages is a header that provides indispensable information
+for the proper interpretation of the following data.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{Address} & \textbf{Description} & \textbf{Type} \\
+\hline
+\hline
+0x0 & Fixed value $0$ & Byte \\
+0x1 & Resolution divided by $100$ (horizontal or vertical ?) & Byte \\
+0x2 & Number of copies & 16-Bits BE\footnote{Big endian} \\
+0x4 & Paper type (cf. table \ref{tab:liste_papiers}) & Byte \\
+0x5 & Paper width if \emph{Custom} if not $0$ & 16-Bits BE \\
+0x7 & Paper length if \emph{Custom} if not $0$ & 16-Bits BE \\
+0x9 & Paper feeder to use  (cf. table \ref{tab:bac_feuille}) & Byte \\
+0xA & Fixed value (?) $0$ & Byte \\
+0xB & Duplex ($0$ or $1$) & Byte \\
+0xC & Duplex tumble ($0$ or $1$) & Byte \\
+0xD & Fixed value (?) $0$ & Byte \\
+0xE & Fixed value (?) $1$ & Byte \\
+0xF & Fixed value (?) $0$ & 16-Bits BE\\
+\hline
+\end{tabular}
+\caption{New page header description}
+\label{tab:entete_page}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| c | c || c | c || c | c || c | c |}
+\hline
+\textbf{Code} & \textbf {Description} & \textbf{Code} & \textbf {Description} &
+\textbf{Code} & \textbf {Description} & \textbf{Code} & \textbf {Description} \\
+\hline
+\hline
+0 & Letter & 1 & Legal & 2 & A4 & 3 & Executive \\
+4 & Ledger & 5 & A3 & 6 & Com10 & 7 & Monarch \\
+8 & C5 & 9 & DL & 10 & JB4 & 11 & JB5 \\
+12 & B5 & 13 & Not listed & 14 & JPost & 15 & JDouble \\
+16 & A5 & 17 & A6 & 18 & JB6 & 21 & Custom \\
+23 & C6 & 24 & Folio & & & &  \\
+\hline
+\end{tabular}
+\caption{Paper format codes}
+\label{tab:liste_papiers}
+\end{table}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| c | c || c | c |}
+\hline
+\textbf{Code} & \textbf{Description} & \textbf{Code} & \textbf{Description} \\
+\hline
+\hline
+1 & Auto & 2 & Manual \\
+3 & Multi & 4 & Top \\
+5 & Bottom & 6 & Envelopes \\
+7 & Third  & & \\
+\hline
+\end{tabular}
+\caption{Paper feeder codes}
+\label{tab:bac_feuille}
+\end{table}
+
+The description of this header is given in table \ref{tab:entete_page}.
+
+The significance of some fields is not clear.
+For example, in the case where the paper type is defined as
+\emph{custom},
+the two 16-Bit words following this field define the paper dimensions;
+but the algorithm to pass a centimeter value in this field is
+not yet known.
+
+The values \emph{0xA, 0xD - 0x10} surely
+have a defined purpose, but this it not yet known.
+
+One hypothesis is
+that some of these bytes are used to define the horizontal resolution (with the
+resolution field actually being the vertical resolution), for those printers
+that have nonsymmetric resolutions.
+\bigskip
+
+It appears that the real resolution calculation algorithm is:
+
+\begin{equation*}
+\frac{\textrm{bits32--63}(\textrm{resolution} \times \textrm{0x}51EB851F)
+\times 32 + \frac{\textrm{resolution}}{\textrm{0x}80000000}}{1024}
+\end{equation*}
+
+Therefore, with the usual resolutions of 300dpi, 600dpi, or 1200dpi
+we get 3, 6, or 12.  This is equivalent to dividing the resolution by $100$.
+
+
+\subsection{The page footer}
+The description of the page footer is given in table \ref{tab:fin_page}.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{Address} & \textbf{Description} & \textbf{Type} \\
+\hline
+\hline
+0x0 & Fixed value $1$ & Byte\\
+0x1 & Number of copies & 16-Bits BE \\
+\hline
+\end{tabular}
+\caption{Description of the page footer}
+\label{tab:fin_page}
+\end{table}
