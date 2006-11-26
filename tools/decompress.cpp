@@ -94,7 +94,7 @@ bool __writePicture(FILE *input, int page, const char *color, uint16_t width,
         fwrite((char *)&buffer, 1, toWrite, output);
     }
     fclose(output);
-    printf("Registering page to %s\n", filename);
+    printf("Saving page to %s\n", filename);
     return true;
 }
 
@@ -327,7 +327,7 @@ bool _extractPage(FILE *input, flags_t flags, document *doc)
 
                 if ((1 << color) & colorMask) {
                     fprintf(stderr, _("Color still specified for this band "
-                        "(%i!\n"), color);
+                        "(%i, band %i)!\n"), color, doc->band);
                     return false;
                 }
                 colorMask |= (1 << color);
@@ -542,7 +542,7 @@ int main(int argc, char **argv)
         return -1;
     }
     while (argv[i] && argv[i][0] == '-') {
-        j=0;
+        j=1;
         while (argv[i][j]) {
             switch (argv[i][j]) {
                 case 'h':
