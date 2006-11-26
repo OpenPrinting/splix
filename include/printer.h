@@ -37,6 +37,8 @@ class Printer
 
 		unsigned char	_compVersion;
 
+		long double	_printableX;
+		long double	_printableY;
 		long double	_pageSizeX;
 		long double	_pageSizeY;
 		long double	_marginX;
@@ -69,6 +71,8 @@ class Printer
 		void		setResolution(unsigned long xres, unsigned long
 					yres) 
 				{_xresolution = xres; _yresolution = yres;}
+		void		setPrintableX(long double f) {_printableX = f;}
+		void		setPrintableY(long double f) {_printableY = f;}
 		void		setCompVersion(unsigned char v) 
 				{_compVersion = v;}
 
@@ -84,6 +88,10 @@ class Printer
 				{return _convertX(_areaX);}
 		long double	areaY() const 
 				{return _convertY(_areaY);}
+		unsigned long	printableX() const 
+				{return (unsigned long)_convertX(_printableX);}
+		unsigned long 	printableY() const 
+				{return (unsigned long)_convertY(_printableY);}
 		unsigned long	resolutionX() const {return _xresolution;}
 		unsigned long	resolutionY() const {return _yresolution;}
 		unsigned long 	bandHeight() const {return 0x80;}

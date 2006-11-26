@@ -43,6 +43,7 @@ class Raster : public Document
 		unsigned long	_lineSize;
 		unsigned long	_line;
 		unsigned long	_page;
+		unsigned long	_totalLines;
 
 		bool		_color;
 

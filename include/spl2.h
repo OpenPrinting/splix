@@ -26,12 +26,16 @@
 class Document;
 class Printer;
 class Task;
+class Band;
 
 class SPL2
 {
 	protected:
 		FILE*		_output;
 		Printer*	_printer;
+
+	protected:
+		int		_writeColorBand(Band *band, int color);
 
 	public:
 		SPL2();
