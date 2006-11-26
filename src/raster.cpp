@@ -90,6 +90,7 @@ int Raster::loadPage(Printer *printer)
 	}
 	_width = _header.cupsWidth;
 	_height = _header.cupsHeight;
+	_totalLines = _height;
 	_lineSize = _header.cupsBytesPerLine;
 	_line = 0;
 	_page++;
@@ -102,10 +103,19 @@ int Raster::loadPage(Printer *printer)
 	printer->setMarginY(_header.ImagingBoundingBox[1]);
 	printer->setAreaX(_header.PageSize[0] - _header.ImagingBoundingBox[0]);
 	printer->setAreaY(_header.PageSize[1] - _header.ImagingBoundingBox[1]);
+	printer->setPrintableX(_header.ImagingBoundingBox[2] - 
+		_header.ImagingBoundingBox[0]);
+	printer->setPrintableY(_header.ImagingBoundingBox[3] - 
+		_header.ImagingBoundingBox[1]);
 
 	// Get some document informations
 	_color = _header.cupsColorSpace == CUPS_CSPACE_K ? false : true;
 	printer->setCompVersion(_header.cupsCompression);
+
+	if (_color) {
+		_totalLines = _totalLines * 4;
+		_lineSize = _lineSize >> 2;
+	}
 
 	return 0;
 }
@@ -128,7 +138,7 @@ int Raster::readLine()
 	 * after reading more than _height lines.
 	 * -- Keith White
 	 */
-	if (_line >= _height) {
+	if (_line >= _totalLines) {
 		memset(_lineBuffer, 0x00, _lineSize);
 		return _lineSize;
 	}

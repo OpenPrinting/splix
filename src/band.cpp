@@ -69,7 +69,7 @@ unsigned char *Band::_algorithm11(size_t *size)
 Band::Band(unsigned long bandWidth, unsigned long bandHeight)
 {
 	_line = 0;
-	_width = (bandWidth + 7) / 8;
+	_width = (bandWidth + 7) >> 3;
 	_height = bandHeight;
 	_band = NULL;
 }
@@ -91,7 +91,7 @@ int Band::addLine(unsigned char *line, unsigned long width)
 	int off = _line;
 
 	if (!_band) {
-		_band = new unsigned char[(_width + _clipping) * _height];
+		_band = new unsigned char[_width * _height];
 		memset(_band, 0xFF, _width * _height);
 	}
 
