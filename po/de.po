@@ -74,7 +74,7 @@ msgid "Resolution"
 msgstr "Auflösung"
 
 msgid "300 DPI"
-msgstr "300 DPI"
+msgstr "300 PPP"
 
 msgid "600 DPI"
 msgstr "600 PPP"
