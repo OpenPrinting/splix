@@ -199,7 +199,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	// Color definition
 	ColorDevice true
 	ColorModel Gray/Grayscale k chunky 17
-	*ColorModel CMYK/Color cmyk planar 17
+	*ColorModel CMYK/Color cmyk banded 17
 
 	// Supported resolutions
 	*Resolution - 1 0 0 0 "600dpi/600 DPI"
