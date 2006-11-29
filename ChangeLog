@@ -1,3 +1,13 @@
+Wed Nov 29 11:58:45 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		Compression optimization: skip empty bands
+		Ghostscript correction for black layer (color printers)
+Sun Nov 26 04:21:15 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		English translation of the SPL-2 documentation
+	* Bug fix:
+		Fix the different SPL-C bugs
+
 Sat Nov 11 18:28:57 2006 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
 		Color support for CLP-300, CLP-500, CLP-510 and CLP-600
