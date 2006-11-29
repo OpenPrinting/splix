@@ -32,6 +32,7 @@ class Band
 		unsigned long	_height;
 		unsigned long	_line;
 		unsigned long	_clipping;
+		bool		_empty;
 		
 	protected:
 		unsigned char*	_algorithm0(size_t *size);
@@ -46,7 +47,10 @@ class Band
 		unsigned long	height() const {return _height;}
 		unsigned long	line() const {return _line;}
 		unsigned long	clipping() const {return _clipping * 8;}
+		unsigned char*	band() {return _band;}
+		bool		isEmpty() const {return _empty;}
 
+		void		setEmpty() {_empty = true;}
 		void		setLine(unsigned long line) {_line = line;}
 		void		setClipping(unsigned long c) 
 				{_clipping = (c + 7) / 8;}

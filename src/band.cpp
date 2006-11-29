@@ -90,6 +90,8 @@ int Band::addLine(unsigned char *line, unsigned long width)
 {
 	int off = _line;
 
+	if (!_line)
+		_empty = false;
 	if (!_band) {
 		_band = new unsigned char[_width * _height];
 		memset(_band, 0xFF, _width * _height);
