@@ -7,9 +7,10 @@
 CXXFLAGS	+= -I../include
 LDFLAGS		+= -lcups -lcupsimage
 
-OBJECTS		:= spl2.o printer.o band.o compress.o
+OBJECTS		:= spl2.o printer.o band.o compress.o bandanalyser.o
 HEADERS		:= include/spl2.h include/document.h include/printer.h \
-		   include/error.h include/band.h include/raster.h
+		   include/error.h include/band.h include/raster.h \
+		   include/bandanalyser.h
 
 
 all: rastertospl2

@@ -26,6 +26,7 @@
 #include "document.h"
 #include "error.h"
 #include "band.h"
+#include "bandanalyser.h"
 #include <stdint.h>
 
 
@@ -270,6 +271,27 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 			unsigned char *data;
 			size_t size;
 
+			if (document->isColor())
+				correctBlackColor(bandC, bandM, bandY, bandB);
+			checkEmptyBand(bandB);
+			if (document->isColor()) {
+				checkEmptyBand(bandC);
+				checkEmptyBand(bandM);
+				checkEmptyBand(bandY);
+			}
+			if ((!document->isColor() && bandB->isEmpty()) || 
+				(document->isColor() && bandB->isEmpty() && 
+				bandC->isEmpty() && bandM->isEmpty() && 
+				bandY->isEmpty())) {
+				bandNumber++;
+				bandB->clean();
+				if (document->isColor()) {
+					bandC->clean();
+					bandM->clean();
+					bandY->clean();
+				}
+				continue;
+			}
 
 			// Write the band header
 			header[0x0] = 0xC;			// Signature
@@ -281,21 +303,29 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
 			fwrite((char *)&header, 1, 0x6, _output);
 
 			if (document->isColor()) {
-				if (_writeColorBand(bandC, 1)) {
-					errors = 1;
-					break;
+				if (!bandC->isEmpty()) {
+					if (_writeColorBand(bandC, 1)) {
+						errors = 1;
+						break;
+					}
 				}
-				if (_writeColorBand(bandM, 2)) {
-					errors = 1;
-					break;
+				if (!bandM->isEmpty()) {
+					if (_writeColorBand(bandM, 2)) {
+						errors = 1;
+						break;
+					}
 				}
-				if (_writeColorBand(bandY, 3)) {
-					errors = 1;
-					break;
+				if (!bandY->isEmpty()) {
+					if (_writeColorBand(bandY, 3)) {
+						errors = 1;
+						break;
+					}
 				}
-				if (_writeColorBand(bandB, 4)) {
-					errors = 1;
-					break;
+				if (!bandB->isEmpty()) {
+					if (_writeColorBand(bandB, 4)) {
+						errors = 1;
+						break;
+					}
 				}
 				header[0x0] = 0;		// End color
 				fwrite((char *)&header, 1, 1, _output);
