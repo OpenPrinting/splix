@@ -1,5 +1,5 @@
 *PPD-Adobe: "4.3"
-*% PPD file for CLP-60 with CUPS.
+*% PPD file for CLP-600 with CUPS.
 *% Created by the CUPS PPD Compiler v1.1svn.
 *FormatVersion: "4.3"
 *FileVersion: "1.0"
@@ -9,9 +9,9 @@
 *Product: "(ESP Ghostscript)"
 *Product: "(GNU Ghostscript)"
 *Manufacturer: "Samsung"
-*ModelName: "Samsung CLP-60"
-*ShortNickName: "Samsung CLP-60"
-*NickName: "Samsung CLP-60, 1.0"
+*ModelName: "Samsung TRANSLATE CLP-600"
+*ShortNickName: "Samsung TRANSLATE CLP-600"
+*NickName: "Samsung TRANSLATE CLP-600, 1.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -184,4 +184,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp600.ppd, 10468 bytes.
+*% End of clp600.ppd, 10502 bytes.

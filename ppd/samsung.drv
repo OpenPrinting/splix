@@ -231,6 +231,8 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		Installable "OptionTray2/Tray 2 Installed"
 		UIConstraints "*OptionTray2 False *InputSlot Lower"
 
+		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+		Resolution - 1 0 0 0 "1200dpi/600 DPI"
 
 		// Add Duplex here! (see constraints in clp-510)
 
@@ -242,12 +244,17 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 			ModelName "CLP-510"
 			PCFileName "clp510.ppd"
 		}
+		{
+			Manufacturer "Xerox"
+			ModelName "Phaser 6100"
+			PCFileName "xerox-phaser6100.ppd"
+		}
 	}
 	{
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
 		Resolution - 1 0 0 0 "1200dpi/600 DPI"
 
-		ModelName "CLP-60"
+		ModelName "CLP-600"
 		PCFileName "clp600.ppd"
 	}
 }
