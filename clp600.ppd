@@ -148,6 +148,17 @@
 *Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *Resolution 1200dpi/600 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *CloseUI: *Resolution
+*OpenUI *PowerSave/Power Save: PickOne
+*OrderDependency: 10.0 AnySetup *PowerSave
+*DefaultPowerSave: 5
+*PowerSave False/Off: ""
+*PowerSave 5/5 Minutes: ""
+*PowerSave 10/10 Minutes: ""
+*PowerSave 15/15 Minutes: ""
+*PowerSave 30/30 Minutes: ""
+*PowerSave 45/45 Minutes: ""
+*PowerSave 60/1 Hour: ""
+*CloseUI: *PowerSave
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -184,4 +195,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp600.ppd, 10356 bytes.
+*% End of clp600.ppd, 10673 bytes.

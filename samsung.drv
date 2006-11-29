@@ -206,6 +206,17 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 
 	Attribute General docHeaderValues "<0><0><1><0><0>"
 
+
+	// Power save
+	Option "PowerSave/Power Save" PickOne AnySetup 10
+	   Choice "False/Off" ""
+	   *Choice "5/5 Minutes" ""
+	   Choice "10/10 Minutes" ""
+	   Choice "15/15 Minutes" ""
+	   Choice "30/30 Minutes" ""
+	   Choice "45/45 Minutes" ""
+	   Choice "60/1 Hour" ""
+
 	{
 		Resolution - 1 0 0 0 "300dpi/300 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"

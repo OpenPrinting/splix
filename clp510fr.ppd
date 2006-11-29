@@ -153,6 +153,17 @@
 *Resolution 1200dpi/1200 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *Resolution 1200dpi/600 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *CloseUI: *Resolution
+*OpenUI *PowerSave/Économie d'énergie: PickOne
+*OrderDependency: 10.0 AnySetup *PowerSave
+*DefaultPowerSave: 5
+*PowerSave False/Désactivé: ""
+*PowerSave 5/5 minutes: ""
+*PowerSave 10/10 minutes: ""
+*PowerSave 15/15 minutes: ""
+*PowerSave 30/30 minutes: ""
+*PowerSave 45/45 minutes: ""
+*PowerSave 60/1 heure: ""
+*CloseUI: *PowerSave
 *OpenUI *JamRecovery/Réimpression si bourrage: Boolean
 *OrderDependency: 10.0 AnySetup *JamRecovery
 *DefaultJamRecovery: False
@@ -203,4 +214,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp510.ppd, 11278 bytes.
+*% End of clp510.ppd, 11610 bytes.
