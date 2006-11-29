@@ -268,3 +268,12 @@ msgstr "CLP-60"
 msgid "CLP-500"
 msgstr "TRANSLATE CLP-500"
 
+msgid "Xerox"
+msgstr "TRANSLATE Xerox"
+
+msgid "Phaser 6100"
+msgstr "TRANSLATE Phaser 6100"
+
+msgid "CLP-600"
+msgstr "TRANSLATE CLP-600"
+
