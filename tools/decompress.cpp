@@ -429,6 +429,8 @@ bool _extractHeader(FILE *input, flags_t flags, document *doc)
     // Resolution
     if (!header[HEADER_XRESOLUTION])
         xres = header[HEADER_YRESOLUTION]*100;
+    else
+        xres = header[HEADER_XRESOLUTION]*100;
     yres = header[HEADER_YRESOLUTION]*100;
     // Paper type
     switch (header[HEADER_PAPERTYPE]) {
