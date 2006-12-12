@@ -6,7 +6,7 @@
 #
 
 SOURCE		:= samsung.drv
-DRIVERS		:= ml1510 ml1520 ml1610 ml1710 ml1740 ml1750 ml2010 ml2150 ml2250 ml2550 clp300 clp500 clp510 clp600
+DRIVERS		:= ml1510 ml1520 ml1610 ml1710 ml1740 ml1750 ml2010 ml2150 ml2250 ml2550 clp300 clp500 clp510 clp600 xerox-phaser6100
 DRIVERSEXT	:= ppd
 POEXT		:= po
 PODIR		:= po

@@ -138,7 +138,6 @@
 *OpenUI *ColorModel/Mode de couleur: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: CMYK
-*ColorModel Gray/Niveau de gris: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
 *ColorModel CMYK/Couleur: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
@@ -195,4 +194,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp300.ppd, 10771 bytes.
+*% End of clp300.ppd, 10665 bytes.

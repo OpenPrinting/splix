@@ -143,15 +143,14 @@
 *OpenUI *ColorModel/Color Mode: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: CMYK
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
 *ColorModel CMYK/Color: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
 *OrderDependency: 10.0 AnySetup *Resolution
 *DefaultResolution: 600dpi
 *Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 1200x600dpi/1200x600 DPI: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
-*Resolution 1200dpi/600 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *CloseUI: *Resolution
 *OpenUI *PowerSave/Power Save: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
@@ -214,4 +213,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of xerox-phaser6100.ppd, 11488 bytes.
+*% End of xerox-phaser6100.ppd, 11395 bytes.
