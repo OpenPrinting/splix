@@ -9,9 +9,9 @@
 *Product: "(ESP Ghostscript)"
 *Product: "(GNU Ghostscript)"
 *Manufacturer: "Samsung"
-*ModelName: "Samsung TRANSLATE CLP-500"
-*ShortNickName: "Samsung TRANSLATE CLP-500"
-*NickName: "Samsung TRANSLATE CLP-500, 1.0"
+*ModelName: "Samsung CLP-500"
+*ShortNickName: "Samsung CLP-500"
+*NickName: "Samsung CLP-500, 1.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -143,15 +143,14 @@
 *OpenUI *ColorModel/Mode de couleur: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: CMYK
-*ColorModel Gray/Niveau de gris: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
 *ColorModel CMYK/Couleur: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
 *OrderDependency: 10.0 AnySetup *Resolution
 *DefaultResolution: 600dpi
 *Resolution 600dpi/600 PPP: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 1200x600dpi/1200x600 PPP: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *Resolution 1200dpi/1200 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
-*Resolution 1200dpi/600 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *CloseUI: *Resolution
 *OpenUI *PowerSave/Économie d'énergie: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
@@ -214,4 +213,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp500.ppd, 11640 bytes.
+*% End of clp500.ppd, 11512 bytes.

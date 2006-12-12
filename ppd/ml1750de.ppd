@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.1svn.
 *FormatVersion: "4.3"
 *FileVersion: "1.0"
-*LanguageVersion: Deutsch
+*LanguageVersion: German
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml1750.ppd"
 *Product: "(ESP Ghostscript)"
@@ -220,4 +220,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1750.ppd, 11466 bytes.
+*% End of ml1750.ppd, 11465 bytes.

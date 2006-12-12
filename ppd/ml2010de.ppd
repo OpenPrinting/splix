@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.1svn.
 *FormatVersion: "4.3"
 *FileVersion: "1.0"
-*LanguageVersion: Deutsch
+*LanguageVersion: German
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml2010.ppd"
 *Product: "(ESP Ghostscript)"
@@ -213,4 +213,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2010.ppd, 11229 bytes.
+*% End of ml2010.ppd, 11228 bytes.

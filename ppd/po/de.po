@@ -1,5 +1,5 @@
 msgid "English"
-msgstr "Deutsch"
+msgstr "German"
 
 msgid "ISOLatin1"
 msgstr "ISOLatin1"
@@ -266,14 +266,14 @@ msgid "CLP-60"
 msgstr "CLP-60"
 
 msgid "CLP-500"
-msgstr "TRANSLATE CLP-500"
+msgstr "CLP-500"
 
 msgid "Xerox"
-msgstr "TRANSLATE Xerox"
+msgstr "Xerox"
 
 msgid "Phaser 6100"
-msgstr "TRANSLATE Phaser 6100"
+msgstr "Phaser 6100"
 
 msgid "CLP-600"
-msgstr "TRANSLATE CLP-600"
+msgstr "CLP-600"
 
