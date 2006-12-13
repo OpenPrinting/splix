@@ -40,6 +40,7 @@ int main(int argc, char **argv)
 
 	setbuf(stderr, NULL);
 	setbuf(stdout, NULL);
+	freopen("/tmp/splix.splc", "w", stdout);
 
 	// Check if enough arguments are available
 	if (argc < 6 || argc > 7) {

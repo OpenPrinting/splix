@@ -107,6 +107,7 @@ int SPL2::_writeColorBand(Band *band, int color)
 
 	// Write the data
 	fwrite(data, 1, size, _output);
+	delete[] data;
 
 	// Write the checksum
 	header[0x0] = checksum >> 24;

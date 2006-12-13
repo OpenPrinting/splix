@@ -4,7 +4,7 @@
 #  This project has been placed under the GPL Licence.
 #
 
-CXXFLAGS	+= -I../include
+CXXFLAGS	+= -I../include -Wall -g -O0
 LDFLAGS		+= -lcups -lcupsimage
 
 OBJECTS		:= spl2.o printer.o band.o compress.o bandanalyser.o
@@ -15,6 +15,9 @@ HEADERS		:= include/spl2.h include/document.h include/printer.h \
 
 all: rastertospl2
 rastertospl2: $(OBJECTS) rastertospl2.o raster.o
+	$(CXX) $(LDFLAGS) -o $@ $^
+
+pbmtospl2: $(OBJECTS) pbmtospl2.o pbmimage.o
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 %.o: %.cpp $(HEADERS)
@@ -28,5 +31,5 @@ clean:
 	$(RM) *.o
 
 distclean: clean
-	$(RM) rastertospl2
+	$(RM) rastertospl2 pbmtospl2
 
