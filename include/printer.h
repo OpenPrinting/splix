@@ -28,6 +28,9 @@ class Printer
 {
 	protected:
 		ppd_file_t*	_ppd;
+
+		const char*	_username;
+		const char*	_jobname;
 		
 		unsigned long	_xresolution;
 		unsigned long	_yresolution;
@@ -75,6 +78,9 @@ class Printer
 		void		setPrintableY(long double f) {_printableY = f;}
 		void		setCompVersion(unsigned char v) 
 				{_compVersion = v;}
+		void		setUsername(const char *user) 
+				{_username = user;}
+		void		setJobName(const char *job) {_jobname = job;}
 
 		long double	pageSizeX() const 
 				{return _convertX(_pageSizeX);}

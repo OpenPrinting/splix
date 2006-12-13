@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "error.h"
 
 /*
@@ -84,6 +85,8 @@ Printer::Printer(ppd_file_t *ppd)
 	ppd_attr_t *attr;
 
 
+	_username = "Unknown";
+	_jobname = "No name";
 	_ppd = ppd;
 	_pageSizeX = 595.;
 	_pageSizeY = 842.;
@@ -187,16 +190,26 @@ Printer::Printer(ppd_file_t *ppd)
 	} else
 		_paperSource = 1;
 
-	// Get the duplex --- TODO 
-	/** @todo */
-	_duplex = 0x0100;
+	// Duplex mode
+	if ((choice = ppdFindMarkedChoice(_ppd, "Duplex"))) {
+		if (!(strcmp(choice->choice, "0")))
+			_duplex = 0;
+		else if (!(strcmp(choice->choice, "1")))
+			_duplex = 0x0100;
+		else if (!(strcmp(choice->choice, "2")))
+			_duplex = 0x0001;
+		else if (!(strcmp(choice->choice, "3")))
+			_duplex = 0x0101;
+		else {
+			ERROR(_("Printer::Printer: Invalid duplex mode %s"), 
+				choice->choice);
+			_duplex = 0x0100;
+		}
+	} else
+		_duplex = 0x0100;
 
-	// Get the compression version
-/*	attr = ppdFindAttr(_ppd, "General", "compVersion");
-	if (attr)
-		_compVersion = strtol(attr->value, (char **)NULL, 16);
-	else*/
-		_compVersion = 0x11;
+	// Compression algorithm version
+	_compVersion = 0x11;
 
 	// Get the doc header values
 	attr = ppdFindAttr(_ppd, "General", "docHeaderValues");
@@ -249,7 +262,9 @@ Printer::~Printer()
 void Printer::newJob(FILE *output)
 {
 	ppd_choice_t *choice;
+	struct tm *timeinfo;
 	ppd_attr_t *attr;
+	time_t timestamp;
 
 	// Send the PJL Begin
 	attr = ppdFindAttr(_ppd, "PJL", "BeginPJL");
@@ -260,7 +275,15 @@ void Printer::newJob(FILE *output)
 		delete[] tmp;
 	} else
 		fprintf(output, "%%-12345X");
-	
+
+	// Job information
+	time(&timestamp);
+	timeinfo = localtime(&timestamp);
+	fprintf(output, "@PJL DEFAULT SERVICEDATE=%4u%2u%2u\n",
+		timeinfo->tm_year, timeinfo->tm_mon+1, timeinfo->tm_mday);
+	fprintf(output, "@PJL SET USERNAME=\"%s\"\n", _username);
+	fprintf(output, "@PJL SET JOBNAME=\"%s\"\n", _jobname);
+
 	// Get the paper type
 	if ((choice = ppdFindMarkedChoice(_ppd, "MediaType"))) {
 		if (!strcmp(choice->choice, "OFF"))
@@ -268,8 +291,7 @@ void Printer::newJob(FILE *output)
 		else
 			fprintf(output, "@PJL SET PAPERTYPE = %s\n", 
 				choice->choice);
-	} else
-		fprintf(output, "@PJL SET PAPERTYPE = OFF\n");
+	}
 
 	// Get the toner density
 	if ((choice = ppdFindMarkedChoice(_ppd, "TonerDensity")))
@@ -292,8 +314,6 @@ void Printer::newJob(FILE *output)
 		fprintf(output, "@PJL SET POWERSAVE = ON\n");
 		fprintf(output, "@PJL SET POWERSAVETIME = %s\n", 
 			choice->choice);
-	} else {
-		fprintf(output, "@PJL SET POWERSAVE = OFF\n");
 	}
 
 	// Get the jam recovery state

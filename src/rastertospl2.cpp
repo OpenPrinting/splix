@@ -69,6 +69,8 @@ int main(int argc, char **argv)
 
 	// Create the printer
 	printer = new Printer(ppd);
+	printer->setJobName(argv[1]);
+	printer->setUsername(argv[2]);
 
 	// Convert and print
 	DEBUG("Génération du code....");
