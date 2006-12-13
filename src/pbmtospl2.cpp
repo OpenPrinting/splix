@@ -45,7 +45,7 @@ static void _printHelp()
 	printf(_(" -r  --resolution <res>  Select the resolution\n"));
 }
 
-int main(int argc, const char **_argv)
+int main(int argc, const char **argv)
 {
 	const char *black=NULL, *cyan=NULL, *magenta=NULL, *yellow=NULL;
 	const char *resolution=NULL, *paperSize=NULL;
@@ -57,9 +57,6 @@ int main(int argc, const char **_argv)
 	int i, j, k;
 	SPL2 spl2;
 
-const char *argv[] = {"./pbmtospl2", "-P", "/etc/cups/ppd/laser.ppd", "-o", 
-	"test.spl2", "/home/aurelien/Desktop/erdre.pbm", NULL };
-argc = 7;
 
 	// Check options
 	for (i=1; i < argc; i++) {
