@@ -60,7 +60,6 @@ class Printer
 		char*		_convertStr(const char *str) const;
 
 	public:
-		Printer();
 		Printer(ppd_file_t* ppd);
 		~Printer();
 
