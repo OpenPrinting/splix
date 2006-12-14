@@ -93,7 +93,7 @@ int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
 {
     unsigned char *out, *endOut, *in, *endIn, *rawDataPtr = 0;
     size_t max, repCnt, maxRepCnt, rawDataNr = 0;
-    int32_t lastPtr = 0;
+    int32_t lastPtr = 0, si;
     size_t i, maxPtr;
 
     // Initialize some variables
@@ -115,7 +115,7 @@ int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
     if (lastPtr > 0x80)
         lastPtr = 0x80;
     *(uint32_t *)(bandArray->prev + 4) = lastPtr;
-    for (i=0; i < lastPtr; i++) {
+    for (si=0; si < lastPtr; si++) {
         *out = *in;
         out++;
         in++;

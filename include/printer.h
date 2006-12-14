@@ -40,6 +40,7 @@ class Printer
 
 		unsigned char	_compVersion;
 
+		unsigned short	_bandHeight;
 		long double	_printableX;
 		long double	_printableY;
 		long double	_pageSizeX;
@@ -50,6 +51,8 @@ class Printer
 		long double	_areaY;
 
 		char*		_docHeaderValues;
+		bool		_color;
+		unsigned char	_qpdlVersion;
 		
 	protected:
 		long double	_convertX(long double d) const;
@@ -100,7 +103,7 @@ class Printer
 				{return (unsigned long)_convertY(_printableY);}
 		unsigned long	resolutionX() const {return _xresolution;}
 		unsigned long	resolutionY() const {return _yresolution;}
-		unsigned long 	bandHeight() const {return 0x80;}
+		unsigned long 	bandHeight() const {return _bandHeight;}
 
 		unsigned char	paperType() const {return _paperType;}
 		unsigned char	paperSource() const {return _paperSource;}
@@ -109,6 +112,9 @@ class Printer
 
 		char		docHeaderValues(unsigned long val) const
 				{return _docHeaderValues[val];}
+
+		bool		isColorPrinter() const {return _color;}
+		unsigned char	qpdlVersion() const {return _qpdlVersion;}
 };
 
 #endif /* PRINTER_H_ */

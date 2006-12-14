@@ -95,12 +95,22 @@ Printer::Printer(ppd_file_t *ppd)
 	_areaX = 582.5;
 	_areaY = 829.5;
 	_docHeaderValues = NULL;
+	_bandHeight = 0x80;
+
+	// Get the QPDL version and color information
+	attr = ppdFindAttr(_ppd, "QPDL", "QPDLVersion");
+	if (attr)
+		_qpdlVersion = strtol(attr->value, (char **)NULL, 10);
+	attr = ppdFindAttr(_ppd, "QPDL", "ColorPrinter");
+	_color = attr->value[0] == '1' ? true : false;
 
 	// Get the resolution
 	if ((choice = ppdFindMarkedChoice(_ppd, "Resolution"))) {
 		if (!strcmp("300dpi", choice->choice)) {
 			_xresolution = 300;
 			_yresolution = 300;
+			_bandHeight = 0x40;
+			_qpdlVersion = 0;
 		} else if (!strcmp("600dpi", choice->choice)) {
 			_xresolution = 600;
 			_yresolution = 600;
@@ -240,6 +250,11 @@ Printer::Printer()
 	_marginY = 12.5;
 	_areaX = 582.5;
 	_areaY = 829.5;
+
+	_qpdlVersion = 1;
+	_color = false;
+
+	_bandHeight = 0x80;
 
 	_docHeaderValues = new char[5];
 	_docHeaderValues[0] = 0;

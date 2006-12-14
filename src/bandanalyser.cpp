@@ -30,8 +30,8 @@
 void checkEmptyBand(Band *band)
 {
 	const unsigned char *data;
-	unsigned long i;
-	size_t size, last;
+	size_t i, size, last;
+	unsigned char c;
 
 	data = band->band();
 	size = (band->width() * band->height() + 7) >> 3;
@@ -42,9 +42,11 @@ void checkEmptyBand(Band *band)
 	       if (~*((unsigned long *)&data[i]) != 0) {
 		       return;
 	       }
-	for (; i < last + size; i++)
-		if (~data[i] != 0)
+	for (; i < last + size; i++) {
+		c = ~data[i];
+		if (c != 0)
 			return;
+	}
 	band->setEmpty();
 }
 

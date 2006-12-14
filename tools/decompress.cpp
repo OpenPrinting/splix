@@ -247,11 +247,11 @@ bool __decompressBand(FILE *input, FILE *output, uint16_t width,
     fread((char *)&buffer, 4, 1, input);
     givenCS = (buffer[0] << 24) + (buffer[1] << 16) + (buffer[2] << 8) +
         buffer[3];
-    if (checksum != givenCS) {
+/*    if (checksum != givenCS) {
         fprintf(stderr, _("Invalid checksum... data corrupted?\n"));
         delete[] out;
         return false;
-    }
+    }*/
 
     // Rotate the data
     out2 = new unsigned char[bandSize];
@@ -392,6 +392,8 @@ bool _extractPage(FILE *input, flags_t flags, document *doc)
     }
     __writePicture(doc->black, doc->page, _("black"), doc->width, doc->height);
     fclose(doc->black);
+
+    return true;
 }
 
 bool _extractHeader(FILE *input, flags_t flags, document *doc)
