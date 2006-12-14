@@ -109,7 +109,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	*Resolution k 1 0 0 0 "600dpi/600 DPI"
 
 	{
-		Attribute General docHeaderValues "<0><0><1><0><0>"
+		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "1"
 		Resolution k 1 0 0 0 "300dpi/300 DPI"
 		{
@@ -150,11 +150,11 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 
 			// Oficio 
 			ModelName "ML-2010"
-			Attribute General docHeaderValues "<0><0><2><1><0>"
+			Attribute General docHeaderValues "<0><0><1>"
 			PCFileName "ml2010.ppd"
 		}
 		{
-			Attribute General docHeaderValues "<0><0><1><0><0>"
+			Attribute General docHeaderValues "<0><0><0>"
 			Attribute QPDL QPDLVersion "1"
 
 			// 1200x1200 DPI
@@ -228,7 +228,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	   Choice "60/1 Hour" ""
 
 	{
-		Attribute General docHeaderValues "<0><0><2><0><0>"
+		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "2"
 		Resolution - 1 0 0 0 "300dpi/300 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
@@ -257,7 +257,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
 
-		Attribute General docHeaderValues "<0><0><1><0><0>"
+		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "1"
 
 		// Duplex support
@@ -282,7 +282,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		}
 	}
 	{
-		Attribute General docHeaderValues "<0><0><1><0><0>"
+		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "1"
 
 		Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
