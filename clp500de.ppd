@@ -25,7 +25,9 @@
 *% Driver-defined attributes...
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
+*QPDL ColorPrinter: "1"
 *General docHeaderValues: "<0><0><1><0><0>"
+*QPDL QPDLVersion: "1"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
@@ -134,7 +136,7 @@
 *MediaType THIN/Dünnes Papier: ""
 *MediaType BOND/Kartoniertes Papier: ""
 *MediaType OHP/Transparenz: ""
-*MediaType Card/Visitenkarten: ""
+*MediaType CARD/Visitenkarten: ""
 *MediaType LABEL/Etiketten: ""
 *MediaType USED/Vorgedrucktes Papier: ""
 *MediaType COLOR/Farbiges Papier: ""
@@ -143,6 +145,7 @@
 *OpenUI *ColorModel/Farbe modus: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: CMYK
+*ColorModel Gray/Abgestuftes von grauen: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
 *ColorModel CMYK/Farbe: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
@@ -169,6 +172,14 @@
 *JamRecovery False/Aus: ""
 *JamRecovery True/Ein: ""
 *CloseUI: *JamRecovery
+*OpenUI *Duplex: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: 1
+*Duplex 0/TRANSLATE None: ""
+*Duplex 1/Grundeinstellungen des Druckers: ""
+*Duplex 2/TRANSLATE Short edge: ""
+*Duplex 3/TRANSLATE Long edge: ""
+*CloseUI: *Duplex
 *OpenGroup: InstallableOptions/Optionale Module
 *OpenUI *OptionTray2/Fach 2 vorhanden: Boolean
 *OrderDependency: 10.0 AnySetup *OptionTray2
@@ -213,4 +224,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp500.ppd, 11463 bytes.
+*% End of clp500.ppd, 11869 bytes.

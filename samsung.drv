@@ -54,7 +54,7 @@ Option "MediaType/Paper Type" PickOne AnySetup 10
    Choice "THIN/Thin Paper" ""
    Choice "BOND/Bond" ""
    Choice "OHP/Transparency" ""
-   Choice "Card/Card Stock" ""
+   Choice "CARD/Card Stock" ""
    Choice "LABEL/Label" ""
    Choice "USED/Preprinted" ""
    Choice "COLOR/Colored Paper" ""
@@ -66,6 +66,8 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 
 // Specific black & white printer definition
 {
+	Attribute QPDL ColorPrinter "0"
+
 	//
 	// Defining PJL variables
 	//
@@ -108,6 +110,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 
 	{
 		Attribute General docHeaderValues "<0><0><1><0><0>"
+		Attribute QPDL QPDLVersion "1"
 		Resolution k 1 0 0 0 "300dpi/300 DPI"
 		{
 			ModelName "ML-1510"
@@ -143,14 +146,16 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		{
 			// 1200x1200 DPI
 			Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+			Attribute QPDL QPDLVersion "2"
 
 			// Oficio 
 			ModelName "ML-2010"
-			Attribute General docHeaderValues "<0><0><0><2><1>"
+			Attribute General docHeaderValues "<0><0><2><1><0>"
 			PCFileName "ml2010.ppd"
 		}
 		{
 			Attribute General docHeaderValues "<0><0><1><0><0>"
+			Attribute QPDL QPDLVersion "1"
 
 			// 1200x1200 DPI
 			Resolution k 1 0 0 0 "1200dpi/1200 DPI"
@@ -179,7 +184,13 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 				PCFileName "ml2250.ppd"
 			}
 			{
-				// Add duplex here!
+				// Duplex support
+				Option "Duplex/Duplex" PickOne AnySetup 10
+				   Choice "0/None" ""
+				   *Choice "1/Use Printer Default" ""
+				   Choice "2/Short edge" ""
+				   Choice "3/Long edge" ""
+
 				Resolution k 1 0 0 0 "300dpi/300 DPI"
 				{
 					ModelName "ML-2150"
@@ -196,16 +207,15 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 
 // Specific color printer definition
 {
+	Attribute QPDL ColorPrinter "1"
+
 	// Color definition
 	ColorDevice true
-	//ColorModel Gray/Grayscale k chunky 17
+	ColorModel Gray/Grayscale k chunky 17
 	*ColorModel CMYK/Color cmyk banded 17
 
 	// Supported resolutions
 	*Resolution - 1 0 0 0 "600dpi/600 DPI"
-
-	Attribute General docHeaderValues "<0><0><1><0><0>"
-
 
 	// Power save
 	Option "PowerSave/Power Save" PickOne AnySetup 10
@@ -218,6 +228,8 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	   Choice "60/1 Hour" ""
 
 	{
+		Attribute General docHeaderValues "<0><0><2><0><0>"
+		Attribute QPDL QPDLVersion "2"
 		Resolution - 1 0 0 0 "300dpi/300 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
 
@@ -245,7 +257,15 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
 
-		// Add Duplex here! (see constraints in clp-510)
+		Attribute General docHeaderValues "<0><0><1><0><0>"
+		Attribute QPDL QPDLVersion "1"
+
+		// Duplex support
+		Option "Duplex/Duplex" PickOne AnySetup 10
+		   Choice "0/None" ""
+		   *Choice "1/Use Printer Default" ""
+		   Choice "2/Short edge" ""
+		   Choice "3/Long edge" ""
 
 		{
 			ModelName "CLP-500"
@@ -262,6 +282,9 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		}
 	}
 	{
+		Attribute General docHeaderValues "<0><0><1><0><0>"
+		Attribute QPDL QPDLVersion "1"
+
 		Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
 

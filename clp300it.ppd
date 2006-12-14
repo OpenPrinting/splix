@@ -25,7 +25,9 @@
 *% Driver-defined attributes...
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
-*General docHeaderValues: "<0><0><1><0><0>"
+*QPDL ColorPrinter: "1"
+*General docHeaderValues: "<0><0><2><0><0>"
+*QPDL QPDLVersion: "2"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
@@ -129,7 +131,7 @@
 *MediaType THIN/Carta Sottile: ""
 *MediaType BOND/Adesivo: ""
 *MediaType OHP/Lucido: ""
-*MediaType Card/Biglietti Da Visita: ""
+*MediaType CARD/Biglietti Da Visita: ""
 *MediaType LABEL/Etichette: ""
 *MediaType USED/Prestampati: ""
 *MediaType COLOR/Carta Colorata: ""
@@ -138,6 +140,7 @@
 *OpenUI *ColorModel/Modo di colore: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: CMYK
+*ColorModel Gray/Gradazione di grigio: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
 *ColorModel CMYK/Colore: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
@@ -194,4 +197,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp300.ppd, 10678 bytes.
+*% End of clp300.ppd, 10837 bytes.

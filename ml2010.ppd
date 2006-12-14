@@ -25,7 +25,9 @@
 *% Driver-defined attributes...
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
-*General docHeaderValues: "<0><0><0><2><1>"
+*QPDL ColorPrinter: "0"
+*QPDL QPDLVersion: "2"
+*General docHeaderValues: "<0><0><2><1><0>"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
@@ -129,7 +131,7 @@
 *MediaType THIN/Thin Paper: ""
 *MediaType BOND/Bond: ""
 *MediaType OHP/Transparency: ""
-*MediaType Card/Card Stock: ""
+*MediaType CARD/Card Stock: ""
 *MediaType LABEL/Label: ""
 *MediaType USED/Preprinted: ""
 *MediaType COLOR/Colored Paper: ""
@@ -213,4 +215,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2010.ppd, 11107 bytes.
+*% End of ml2010.ppd, 11154 bytes.

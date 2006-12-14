@@ -25,7 +25,9 @@
 *% Driver-defined attributes...
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
+*QPDL ColorPrinter: "0"
 *General docHeaderValues: "<0><0><1><0><0>"
+*QPDL QPDLVersion: "1"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
@@ -140,7 +142,7 @@
 *MediaType THIN/Thin Paper: ""
 *MediaType BOND/Bond: ""
 *MediaType OHP/Transparency: ""
-*MediaType Card/Card Stock: ""
+*MediaType CARD/Card Stock: ""
 *MediaType LABEL/Label: ""
 *MediaType USED/Preprinted: ""
 *MediaType COLOR/Colored Paper: ""
@@ -196,6 +198,14 @@
 *SRTMode ENHANCE/Text enhance: ""
 *SRTMode GRAY/Image enhance: ""
 *CloseUI: *SRTMode
+*OpenUI *Duplex: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: 1
+*Duplex 0/None: ""
+*Duplex 1/Use Printer Default: ""
+*Duplex 2/Short edge: ""
+*Duplex 3/Long edge: ""
+*CloseUI: *Duplex
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *OptionTray2/Tray 2 Installed: Boolean
 *OrderDependency: 10.0 AnySetup *OptionTray2
@@ -252,4 +262,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2550.ppd, 12845 bytes.
+*% End of ml2550.ppd, 13095 bytes.
