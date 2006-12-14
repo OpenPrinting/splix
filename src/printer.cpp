@@ -95,6 +95,7 @@ Printer::Printer(ppd_file_t *ppd)
 	_areaX = 582.5;
 	_areaY = 829.5;
 	_bandHeight = 0x80;
+	_duplex = 0x0100;
 
 	// Get the QPDL version and color information
 	attr = ppdFindAttr(_ppd, "QPDL", "QPDLVersion");
@@ -199,23 +200,17 @@ Printer::Printer(ppd_file_t *ppd)
 	} else
 		_paperSource = 1;
 
-	// Duplex mode
+	// Get the duplex
 	if ((choice = ppdFindMarkedChoice(_ppd, "Duplex"))) {
-		if (!(strcmp(choice->choice, "0")))
+		if (!(strcmp(choice->choice, "None")))
 			_duplex = 0;
-		else if (!(strcmp(choice->choice, "1")))
-			_duplex = 0x0100;
-		else if (!(strcmp(choice->choice, "2")))
-			_duplex = 0x0001;
-		else if (!(strcmp(choice->choice, "3")))
+		else if (!(strcmp(choice->choice, "DuplexNoTumble")))
 			_duplex = 0x0101;
-		else {
-			ERROR(_("Printer::Printer: Invalid duplex mode %s"), 
-				choice->choice);
+		else if (!(strcmp(choice->choice, "DuplexTumble")))
+			_duplex = 0x0001;
+		else
 			_duplex = 0x0100;
-		}
-	} else
-		_duplex = 0x0100;
+	}
 
 	// Compression algorithm version
 	_compVersion = 0x11;
