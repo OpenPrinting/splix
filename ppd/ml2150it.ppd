@@ -25,7 +25,9 @@
 *% Driver-defined attributes...
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
+*QPDL ColorPrinter: "0"
 *General docHeaderValues: "<0><0><1><0><0>"
+*QPDL QPDLVersion: "1"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
@@ -140,7 +142,7 @@
 *MediaType THIN/Carta Sottile: ""
 *MediaType BOND/Adesivo: ""
 *MediaType OHP/Lucido: ""
-*MediaType Card/Biglietti Da Visita: ""
+*MediaType CARD/Biglietti Da Visita: ""
 *MediaType LABEL/Etichette: ""
 *MediaType USED/Prestampati: ""
 *MediaType COLOR/Carta Colorata: ""
@@ -196,6 +198,14 @@
 *SRTMode ENHANCE/Migliora il Testo: ""
 *SRTMode GRAY/Migliora le Immagini: ""
 *CloseUI: *SRTMode
+*OpenUI *Duplex: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: 1
+*Duplex 0/TRANSLATE None: ""
+*Duplex 1/Usa Default Stampante: ""
+*Duplex 2/TRANSLATE Short edge: ""
+*Duplex 3/TRANSLATE Long edge: ""
+*CloseUI: *Duplex
 *OpenGroup: InstallableOptions/Opzioni Installabili
 *OpenUI *OptionTray2/Caricatore 2 Installato: Boolean
 *OrderDependency: 10.0 AnySetup *OptionTray2
@@ -252,4 +262,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2150.ppd, 13052 bytes.
+*% End of ml2150.ppd, 13334 bytes.

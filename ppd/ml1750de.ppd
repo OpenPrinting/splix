@@ -25,7 +25,9 @@
 *% Driver-defined attributes...
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
+*QPDL ColorPrinter: "0"
 *General docHeaderValues: "<0><0><1><0><0>"
+*QPDL QPDLVersion: "1"
 *% CUPS attributes...
 *cupsVersion: 1.2
 *cupsModelNumber: "0"
@@ -129,7 +131,7 @@
 *MediaType THIN/Dünnes Papier: ""
 *MediaType BOND/Kartoniertes Papier: ""
 *MediaType OHP/Transparenz: ""
-*MediaType Card/Visitenkarten: ""
+*MediaType CARD/Visitenkarten: ""
 *MediaType LABEL/Etiketten: ""
 *MediaType USED/Vorgedrucktes Papier: ""
 *MediaType COLOR/Farbiges Papier: ""
@@ -220,4 +222,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1750.ppd, 11465 bytes.
+*% End of ml1750.ppd, 11512 bytes.
