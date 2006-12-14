@@ -263,8 +263,8 @@ void Printer::newJob(FILE *output)
 	// Job information
 	time(&timestamp);
 	timeinfo = localtime(&timestamp);
-	fprintf(output, "@PJL DEFAULT SERVICEDATE=%4u%2u%2u\n",
-		timeinfo->tm_year, timeinfo->tm_mon+1, timeinfo->tm_mday);
+	fprintf(output, "@PJL DEFAULT SERVICEDATE=%04u%02u%02u\n",
+		1900+timeinfo->tm_year, timeinfo->tm_mon+1, timeinfo->tm_mday);
 	fprintf(output, "@PJL SET USERNAME=\"%s\"\n", _username);
 	fprintf(output, "@PJL SET JOBNAME=\"%s\"\n", _jobname);
 
