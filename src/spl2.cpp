@@ -103,18 +103,17 @@ int SPL2::_writeColorBand(Band *band, int color)
     }
     header[0x0] = _printer->compVersion();      // Compression
     if (_printer->qpdlVersion() == 0) {
-        header[0x1] = size >> 2;                // data length
-        header[0x2] = size >> 1;                // data length
+        header[0x1] = size >> 24;                // data length
+        header[0x2] = size >> 16;                // data length
         header[0x3] = size >> 8;                // data length
         header[0x4] = size;                     // data length
-        fwrite((char *)&header, 1, 0x5, _output);
     } else {
-        header[0x1] = (size + 4) >> 2;          // data length
-        header[0x2] = (size + 4) >> 1;          // data length
+        header[0x1] = (size + 4) >> 24;          // data length
+        header[0x2] = (size + 4) >> 16;          // data length
         header[0x3] = (size + 4) >> 8;          // data length
         header[0x4] = (size + 4);               // data length
-        fwrite((char *)&header, 1, 0x5, _output);
     }
+    fwrite((char *)&header, 1, 0x5, _output);
 
     // Write the data
     fwrite(data, 1, size, _output);
