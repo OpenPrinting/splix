@@ -168,7 +168,7 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     header[0xc] = _printer->duplex();               // Duplex
     header[0xd] = _printer->docHeaderValues(1);     // ??? XXX
     header[0xe] = _printer->qpdlVersion();          // QPDL Version
-    header[0xf] = _printer->docHeaderValues(3);     // ??? XXX
+    header[0xf] = _printer->docHeaderValues(2);     // ??? XXX
     if (_printer->resolutionY() != _printer->resolutionX())
         header[0x10] = _printer->resolutionX() / 100; // X Resolution
     else

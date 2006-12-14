@@ -94,7 +94,6 @@ Printer::Printer(ppd_file_t *ppd)
 	_marginY = 12.5;
 	_areaX = 582.5;
 	_areaY = 829.5;
-	_docHeaderValues = NULL;
 	_bandHeight = 0x80;
 
 	// Get the QPDL version and color information
@@ -226,42 +225,12 @@ Printer::Printer(ppd_file_t *ppd)
 	if (attr)
 		_docHeaderValues = _convertStr(attr->value);
 	else {
-		_docHeaderValues = new char[5];
+		_docHeaderValues = new char[3];
 		_docHeaderValues[0] = 0;
 		_docHeaderValues[1] = 0;
-		_docHeaderValues[2] = 1;
-		_docHeaderValues[3] = 0;
-		_docHeaderValues[4] = 0;
+		_docHeaderValues[2] = 0;
 	}
 
-}
-
-Printer::Printer()
-{
-	_xresolution = 600;
-	_yresolution = 600;
-	_paperType = 2;
-	_paperSource = 1;
-	_duplex = 0x0100;
-	
-	_pageSizeX = 595.;
-	_pageSizeY = 842.;
-	_marginX = 12.5;
-	_marginY = 12.5;
-	_areaX = 582.5;
-	_areaY = 829.5;
-
-	_qpdlVersion = 1;
-	_color = false;
-
-	_bandHeight = 0x80;
-
-	_docHeaderValues = new char[5];
-	_docHeaderValues[0] = 0;
-	_docHeaderValues[1] = 0;
-	_docHeaderValues[2] = 1;
-	_docHeaderValues[3] = 0;
-	_docHeaderValues[4] = 0;
 }
 
 Printer::~Printer()
