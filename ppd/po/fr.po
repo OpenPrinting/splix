@@ -289,3 +289,18 @@ msgstr "TRANSLATE Short edge"
 msgid "Long edge"
 msgstr "TRANSLATE Long edge"
 
+msgid "Double-Sided Printing"
+msgstr "TRANSLATE Double-Sided Printing"
+
+msgid "Long-Edge Binding"
+msgstr "TRANSLATE Long-Edge Binding"
+
+msgid "Short-Edge Binding"
+msgstr "TRANSLATE Short-Edge Binding"
+
+msgid "Finishing"
+msgstr "TRANSLATE Finishing"
+
+msgid "User Printer Default"
+msgstr "TRANSLATE User Printer Default"
+
