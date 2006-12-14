@@ -121,6 +121,15 @@
 *PaperDimension EnvISOB6/ISOB6 Envelope - 176x125mm: "499.00 354.00"
 *PaperDimension C6/C6 - 114x162mm: "323.00 459.00"
 *PaperDimension Folio/Folio - 210x330mm: "595.00 935.00"
+*MaxMediaWidth: "0.00"
+*MaxMediaHeight: "0.00"
+*HWMargins: 11.52 15.59 11.52 15.59
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width: 1 points 0.00 0.00
+*ParamCustomPageSize Height: 2 points 0.00 0.00
+*ParamCustomPageSize WidthOffset: 3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
 *OpenUI *InputSlot: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
@@ -198,13 +207,12 @@
 *SRTMode ENHANCE/Text enhance: ""
 *SRTMode GRAY/Image enhance: ""
 *CloseUI: *SRTMode
-*OpenUI *Duplex: PickOne
+*OpenUI *Duplex/Double-Sided Printing: PickOne
 *OrderDependency: 10.0 AnySetup *Duplex
-*DefaultDuplex: 1
-*Duplex 0/None: ""
-*Duplex 1/Use Printer Default: ""
-*Duplex 2/Short edge: ""
-*Duplex 3/Long edge: ""
+*DefaultDuplex: None
+*Duplex None/Off: "<</Duplex false>>setpagedevice"
+*Duplex DuplexNoTumble/Long-Edge Binding: "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short-Edge Binding: "<</Duplex true/Tumble true>>setpagedevice"
 *CloseUI: *Duplex
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *OptionTray2/Tray 2 Installed: Boolean
@@ -262,4 +270,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2150.ppd, 13089 bytes.
+*% End of ml2150.ppd, 13643 bytes.

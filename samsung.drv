@@ -32,6 +32,7 @@ MediaSize EnvISOB6
 // Custom
 MediaSize C6
 MediaSize Folio
+VariablePaperSize yes
 
 // Supported input slots
 *InputSlot 1 "Auto/Automatic Selection"
@@ -180,16 +181,13 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 			   Choice "ENHANCE/Text enhance" ""
 			   Choice "GRAY/Image enhance" ""
 			{
+				Throughput 22
 				ModelName "ML-2250"
 				PCFileName "ml2250.ppd"
 			}
 			{
 				// Duplex support
-				Option "Duplex/Duplex" PickOne AnySetup 10
-				   Choice "0/None" ""
-				   *Choice "1/Use Printer Default" ""
-				   Choice "2/Short edge" ""
-				   Choice "3/Long edge" ""
+				Duplex normal
 
 				Resolution k 1 0 0 0 "300dpi/300 DPI"
 				{
@@ -230,6 +228,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	{
 		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "2"
+		Throughput 4
 		Resolution - 1 0 0 0 "300dpi/300 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
 
@@ -261,21 +260,20 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 		Attribute QPDL QPDLVersion "1"
 
 		// Duplex support
-		Option "Duplex/Duplex" PickOne AnySetup 10
-		   Choice "0/None" ""
-		   *Choice "1/Use Printer Default" ""
-		   Choice "2/Short edge" ""
-		   Choice "3/Long edge" ""
+		Duplex normal
 
 		{
+			Throughput 20
 			ModelName "CLP-500"
 			PCFileName "clp500.ppd"
 		}
 		{
+			Throughput 24
 			ModelName "CLP-510"
 			PCFileName "clp510.ppd"
 		}
 		{
+			Throughput 20
 			Manufacturer "Xerox"
 			ModelName "Phaser 6100"
 			PCFileName "xerox-phaser6100.ppd"
@@ -284,6 +282,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	{
 		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "1"
+		Throughput 20
 
 		Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
