@@ -207,12 +207,12 @@
 *SRTMode ENHANCE/Für Text optimiert: ""
 *SRTMode GRAY/Für Bilder optimiert: ""
 *CloseUI: *SRTMode
-*OpenUI *Duplex/TRANSLATE Double-Sided Printing: PickOne
+*OpenUI *Duplex/Double-Sided Printing: PickOne
 *OrderDependency: 10.0 AnySetup *Duplex
 *DefaultDuplex: None
 *Duplex None/Aus: "<</Duplex false>>setpagedevice"
-*Duplex DuplexNoTumble/TRANSLATE Long-Edge Binding: "<</Duplex true/Tumble false>>setpagedevice"
-*Duplex DuplexTumble/TRANSLATE Short-Edge Binding: "<</Duplex true/Tumble true>>setpagedevice"
+*Duplex DuplexNoTumble/Long-Edge Binding: "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short-Edge Binding: "<</Duplex true/Tumble true>>setpagedevice"
 *CloseUI: *Duplex
 *OpenGroup: InstallableOptions/Optionale Module
 *OpenUI *OptionTray2/Fach 2 vorhanden: Boolean
@@ -270,4 +270,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2550.ppd, 13847 bytes.
+*% End of ml2550.ppd, 13817 bytes.
