@@ -211,6 +211,16 @@ Printer::Printer(ppd_file_t *ppd)
 		else
 			_duplex = 0x0100;
 	}
+	if ((choice = ppdFindMarkedChoice(_ppd, "JCLDuplex"))) {
+		if (!(strcmp(choice->choice, "None")))
+			_duplex = 0;
+		else if (!(strcmp(choice->choice, "DuplexNoTumble")))
+			_duplex = 0x0101;
+		else if (!(strcmp(choice->choice, "DuplexTumble")))
+			_duplex = 0x0001;
+		else
+			_duplex = 0x0100;
+	}
 
 	// Compression algorithm version
 	_compVersion = 0x11;
@@ -307,6 +317,16 @@ void Printer::newJob(FILE *output)
 		fprintf(output, "@PJL SET RET = %s\n", choice->choice);
 	} else
 		fprintf(output, "@PJL SET RET = NORMAL\n");
+
+	// Enable the Duplex mode
+	if (_duplex == 0)
+		fprintf(output, "@PJL SET DUPLEX = OFF\n");
+	else if (_duplex == 0x0101)
+		fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
+			"LONGEDGE\n");
+	else if (_duplex == 0x0001)
+		fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
+			"SHORTEDGE\n");
 }
 
 void Printer::endJob(FILE *output)
