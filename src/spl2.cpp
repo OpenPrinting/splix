@@ -168,7 +168,8 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     header[0xd] = _printer->docHeaderValues(1);     // ??? XXX
     header[0xe] = _printer->qpdlVersion();          // QPDL Version
     header[0xf] = _printer->docHeaderValues(2);     // ??? XXX
-    if (_printer->resolutionY() != _printer->resolutionX())
+    if (_printer->resolutionY() != _printer->resolutionX() || 
+        _printer->docHeaderValues(2) == 1)
         header[0x10] = _printer->resolutionX() / 100; // X Resolution
     else
         header[0x10] = 0;                           // X Resolution = Y Res.
