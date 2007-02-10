@@ -1,3 +1,20 @@
+Sat Feb 10 15:18:01 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		ML-2010 resolution bug is now fixed
+
+Sun Feb 04 02:45:18 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		Support for QPDL v. 0, 1 and 2
+		Duplex support
+		new PJL informations
+		new printer support (Xerox..)
+	* Bug fix:
+		300 DPI resolution
+		monochrome document printed on color printers
+	* Rewrite some parts of the PPD files
+
+	--- RELEASE OF THE VERSION V. 1.0.1 ---
+		
 Wed Nov 29 11:58:45 2006 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
 		Compression optimization: skip empty bands
