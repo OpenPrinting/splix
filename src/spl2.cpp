@@ -41,8 +41,6 @@ typedef struct compressedData_s {
 } compressedData_t;
 
 typedef struct {
-    unsigned char*          data;
-    unsigned long           size;
     compressedData_s*       next;
     compressedData_s*       last;
     unsigned long           packetSize;
@@ -250,6 +248,7 @@ void callbackJBIGCompression(unsigned char *data, size_t len, void *arg)
     rootCompressedData_t **root = (rootCompressedData_t **)arg;
     compressedData_t *current;
 
+    DEBUG("RECEPTION DATA = %lu\n", len);
     if (!*root) {
         ERROR(_("No root compression structure available"));
         return;
@@ -257,13 +256,16 @@ void callbackJBIGCompression(unsigned char *data, size_t len, void *arg)
 
     // Allocate the root structure
     if (!(*root)->last) {
-        (*root)->data = new unsigned char[len];
-        (*root)->size = len;
+//        (*root)->data = new unsigned char[len];
+//        (*root)->size = len;
         (*root)->next = new compressedData_t;
-        (*root)->last = (*root)->next;
-        (*root)->next->data = NULL;
-        (*root)->next->next = NULL;
-        memcpy((*root)->data, data, len);
+        (*root)->next->data = new unsigned char[len];
+        (*root)->next->size = len;
+        (*root)->next->next = new compressedData_t;
+        (*root)->next->next->data = NULL;
+        (*root)->next->next->next = NULL;
+        (*root)->last = (*root)->next->next;
+        memcpy((*root)->next->data, data, len);
         if (len != 20)
             ERROR(_("JBIG Compression: the first BIH *MUST* be 20 bytes long "
                 "(currently=%ld)\n"), len);
@@ -327,6 +329,7 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
 
     // Allocate the bitmap buffers
     _width = (width - clippingX + 7) / 8;
+    DEBUG("width=%lu height=%lu, line=%lu", _width, height, document->lineSize());
     for (unsigned int c=0; c < colors; c++) {
         DEBUG("-- ON ALLOUE %lu OCTETS\n", _width * height);
         layer[c] = new unsigned char[_width * height];
@@ -372,8 +375,8 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
         header[0x1] = bandNumber;           // Band number
         header[0x2] = width >> 8;           // Band width
         header[0x3] = width;                // Band width
-        header[0x4] = height >> 8;          // Band height
-        header[0x5] = height;               // Band height
+        header[0x4] = _printer->bandHeight() >> 8; // Band height
+        header[0x5] = _printer->bandHeight(); // Band height
         fwrite((char *)&header, 1, 0x6, _output);
 
         for (unsigned int c=0; c < colors; c++) {
@@ -412,6 +415,7 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
             tmp = cur[c]->next;
             delete cur[c];
             cur[c] = tmp;
+            bandNumber++;
         }
     }
 
