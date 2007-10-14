@@ -102,7 +102,8 @@ Printer::Printer(ppd_file_t *ppd)
     if (attr)
         _qpdlVersion = strtol(attr->value, (char **)NULL, 10);
     attr = ppdFindAttr(_ppd, "QPDL", "ColorPrinter");
-    _color = attr->value[0] == '1' ? true : false;
+    if (attr)
+        _color = attr->value[0] == '1' ? true : false;
 
     // Get the resolution
     if ((choice = ppdFindMarkedChoice(_ppd, "Resolution"))) {
