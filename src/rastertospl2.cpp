@@ -26,8 +26,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <cups/ppd.h>
 #include <cups/cups.h>
+#include <sys/resource.h>
 
 int main(int argc, char **argv)
 {
@@ -42,6 +44,8 @@ int main(int argc, char **argv)
     setbuf(stdout, NULL);
 #ifdef ENABLE_DEBUG
     freopen("/tmp/result.spl2", "w", stdout);
+    struct rlimit _rlimit = {RLIM_INFINITY, RLIM_INFINITY};
+    setrlimit(RLIMIT_CORE, &_rlimit);
 #endif /* ENABLE_DEBUG */
 
     // Check if enough arguments are available
