@@ -22,15 +22,17 @@
 #define COMPRESS_H_
 
 struct BandArray {
-	unsigned char *array;
-	unsigned char *next;
-	unsigned char *prev;
+    unsigned char *array;
+    unsigned char *next;
+    unsigned char *prev;
 };
 
 extern int compressBand(struct BandArray *bandArray, unsigned char *inputBand, 
-	unsigned long bandWidth, unsigned long bandHeight);
+    unsigned long bandWidth, unsigned long bandHeight);
 extern int calcOccurs(unsigned char *band, unsigned long bandHeight, 
-	unsigned long bandWidth, unsigned long number);
+    unsigned long bandWidth, unsigned long number);
 
 #endif 
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

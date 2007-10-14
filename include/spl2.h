@@ -30,28 +30,30 @@ class Band;
 
 class SPL2
 {
-	protected:
-		FILE*		_output;
-		Printer*	_printer;
+    protected:
+        FILE*                   _output;
+        Printer*                _printer;
 
-	protected:
-		int		_writeColorBand(Band *band, int color);
+    protected:
+        int                     _writeColorBand(Band *band, int color);
 
-	public:
-		SPL2();
-		~SPL2();
+    public:
+        SPL2();
+        virtual ~SPL2();
 
-	public:
-		void		setOutput(FILE* output) {_output = output;}
-		void		setPrinter(Printer *printer) {_printer=printer;}
+    public:
+        void                    setOutput(FILE* output) {_output = output;}
+        void                    setPrinter(Printer *printer) {_printer=printer;}
 
-	public:
-		int		beginDocument();
-		int		closeDocument();
+    public:
+        int                     beginDocument();
+        int                     closeDocument();
 
-		int		printPage(Document *document, 
-					unsigned long nrCopies);
+        int                     printPage(Document *document, 
+                                    unsigned long nrCopies);
 };
 
 #endif /* SPL2_H_ */
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

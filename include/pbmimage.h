@@ -28,45 +28,47 @@
 
 class PbmImage : public Document
 {
-	protected:
-		const char*		_blackFile;
-		const char*		_cyanFile;
-		const char*		_magentaFile;
-		const char*		_yellowFile;
-		FILE*			_black;
-		FILE*			_cyan;
-		FILE*			_magenta;
-		FILE*			_yellow;
+    protected:
+        const char*             _blackFile;
+        const char*             _cyanFile;
+        const char*             _magentaFile;
+        const char*             _yellowFile;
+        FILE*                   _black;
+        FILE*                   _cyan;
+        FILE*                   _magenta;
+        FILE*                   _yellow;
 
-		uint32_t		_width;
-		uint32_t		_height;
-		uint32_t		_lineSize;
-		uint32_t		_line;
-		unsigned char*		_lineBuffer;
+        uint32_t                _width;
+        uint32_t                _height;
+        uint32_t                _lineSize;
+        uint32_t                _line;
+        unsigned char*          _lineBuffer;
 
-		bool			_color;
-		uint8_t			_currentColor;
+        bool                    _color;
+        uint8_t                 _currentColor;
 
-	public:
-		PbmImage(const char *black, const char *cyan, 
-			const char *magenta, const char *yellow);
-		virtual ~PbmImage();
+    public:
+        PbmImage(const char *black, const char *cyan, 
+            const char *magenta, const char *yellow);
+        virtual ~PbmImage();
 
-	public:
-		virtual void	unload();
-		virtual int	load();
-		virtual int	loadPage(Printer *printer);
-		virtual int	readLine();
+    public:
+        virtual void            unload();
+        virtual int             load();
+        virtual int             loadPage(Printer *printer);
+        virtual int             readLine();
 
-	public:
-		virtual unsigned long	width() const {return _width;}
-		virtual unsigned long	height() const {return _height;}
-		virtual unsigned long	lineSize() const {return _lineSize;}
-		virtual unsigned char*	lineBuffer() const {return _lineBuffer;}
+    public:
+        virtual unsigned long   width() const {return _width;}
+        virtual unsigned long   height() const {return _height;}
+        virtual unsigned long   lineSize() const {return _lineSize;}
+        virtual unsigned char*  lineBuffer() const {return _lineBuffer;}
 
-	public:
-		virtual bool		isColor() const {return _color;}
+    public:
+        virtual bool            isColor() const {return _color;}
 };
 
 #endif /* DOCUMENT_H_ */
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

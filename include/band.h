@@ -26,45 +26,48 @@
 
 class Band
 {
-	protected:
-		unsigned char*	_band;
-		unsigned long	_width;
-		unsigned long	_height;
-		unsigned long	_line;
-		unsigned long	_clipping;
-		bool		_empty;
-		
-	protected:
-		unsigned char*	_algorithm0(size_t *size);
-		unsigned char*	_algorithm11(size_t *size);
+    protected:
+        unsigned char*          _band;
+        unsigned long           _width;
+        unsigned long           _height;
+        unsigned long           _line;
+        unsigned long           _clipping;
+        bool                    _empty;
 
-	public:
-		Band(unsigned long bandWidth, unsigned long bandHeight);
-		~Band();
+    protected:
+        unsigned char*          _algorithm0(size_t *size);
+        unsigned char*          _algorithm11(size_t *size);
 
-	public:
-		unsigned long	width() const {return _width * 8;}
-		unsigned long	height() const {return _height;}
-		unsigned long	line() const {return _line;}
-		unsigned long	clipping() const {return _clipping * 8;}
-		unsigned char*	band() {return _band;}
-		bool		isEmpty() const {return _empty;}
+    public:
+        Band(unsigned long bandWidth, unsigned long bandHeight);
+        virtual ~Band();
 
-		void		setEmpty() {_empty = true;}
-		void		setLine(unsigned long line) {_line = line;}
-		void		setClipping(unsigned long c) 
-				{_clipping = (c + 7) / 8;}
+    public:
+        unsigned long           width() const {return _width * 8;}
+        unsigned long           height() const {return _height;}
+        unsigned long           line() const {return _line;}
+        unsigned long           clipping() const {return _clipping * 8;}
+        unsigned char*          band() {return _band;}
+        bool                    isEmpty() const {return _empty;}
+
+        void                    setEmpty() {_empty = true;}
+        void                    setLine(unsigned long line) {_line = line;}
+        void                    setClipping(unsigned long c) 
+                                {_clipping = (c + 7) / 8;}
 
 
 
-		void		clean() {_line = 0;}
-		int		addLine(unsigned char *line, unsigned long width);
+        void                    clean() {_line = 0;}
+        int                     addLine(unsigned char *line, 
+                                    unsigned long width);
 
-		unsigned char*	exportBand(int algorithm, size_t *size);
+        unsigned char*          exportBand(int algorithm, size_t *size);
 
-		bool		isFull() const 
-				{return _line == _height ? true : false;}
+        bool                    isFull() const 
+                                {return _line == _height ? true : false;}
 };
 
 #endif /* BAND_H_ */
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

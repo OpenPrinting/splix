@@ -26,25 +26,27 @@
 
 class Document
 {
-	public:
-		Document() {};
-		virtual ~Document() {};
+    public:
+        Document() {};
+        virtual ~Document() {};
 
-	public:
-		virtual void	unload() = 0;
-		virtual int	load() = 0;
-		virtual int	loadPage(Printer *printer) = 0;
-		virtual int	readLine() = 0;
+    public:
+        virtual void            unload() = 0;
+        virtual int             load() = 0;
+        virtual int             loadPage(Printer *printer) = 0;
+        virtual int             readLine() = 0;
 
-	public:
-		virtual unsigned long	width() const = 0;
-		virtual unsigned long	height() const = 0;
-		virtual unsigned long	lineSize() const = 0;
-		virtual unsigned char*	lineBuffer() const = 0;
+    public:
+        virtual unsigned long   width() const = 0;
+        virtual unsigned long   height() const = 0;
+        virtual unsigned long   lineSize() const = 0;
+        virtual unsigned char*  lineBuffer() const = 0;
 
-	public:
-		virtual bool		isColor() const = 0;
+    public:
+        virtual bool            isColor() const = 0;
 };
 
 #endif /* DOCUMENT_H_ */
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

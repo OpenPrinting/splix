@@ -23,7 +23,7 @@
 
 #include <stdio.h>
 
-#define _(X)			X
+#define _(X)            X
 
 #define ERROR(X, args ...)	fprintf(stderr, "[33m" X "[0m\n", ##args);
 //#define DEBUG(X, args ...)	fprintf(stderr, "[32m" X "[0m\n", ##args);
@@ -31,4 +31,6 @@
 
 
 #endif /* ERROR_H_ */
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

@@ -26,52 +26,53 @@
 
 class Raster : public Document
 {
-	protected:
-		const char*	_jobId;
-		const char*	_user;
-		const char*	_title;
-		const char*	_copies;
-		const char*	_options;
-		const char*	_file;
-		int		_fd;
+    protected:
+        const char*             _jobId;
+        const char*             _user;
+        const char*             _title;
+        const char*             _copies;
+        const char*             _options;
+        const char*             _file;
+        int                     _fd;
 
-		cups_raster_t*	_ras;
-		cups_page_header_t	_header;
+        cups_raster_t*          _ras;
+        cups_page_header_t      _header;
 
-		unsigned long	_width;
-		unsigned long	_height;
-		unsigned long	_lineSize;
-		unsigned long	_line;
-		unsigned long	_page;
-		unsigned long	_totalLines;
+        unsigned long           _width;
+        unsigned long           _height;
+        unsigned long           _lineSize;
+        unsigned long           _line;
+        unsigned long           _page;
+        unsigned long           _totalLines;
 
-		bool		_color;
+        bool                    _color;
 
 
-		unsigned char*	_lineBuffer;
+        unsigned char*          _lineBuffer;
 
-	public:
-		Raster(const char *job, const char *user, const char *title, 
-			const char *copies, const char *options, 
-			const char *file);
-		virtual ~Raster();
+    public:
+        Raster(const char *job, const char *user, const char *title, 
+            const char *copies, const char *options, const char *file);
+        virtual ~Raster();
 
-	public:
-		virtual void	unload();
-		virtual int	load();
-		virtual int	loadPage(Printer *printer);
-		
-		virtual int	readLine();
+    public:
+        virtual void            unload();
+        virtual int             load();
+        virtual int             loadPage(Printer *printer);
 
-	public:
-		virtual unsigned long	width() const {return _width;}
-		virtual unsigned long	height() const  {return _height;}
-		virtual unsigned long	lineSize() const {return _lineSize;}
-		virtual unsigned char*	lineBuffer() const {return _lineBuffer;}
+        virtual int             readLine();
 
-	public:
-		virtual bool		isColor() const {return _color;}
+    public:
+        virtual unsigned long   width() const {return _width;}
+        virtual unsigned long   height() const  {return _height;}
+        virtual unsigned long   lineSize() const {return _lineSize;}
+        virtual unsigned char*  lineBuffer() const {return _lineBuffer;}
+
+    public:
+        virtual bool            isColor() const {return _color;}
 };
 
 #endif /* RASTER_H_ */
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 
