@@ -97,13 +97,16 @@ Printer::Printer(ppd_file_t *ppd)
     _bandHeight = 0x80;
     _duplex = 0x0100;
 
-    // Get the QPDL version and color information
+    // Get the QPDL version, color information and packet size
     attr = ppdFindAttr(_ppd, "QPDL", "QPDLVersion");
     if (attr)
         _qpdlVersion = strtol(attr->value, (char **)NULL, 10);
     attr = ppdFindAttr(_ppd, "QPDL", "ColorPrinter");
     if (attr)
         _color = attr->value[0] == '1' ? true : false;
+    attr = ppdFindAttr(_ppd, "QPDL", "PacketSize");
+    if (attr)
+        _packetSize = strtol(attr->value, (char **)NULL, 10) * 1024;
 
     // Get the resolution
     if ((choice = ppdFindMarkedChoice(_ppd, "Resolution"))) {

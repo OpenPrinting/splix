@@ -28,6 +28,25 @@
 #include "band.h"
 #include "bandanalyser.h"
 #include <inttypes.h>
+#include <string.h>
+extern "C" {
+#   include <jbig.h>
+}
+
+typedef struct compressedData_s {
+    unsigned char*          data;
+    unsigned long           size;
+    compressedData_s*       next;
+} compressedData_t;
+
+typedef struct {
+    unsigned char*          data;
+    unsigned long           size;
+    compressedData_s*       next;
+    compressedData_s*       last;
+    unsigned long           packetSize;
+} rootCompressedData_t;
+
 
 
 /*
@@ -134,11 +153,8 @@ int SPL2::_writeColorBand(Band *band, int color)
 int SPL2::printPage(Document *document, unsigned long nrCopies)
 {
     unsigned long width, height, clippingX, clippingY;
-    unsigned long bandNumber;
-    unsigned long i;
     char header[0x11];
     char errors = 0;
-    Band *bandC, *bandM, *bandY, *bandB;
 
     if (!document) {
         ERROR(_("SPL2::printPage: called with NULL parameter"));
@@ -149,6 +165,7 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
         return -1;
     if (!document->height())
         return -1;
+    fprintf(stderr, "PAGE: %lu %lu\n", document->page(), nrCopies);
 
 
     // Send page header
@@ -199,6 +216,219 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
         height = (unsigned long)_printer->pageSizeY();
     }
 
+    // Clip vertically the document
+    if (!document->isColor())
+        clippingY = clippingY * 4;
+    for (; clippingY; clippingY--)
+        document->readLine();
+
+    // Round up height to a multiple of bandHeight
+    height += _printer->bandHeight() - (height % _printer->bandHeight());
+
+
+    // Compress the page
+    if (_printer->compVersion() <= 0x11)
+        errors = _compressByBands(document, width, height, clippingX);
+    else if (_printer->compVersion() == 0x13)
+        errors = _compressByDocument(document, width, height, clippingX);
+
+    if (errors)
+        return -11;
+
+    // Write the end of the page
+    header[0x0] = 1;                        // Signature
+    header[0x1] = nrCopies >> 8;            // Number of copies 8-15
+    header[0x2] = nrCopies;                 // Number of copies 0-7
+    fwrite((char *)&header, 1, 3, _output);
+
+    return 0;
+}
+
+void callbackJBIGCompression(unsigned char *data, size_t len, void *arg)
+{
+    rootCompressedData_t **root = (rootCompressedData_t **)arg;
+    compressedData_t *current;
+
+    if (!*root) {
+        ERROR(_("No root compression structure available"));
+        return;
+    }
+
+    // Allocate the root structure
+    if (!(*root)->last) {
+        (*root)->data = new unsigned char[len];
+        (*root)->size = len;
+        (*root)->next = new compressedData_t;
+        (*root)->last = (*root)->next;
+        (*root)->next->data = NULL;
+        (*root)->next->next = NULL;
+        memcpy((*root)->data, data, len);
+        if (len != 20)
+            ERROR(_("JBIG Compression: the first BIH *MUST* be 20 bytes long "
+                "(currently=%ld)\n"), len);
+        return;
+    }
+
+    // Register data
+    current = (*root)->last;
+    while (len > 0) {
+        unsigned long freeSpace, toWrite;
+
+        // Create a new node if needed
+        if (current->size == (*root)->packetSize) {
+            current->next = new compressedData_t;
+            current = current->next;
+            current->data = NULL;
+            current->next = NULL;
+            (*root)->last = current;
+        }
+
+        // Create a buffer if needed
+        if (!current->data) {
+            current->data = new unsigned char[(*root)->packetSize];
+            current->size = 0;
+        }
+
+        // Register compressed data in the current buffer
+        freeSpace = (*root)->packetSize - current->size;
+        toWrite = freeSpace < len ? freeSpace : len;
+        memcpy(current->data + current->size, data, toWrite);
+        current->size += toWrite;
+        data += toWrite;
+        len -= toWrite;
+    }
+}
+
+static int _writeBE(unsigned long val, FILE *output)
+{
+    char header[4];
+
+    header[0] = val >> 24;
+    header[1] = val >> 16;
+    header[2] = val >> 8;
+    header[3] = val;
+    fwrite((char *)&header, 1, 0x4, output);
+    return header[0] + header[1] + header[2] + header[3];
+}
+
+int SPL2::_compressByDocument(Document *document, unsigned long width, 
+    unsigned long height, unsigned long clippingX)
+{
+    compressedData_t *tmp, *cur[4] = {NULL, NULL, NULL, NULL};
+    unsigned int colors = document->isColor() ? 4 : 1, checksum;
+    struct jbg_enc_state layerState[4];
+    unsigned int bandNumber=0, size;
+    rootCompressedData_t *cdata[4];
+    unsigned char *layer[4];
+    unsigned long _width;
+    char header[0x11];
+    int errors=0;
+
+    // Allocate the bitmap buffers
+    _width = (width - clippingX + 7) / 8;
+    for (unsigned int c=0; c < colors; c++) {
+        DEBUG("-- ON ALLOUE %lu OCTETS\n", _width * height);
+        layer[c] = new unsigned char[_width * height];
+        cdata[c] = new rootCompressedData_t;
+        cdata[c]->last = NULL;
+        cdata[c]->packetSize = _printer->packetSize();
+    }
+
+    // Read each lines of each planes and store them in the bitmap buffers
+    for (unsigned long i = 0; i < height; i++) {
+        for (unsigned int c=0; c < colors; c++) {
+            unsigned long start, res;
+            unsigned char *line;
+
+            if ((int)(res = document->readLine()) < 0) {
+                errors = 1;
+                break;
+            }
+
+            // Store the line and clip it if needed
+            line = document->lineBuffer();
+            start = _width < res ? res - _width : res;
+            for (unsigned long j = 0; j + start < res; j++)
+                layer[c][j] = line[j + start];
+        }
+    }
+
+    // Compress each layer in JBIG
+    for (unsigned int c=0; c < colors; c++) {
+        jbg_enc_init(&layerState[c], _width, height, 1, &layer[c], 
+            callbackJBIGCompression,  &cdata[c]);
+        jbg_enc_options(&layerState[c], 0, JBG_DELAY_AT | JBG_LRLTWO | 
+            JBG_TPBON, height, 0, 0);
+        jbg_enc_out(&layerState[c]);
+        jbg_enc_free(&layerState[c]);
+        delete layer[c];
+        cur[c] = cdata[c]->next;
+    }
+
+    // Export the result in the QPDL document
+    while (cur[0] || cur[1] || cur[2] || cur[3]) {
+        header[0x0] = 0xC;                  // Signature
+        header[0x1] = bandNumber;           // Band number
+        header[0x2] = width >> 8;           // Band width
+        header[0x3] = width;                // Band width
+        header[0x4] = height >> 8;          // Band height
+        header[0x5] = height;               // Band height
+        fwrite((char *)&header, 1, 0x6, _output);
+
+        for (unsigned int c=0; c < colors; c++) {
+            if (!cur[c])
+                continue;
+
+            size = cur[c]->size + 4+4+7*4;  // 4 for the BE/LE signature
+                                            // 4 for the checksum
+                                            // 7*4 for the 7 dword 
+                                            //     JBIG header values
+            if (colors == 4) {
+                header[0x0] = c + 1;        // Color layer
+                fwrite((char *)&header, 1, 0x1, _output);
+            }
+            header[0x0] = _printer->compVersion();      // Compression version
+            fwrite((char *)&header, 1, 0x1, _output);
+            checksum = _writeBE(size, _output);         // Size
+            checksum += _writeBE(0x39ABCDEF, _output);  // Signature
+            checksum += _writeBE(cur[c]->size, _output);// JBIG size
+            if (!bandNumber)
+                checksum += _writeBE(0, _output);
+            else if (cur[c]->next)
+                checksum += _writeBE(0x01000000, _output);
+            else
+                checksum += _writeBE(0x02000000, _output);
+            _writeBE(0, _output);
+            _writeBE(0, _output);
+            _writeBE(0, _output);
+            _writeBE(0, _output);
+            _writeBE(0, _output);
+            fwrite(cur[c]->data, 1, cur[c]->size, _output);
+            for (unsigned int j=0; j < cur[c]->size; j++)
+                checksum += cur[c]->data[j];
+            _writeBE(checksum, _output);
+            
+            tmp = cur[c]->next;
+            delete cur[c];
+            cur[c] = tmp;
+        }
+    }
+
+    // Free the compression structures
+    for (unsigned int c=0; c < colors; c++)
+        delete cdata[c];
+
+    return errors;
+}
+
+int SPL2::_compressByBands(Document *document, unsigned long width, 
+    unsigned long height, unsigned long clippingX)
+{
+    Band *bandC, *bandM, *bandY, *bandB;
+    unsigned long bandNumber;
+    char header[0x11];
+    unsigned long i;
+    char errors = 0;
 
     // Create the band instance
     bandB = new Band((unsigned long)_printer->pageSizeX(),
@@ -218,16 +448,6 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
         bandM->setClipping(clippingX);
         bandY->setClipping(clippingX);
     }
-
-    // Clip vertically the document
-    if (!document->isColor())
-        clippingY = clippingY * 4;
-    for (; clippingY; clippingY--)
-        document->readLine();
-
-    // Round up height to a multiple of bandHeight
-    height += _printer->bandHeight() - (height % _printer->bandHeight());
-
 
 
 
@@ -444,20 +664,12 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     delete bandB;
 
     if (document->isColor()) {
-        bandC->clean();
-        bandM->clean();
-        bandY->clean();
+        delete bandC;
+        delete bandM;
+        delete bandY;
     }
-    if (errors)
-        return -11;
 
-    // Write the end of the page
-    header[0x0] = 1;                        // Signature
-    header[0x1] = nrCopies >> 8;            // Number of copies 8-15
-    header[0x2] = nrCopies;                 // Number of copies 0-7
-    fwrite((char *)&header, 1, 3, _output);
-
-    return 0;
+    return errors;
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
