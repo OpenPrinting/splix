@@ -151,7 +151,7 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
         return -1;
 
 
-    // Send page header FIXME
+    // Send page header
     header[0x0] = 0;                                // Signature
     header[0x1] = _printer->resolutionY() / 100;    // Y Resolution
     header[0x2] = nrCopies >> 8;                    // Number of copies 8-15
@@ -460,4 +460,5 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     return 0;
 }
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin: */
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
+

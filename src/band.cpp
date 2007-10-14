@@ -31,34 +31,34 @@
  */
 unsigned char *Band::_algorithm0(size_t *size)
 {
-	unsigned char *tmp;
+    unsigned char *tmp;
 
-	*size = _width * _height;
-	tmp = new unsigned char[*size];
-	memcpy(tmp, _band, _height * _width);
-	return tmp;
+    *size = _width * _height;
+    tmp = new unsigned char[*size];
+    memcpy(tmp, _band, _height * _width);
+    return tmp;
 }
 
 unsigned char *Band::_algorithm11(size_t *size)
 {
-	struct BandArray band;
-	unsigned char *output;
+    struct BandArray band;
+    unsigned char *output;
 
-	output = new unsigned char[_width * _height + 8];
-        band.array = output;
-	band.next = output + 8;
-	band.prev = output;
-	*(uint32_t *)output = 0x09ABCDEF;
+    output = new unsigned char[_width * _height + 8];
+    band.array = output;
+    band.next = output + 8;
+    band.prev = output;
+    *(uint32_t *)output = 0x09ABCDEF;
 
-	calcOccurs(_band, _height, _width, 0x11);
-	compressBand(&band, _band, _width, _height);
-	*size = band.next - band.array;
-	return band.array;
+    calcOccurs(_band, _height, _width, 0x11);
+    compressBand(&band, _band, _width, _height);
+    *size = band.next - band.array;
+    return band.array;
 }
 
 /*int Band::initCompression()
-{
-}*/
+  {
+  }*/
 
 
 
@@ -68,16 +68,16 @@ unsigned char *Band::_algorithm11(size_t *size)
  */
 Band::Band(unsigned long bandWidth, unsigned long bandHeight)
 {
-	_line = 0;
-	_width = (bandWidth + 7) >> 3;
-	_height = bandHeight;
-	_band = NULL;
+    _line = 0;
+    _width = (bandWidth + 7) >> 3;
+    _height = bandHeight;
+    _band = NULL;
 }
 
 Band::~Band()
 {
-	if (_band)
-		delete[] _band;
+    if (_band)
+        delete[] _band;
 }
 
 
@@ -88,32 +88,32 @@ Band::~Band()
  */
 int Band::addLine(unsigned char *line, unsigned long width)
 {
-	int off = _line;
+    int off = _line;
 
-	if (!_line)
-		_empty = false;
-	if (!_band) {
-		_band = new unsigned char[_width * _height];
-		memset(_band, 0xFF, _width * _height);
-	}
+    if (!_line)
+        _empty = false;
+    if (!_band) {
+        _band = new unsigned char[_width * _height];
+        memset(_band, 0xFF, _width * _height);
+    }
 
-	// Clip the text
-	line += _clipping;
-	width -= _clipping;
+    // Clip the text
+    line += _clipping;
+    width -= _clipping;
 
-	if (_line == _height) {
-		ERROR(_("Band::addLine: the end of the band has been "
-			"reached"));
-		return -1;
-	}
+    if (_line == _height) {
+        ERROR(_("Band::addLine: the end of the band has been "
+            "reached"));
+        return -1;
+    }
 
-	for (unsigned int i=0; i < width; i++) {
-		_band[off] = ~line[i];
-		off += _height;
-	}
-	
-	_line++;
-	return 0;
+    for (unsigned int i=0; i < width; i++) {
+        _band[off] = ~line[i];
+        off += _height;
+    }
+
+    _line++;
+    return 0;
 }
 
 
@@ -125,11 +125,13 @@ int Band::addLine(unsigned char *line, unsigned long width)
 
 unsigned char* Band::exportBand(int algorithm, size_t *size)
 {
-	if (algorithm == 0)
-		return _algorithm0(size);
-	else if (algorithm == 0x11)
-		return _algorithm11(size);
-	else
-		return NULL;
+    if (algorithm == 0)
+        return _algorithm0(size);
+    else if (algorithm == 0x11)
+        return _algorithm11(size);
+    else
+        return NULL;
 }
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

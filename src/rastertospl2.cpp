@@ -31,61 +31,63 @@
 
 int main(int argc, char **argv)
 {
-	cups_option_t *options;
-	Raster *document;
-	Printer *printer;
-        ppd_file_t* ppd;
-	SPL2 spl2;
-	int nr;
+    cups_option_t *options;
+    Raster *document;
+    Printer *printer;
+    ppd_file_t* ppd;
+    SPL2 spl2;
+    int nr;
 
-	setbuf(stderr, NULL);
-	setbuf(stdout, NULL);
-	// freopen("/tmp/pwet", "w", stdout);
+    setbuf(stderr, NULL);
+    setbuf(stdout, NULL);
+    // freopen("/tmp/result.spl2", "w", stdout);
 
-	// Check if enough arguments are available
-	if (argc < 6 || argc > 7) {
-		fprintf(stderr, _("ERROR: %s job-id user title copies options "
-			"[file]\n"), argv[0]);
-		return 1;
-	}
+    // Check if enough arguments are available
+    if (argc < 6 || argc > 7) {
+        fprintf(stderr, _("ERROR: %s job-id user title copies options "
+            "[file]\n"), argv[0]);
+        return 1;
+    }
 
-	// Create the document
-	document = new Raster(argv[1], argv[2], argv[3], argv[4], 
-		argv[5], argv[6]);
-	if (document->load()) {
-		delete document;
-		return 1;
-	}
+    // Create the document
+    document = new Raster(argv[1], argv[2], argv[3], argv[4], 
+            argv[5], argv[6]);
+    if (document->load()) {
+        delete document;
+        return 1;
+    }
 
-	// Open the PPD file
-	ppd = ppdOpenFile(getenv("PPD"));
-	ppdMarkDefaults(ppd);
+    // Open the PPD file
+    ppd = ppdOpenFile(getenv("PPD"));
+    ppdMarkDefaults(ppd);
 
-	// Take modifications in the PPD with options
-	nr = cupsParseOptions(argv[5], 0, &options);
-	cupsMarkOptions(ppd, nr, options);
-	cupsFreeOptions(nr, options);
-	
+    // Take modifications in the PPD with options
+    nr = cupsParseOptions(argv[5], 0, &options);
+    cupsMarkOptions(ppd, nr, options);
+    cupsFreeOptions(nr, options);
 
-	// Create the printer
-	printer = new Printer(ppd);
-	printer->setJobName(argv[1]);
-	printer->setUsername(argv[2]);
 
-	// Convert and print
-	DEBUG("Génération du code....");
-	spl2.setPrinter(printer);
-	spl2.setOutput(stdout);
-	spl2.beginDocument();
+    // Create the printer
+    printer = new Printer(ppd);
+    printer->setJobName(argv[1]);
+    printer->setUsername(argv[2]);
 
-	while (!spl2.printPage(document, strtol(argv[4], (char **)NULL, 10)));
+    // Convert and print
+    DEBUG("Génération du code....");
+    spl2.setPrinter(printer);
+    spl2.setOutput(stdout);
+    spl2.beginDocument();
 
-	spl2.closeDocument();
+    while (!spl2.printPage(document, strtol(argv[4], (char **)NULL, 10)));
 
-	ppdClose(ppd);
-	delete document;
-	delete printer;
+    spl2.closeDocument();
 
-	return 0;
+    ppdClose(ppd);
+    delete document;
+    delete printer;
+
+    return 0;
 }
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

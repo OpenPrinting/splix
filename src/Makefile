@@ -6,7 +6,7 @@
 
 CXXFLAGS	+= -I../include -Wall -g -O0
 LDFLAGS		+=
-LIBS		+= -lcups -lcupsimage
+LIBS		+= -lcups -lcupsimage -ljbig
 
 OBJECTS		:= spl2.o printer.o band.o compress.o bandanalyser.o
 HEADERS		:= include/spl2.h include/document.h include/printer.h \

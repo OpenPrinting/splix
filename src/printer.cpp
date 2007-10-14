@@ -31,46 +31,46 @@
  */
 long double Printer::_convertX(long double d) const
 {
-	return d * _xresolution / 72.;
+    return d * _xresolution / 72.;
 }
 
 long double Printer::_convertY(long double d) const
 {
-	return d * _yresolution / 72.;
+    return d * _yresolution / 72.;
 }
 
 char *Printer::_convertStr(const char *str) const
 {
-	unsigned int i;
-	char *out = new char[strlen(str)];
+    unsigned int i;
+    char *out = new char[strlen(str)];
 
-	for (i=0; *str; str++) {
-		if (*str == '<' && strlen(str) >= 3 && isxdigit(*(str+1)))  {
-			char temp[3] = {0, 0, 0};
-			
-			str++;
-			temp[0] = *str;
-			str++;
-			if (*str != '>' && (!isxdigit(*str) || 
-					*(str + 1) != '>')) {
-				out[i] = '<';
-				out[i+1] = temp[0];
-				i += 2;
-				continue;
-			}
-			if (*str != '>') {
-				temp[1] = *str;
-				str++;
-			}
-			out[i] = (char)strtol((char *)&temp, (char **)NULL, 16);
-			i++;
-			continue;
-		}
-		out[i] = *str;
-		i++;
-	}
-	out[i] = 0;
-	return out;
+    for (i=0; *str; str++) {
+        if (*str == '<' && strlen(str) >= 3 && isxdigit(*(str+1))) {
+            char temp[3] = {0, 0, 0};
+
+            str++;
+            temp[0] = *str;
+            str++;
+            if (*str != '>' && (!isxdigit(*str) || 
+                        *(str + 1) != '>')) {
+                out[i] = '<';
+                out[i+1] = temp[0];
+                i += 2;
+                continue;
+            }
+            if (*str != '>') {
+                temp[1] = *str;
+                str++;
+            }
+            out[i] = (char)strtol((char *)&temp, (char **)NULL, 16);
+            i++;
+            continue;
+        }
+        out[i] = *str;
+        i++;
+    }
+    out[i] = 0;
+    return out;
 }
 
 
@@ -81,166 +81,165 @@ char *Printer::_convertStr(const char *str) const
  */
 Printer::Printer(ppd_file_t *ppd)
 {
-	ppd_choice_t *choice;
-	ppd_attr_t *attr;
+    ppd_choice_t *choice;
+    ppd_attr_t *attr;
 
 
-	_username = "Unknown";
-	_jobname = "No name";
-	_ppd = ppd;
-	_pageSizeX = 595.;
-	_pageSizeY = 842.;
-	_marginX = 12.5;
-	_marginY = 12.5;
-	_areaX = 582.5;
-	_areaY = 829.5;
-	_bandHeight = 0x80;
-	_duplex = 0x0100;
+    _username = "Unknown";
+    _jobname = "No name";
+    _ppd = ppd;
+    _pageSizeX = 595.;
+    _pageSizeY = 842.;
+    _marginX = 12.5;
+    _marginY = 12.5;
+    _areaX = 582.5;
+    _areaY = 829.5;
+    _bandHeight = 0x80;
+    _duplex = 0x0100;
 
-	// Get the QPDL version and color information
-	attr = ppdFindAttr(_ppd, "QPDL", "QPDLVersion");
-	if (attr)
-		_qpdlVersion = strtol(attr->value, (char **)NULL, 10);
-	attr = ppdFindAttr(_ppd, "QPDL", "ColorPrinter");
-	_color = attr->value[0] == '1' ? true : false;
+    // Get the QPDL version and color information
+    attr = ppdFindAttr(_ppd, "QPDL", "QPDLVersion");
+    if (attr)
+        _qpdlVersion = strtol(attr->value, (char **)NULL, 10);
+    attr = ppdFindAttr(_ppd, "QPDL", "ColorPrinter");
+    _color = attr->value[0] == '1' ? true : false;
 
-	// Get the resolution
-	if ((choice = ppdFindMarkedChoice(_ppd, "Resolution"))) {
-		if (!strcmp("300dpi", choice->choice)) {
-			_xresolution = 300;
-			_yresolution = 300;
-			_bandHeight = 0x40;
-			_qpdlVersion = 0;
-		} else if (!strcmp("600dpi", choice->choice)) {
-			_xresolution = 600;
-			_yresolution = 600;
-		} else if (!strcmp("1200dpi", choice->choice)) {
-			_xresolution = 1200;
-			_yresolution = 1200;
-		} else if (!strcmp("1200x600pi", choice->choice)) {
-			_xresolution = 1200;
-			_yresolution = 600;
-		} else {
-			_xresolution = 600;
-			_yresolution = 600;
-		}
-	} else {
-		_xresolution = 600;
-		_yresolution = 600;
-	}
+    // Get the resolution
+    if ((choice = ppdFindMarkedChoice(_ppd, "Resolution"))) {
+        if (!strcmp("300dpi", choice->choice)) {
+            _xresolution = 300;
+            _yresolution = 300;
+            _bandHeight = 0x40;
+            _qpdlVersion = 0;
+        } else if (!strcmp("600dpi", choice->choice)) {
+            _xresolution = 600;
+            _yresolution = 600;
+        } else if (!strcmp("1200dpi", choice->choice)) {
+            _xresolution = 1200;
+            _yresolution = 1200;
+        } else if (!strcmp("1200x600pi", choice->choice)) {
+            _xresolution = 1200;
+            _yresolution = 600;
+        } else {
+            _xresolution = 600;
+            _yresolution = 600;
+        }
+    } else {
+        _xresolution = 600;
+        _yresolution = 600;
+    }
 
-	// Get the paper type
-	if ((choice = ppdFindMarkedChoice(_ppd, "MediaSize")) || (choice = 
-		ppdFindMarkedChoice(_ppd, "PageSize"))) {
-		if (!(strcmp(choice->choice, "Letter")))
-			_paperType = 0;
-		else if (!(strcmp(choice->choice, "Legal")))
-			_paperType = 1;
-		else if (!(strcmp(choice->choice, "A4")))
-			_paperType = 2;
-		else if (!(strcmp(choice->choice, "Executive")))
-			_paperType = 3;
-		else if (!(strcmp(choice->choice, "Ledger")))
-			_paperType = 4;
-		else if (!(strcmp(choice->choice, "A3")))
-			_paperType = 5;
-		else if (!(strcmp(choice->choice, "Env10")))
-			_paperType = 6;
-		else if (!(strcmp(choice->choice, "Monarch")))
-			_paperType = 7;
-		else if (!(strcmp(choice->choice, "C5")))
-			_paperType = 8;
-		else if (!(strcmp(choice->choice, "DL")))
-			_paperType = 9;
-		else if (!(strcmp(choice->choice, "B4")))
-			_paperType = 10;
-		else if (!(strcmp(choice->choice, "B5")))
-			_paperType = 11;
-		else if (!(strcmp(choice->choice, "EnvISOB5")))
-			_paperType = 12;
-		else if (!(strcmp(choice->choice, "A5")))
-			_paperType = 16;
-		else if (!(strcmp(choice->choice, "A6")))
-			_paperType = 17;
-		else if (!(strcmp(choice->choice, "EnvISOB6")))
-			_paperType = 18;
-		else if (!(strcmp(choice->choice, "C6")))
-			_paperType = 23;
-		else if (!(strcmp(choice->choice, "Folio")))
-			_paperType = 24;
-		else {
-			ERROR(_("Printer::Printer: Invalid MediaSize %s"), 
-				choice->choice);
-			_paperType = 2;
-		}
-	} else
-		_paperType = 2;
+    // Get the paper type
+    if ((choice = ppdFindMarkedChoice(_ppd, "MediaSize")) || (choice = 
+                ppdFindMarkedChoice(_ppd, "PageSize"))) {
+        if (!(strcmp(choice->choice, "Letter")))
+            _paperType = 0;
+        else if (!(strcmp(choice->choice, "Legal")))
+            _paperType = 1;
+        else if (!(strcmp(choice->choice, "A4")))
+            _paperType = 2;
+        else if (!(strcmp(choice->choice, "Executive")))
+            _paperType = 3;
+        else if (!(strcmp(choice->choice, "Ledger")))
+            _paperType = 4;
+        else if (!(strcmp(choice->choice, "A3")))
+            _paperType = 5;
+        else if (!(strcmp(choice->choice, "Env10")))
+            _paperType = 6;
+        else if (!(strcmp(choice->choice, "Monarch")))
+            _paperType = 7;
+        else if (!(strcmp(choice->choice, "C5")))
+            _paperType = 8;
+        else if (!(strcmp(choice->choice, "DL")))
+            _paperType = 9;
+        else if (!(strcmp(choice->choice, "B4")))
+            _paperType = 10;
+        else if (!(strcmp(choice->choice, "B5")))
+            _paperType = 11;
+        else if (!(strcmp(choice->choice, "EnvISOB5")))
+            _paperType = 12;
+        else if (!(strcmp(choice->choice, "A5")))
+            _paperType = 16;
+        else if (!(strcmp(choice->choice, "A6")))
+            _paperType = 17;
+        else if (!(strcmp(choice->choice, "EnvISOB6")))
+            _paperType = 18;
+        else if (!(strcmp(choice->choice, "C6")))
+            _paperType = 23;
+        else if (!(strcmp(choice->choice, "Folio")))
+            _paperType = 24;
+        else {
+            ERROR(_("Printer::Printer: Invalid MediaSize %s"), 
+                    choice->choice);
+            _paperType = 2;
+        }
+    } else
+        _paperType = 2;
 
-	// Get the paper source
-	if ((choice = ppdFindMarkedChoice(_ppd, "InputSlot"))) {
-		if (!(strcmp(choice->choice, "Auto")))
-			_paperSource = 1;
-		else if (!(strcmp(choice->choice, "Manual")))
-			_paperSource = 2;
-		else if (!(strcmp(choice->choice, "Multi")))
-			_paperSource = 3;
-		else if (!(strcmp(choice->choice, "Upper")))
-			_paperSource = 4;
-		else if (!(strcmp(choice->choice, "Lower")))
-			_paperSource = 5;
-		else if (!(strcmp(choice->choice, "Envelope")))
-			_paperSource = 6;
-		else if (!(strcmp(choice->choice, "Tray3")))
-			_paperSource = 7;
-		else {
-			ERROR(_("Printer::Printer: Invalid InputSlot %s"), 
-				choice->choice);
-			_paperSource = 1;
-		}
-	} else
-		_paperSource = 1;
+    // Get the paper source
+    if ((choice = ppdFindMarkedChoice(_ppd, "InputSlot"))) {
+        if (!(strcmp(choice->choice, "Auto")))
+            _paperSource = 1;
+        else if (!(strcmp(choice->choice, "Manual")))
+            _paperSource = 2;
+        else if (!(strcmp(choice->choice, "Multi")))
+            _paperSource = 3;
+        else if (!(strcmp(choice->choice, "Upper")))
+            _paperSource = 4;
+        else if (!(strcmp(choice->choice, "Lower")))
+            _paperSource = 5;
+        else if (!(strcmp(choice->choice, "Envelope")))
+            _paperSource = 6;
+        else if (!(strcmp(choice->choice, "Tray3")))
+            _paperSource = 7;
+        else {
+            ERROR(_("Printer::Printer: Invalid InputSlot %s"), choice->choice);
+            _paperSource = 1;
+        }
+    } else
+        _paperSource = 1;
 
-	// Get the duplex
-	if ((choice = ppdFindMarkedChoice(_ppd, "Duplex"))) {
-		if (!(strcmp(choice->choice, "None")))
-			_duplex = 0;
-		else if (!(strcmp(choice->choice, "DuplexNoTumble")))
-			_duplex = 0x0101;
-		else if (!(strcmp(choice->choice, "DuplexTumble")))
-			_duplex = 0x0001;
-		else
-			_duplex = 0x0100;
-	}
-	if ((choice = ppdFindMarkedChoice(_ppd, "JCLDuplex"))) {
-		if (!(strcmp(choice->choice, "None")))
-			_duplex = 0;
-		else if (!(strcmp(choice->choice, "DuplexNoTumble")))
-			_duplex = 0x0101;
-		else if (!(strcmp(choice->choice, "DuplexTumble")))
-			_duplex = 0x0001;
-		else
-			_duplex = 0x0100;
-	}
+    // Get the duplex
+    if ((choice = ppdFindMarkedChoice(_ppd, "Duplex"))) {
+        if (!(strcmp(choice->choice, "None")))
+            _duplex = 0;
+        else if (!(strcmp(choice->choice, "DuplexNoTumble")))
+            _duplex = 0x0101;
+        else if (!(strcmp(choice->choice, "DuplexTumble")))
+            _duplex = 0x0001;
+        else
+            _duplex = 0x0100;
+    }
+    if ((choice = ppdFindMarkedChoice(_ppd, "JCLDuplex"))) {
+        if (!(strcmp(choice->choice, "None")))
+            _duplex = 0;
+        else if (!(strcmp(choice->choice, "DuplexNoTumble")))
+            _duplex = 0x0101;
+        else if (!(strcmp(choice->choice, "DuplexTumble")))
+            _duplex = 0x0001;
+        else
+            _duplex = 0x0100;
+    }
 
-	// Compression algorithm version
-	_compVersion = 0x11;
+    // Compression algorithm version
+    _compVersion = 0x11;
 
-	// Get the doc header values
-	attr = ppdFindAttr(_ppd, "General", "docHeaderValues");
-	if (attr)
-		_docHeaderValues = _convertStr(attr->value);
-	else {
-		_docHeaderValues = new char[3];
-		_docHeaderValues[0] = 0;
-		_docHeaderValues[1] = 0;
-		_docHeaderValues[2] = 0;
-	}
+    // Get the doc header values
+    attr = ppdFindAttr(_ppd, "General", "docHeaderValues");
+    if (attr)
+        _docHeaderValues = _convertStr(attr->value);
+    else {
+        _docHeaderValues = new char[3];
+        _docHeaderValues[0] = 0;
+        _docHeaderValues[1] = 0;
+        _docHeaderValues[2] = 0;
+    }
 
 }
 
 Printer::~Printer()
 {
-	delete[] _docHeaderValues;
+    delete[] _docHeaderValues;
 }
 
 
@@ -250,102 +249,98 @@ Printer::~Printer()
  */
 void Printer::newJob(FILE *output)
 {
-	ppd_choice_t *choice;
-	struct tm *timeinfo;
-	ppd_attr_t *attr;
-	time_t timestamp;
+    ppd_choice_t *choice;
+    struct tm *timeinfo;
+    ppd_attr_t *attr;
+    time_t timestamp;
 
-	// Send the PJL Begin
-	attr = ppdFindAttr(_ppd, "PJL", "BeginPJL");
-	if (attr) {
-		char *tmp;
-		tmp = _convertStr(attr->value);
-		fprintf(output, "%s", tmp);
-		delete[] tmp;
-	} else
-		fprintf(output, "%%-12345X");
+    // Send the PJL Begin
+    attr = ppdFindAttr(_ppd, "PJL", "BeginPJL");
+    if (attr) {
+        char *tmp;
+        tmp = _convertStr(attr->value);
+        fprintf(output, "%s", tmp);
+        delete[] tmp;
+    } else
+        fprintf(output, "%%-12345X");
 
-	// Job information
-	time(&timestamp);
-	timeinfo = localtime(&timestamp);
-	fprintf(output, "@PJL DEFAULT SERVICEDATE=%04u%02u%02u\n",
-		1900+timeinfo->tm_year, timeinfo->tm_mon+1, timeinfo->tm_mday);
-	fprintf(output, "@PJL SET USERNAME=\"%s\"\n", _username);
-	fprintf(output, "@PJL SET JOBNAME=\"%s\"\n", _jobname);
+    // Job information
+    time(&timestamp);
+    timeinfo = localtime(&timestamp);
+    fprintf(output, "@PJL DEFAULT SERVICEDATE=%04u%02u%02u\n",
+            1900+timeinfo->tm_year, timeinfo->tm_mon+1, timeinfo->tm_mday);
+    fprintf(output, "@PJL SET USERNAME=\"%s\"\n", _username);
+    fprintf(output, "@PJL SET JOBNAME=\"%s\"\n", _jobname);
 
-	// Get the paper type
-	if ((choice = ppdFindMarkedChoice(_ppd, "MediaType"))) {
-		if (!strcmp(choice->choice, "OFF"))
-			fprintf(output, "@PJL SET PAPERTYPE = OFF\n");
-		else
-			fprintf(output, "@PJL SET PAPERTYPE = %s\n", 
-				choice->choice);
-	}
+    // Get the paper type
+    if ((choice = ppdFindMarkedChoice(_ppd, "MediaType"))) {
+        if (!strcmp(choice->choice, "OFF"))
+            fprintf(output, "@PJL SET PAPERTYPE = OFF\n");
+        else
+            fprintf(output, "@PJL SET PAPERTYPE = %s\n", choice->choice);
+    }
 
-	// Get the toner density
-	if ((choice = ppdFindMarkedChoice(_ppd, "TonerDensity")))
-		fprintf(output, "@PJL SET DENSITY = %s\n", choice->choice);
-	else
-		fprintf(output, "@PJL SET DENSITY = 3\n");
+    // Get the toner density
+    if ((choice = ppdFindMarkedChoice(_ppd, "TonerDensity")))
+        fprintf(output, "@PJL SET DENSITY = %s\n", choice->choice);
+    else
+        fprintf(output, "@PJL SET DENSITY = 3\n");
 
-	// Get the economode state
-	if ((choice = ppdFindMarkedChoice(_ppd, "EconoMode")) && 
-		strcmp(choice->choice, "0")) {
-		if (!strcmp(choice->choice, "ON")) {
-			fprintf(output, "@PJL SET ECONOMODE = ON\n");
-		} else
-			fprintf(output, "@PJL SET ECONOMODE = OFF\n");
-	}
+    // Get the economode state
+    if ((choice = ppdFindMarkedChoice(_ppd, "EconoMode")) && 
+            strcmp(choice->choice, "0")) {
+        if (!strcmp(choice->choice, "ON")) {
+            fprintf(output, "@PJL SET ECONOMODE = ON\n");
+        } else
+            fprintf(output, "@PJL SET ECONOMODE = OFF\n");
+    }
 
-	// Get the powersave state
-	if ((choice = ppdFindMarkedChoice(_ppd, "PowerSave")) && 
-			strcmp(choice->choice, "False")) {
-		fprintf(output, "@PJL SET POWERSAVE = ON\n");
-		fprintf(output, "@PJL SET POWERSAVETIME = %s\n", 
-			choice->choice);
-	}
+    // Get the powersave state
+    if ((choice = ppdFindMarkedChoice(_ppd, "PowerSave")) && 
+            strcmp(choice->choice, "False")) {
+        fprintf(output, "@PJL SET POWERSAVE = ON\n");
+        fprintf(output, "@PJL SET POWERSAVETIME = %s\n", 
+                choice->choice);
+    }
 
-	// Get the jam recovery state
-	if ((choice = ppdFindMarkedChoice(_ppd, "JamRecovery")) && 
-			!strcmp(choice->choice, "True"))
-		fprintf(output, "@PJL SET JAMERECOVERY = ON\n");
-	else
-		fprintf(output, "@PJL SET JAMERECOVERY = OFF\n");
+    // Get the jam recovery state
+    if ((choice = ppdFindMarkedChoice(_ppd, "JamRecovery")) && 
+            !strcmp(choice->choice, "True"))
+        fprintf(output, "@PJL SET JAMERECOVERY = ON\n");
+    else
+        fprintf(output, "@PJL SET JAMERECOVERY = OFF\n");
 
-	// Get the SRT mode
-	if ((choice = ppdFindMarkedChoice(_ppd, "SRTMode"))) {
-		fprintf(output, "@PJL SET RET = %s\n", choice->choice);
-	} else
-		fprintf(output, "@PJL SET RET = NORMAL\n");
+    // Get the SRT mode
+    if ((choice = ppdFindMarkedChoice(_ppd, "SRTMode"))) {
+        fprintf(output, "@PJL SET RET = %s\n", choice->choice);
+    } else
+        fprintf(output, "@PJL SET RET = NORMAL\n");
 
-	// Enable the Duplex mode
-	if (_duplex == 0)
-		fprintf(output, "@PJL SET DUPLEX = OFF\n");
-	else if (_duplex == 0x0101)
-		fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
-			"LONGEDGE\n");
-	else if (_duplex == 0x0001)
-		fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
-			"SHORTEDGE\n");
+    // Enable the Duplex mode
+    if (_duplex == 0)
+        fprintf(output, "@PJL SET DUPLEX = OFF\n");
+    else if (_duplex == 0x0101)
+        fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
+                "LONGEDGE\n");
+    else if (_duplex == 0x0001)
+        fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
+                "SHORTEDGE\n");
 }
 
 void Printer::endJob(FILE *output)
 {
-	ppd_attr_t *attr;
+    ppd_attr_t *attr;
 
-	attr = ppdFindAttr(_ppd, "PJL", "EndPJL");
-	if (attr) {
-		char *tmp;
+    attr = ppdFindAttr(_ppd, "PJL", "EndPJL");
+    if (attr) {
+        char *tmp;
 
-		tmp = _convertStr(attr->value);
-		fprintf(output, "%s", tmp);
-		delete[] tmp;
-	} else
-		fprintf(output, "\t%%-12345X");
+        tmp = _convertStr(attr->value);
+        fprintf(output, "%s", tmp);
+        delete[] tmp;
+    } else
+        fprintf(output, "\t%%-12345X");
 }
 
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 
-/*
- * Calcul des dimensions à la résolution demandée
- * Calculate dimensions for the approprioate resolution
- */

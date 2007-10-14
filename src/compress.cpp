@@ -25,11 +25,15 @@
 #include <string.h>
 
 
-static int32_t ptrArray[0x40];
-static uint32_t maxSizeArray[0x40];
+/* +---------------------------------------------------------------------+
+ * |                  ALGORITHME DE COMPRESSION 0x11                     |
+ * |                    COMPRESSION ALGORITHM 0x11                       |
+ * +---------------------------------------------------------------------+
+ */
+static int32_t _ptrArray[0x40];
+static uint32_t _maxSizeArray[0x40];
 
 #define COMPRESS_SAMPLE_RATE   0x800
-
 
 static int _compare(const void *n1, const void *n2)
 {
@@ -66,12 +70,12 @@ int calcOccurs(unsigned char *band, unsigned long bandHeight,
 
     // Get the first 0x40 elements
     for (i=0; i < 0x40; i++)
-        ptrArray[i] = ~occurs[i*2 + 1] - 1;
-    
+        _ptrArray[i] = ~occurs[i*2 + 1] - 1;
+
     // Get the maximum length of a compressed data
     if (number > 0x63  || !number) {
         for (i=0; i < 0x40; i++)
-            maxSizeArray[i] = 0x202;
+            _maxSizeArray[i] = 0x202;
     } else {
         uint32_t l;
 
@@ -81,11 +85,11 @@ int calcOccurs(unsigned char *band, unsigned long bandHeight,
 
             if (v < 3)
                 v = 3;
-            maxSizeArray[i] = v;
+            _maxSizeArray[i] = v;
         }
     }
 
-	return 0;
+    return 0;
 }
 
 int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
@@ -104,10 +108,10 @@ int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
 
     // Print the table
     for (i=0; i < 0x40; i++) {
-        *(int16_t *)out = ~(int16_t)ptrArray[i];
+        *(int16_t *)out = ~(int16_t)_ptrArray[i];
         out += 2;
-        if (ptrArray[i] < lastPtr)
-            lastPtr = ptrArray[i];
+        if (_ptrArray[i] < lastPtr)
+            lastPtr = _ptrArray[i];
     }
 
     // Print the first uncompressed bytes
@@ -136,14 +140,14 @@ int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
 
             // Check the best similar piece of data
             for (i=0; i < 0x40; i++) {
-                unsigned char *seq = in + ptrArray[i] + 1;
+                unsigned char *seq = in + _ptrArray[i] + 1;
 
                 if (seq < beginIn)
                     continue;
                 if (in <= seq)
                     continue;
-                for (repCnt = 0; repCnt < max && repCnt < maxSizeArray[i]; 
-                        repCnt++)
+                for (repCnt = 0; repCnt < max && repCnt < _maxSizeArray[i]; 
+                    repCnt++)
                     if (in[repCnt] != seq[repCnt])
                         break;
                 if (repCnt > maxRepCnt) {
@@ -179,11 +183,10 @@ int compressBand(struct BandArray *bandArray, unsigned char *beginIn,
         *out = *in;
         out++;
         in++;
-
     } while (out <= endOut);
 
     return -1;
 }
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin: */
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

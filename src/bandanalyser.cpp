@@ -29,66 +29,69 @@
  */
 void checkEmptyBand(Band *band)
 {
-	const unsigned char *data;
-	size_t i, size, last;
-	unsigned char c;
+    const unsigned char *data;
+    size_t i, size, last;
+    unsigned char c;
 
-	data = band->band();
-	size = (band->width() * band->height() + 7) >> 3;
-	last = size % sizeof(unsigned long);
-	size -= last;
+    data = band->band();
+    size = (band->width() * band->height() + 7) >> 3;
+    last = size % sizeof(unsigned long);
+    size -= last;
 
-	for (i=0; i < size; i += sizeof(unsigned long))
-	       if (~*((unsigned long *)&data[i]) != 0) {
-		       return;
-	       }
-	for (; i < last + size; i++) {
-		c = ~data[i];
-		if (c != 0)
-			return;
-	}
-	band->setEmpty();
+    for (i=0; i < size; i += sizeof(unsigned long))
+        if (~*((unsigned long *)&data[i]) != 0) {
+            return;
+        }
+    for (; i < last + size; i++) {
+        c = ~data[i];
+        if (c != 0)
+            return;
+    }
+    band->setEmpty();
 }
 
 void correctBlackColor(Band *bandC, Band *bandM, Band *bandY, Band *bandB)
 {
-	unsigned char *cyan, *magenta, *yellow, *black;
-	unsigned long i;
-	size_t size, last;
+    unsigned char *cyan, *magenta, *yellow, *black;
+    unsigned long i;
+    size_t size, last;
 
-	cyan = bandC->band();
-	magenta = bandM->band();
-	yellow = bandY->band();
-	black = bandB->band();
+    cyan = bandC->band();
+    magenta = bandM->band();
+    yellow = bandY->band();
+    black = bandB->band();
 
-	size = (bandC->width() * bandC->height() + 7) >> 3;
-	last = size % sizeof(unsigned long);
-	size -= last;
+    size = (bandC->width() * bandC->height() + 7) >> 3;
+    last = size % sizeof(unsigned long);
+    size -= last;
 
-	for (i=0; i < size; i += sizeof(unsigned long)) {
-		unsigned long mask;
+    for (i=0; i < size; i += sizeof(unsigned long)) {
+        unsigned long mask;
 
-		mask = *((unsigned long *)&cyan[i]) | 
-			*((unsigned long *)&magenta[i]) | 
-			*((unsigned long *)&yellow[i]);
-		if (~mask == 0)
-			continue;
-		
-		*((unsigned long *)&cyan[i]) |= ~mask;
-		*((unsigned long *)&magenta[i]) |= ~mask;
-		*((unsigned long *)&yellow[i]) |= ~mask;
-		*((unsigned long *)&black[i]) &= mask;
-	}
-	
-	for (; i < last + size; i++) {
-		unsigned char mask;
+        mask = *((unsigned long *)&cyan[i]) | 
+            *((unsigned long *)&magenta[i]) | 
+            *((unsigned long *)&yellow[i]);
+        if (~mask == 0)
+            continue;
 
-		mask = cyan[i] | magenta[i] | yellow[i];
-		if (mask == 0xFF)
-			continue;
-		cyan[i] |= ~mask;
-		magenta[i] |= ~mask;
-		yellow[i] |= ~mask;
-		black[i] &= mask;
-	}
+        *((unsigned long *)&cyan[i]) |= ~mask;
+        *((unsigned long *)&magenta[i]) |= ~mask;
+        *((unsigned long *)&yellow[i]) |= ~mask;
+        *((unsigned long *)&black[i]) &= mask;
+    }
+
+    for (; i < last + size; i++) {
+        unsigned char mask;
+
+        mask = cyan[i] | magenta[i] | yellow[i];
+        if (mask == 0xFF)
+            continue;
+        cyan[i] |= ~mask;
+        magenta[i] |= ~mask;
+        yellow[i] |= ~mask;
+        black[i] &= mask;
+    }
 }
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
+
