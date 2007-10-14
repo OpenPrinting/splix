@@ -30,6 +30,15 @@ Summary:
 Installation:
 -------------
 
+  +=======================================================================+
+  |                  !!!      IMPORTANT NOTICE      !!!                   |
+  +=======================================================================+
+  |      If you are upgrading your current version, you MUST delete       |
+  |     your printer in the CUPS interface and install it again. This     |
+  |   operation MUST be done since CUPS make a copy of the PPD file and   |
+  |                this file is modified between versions.                |
+  +=======================================================================+
+
 	If you're CUPS installation is not locate in /usr, please edit and
 update the Makefile.
 
@@ -48,3 +57,5 @@ super user environment:
 browser and add a new printer by selecting the correct printer in the list.
 
 	and HAVE FUN ;-)
+
+
