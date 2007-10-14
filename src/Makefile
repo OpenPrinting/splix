@@ -5,7 +5,8 @@
 #
 
 CXXFLAGS	+= -I../include -Wall -g -O0
-LDFLAGS		+= -lcups -lcupsimage
+LDFLAGS		+=
+LIBS		+= -lcups -lcupsimage
 
 OBJECTS		:= spl2.o printer.o band.o compress.o bandanalyser.o
 HEADERS		:= include/spl2.h include/document.h include/printer.h \
@@ -15,10 +16,10 @@ HEADERS		:= include/spl2.h include/document.h include/printer.h \
 
 all: rastertospl2
 rastertospl2: $(OBJECTS) rastertospl2.o raster.o
-	$(CXX) $(LDFLAGS) -o $@ $^
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 pbmtospl2: $(OBJECTS) pbmtospl2.o pbmimage.o
-	$(CXX) $(LDFLAGS) -o $@ $^
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 %.o: %.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) -c $<

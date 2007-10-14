@@ -27,7 +27,7 @@
 #include "error.h"
 #include "band.h"
 #include "bandanalyser.h"
-#include <stdint.h>
+#include <inttypes.h>
 
 
 /*
