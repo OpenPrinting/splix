@@ -322,17 +322,18 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
     struct jbg_enc_state layerState[4];
     unsigned int bandNumber=0, size;
     rootCompressedData_t *cdata[4];
-    unsigned char *layer[4];
+    unsigned char *layer[4][1];
     unsigned long _width;
     char header[0x11];
     int errors=0;
 
     // Allocate the bitmap buffers
-    _width = (width - clippingX + 7) / 8;
+    width = width - clippingX;
+    _width = (width + 7) / 8;
     DEBUG("width=%lu height=%lu, line=%lu", _width, height, document->lineSize());
     for (unsigned int c=0; c < colors; c++) {
         DEBUG("-- ON ALLOUE %lu OCTETS\n", _width * height);
-        layer[c] = new unsigned char[_width * height];
+        *layer[c] = new unsigned char[_width * height];
         cdata[c] = new rootCompressedData_t;
         cdata[c]->last = NULL;
         cdata[c]->packetSize = _printer->packetSize();
@@ -351,21 +352,21 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
 
             // Store the line and clip it if needed
             line = document->lineBuffer();
-            start = _width < res ? res - _width : res;
+            start = _width < res ? res - _width : 0;
             for (unsigned long j = 0; j + start < res; j++)
-                layer[c][j] = line[j + start];
+                (*layer[c])[j] = line[j + start];
         }
     }
 
     // Compress each layer in JBIG
     for (unsigned int c=0; c < colors; c++) {
-        jbg_enc_init(&layerState[c], (width + 7) & ~7, height, 1, &layer[c],
+        jbg_enc_init(&layerState[c], width, height, 1, layer[c],
             callbackJBIGCompression,  &cdata[c]);
         jbg_enc_options(&layerState[c], 0, JBG_DELAY_AT | JBG_LRLTWO | 
             JBG_TPBON, height, 0, 0);
         jbg_enc_out(&layerState[c]);
         jbg_enc_free(&layerState[c]);
-        delete layer[c];
+        delete *layer[c];
         cur[c] = cdata[c]->next;
     }
 
