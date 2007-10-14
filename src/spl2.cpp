@@ -330,7 +330,7 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
     // Allocate the bitmap buffers
     width = width - clippingX;
     _width = (width + 7) / 8;
-    DEBUG("width=%lu height=%lu, line=%lu", _width, height, document->lineSize());
+    DEBUG("width=%lu height=%lu, line=%lu", width, height, document->lineSize());
     for (unsigned int c=0; c < colors; c++) {
         DEBUG("-- ON ALLOUE %lu OCTETS\n", _width * height);
         *layer[c] = new unsigned char[_width * height];
@@ -354,7 +354,7 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
             line = document->lineBuffer();
             start = _width < res ? res - _width : 0;
             for (unsigned long j = 0; j + start < res; j++)
-                (*layer[c])[j] = line[j + start];
+                (*layer[c])[i*_width + j] = line[j + start];
         }
     }
 
