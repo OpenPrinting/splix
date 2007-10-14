@@ -25,9 +25,12 @@
 
 #define _(X)            X
 
-#define ERROR(X, args ...)	fprintf(stderr, "[33m" X "[0m\n", ##args);
-//#define DEBUG(X, args ...)	fprintf(stderr, "[32m" X "[0m\n", ##args);
-#define DEBUG(X, args ...)
+#define ERROR(X, args ...)  fprintf(stderr, "[33m" X "[0m\n", ##args);
+#ifdef ENABLE_DEBUG
+#   define DEBUG(X, args ...)   fprintf(stderr, "[32m" X "[0m\n", ##args);
+#else
+#   define DEBUG(X, args ...)
+#endif /* ENABLE_DEBUG */
 
 
 #endif /* ERROR_H_ */
