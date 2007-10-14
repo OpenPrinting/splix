@@ -19,6 +19,7 @@
  *
  * ---
  *  Thanks to Keith White for his modifications, corrections and adds.
+ *  The JBIG algorithm has been inspired from the Rick Richardson's work.
  * 
  */
 #include "spl2.h"
