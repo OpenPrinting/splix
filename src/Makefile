@@ -4,7 +4,7 @@
 #  This project has been placed under the GPL Licence.
 #
 
-CXXFLAGS	+= -I../include -Wall -g -O0 -DENABLE_DEBUG
+CXXFLAGS	+= -I../include -Wall -g -O0
 LDFLAGS		+=
 LIBS		+= -lcups -lcupsimage -ljbig
 
