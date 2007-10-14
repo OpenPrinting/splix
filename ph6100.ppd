@@ -152,12 +152,6 @@
 *MediaType COLOR/Colored Paper: ""
 *MediaType ENV/Envelope: ""
 *CloseUI: *MediaType
-*OpenUI *ColorModel/Color Mode: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
-*DefaultColorModel: CMYK
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
-*ColorModel CMYK/Color: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
-*CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
 *OrderDependency: 10.0 AnySetup *Resolution
 *DefaultResolution: 600dpi
@@ -176,6 +170,12 @@
 *PowerSave 45/45 Minutes: ""
 *PowerSave 60/1 Hour: ""
 *CloseUI: *PowerSave
+*OpenUI *ColorModel/Color Mode: PickOne
+*OrderDependency: 10.0 AnySetup *ColorModel
+*DefaultColorModel: CMYK
+*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
+*ColorModel CMYK/Color: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
+*CloseUI: *ColorModel
 *OpenUI *JamRecovery/Reprint When Jam: Boolean
 *OrderDependency: 10.0 AnySetup *JamRecovery
 *DefaultJamRecovery: False

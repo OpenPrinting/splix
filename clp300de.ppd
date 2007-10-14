@@ -148,12 +148,6 @@
 *MediaType COLOR/Farbe: ""
 *MediaType ENV/Envelope: ""
 *CloseUI: *MediaType
-*OpenUI *ColorModel/Farbmodus: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
-*DefaultColorModel: CMYK
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
-*ColorModel CMYK/Farbe: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
-*CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
 *OrderDependency: 10.0 AnySetup *Resolution
 *DefaultResolution: 600dpi
@@ -172,6 +166,12 @@
 *PowerSave 45/45 Minutes: ""
 *PowerSave 60/1 Hour: ""
 *CloseUI: *PowerSave
+*OpenUI *ColorModel/Farbmodus: PickOne
+*OrderDependency: 10.0 AnySetup *ColorModel
+*DefaultColorModel: CMYK
+*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 19>>setpagedevice"
+*ColorModel CMYK/Farbe: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 19>>setpagedevice"
+*CloseUI: *ColorModel
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
