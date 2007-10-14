@@ -67,6 +67,7 @@ class Raster : public Document
         virtual unsigned long   height() const  {return _height;}
         virtual unsigned long   lineSize() const {return _lineSize;}
         virtual unsigned char*  lineBuffer() const {return _lineBuffer;}
+        virtual unsigned long   page() const {return _page;}
 
     public:
         virtual bool            isColor() const {return _color;}

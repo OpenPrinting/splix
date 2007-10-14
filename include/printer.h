@@ -53,6 +53,7 @@ class Printer
         char*                   _docHeaderValues;
         bool                    _color;
         unsigned char           _qpdlVersion;
+        unsigned long           _packetSize;
 
     protected:
         long double             _convertX(long double d) const;
@@ -114,6 +115,7 @@ class Printer
 
         bool                    isColorPrinter() const {return _color;}
         unsigned char           qpdlVersion() const {return _qpdlVersion;}
+        unsigned long           packetSize() const {return _packetSize;}
 };
 
 #endif /* PRINTER_H_ */

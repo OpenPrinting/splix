@@ -36,6 +36,12 @@ class SPL2
 
     protected:
         int                     _writeColorBand(Band *band, int color);
+        int                     _compressByBands(Document *document, 
+                                    unsigned long width, unsigned long height, 
+                                    unsigned long clippingX);
+        int                     _compressByDocument(Document *document, 
+                                    unsigned long width, unsigned long height, 
+                                    unsigned long clippingX);
 
     public:
         SPL2();

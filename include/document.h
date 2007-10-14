@@ -41,6 +41,7 @@ class Document
         virtual unsigned long   height() const = 0;
         virtual unsigned long   lineSize() const = 0;
         virtual unsigned char*  lineBuffer() const = 0;
+        virtual unsigned long   page() const = 0;
 
     public:
         virtual bool            isColor() const = 0;
