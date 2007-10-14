@@ -359,7 +359,7 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
 
     // Compress each layer in JBIG
     for (unsigned int c=0; c < colors; c++) {
-        jbg_enc_init(&layerState[c], _width, height, 1, &layer[c], 
+        jbg_enc_init(&layerState[c], (width + 7) & ~7, height, 1, &layer[c],
             callbackJBIGCompression,  &cdata[c]);
         jbg_enc_options(&layerState[c], 0, JBG_DELAY_AT | JBG_LRLTWO | 
             JBG_TPBON, height, 0, 0);
