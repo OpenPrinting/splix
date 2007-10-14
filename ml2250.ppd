@@ -1,12 +1,13 @@
 *PPD-Adobe: "4.3"
 *% PPD file for ML-2250 with CUPS.
-*% Created by the CUPS PPD Compiler v1.1svn.
+*% Created by the CUPS PPD Compiler v1.2.0.
 *FormatVersion: "4.3"
 *FileVersion: "1.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml2250.ppd"
 *Product: "(ESP Ghostscript)"
+*Product: "(GPL Ghostscript)"
 *Product: "(GNU Ghostscript)"
 *Manufacturer: "Samsung"
 *ModelName: "Samsung ML-2250"
@@ -15,6 +16,7 @@
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
+*PSVersion: "(3010.000) 853"
 *LanguageLevel: "3"
 *ColorDevice: False
 *DefaultColorSpace: Gray
@@ -28,9 +30,8 @@
 *QPDL ColorPrinter: "0"
 *General docHeaderValues: "<0><0><0>"
 *QPDL QPDLVersion: "1"
-*% CUPS attributes...
 *cupsVersion: 1.2
-*cupsModelNumber: "0"
+*cupsModelNumber: 0
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-raster 0 rastertospl2"
 *UIConstraints: *OptionTray2 False *InputSlot Lower
@@ -39,7 +40,7 @@
 *UIConstraints: *InputSlot Envelope *OptionTrayEnv False
 *UIConstraints: *OptionTray3 False *InputSlot Tray3
 *UIConstraints: *InputSlot Tray3 *OptionTray3 False
-*OpenUI *PageSize: PickOne
+*OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
 *PageSize Letter/Letter - 8.5x11in: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
@@ -61,7 +62,7 @@
 *PageSize C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
 *PageSize Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
-*OpenUI *PageRegion: PickOne
+*OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
 *DefaultPageRegion: Letter
 *PageRegion Letter/Letter - 8.5x11in: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
@@ -131,7 +132,7 @@
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
-*OpenUI *InputSlot: PickOne
+*OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
 *DefaultInputSlot: Auto
 *InputSlot Auto/Automatic Selection: "<</MediaPosition 1>>setpagedevice"
@@ -262,4 +263,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2250.ppd, 13146 bytes.
+*% End of ml2250.ppd, 13215 bytes.

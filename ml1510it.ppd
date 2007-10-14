@@ -1,12 +1,13 @@
 *PPD-Adobe: "4.3"
 *% PPD file for ML-1510 with CUPS.
-*% Created by the CUPS PPD Compiler v1.1svn.
+*% Created by the CUPS PPD Compiler v1.2.0.
 *FormatVersion: "4.3"
 *FileVersion: "1.0"
-*LanguageVersion: Italian
+*LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml1510.ppd"
 *Product: "(ESP Ghostscript)"
+*Product: "(GPL Ghostscript)"
 *Product: "(GNU Ghostscript)"
 *Manufacturer: "Samsung"
 *ModelName: "Samsung ML-1510"
@@ -15,6 +16,7 @@
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
+*PSVersion: "(3010.000) 853"
 *LanguageLevel: "3"
 *ColorDevice: False
 *DefaultColorSpace: Gray
@@ -28,12 +30,11 @@
 *QPDL ColorPrinter: "0"
 *General docHeaderValues: "<0><0><0>"
 *QPDL QPDLVersion: "1"
-*% CUPS attributes...
 *cupsVersion: 1.2
-*cupsModelNumber: "0"
+*cupsModelNumber: 0
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-raster 0 rastertospl2"
-*OpenUI *PageSize: PickOne
+*OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
 *PageSize Letter/Letter - 8.5x11in: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
@@ -42,20 +43,20 @@
 *PageSize Executive/Executive - 7.25x10.5in: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageSize Ledger/Ledger - 17x11in: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageSize A3/A3 - 297x420mm: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageSize Env10/Buste lettera #10 - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageSize Env10/#10 Envelope - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageSize Monarch/Monarch - 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageSize C5/C5 - 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageSize DL/DL - 110x220mm: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
 *PageSize B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
 *PageSize B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
-*PageSize EnvISOB5/Buste Lettera ISOB5 - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageSize EnvISOB5/ISOB5 Envelope - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
 *PageSize A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
 *PageSize A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
-*PageSize EnvISOB6/Buste lettera ISOB6 - 176x125mm: "<</PageSize[499 354]/ImagingBBox null>>setpagedevice"
+*PageSize EnvISOB6/ISOB6 Envelope - 176x125mm: "<</PageSize[499 354]/ImagingBBox null>>setpagedevice"
 *PageSize C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
 *PageSize Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
-*OpenUI *PageRegion: PickOne
+*OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
 *DefaultPageRegion: Letter
 *PageRegion Letter/Letter - 8.5x11in: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
@@ -64,16 +65,16 @@
 *PageRegion Executive/Executive - 7.25x10.5in: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageRegion Ledger/Ledger - 17x11in: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageRegion A3/A3 - 297x420mm: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageRegion Env10/Buste lettera #10 - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageRegion Env10/#10 Envelope - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageRegion Monarch/Monarch - 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion C5/C5 - 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageRegion DL/DL - 110x220mm: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
 *PageRegion B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
 *PageRegion B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvISOB5/Buste Lettera ISOB5 - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvISOB5/ISOB5 Envelope - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
 *PageRegion A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
 *PageRegion A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvISOB6/Buste lettera ISOB6 - 176x125mm: "<</PageSize[499 354]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvISOB6/ISOB6 Envelope - 176x125mm: "<</PageSize[499 354]/ImagingBBox null>>setpagedevice"
 *PageRegion C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
 *PageRegion Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
@@ -84,16 +85,16 @@
 *ImageableArea Executive/Executive - 7.25x10.5in: "11.52 15.59 510.48 740.41"
 *ImageableArea Ledger/Ledger - 17x11in: "11.52 15.59 1212.48 776.41"
 *ImageableArea A3/A3 - 297x420mm: "11.52 15.59 830.48 1175.41"
-*ImageableArea Env10/Buste lettera #10 - 4.13x9.5in: "11.52 15.59 285.48 668.41"
+*ImageableArea Env10/#10 Envelope - 4.13x9.5in: "11.52 15.59 285.48 668.41"
 *ImageableArea Monarch/Monarch - 3.875x7.5in: "11.52 15.59 267.48 524.41"
 *ImageableArea C5/C5 - 162x229mm: "11.52 15.59 447.48 633.41"
 *ImageableArea DL/DL - 110x220mm: "11.52 15.59 300.48 608.41"
 *ImageableArea B4/B4 - 257x364mm: "11.52 15.59 717.48 1016.41"
 *ImageableArea B5/B5 - 182x257mm: "11.52 15.59 504.48 713.41"
-*ImageableArea EnvISOB5/Buste Lettera ISOB5 - 176x250mm: "11.52 15.59 487.48 693.41"
+*ImageableArea EnvISOB5/ISOB5 Envelope - 176x250mm: "11.52 15.59 487.48 693.41"
 *ImageableArea A5/A5 - 148x210mm: "11.52 15.59 408.48 579.41"
 *ImageableArea A6/A6 - 105x148mm: "11.52 15.59 285.48 404.41"
-*ImageableArea EnvISOB6/Buste lettera ISOB6 - 176x125mm: "11.52 15.59 487.48 338.41"
+*ImageableArea EnvISOB6/ISOB6 Envelope - 176x125mm: "11.52 15.59 487.48 338.41"
 *ImageableArea C6/C6 - 114x162mm: "11.52 15.59 311.48 443.41"
 *ImageableArea Folio/Folio - 210x330mm: "11.52 15.59 583.48 919.41"
 *DefaultPaperDimension: Letter
@@ -103,16 +104,16 @@
 *PaperDimension Executive/Executive - 7.25x10.5in: "522.00 756.00"
 *PaperDimension Ledger/Ledger - 17x11in: "1224.00 792.00"
 *PaperDimension A3/A3 - 297x420mm: "842.00 1191.00"
-*PaperDimension Env10/Buste lettera #10 - 4.13x9.5in: "297.00 684.00"
+*PaperDimension Env10/#10 Envelope - 4.13x9.5in: "297.00 684.00"
 *PaperDimension Monarch/Monarch - 3.875x7.5in: "279.00 540.00"
 *PaperDimension C5/C5 - 162x229mm: "459.00 649.00"
 *PaperDimension DL/DL - 110x220mm: "312.00 624.00"
 *PaperDimension B4/B4 - 257x364mm: "729.00 1032.00"
 *PaperDimension B5/B5 - 182x257mm: "516.00 729.00"
-*PaperDimension EnvISOB5/Buste Lettera ISOB5 - 176x250mm: "499.00 709.00"
+*PaperDimension EnvISOB5/ISOB5 Envelope - 176x250mm: "499.00 709.00"
 *PaperDimension A5/A5 - 148x210mm: "420.00 595.00"
 *PaperDimension A6/A6 - 105x148mm: "297.00 420.00"
-*PaperDimension EnvISOB6/Buste lettera ISOB6 - 176x125mm: "499.00 354.00"
+*PaperDimension EnvISOB6/ISOB6 Envelope - 176x125mm: "499.00 354.00"
 *PaperDimension C6/C6 - 114x162mm: "323.00 459.00"
 *PaperDimension Folio/Folio - 210x330mm: "595.00 935.00"
 *MaxMediaWidth: "0.00"
@@ -125,62 +126,62 @@
 *ParamCustomPageSize HeightOffset: 4 points 0 0
 *ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
-*OpenUI *InputSlot: PickOne
+*OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Auto/Selezione Automatica: "<</MediaPosition 1>>setpagedevice"
-*InputSlot Manual/Alimentazione Manuale: "<</MediaPosition 2>>setpagedevice"
+*InputSlot Auto/Automatic Selection: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Manual/Manuale: "<</MediaPosition 2>>setpagedevice"
 *CloseUI: *InputSlot
-*OpenUI *MediaType/Tipo Carta: PickOne
+*OpenUI *MediaType/Tipo di carta: PickOne
 *OrderDependency: 10.0 AnySetup *MediaType
 *DefaultMediaType: OFF
-*MediaType OFF/Usa Default Stampante: ""
-*MediaType NORMAL/Carta Semplice: ""
-*MediaType THICK/Carta Spessa: ""
-*MediaType THIN/Carta Sottile: ""
-*MediaType BOND/Adesivo: ""
-*MediaType OHP/Lucido: ""
-*MediaType CARD/Biglietti Da Visita: ""
-*MediaType LABEL/Etichette: ""
-*MediaType USED/Prestampati: ""
-*MediaType COLOR/Carta Colorata: ""
-*MediaType ENV/Busta da Lettera: ""
+*MediaType OFF/Use Printer Default: ""
+*MediaType NORMAL/Carta normale: ""
+*MediaType THICK/Carta spessa: ""
+*MediaType THIN/Thin Paper: ""
+*MediaType BOND/Bond: ""
+*MediaType OHP/Trasparenza: ""
+*MediaType CARD/Cartoncino: ""
+*MediaType LABEL/Label: ""
+*MediaType USED/Preprinted: ""
+*MediaType COLOR/Colore: ""
+*MediaType ENV/Envelope: ""
 *CloseUI: *MediaType
-*OpenUI *PowerSave/Risparmio Energetico: PickOne
+*OpenUI *PowerSave/Power Save: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
 *DefaultPowerSave: 5
-*PowerSave False/Off: ""
-*PowerSave 5/5 Minuti: ""
-*PowerSave 10/10 Minuti: ""
-*PowerSave 15/15 Minuti: ""
-*PowerSave 30/30 Minuti: ""
-*PowerSave 45/45 Minuti: ""
-*PowerSave 60/1 Ora: ""
+*PowerSave False/Non installato: ""
+*PowerSave 5/5 Minutes: ""
+*PowerSave 10/10 Minutes: ""
+*PowerSave 15/15 Minutes: ""
+*PowerSave 30/30 Minutes: ""
+*PowerSave 45/45 Minutes: ""
+*PowerSave 60/1 Hour: ""
 *CloseUI: *PowerSave
-*OpenUI *TonerDensity/Densità del Toner: PickOne
+*OpenUI *TonerDensity/Toner Density: PickOne
 *OrderDependency: 10.0 AnySetup *TonerDensity
 *DefaultTonerDensity: 3
-*TonerDensity 1/Leggera: ""
-*TonerDensity 3/Media: ""
-*TonerDensity 5/Scura: ""
+*TonerDensity 1/Light: ""
+*TonerDensity 3/Medium: ""
+*TonerDensity 5/Dark: ""
 *CloseUI: *TonerDensity
-*OpenUI *EconoMode/Risparmio Toner: PickOne
+*OpenUI *EconoMode/Toner Save: PickOne
 *OrderDependency: 10.0 AnySetup *EconoMode
 *DefaultEconoMode: 0
-*EconoMode 0/Usa Default Stampante: ""
-*EconoMode ON/Risparmio: ""
+*EconoMode 0/Use Printer Default: ""
+*EconoMode ON/Save: ""
 *EconoMode OFF/Standard: ""
 *CloseUI: *EconoMode
-*OpenUI *JamRecovery/Ristampa se Inceppata: Boolean
+*OpenUI *JamRecovery/Reprint When Jam: Boolean
 *OrderDependency: 10.0 AnySetup *JamRecovery
 *DefaultJamRecovery: False
-*JamRecovery False/Off: ""
+*JamRecovery False/Non installato: ""
 *JamRecovery True/On: ""
 *CloseUI: *JamRecovery
-*OpenUI *ColorModel/Modo di colore: PickOne
+*OpenUI *ColorModel/Modo Colore: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: Gray
-*ColorModel Gray/Gradazione di grigio: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
+*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
 *OrderDependency: 10.0 AnySetup *Resolution
@@ -224,4 +225,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1510.ppd, 11687 bytes.
+*% End of ml1510.ppd, 11631 bytes.

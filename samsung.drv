@@ -228,6 +228,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	{
 		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "2"
+		Attribute QPDL PacketSize "512"
 		Throughput 4
 		Resolution - 1 0 0 0 "300dpi/300 DPI"
 		Resolution - 1 0 0 0 "1200dpi/1200 DPI"
@@ -282,6 +283,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	{
 		Attribute General docHeaderValues "<0><0><0>"
 		Attribute QPDL QPDLVersion "1"
+		Attribute QPDL PacketSize "512"
 		Throughput 20
 
 		Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
