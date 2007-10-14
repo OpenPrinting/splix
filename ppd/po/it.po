@@ -277,3 +277,18 @@ msgstr "Phaser 6100"
 msgid "CLP-600"
 msgstr "CLP-600"
 
+msgid "Media Source"
+msgstr "TRANSLATE Media Source"
+
+msgid "2-Sided Printing"
+msgstr "TRANSLATE 2-Sided Printing"
+
+msgid "Off (1-Sided)"
+msgstr "TRANSLATE Off (1-Sided)"
+
+msgid "Long-Edge (Portrait)"
+msgstr "TRANSLATE Long-Edge (Portrait)"
+
+msgid "Short-Edge (Landscape)"
+msgstr "TRANSLATE Short-Edge (Landscape)"
+

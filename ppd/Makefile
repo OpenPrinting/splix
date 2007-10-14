@@ -25,9 +25,10 @@ $(DRIVER): $(SOURCE)
 	ppdc -d ./ $<
 
 $(LANGDRIVERSEXT): $(SOURCE) $(patsubst %, $(PODIR)/%.$(POEXT), $(LANGUAGES))
-	ppdc -c ${PODIR}/$(patsubst $(MASTERDRIVER)%.$(DRIVERSEXT),%, $@).${POEXT} -l $(patsubst $(MASTERDRIVER)%.$(DRIVERSEXT),%, $@) -d ${PODIR} $<
+	lang=$(patsubst $(MASTERDRIVER)%.$(DRIVERSEXT),%, $@); \
+	ppdc -c ${PODIR}/$$lang.${POEXT} -l $$lang -d ${PODIR}/$$lang $<; \
 	for filename in ${DRIVERS}; do \
-		mv ${PODIR}/`echo $$filename`.${DRIVERSEXT} `echo $$filename`$(patsubst $(MASTERDRIVER)%.$(DRIVERSEXT),%, $@).${DRIVERSEXT}; \
+		mv ${PODIR}/$$lang/$$filename.${DRIVERSEXT} $$filename$$lang.${DRIVERSEXT}; \
 	done
 
 .PHONY: update
