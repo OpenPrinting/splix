@@ -292,3 +292,6 @@ msgstr "TRANSLATE Long-Edge (Portrait)"
 msgid "Short-Edge (Landscape)"
 msgstr "TRANSLATE Short-Edge (Landscape)"
 
+msgid "Phaser-3117"
+msgstr "TRANSLATE Phaser-3117"
+

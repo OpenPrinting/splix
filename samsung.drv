@@ -145,14 +145,21 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 	}
 	{
 		{
-			// 1200x1200 DPI
-			Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
 			Attribute QPDL QPDLVersion "2"
-
-			// Oficio 
-			ModelName "ML-2010"
 			Attribute General docHeaderValues "<0><0><1>"
-			PCFileName "ml2010.ppd"
+			{
+				// 1200x1200 DPI
+				Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
+				// Oficio 
+				ModelName "ML-2010"
+				PCFileName "ml2010.ppd"
+			}
+			{
+				Manufacturer "Xerox"
+				ModelName "Phaser-3117"
+				PCFileName "ph3117.ppd"
+			}
 		}
 		{
 			Attribute General docHeaderValues "<0><0><0>"
@@ -277,7 +284,7 @@ Attribute PJL endPJL "<09><1B>%-12345X"
 			Throughput 20
 			Manufacturer "Xerox"
 			ModelName "Phaser 6100"
-			PCFileName "xerox-phaser6100.ppd"
+			PCFileName "ph6100.ppd"
 		}
 	}
 	{
