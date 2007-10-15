@@ -23,8 +23,12 @@
 #define HEADER_HEIGHT_H     0x07
 #define HEADER_HEIGHT_L     0x08
 #define HEADER_PAPERSOURCE  0x09
+#define HEADER_UNKNOWN1	    0x0A
 #define HEADER_DUPLEX       0x0B
 #define HEADER_TUMBLE       0x0C
+#define HEADER_UNKNOWN2	    0x0D
+#define HEADER_QPDLVERSION  0x0E
+#define HEADER_UNKNOWN3     0x0F
 #define HEADER_XRESOLUTION  0x10
 
 #define BAND_NUMBER         0x1
@@ -518,6 +522,9 @@ bool _extractHeader(FILE *input, flags_t flags, document *doc)
         printf(_("     Printable area: %i×%i\n"), width, height);
     printf(_("     Duplex: %i\n"), header[HEADER_DUPLEX]);
     printf(_("     Duplex tumble: %i\n"), header[HEADER_TUMBLE]);
+    printf(_("     QPDL Version: %i\n"), header[HEADER_QPDLVERSION]);
+    printf(_("     Unknown vars: 0x%X 0x%X 0x%X\n"), header[HEADER_UNKNOWN1],
+	header[HEADER_UNKNOWN2], header[HEADER_UNKNOWN3]);
 
     return true;
 }
