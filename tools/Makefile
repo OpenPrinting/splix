@@ -1,10 +1,28 @@
 #
-#   Makefile			(C) 2006, Aurélien Croc (AP²C)
+#   Makefile			(C) 2006-2007, Aurélien Croc (AP²C)
 # 
 
-CXXFLAGS  	= -O0 -g
+SRCS		:= decompress.cpp appliargs.cpp pjl.cpp qpdl.cpp page.cpp
+HEADERS		:= appliargs.h i18n.h pjl.h qpdl.h page.h
+PROJECT		:= decompress
 
-decompress: decompress.cpp
 
+CXXFLAGS  	:= -O0 -g `pkg-config QtCore --cflags`
+LIBS		:= `pkg-config QtCore --libs`
+
+OBJS		:= $(SRCS:.cpp=.o)
+
+all: $(PROJECT)
+
+$(OBJS): $(HEADERS)
+
+$(PROJECT): $(OBJS)
+	$(CXX) -o $@ $(LDFLAGS) $^ $(LIBS)
+
+
+.PHONY: clean cleanall
 clean:
-	$(RM) decompress
+	$(RM) $(OBJS)
+
+cleanall: clean
+	$(RM) $(PROJECT)
