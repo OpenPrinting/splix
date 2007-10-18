@@ -33,6 +33,7 @@ static const char* _colorsName[] = {"cyan","magenta","yellow","black"};
  */
 Page::Page()
 {
+    _version = 0;
     _maxColors = 0;
     for (unsigned int i=0; i < 4; i++) {
         _layers[i].clear();

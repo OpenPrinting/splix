@@ -283,12 +283,13 @@ QPDLDocument::Result QPDLDocument::_readPageContent(QFile& data,
             // Read the compression and the size
             header = data.read(5);
             compression = header.at(0);
+            printf("comp=%x", compression);
             size = ((quint8)header.at(1) << 24) + ((quint8)header.at(2) << 16) +
                 ((quint8)header.at(3) << 8) + (quint8)header.at(4);
             content = data.read(size);
 
             // Process the band
-            if (!_processBandAnalysis(4, width, height, compression, 
+            if (!_processBandAnalysis(1, width, height, compression, 
                         content, out, err))
                 return Error;
         }
@@ -343,9 +344,9 @@ bool QPDLDocument::_processBandAnalysis(quint8 color, quint16 width,
                 QChar('0')) << endl;
             return false;
         }
-        content.remove(0, 4);
         content.remove(content.size() - 5, 4);
     }
+    content.remove(0, 4);
 
     // Decompress the band
     if (_decompression || _dump)
