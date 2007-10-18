@@ -58,6 +58,7 @@ class QPDLDocument
 
         bool                    _quiet;
         bool                    _decompression;
+        bool                    _dump;
         Type                    _type;
         Page                    _page;
 
@@ -85,10 +86,14 @@ class QPDLDocument
         void                    setQuiet(bool quiet) {_quiet = quiet;}
         void                    setDecompressionState(bool state)
                                 {_decompression = state;}
+        void                    setDump(bool state) {_dump = state;}
         void                    setType(Type type) {_type = type;}
 
-        bool                    decompressionState() const 
+        bool                    decompressionState() const
                                 {return _decompression;}
+        Type                    type() const {return _type;}
+        quint32                 page() const {return _pageNr;}
+        quint32                 currentBandNr() const {return _currentBandNr;}
 
     public:
         bool                    parse(QFile& data, QTextStream& out, 

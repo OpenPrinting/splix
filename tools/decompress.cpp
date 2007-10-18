@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 {
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("latin1"));
     AppliArgs args(QStringList() << "spl2,2" << "splc,c" << "~help,h" << 
-        "~version,v" << "quiet,q" << "decompress,d");
+        "~version,v" << "quiet,q" << "decompress,d" << "dump,D");
     QTextStream out(stdout), err(stderr);
     bool argsErr, quiet;
     QFile qpdlDocument;
@@ -45,6 +45,7 @@ int main(int argc, char** argv)
             applicationName()) << endl;
         out << _("Available options:") << endl;
         out << _("  --decompress, -d          Decompress bands") << endl;
+        out << _("  --dump, -D                Dump bands in files") << endl;
         out << _("  --help, -h                Print this help message") << endl;
         out << _("  --quiet, -q               Be quiet") << endl;
         out << _("  --spl2, -2                This is a SPL2 document "
@@ -82,6 +83,7 @@ int main(int argc, char** argv)
     QPDLDocument document;
     document.setQuiet(quiet);
     document.setDecompressionState(args.isOptionSet("decompress"));
+    document.setDump(args.isOptionSet("dump"));
     document.setType(args.isOptionSet("splc") ? QPDLDocument::SPLc :
             QPDLDocument::SPL2);
     document.parse(qpdlDocument, out, err);

@@ -201,7 +201,7 @@ QPDLDocument::Result QPDLDocument::_readPageContent(QFile& data,
     while (!data.atEnd()) {
         QByteArray header, content;
         quint16 width, height;
-        char signature, color;
+        char signature, color=1;
         quint8 compression;
         quint32 size;
 
@@ -288,7 +288,7 @@ QPDLDocument::Result QPDLDocument::_readPageContent(QFile& data,
             content = data.read(size);
 
             // Process the band
-            if (!_processBandAnalysis(0, width, height, compression, 
+            if (!_processBandAnalysis(4, width, height, compression, 
                         content, out, err))
                 return Error;
         }
@@ -307,23 +307,50 @@ bool QPDLDocument::_processBandAnalysis(quint8 color, quint16 width,
     QTextStream& out, QTextStream& err)
 {
     quint32 checkSum = 0, givenCheckSum;
+    quint8 version;
+    bool be;
+
+    // Check the signature and the BE/LE
+    if (((quint8)content.at(0) & 0xF) != 0x9 || (quint8)content.at(1) != 0xAB ||
+        (quint8)content.at(2) != 0xCD || (quint8)content.at(3) != 0xEF) {
+        if (((quint8)content.at(3) & 0xF) != 0x09 || 
+            (quint8)content.at(2) != 0xAB || (quint8)content.at(1) != 0xCD || 
+            (quint8)content.at(0) != 0xEF) {
+            err << QString(_("QPDL: Invalid signature")) << endl;
+            return false;
+        } else {
+            be = false;
+            version = (quint8)content.at(3) >> 4;
+        }
+    } else {
+        be = true;
+        version = (quint8)content.at(0) >> 4;
+    }
+    _page.setSubHeaderVersion(version);
+    _page.setBE(be);
 
     // Check the checksum
-    givenCheckSum = ((quint8)content.at(content.size() - 4) << 24) + 
-         ((quint8)content.at(content.size() - 3) << 16) + 
-         ((quint8)content.at(content.size() - 2) << 8) +
-         (quint8)content.at(content.size() - 1);
-    for (unsigned int i=0; i < content.size() - 4; i++)
-        checkSum += (quint8)content.at(i);
-    if (givenCheckSum != checkSum) {
-        err << QString(_("QPDL: band checksum invalid!")) << endl;
-        return false;
+    if (_qpdl > 0) {
+        givenCheckSum = ((quint8)content.at(content.size() - 4) << 24) + 
+            ((quint8)content.at(content.size() - 3) << 16) + 
+            ((quint8)content.at(content.size() - 2) << 8) +
+            (quint8)content.at(content.size() - 1);
+        for (unsigned int i=0; i < content.size() - 4; i++)
+            checkSum += (quint8)content.at(i);
+        if (givenCheckSum != checkSum) {
+            err << QString(_("QPDL: band checksum invalid! (0x%1-0x%2)")).
+                arg(givenCheckSum, 8, 16, QChar('0')).arg(checkSum, 8, 16,
+                QChar('0')) << endl;
+            return false;
+        }
+        content.remove(0, 4);
+        content.remove(content.size() - 5, 4);
     }
 
     // Decompress the band
-    if (_decompression)
-        return _page.process(color, width, height, compression, content.
-            remove(content.size() - 5, 4), out, err);
+    if (_decompression || _dump)
+        return _page.process(color, width, height, _dump ? 0 : compression, 
+            content, out, err);
     return true;
 }
 
