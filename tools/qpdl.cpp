@@ -283,7 +283,6 @@ QPDLDocument::Result QPDLDocument::_readPageContent(QFile& data,
             // Read the compression and the size
             header = data.read(5);
             compression = header.at(0);
-            printf("comp=%x", compression);
             size = ((quint8)header.at(1) << 24) + ((quint8)header.at(2) << 16) +
                 ((quint8)header.at(3) << 8) + (quint8)header.at(4);
             content = data.read(size);
