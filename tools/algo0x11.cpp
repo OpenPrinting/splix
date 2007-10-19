@@ -18,7 +18,7 @@
  *   $Id$
  */
 #include "algo0x11.h"
-#include <QtCore/QByteArray.h>
+#include <QtCore/QByteArray>
 #include <QtCore/QTextStream>
 #include "page.h"
 #include "i18n.h"

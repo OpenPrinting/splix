@@ -54,7 +54,7 @@ class AppliArgs
                                     at(nr); }
     public:
         void                    addSupportedArgs(const QString& longArg, 
-                                    const QChar& shortArg="", quint8 nrVal=0);
+                                    const QChar& shortArg=0, quint8 nrVal=0);
         void                    addSupportedArgs(const QStringList& args);
         bool                    parse(int argc, char** argv, quint32 maxParams);
         void                    printErrors(QTextStream& out) const;
