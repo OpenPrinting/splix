@@ -1,6 +1,12 @@
+Fri Oct 19 17:12:28 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		The X clipping was miss-calculated.
+	--- RELEASE OF THE VERSION V. 1.0.2 ---
+
 Sat Feb 10 15:18:01 2007 Aurélien Croc <programmation AT ap2c DOT org>
 	* Bug fix:
 		ML-2010 resolution bug is now fixed
+	--- RELEASE OF THE VERSION V. 1.0.1-1 ---
 
 Sun Feb 04 02:45:18 2007 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
@@ -19,6 +25,7 @@ Wed Nov 29 11:58:45 2006 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
 		Compression optimization: skip empty bands
 		Ghostscript correction for black layer (color printers)
+
 Sun Nov 26 04:21:15 2006 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
 		English translation of the SPL-2 documentation
