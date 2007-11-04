@@ -326,6 +326,9 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
     unsigned long _width;
     char header[0x11];
     int errors=0;
+#ifdef ENABLE_DEBUG
+    FILE *test;
+#endif /* ENABLE_DEBUG */
 
     // Allocate the bitmap buffers
     width = width - clippingX;
@@ -370,6 +373,10 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
         cur[c] = cdata[c]->next;
     }
 
+#ifdef ENABLE_DEBUG
+    test = fopen("/tmp/result_black.jbg", "w");
+#endif /* ENABLE_DEBUG */
+
     // Export the result in the QPDL document
     while (cur[0] || cur[1] || cur[2] || cur[3]) {
         for (unsigned int c=0; c < colors; c++) {
@@ -408,6 +415,13 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
             _writeBE(0, _output);
             _writeBE(0, _output);
             fwrite(cur[c]->data, 1, cur[c]->size, _output);
+#ifdef ENABLE_DEBUG
+            if (c == 3) {
+                DEBUG("--- Taille du BIE : %lu\n", cur[c]->size);
+                fwrite(&cur[c]->size, sizeof(cur[c]->size), 1, test);
+                fwrite(cur[c]->data, 1, cur[c]->size, test);
+            }
+#endif /* ENABLE_DEBUG */
             for (unsigned int j=0; j < cur[c]->size; j++)
                 checksum += (unsigned int)cur[c]->data[j];
             _writeBE(checksum, _output);
@@ -415,9 +429,13 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
             tmp = cur[c]->next;
             delete cur[c];
             cur[c] = tmp;
-            bandNumber++;
         }
+        bandNumber++;
     }
+
+#ifdef ENABLE_DEBUG
+    fclose(test);
+#endif /* ENABLE_DEBUG */
 
     // Free the compression structures
     for (unsigned int c=0; c < colors; c++)
