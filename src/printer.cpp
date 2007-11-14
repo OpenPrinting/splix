@@ -95,7 +95,7 @@ Printer::Printer(ppd_file_t *ppd)
     _areaX = 582.5;
     _areaY = 829.5;
     _bandHeight = 0x80;
-    _duplex = 0x0100;
+    _duplex = 0x3;
 
     // Get the QPDL version, color information and packet size
     attr = ppdFindAttr(_ppd, "QPDL", "QPDLVersion");
@@ -206,23 +206,23 @@ Printer::Printer(ppd_file_t *ppd)
     // Get the duplex
     if ((choice = ppdFindMarkedChoice(_ppd, "Duplex"))) {
         if (!(strcmp(choice->choice, "None")))
-            _duplex = 0;
+            _duplex = 0x3;
         else if (!(strcmp(choice->choice, "DuplexNoTumble")))
-            _duplex = 0x0101;
+            _duplex = 0x1;
         else if (!(strcmp(choice->choice, "DuplexTumble")))
-            _duplex = 0x0001;
+            _duplex = 0x2;
         else
-            _duplex = 0x0100;
+            _duplex = 0x3;
     }
     if ((choice = ppdFindMarkedChoice(_ppd, "JCLDuplex"))) {
         if (!(strcmp(choice->choice, "None")))
-            _duplex = 0;
+            _duplex = 0x3;
         else if (!(strcmp(choice->choice, "DuplexNoTumble")))
-            _duplex = 0x0101;
+            _duplex = 0x1;
         else if (!(strcmp(choice->choice, "DuplexTumble")))
-            _duplex = 0x0001;
+            _duplex = 0x2;
         else
-            _duplex = 0x0100;
+            _duplex = 0x3;
     }
 
     // Compression algorithm version
@@ -321,12 +321,12 @@ void Printer::newJob(FILE *output)
         fprintf(output, "@PJL SET RET = NORMAL\n");
 
     // Enable the Duplex mode
-    if (_duplex == 0)
+    if (_duplex == 0x3)
         fprintf(output, "@PJL SET DUPLEX = OFF\n");
-    else if (_duplex == 0x0101)
+    else if (_duplex == 0x1)
         fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
                 "LONGEDGE\n");
-    else if (_duplex == 0x0001)
+    else if (_duplex == 0x2)
         fprintf(output, "@PJL SET DUPLEX = ON\n@PJL SET BINDING = "
                 "SHORTEDGE\n");
 }

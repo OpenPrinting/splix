@@ -36,7 +36,7 @@ class Printer
         unsigned long           _yresolution;
         unsigned char           _paperType;
         unsigned char           _paperSource;
-        unsigned short          _duplex;
+        unsigned char           _duplex;
 
         unsigned char           _compVersion;
 

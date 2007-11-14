@@ -179,8 +179,11 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     header[0x8] = document->height();               // Printable area height
     header[0x9] = _printer->paperSource();          // Paper source
     header[0xa] = _printer->docHeaderValues(0);     // ??? XXX
-    header[0xb] = _printer->duplex() >> 8;          // Duplex
-    header[0xc] = _printer->duplex();               // Duplex
+    header[0xb] = _printer->duplex() & 0x1;         // Duplex
+    if (_printer->duplex() == 0x3)
+        header[0xc] = 0;                            // Tumble
+    else
+        header[0xc] = document->page() % 2;         // Tumble
     header[0xd] = _printer->docHeaderValues(1);     // ??? XXX
     header[0xe] = _printer->qpdlVersion();          // QPDL Version
     header[0xf] = _printer->docHeaderValues(2);     // ??? XXX
