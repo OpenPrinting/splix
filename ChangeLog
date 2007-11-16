@@ -1,3 +1,16 @@
+Fri Nov 16 03:08:01 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		The JBIG compression used by newer printers
+		LOTS of new printer supported
+	* Implement new debugging tools
+	* Rewrite all the PPD files
+	* Reformat the code
+	* Bug fix:
+		Fix the Duplex bug
+		Prevent from loading an old PPD file
+		The code should now compile under IRIX
+	--- RELEASE OF THE VERSION V. 1.1.0 ---
+
 Fri Oct 19 17:12:28 2007 Aurélien Croc <programmation AT ap2c DOT org>
 	* Bug fix:
 		The X clipping was miss-calculated.
