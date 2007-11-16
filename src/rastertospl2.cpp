@@ -19,8 +19,9 @@
  * 
  */
 
-#include "raster.h"
+#include "version.h"
 #include "printer.h"
+#include "raster.h"
 #include "spl2.h"
 #include "error.h"
 
@@ -72,6 +73,17 @@ int main(int argc, char **argv)
     cupsMarkOptions(ppd, nr, options);
     cupsFreeOptions(nr, options);
 
+    // Check if it's a valid PPD
+    ppd_attr_t *attr = ppdFindAttr(ppd, "FileVersion", NULL);
+    if (!attr) {
+        ERROR("No FileVersion found in the PPD file");
+        return 1;
+    }
+    if (strcmp(attr->value, VERSION)) {
+        ERROR("Invalid PPD file version: Splix V. %s but the PPD file "
+            "is designed for SpliX V. %s", VERSION, attr->value);
+        return 1;
+    }
 
     // Create the printer
     printer = new Printer(ppd);
