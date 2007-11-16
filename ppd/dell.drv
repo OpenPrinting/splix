@@ -1,0 +1,44 @@
+/*
+ *      dell.drv                       (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Contains the Dell printers drivers
+ *
+ * $Id$
+ */
+
+Manufacturer "Dell"
+
+#import "version.defs"
+#import "spl2.defs"
+#import "filter.defs"
+
+//
+// Specific black & white printer definition
+//
+{
+    #import "monochrome.defs"
+    #import "powersave.defs"
+    #import "tonerdensity.defs"
+    #import "tonersave.defs"
+    #import "jamrecovery.defs"
+
+    // QPDL Version 1
+    {
+        Attribute QPDL QPDLVersion "1"
+        Attribute General docHeaderValues "<0><0><0>"
+
+        {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+            {
+                ModelName "1100"
+                PCFileName "1100.ppd"
+            } {
+                ModelName "1110"
+                PCFileName "1110.ppd"
+            }
+        }
+    }
+}
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+

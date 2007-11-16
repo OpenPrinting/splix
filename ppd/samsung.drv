@@ -1,310 +1,229 @@
-#include <font.defs>
-#include <media.defs>
+/*
+ *      samsung.drv                    (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Contains the Samsung printers drivers
+ *
+ * $Id$
+ */
 
-// Information about the printer family
 Manufacturer "Samsung"
-Version "1.0"
 
-// Filter to use
-Filter application/vnd.cups-raster 0 rastertospl2
-
-// Supported paper format
-HWMargins 0.16in 0.55cm 0.16in 0.55cm
-*MediaSize Letter
-MediaSize Legal
-MediaSize A4
-MediaSize Executive
-MediaSize Ledger
-MediaSize A3
-MediaSize Env10
-MediaSize Monarch
-MediaSize C5
-MediaSize DL
-MediaSize B4
-MediaSize B5
-MediaSize EnvISOB5
-// Not listed
-// JPost
-// JDouble
-MediaSize A5
-MediaSize A6
-MediaSize EnvISOB6
-// Custom
-MediaSize C6
-MediaSize Folio
-VariablePaperSize yes
-
-// Supported input slots
-*InputSlot 1 "Auto/Automatic Selection"
-InputSlot 2 "Manual/Manual Feed"
-
-// Font included in the printer ROM
-Font *
-
-
+#import "version.defs"
+#import "spl2.defs"
+#import "filter.defs"
 
 //
-// Defining PJL variables
-//
-
-// Supported paper type
-Option "MediaType/Paper Type" PickOne AnySetup 10
-   *Choice "OFF/Use Printer Default" ""
-   Choice "NORMAL/Plain Paper" ""
-   Choice "THICK/Thick Paper" ""
-   Choice "THIN/Thin Paper" ""
-   Choice "BOND/Bond" ""
-   Choice "OHP/Transparency" ""
-   Choice "CARD/Card Stock" ""
-   Choice "LABEL/Label" ""
-   Choice "USED/Preprinted" ""
-   Choice "COLOR/Colored Paper" ""
-   Choice "ENV/Envelope" ""
-
-Attribute PJL beginPJL "<1B>%-12345X"
-Attribute PJL endPJL "<09><1B>%-12345X"
-
-
 // Specific black & white printer definition
+//
 {
-	Attribute QPDL ColorPrinter "0"
+    #import "monochrome.defs"
+    #import "powersave.defs"
+    #import "tonerdensity.defs"
+    #import "tonersave.defs"
+    #import "jamrecovery.defs"
 
-	//
-	// Defining PJL variables
-	//
+    // QPDL Version 1
+    {
+        Attribute QPDL QPDLVersion "1"
+        Attribute General docHeaderValues "<0><0><0>"
 
-	// Power save
-	Option "PowerSave/Power Save" PickOne AnySetup 10
-	   Choice "False/Off" ""
-	   *Choice "5/5 Minutes" ""
-	   Choice "10/10 Minutes" ""
-	   Choice "15/15 Minutes" ""
-	   Choice "30/30 Minutes" ""
-	   Choice "45/45 Minutes" ""
-	   Choice "60/1 Hour" ""
+        {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+            {
+                ModelName "ML-1510"
+                PCFileName "ml1510.ppd"
+            } {
+                ModelName "ML-1520"
+                PCFileName "ml1520.ppd"
+            } {
+                ModelName "ML-1610"
+                PCFileName "ml1610.ppd"
+            } {
+                ModelName "ML-1710"
+                PCFileName "ml1710.ppd"
+            } {
+                ModelName "ML-1740"
+                PCFileName "ml1740.ppd"
+            } {
+                #import "srtmode.defs"
+                ModelName "ML-1750"
+                PCFileName "ml1750.ppd"
+            }
+        } {
+            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
 
-	// Toner density
-	Option "TonerDensity/Toner Density" PickOne AnySetup 10
-	   Choice "1/Light" ""
-	   *Choice "3/Medium" ""
-	   Choice "5/Dark" ""
+            // Multi-tray
+            InputSlot 3 "Multi/Multi-Purpose Tray"
+            InputSlot 4 "Upper/Tray 1"
+            InputSlot 5 "Lower/Tray 2"
+            InputSlot 6 "Envelope/Envelope Tray"
+            InputSlot 7 "Tray3/Tray 3"
+            // But tray 2, Envelope and Tray3 are options...
+            Installable "OptionTray2/Tray 2 Installed"
+            UIConstraints "*OptionTray2 False *InputSlot Lower"
+            Installable "OptionTrayEnv/Envelope Tray Installed"
+            UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
+            Installable "OptionTray3/Tray 3 Installed"
+            UIConstraints "*OptionTray3 False *InputSlot Tray3"
 
-	// Toner Save
-	Option "EconoMode/Toner Save" PickOne AnySetup 10
-	   *Choice "0/Use Printer Default" ""
-	  Choice "ON/Save" ""
-	  Choice "OFF/Standard" ""
+            #import "srtmode.defs"
+            {
+                Throughput 22
+                ModelName "ML-2250"
+                PCFileName "ml2250.ppd"
+            } {
+                Duplex normal
 
-	// Reprint when Jam
-	Option "JamRecovery/Reprint When Jam" Boolean AnySetup 10
-	   *Choice "False/Off" ""
-	   Choice "True/On" ""
+                {
+                        ModelName "ML-3560"
+                        PCFileName "ml3560.ppd"
+                } {
+                    Resolution k 1 0 0 0 "300dpi/300 DPI"
+                    {
+                        ModelName "ML-2150"
+                        PCFileName "ml2150.ppd"
+                    } {
+                        ModelName "ML-2550"
+                        PCFileName "ml2550.ppd"
+                    }
+                }
+            }
+        }
+    }
 
+    // QPDL Version 2
+    {
+        Attribute QPDL QPDLVersion "2"
+        Attribute General docHeaderValues "<0><0><1>"
 
+        {
+            Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
 
-	// Black & White support
-	ColorDevice false
-	*ColorModel Gray/Grayscale k chunky 17
+            {
+                ModelName "ML-1630"
+                PCFileName "ml1630.ppd"
+            } {
+                // TODO Oficio 
+                ModelName "ML-2010"
+                PCFileName "ml2010.ppd"
+            } {
+                #import "srtmode.defs"
 
-	// Supported resolutions
-	*Resolution k 1 0 0 0 "600dpi/600 DPI"
+                ModelName "ML-2510"
+                PCFileName "ml2510.ppd"
+            }
+        } {
+            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
 
-	{
-		Attribute General docHeaderValues "<0><0><0>"
-		Attribute QPDL QPDLVersion "1"
-		Resolution k 1 0 0 0 "300dpi/300 DPI"
-		{
-			ModelName "ML-1510"
-			PCFileName "ml1510.ppd"
-		}
-		{
-			ModelName "ML-1520"
-			PCFileName "ml1520.ppd"
-		}
-		{
-			ModelName "ML-1610"
-			PCFileName "ml1610.ppd"
-		}
-		{
-			ModelName "ML-1710"
-			PCFileName "ml1710.ppd"
-		}
-		{
-			ModelName "ML-1740"
-			PCFileName "ml1740.ppd"
-		}
-		{
-			// SRT Mode
-			Option "SRTMode/SRT Mode" PickOne AnySetup 10
-			  *Choice "NORMAL/Normal" ""
-			   Choice "ENHANCE/Text enhance" ""
-			   Choice "GRAY/Image enhance" ""
-			ModelName "ML-1750"
-			PCFileName "ml1750.ppd"
-		}
-	}
-	{
-		{
-			Attribute QPDL QPDLVersion "2"
-			Attribute General docHeaderValues "<0><0><1>"
-			{
-				// 1200x1200 DPI
-				Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+            Duplex normal
 
-				// Oficio 
-				ModelName "ML-2010"
-				PCFileName "ml2010.ppd"
-			}
-			{
-				Manufacturer "Xerox"
-				ModelName "Phaser-3117"
-				PCFileName "ph3117.ppd"
-			}
-		}
-		{
-			Attribute General docHeaderValues "<0><0><0>"
-			Attribute QPDL QPDLVersion "1"
-
-			// 1200x1200 DPI
-			Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-
-			// Multi-tray
-			InputSlot 3 "Multi/Multi-Purpose Tray"
-			InputSlot 4 "Upper/Tray 1"
-			InputSlot 5 "Lower/Tray 2"
-			InputSlot 6 "Envelope/Envelope Tray"
-			InputSlot 7 "Tray3/Tray 3"
-			// But tray 2, Envelope and Tray3 are options...
-			Installable "OptionTray2/Tray 2 Installed"
-			UIConstraints "*OptionTray2 False *InputSlot Lower"
-			Installable "OptionTrayEnv/Envelope Tray Installed"
-			UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
-			Installable "OptionTray3/Tray 3 Installed"
-			UIConstraints "*OptionTray3 False *InputSlot Tray3"
-
-			// SRT Mode
-			Option "SRTMode/SRT Mode" PickOne AnySetup 10
-			  *Choice "NORMAL/Normal" ""
-			   Choice "ENHANCE/Text enhance" ""
-			   Choice "GRAY/Image enhance" ""
-			{
-				Throughput 22
-				ModelName "ML-2250"
-				PCFileName "ml2250.ppd"
-			}
-			{
-				// Duplex support
-				Duplex normal
-
-				Resolution k 1 0 0 0 "300dpi/300 DPI"
-				{
-					ModelName "ML-2150"
-					PCFileName "ml2150.ppd"
-				}
-				{
-					ModelName "ML-2550"
-					PCFileName "ml2550.ppd"
-				}
-			}
-		}
-	}
+            ModelName "ML-3050"
+            PCFileName "ml3050.ppd"
+        }
+    }
 }
 
+
+
+
+//
 // Specific color printer definition
+//
 {
-	Attribute QPDL ColorPrinter "1"
+    #import "powersave.defs"
 
-	// Supported resolutions
-	*Resolution - 1 0 0 0 "600dpi/600 DPI"
+    // Color printers V. 1 (old algorithms)
+    {
+        #import "color-v1.defs"
+        #import "jamrecovery.defs"
 
-	// Power save
-	Option "PowerSave/Power Save" PickOne AnySetup 10
-	   Choice "False/Off" ""
-	   *Choice "5/5 Minutes" ""
-	   Choice "10/10 Minutes" ""
-	   Choice "15/15 Minutes" ""
-	   Choice "30/30 Minutes" ""
-	   Choice "45/45 Minutes" ""
-	   Choice "60/1 Hour" ""
+        // Multi-tray
+        InputSlot 3 "Multi/Multi-Purpose Tray"
+        InputSlot 4 "Upper/Tray 1"
+        InputSlot 5 "Lower/Tray 2"
+        // But tray 2 is optional..
+        Installable "OptionTray2/Tray 2 Installed"
+        UIConstraints "*OptionTray2 False *InputSlot Lower"
 
-	{
-		// Color definition
-		ColorDevice true
-		ColorModel Gray/Grayscale k chunky 19
-		*ColorModel CMYK/Color cmyk banded 19
-		{
-			Attribute General docHeaderValues "<0><0><0>"
-			Attribute QPDL QPDLVersion "1"
-			Attribute QPDL PacketSize "512"
-			Throughput 20
+        Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+        Resolution - 1 0 0 0 "1200dpi/1200 DPI"
 
-			Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
-			Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+        Duplex normal
 
-			ModelName "CLP-600"
-			PCFileName "clp600.ppd"
-		}
-		{
-			Attribute General docHeaderValues "<0><0><0>"
-			Attribute QPDL QPDLVersion "2"
-			Attribute QPDL PacketSize "512"
-			Throughput 4
-			Resolution - 1 0 0 0 "300dpi/300 DPI"
-			Resolution - 1 0 0 0 "1200dpi/1200 DPI"
-	
-			ModelName "CLP-300"
-			PCFileName "clp300.ppd"
-		}
-	}
-	{
-		// Color definition
-		ColorDevice true
-		ColorModel Gray/Grayscale k chunky 17
-		*ColorModel CMYK/Color cmyk banded 17
-		{
-			//
-			// Defining PJL variables
-			//
-	
-			// Reprint when Jam
-			Option "JamRecovery/Reprint When Jam" Boolean AnySetup 10
-			   *Choice "False/Off" ""
-			   Choice "True/On" ""
-	
-			// Multi-tray
-			InputSlot 3 "Multi/Multi-Purpose Tray"
-			InputSlot 4 "Upper/Tray 1"
-			InputSlot 5 "Lower/Tray 2"
-			// But tray 2 is optional..
-			Installable "OptionTray2/Tray 2 Installed"
-			UIConstraints "*OptionTray2 False *InputSlot Lower"
-	
-			Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
-			Resolution - 1 0 0 0 "1200dpi/1200 DPI"
-	
-			Attribute General docHeaderValues "<0><0><0>"
-			Attribute QPDL QPDLVersion "1"
-	
-			// Duplex support
-			Duplex normal
-	
-			{
-				Throughput 20
-				ModelName "CLP-500"
-				PCFileName "clp500.ppd"
-			}
-			{
-				Throughput 24
-				ModelName "CLP-510"
-				PCFileName "clp510.ppd"
-			}
-			{
-				Throughput 20
-				Manufacturer "Xerox"
-				ModelName "Phaser 6100"
-				PCFileName "ph6100.ppd"
-			}
-		}
-	}
+        Attribute QPDL QPDLVersion "1"
+        Attribute General docHeaderValues "<0><0><1>"
+
+        {
+            Throughput 20
+            ModelName "CLP-500"
+            PCFileName "clp500.ppd"
+        } {
+            Throughput 24
+            ModelName "CLP-510"
+            PCFileName "clp510.ppd"
+        } {
+            ModelName "CLP-610"
+            PCFileName "clp610.ppd"
+        }
+    }
+
+    // Color printers V. 2 (JBIG algorithm)
+    {
+        #import "color-v2.defs"
+        Attribute QPDL PacketSize "512"
+
+
+        // QPDL Version 1
+        {
+            Attribute QPDL QPDLVersion "1"
+            Attribute General docHeaderValues "<0><0><0>"
+
+            {
+                ModelName "CLP-200"
+                PCFileName "clp200.ppd"
+            } { 
+                Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+                Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+
+                Throughput 20
+
+                ModelName "CLP-600"
+                PCFileName "clp600.ppd"
+            }
+        }
+
+        // QPDL Version 2
+        {
+            Attribute QPDL QPDLVersion "2"
+            Attribute General docHeaderValues "<0><0><1>"
+
+            {
+                ModelName "CLX-2170"
+                PCFileName "clx2170.ppd"
+            } {
+                Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+
+                {
+                    Resolution - 1 0 0 0 "300dpi/300 DPI"
+                    Throughput 4
+
+                    ModelName "CLP-300"
+                    PCFileName "clp300.ppd"
+                } {
+                    Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
+                    {
+                        ModelName "CLX-216X"
+                        PCFileName "clx216x.ppd"
+                    } {
+                        ModelName "CLX-3160"
+                        PCFileName "clx3160.ppd"
+                    }
+                }
+            }
+        }
+    }
 }
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
 
