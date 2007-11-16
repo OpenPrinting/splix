@@ -1,0 +1,15 @@
+/*
+ *      tonerdensity.defs              (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Toner density
+ *
+ * $Id$
+ */
+
+Option "TonerDensity/Toner Density" PickOne AnySetup 10
+    Choice "1/Light" ""
+	*Choice "3/Medium" ""
+	Choice "5/Dark" ""
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+

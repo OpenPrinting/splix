@@ -2,7 +2,7 @@
 *% PPD file for ML-2550 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.0.
 *FormatVersion: "4.3"
-*FileVersion: "1.0"
+*FileVersion: "1.1.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml2550.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung ML-2550"
 *ShortNickName: "Samsung ML-2550"
-*NickName: "Samsung ML-2550, 1.0"
+*NickName: "Samsung ML-2550, 1.1.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -28,8 +28,8 @@
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
 *QPDL ColorPrinter: "0"
-*General docHeaderValues: "<0><0><0>"
 *QPDL QPDLVersion: "1"
+*General docHeaderValues: "<0><0><0>"
 *cupsVersion: 1.2
 *cupsModelNumber: 0
 *cupsManualCopies: False
@@ -158,6 +158,18 @@
 *MediaType COLOR/Colore: ""
 *MediaType ENV/Envelope: ""
 *CloseUI: *MediaType
+*OpenUI *ColorModel/Modo Colore: PickOne
+*OrderDependency: 10.0 AnySetup *ColorModel
+*DefaultColorModel: Gray
+*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
+*CloseUI: *ColorModel
+*OpenUI *Resolution: PickOne
+*OrderDependency: 10.0 AnySetup *Resolution
+*DefaultResolution: 600dpi
+*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*Resolution 300dpi/300 DPI: "<</HWResolution[300 300]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*CloseUI: *Resolution
 *OpenUI *PowerSave/Power Save: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
 *DefaultPowerSave: 5
@@ -189,18 +201,6 @@
 *JamRecovery False/Non installato: ""
 *JamRecovery True/On: ""
 *CloseUI: *JamRecovery
-*OpenUI *ColorModel/Modo Colore: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
-*DefaultColorModel: Gray
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
-*CloseUI: *ColorModel
-*OpenUI *Resolution: PickOne
-*OrderDependency: 10.0 AnySetup *Resolution
-*DefaultResolution: 600dpi
-*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*Resolution 300dpi/300 DPI: "<</HWResolution[300 300]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*CloseUI: *Resolution
 *OpenUI *SRTMode/SRT Mode: PickOne
 *OrderDependency: 10.0 AnySetup *SRTMode
 *DefaultSRTMode: NORMAL
@@ -271,4 +271,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2550.ppd, 13754 bytes.
+*% End of ml2550.ppd, 13758 bytes.

@@ -98,6 +98,8 @@ int Band::addLine(unsigned char *line, unsigned long width)
     }
 
     // Clip the text
+    if (width > _width)
+        _clipping = width - _width;
     line += _clipping;
     width -= _clipping;
 

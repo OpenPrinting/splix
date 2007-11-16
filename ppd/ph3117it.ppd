@@ -1,8 +1,8 @@
 *PPD-Adobe: "4.3"
-*% PPD file for Phaser-3117 with CUPS.
+*% PPD file for Phaser 3117 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.0.
 *FormatVersion: "4.3"
-*FileVersion: "1.0"
+*FileVersion: "1.1.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ph3117.ppd"
@@ -10,9 +10,9 @@
 *Product: "(GPL Ghostscript)"
 *Product: "(GNU Ghostscript)"
 *Manufacturer: "Xerox"
-*ModelName: "Xerox Phaser-3117"
-*ShortNickName: "Xerox Phaser-3117"
-*NickName: "Xerox Phaser-3117, 1.0"
+*ModelName: "Xerox Phaser 3117"
+*ShortNickName: "Xerox Phaser 3117"
+*NickName: "Xerox Phaser 3117, 1.1.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -147,6 +147,16 @@
 *MediaType COLOR/Colore: ""
 *MediaType ENV/Envelope: ""
 *CloseUI: *MediaType
+*OpenUI *ColorModel/Modo Colore: PickOne
+*OrderDependency: 10.0 AnySetup *ColorModel
+*DefaultColorModel: Gray
+*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
+*CloseUI: *ColorModel
+*OpenUI *Resolution: PickOne
+*OrderDependency: 10.0 AnySetup *Resolution
+*DefaultResolution: 600dpi
+*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*CloseUI: *Resolution
 *OpenUI *PowerSave/Power Save: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
 *DefaultPowerSave: 5
@@ -178,16 +188,6 @@
 *JamRecovery False/Non installato: ""
 *JamRecovery True/On: ""
 *CloseUI: *JamRecovery
-*OpenUI *ColorModel/Modo Colore: PickOne
-*OrderDependency: 10.0 AnySetup *ColorModel
-*DefaultColorModel: Gray
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
-*CloseUI: *ColorModel
-*OpenUI *Resolution: PickOne
-*OrderDependency: 10.0 AnySetup *Resolution
-*DefaultResolution: 600dpi
-*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*CloseUI: *Resolution
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -224,4 +224,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ph3117.ppd, 11490 bytes.
+*% End of ph3117.ppd, 11494 bytes.

@@ -2,7 +2,7 @@
 *% PPD file for CLP-600 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.0.
 *FormatVersion: "4.3"
-*FileVersion: "1.0"
+*FileVersion: "1.1.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "clp600.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung CLP-600"
 *ShortNickName: "Samsung CLP-600"
-*NickName: "Samsung CLP-600, 1.0"
+*NickName: "Samsung CLP-600, 1.1.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -28,9 +28,9 @@
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
 *QPDL ColorPrinter: "1"
-*General docHeaderValues: "<0><0><0>"
-*QPDL QPDLVersion: "1"
 *QPDL PacketSize: "512"
+*QPDL QPDLVersion: "1"
+*General docHeaderValues: "<0><0><0>"
 *cupsVersion: 1.2
 *cupsModelNumber: 0
 *cupsManualCopies: False
@@ -148,13 +148,6 @@
 *MediaType COLOR/Colore: ""
 *MediaType ENV/Envelope: ""
 *CloseUI: *MediaType
-*OpenUI *Resolution: PickOne
-*OrderDependency: 10.0 AnySetup *Resolution
-*DefaultResolution: 600dpi
-*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
-*Resolution 1200x600dpi/1200x600 DPI: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
-*Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
-*CloseUI: *Resolution
 *OpenUI *PowerSave/Power Save: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
 *DefaultPowerSave: 5
@@ -166,6 +159,13 @@
 *PowerSave 45/45 Minutes: ""
 *PowerSave 60/1 Hour: ""
 *CloseUI: *PowerSave
+*OpenUI *Resolution: PickOne
+*OrderDependency: 10.0 AnySetup *Resolution
+*DefaultResolution: 600dpi
+*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 1200x600dpi/1200x600 DPI: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*CloseUI: *Resolution
 *OpenUI *ColorModel/Modo Colore: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: CMYK
@@ -208,4 +208,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp600.ppd, 11231 bytes.
+*% End of clp600.ppd, 11235 bytes.

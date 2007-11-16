@@ -179,8 +179,11 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     header[0x8] = document->height();               // Printable area height
     header[0x9] = _printer->paperSource();          // Paper source
     header[0xa] = _printer->docHeaderValues(0);     // ??? XXX
-    header[0xb] = _printer->duplex() >> 8;          // Duplex
-    header[0xc] = _printer->duplex();               // Duplex
+    header[0xb] = _printer->duplex() & 0x1;         // Duplex
+    if (_printer->duplex() == 0x3)
+        header[0xc] = 0;                            // Tumble
+    else
+        header[0xc] = document->page() % 2;         // Tumble
     header[0xd] = _printer->docHeaderValues(1);     // ??? XXX
     header[0xe] = _printer->qpdlVersion();          // QPDL Version
     header[0xf] = _printer->docHeaderValues(2);     // ??? XXX
@@ -304,7 +307,7 @@ void callbackJBIGCompression(unsigned char *data, size_t len, void *arg)
 
 static int _writeBE(unsigned long val, FILE *output)
 {
-    char header[4];
+    unsigned char header[4];
 
     header[0] = val >> 24;
     header[1] = val >> 16;
@@ -326,6 +329,9 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
     unsigned long _width;
     char header[0x11];
     int errors=0;
+#ifdef ENABLE_DEBUG
+    FILE *test;
+#endif /* ENABLE_DEBUG */
 
     // Allocate the bitmap buffers
     width = width - clippingX;
@@ -370,19 +376,22 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
         cur[c] = cdata[c]->next;
     }
 
+#ifdef ENABLE_DEBUG
+    test = fopen("/tmp/result_black.jbg", "w");
+#endif /* ENABLE_DEBUG */
+
     // Export the result in the QPDL document
     while (cur[0] || cur[1] || cur[2] || cur[3]) {
-        header[0x0] = 0xC;                  // Signature
-        header[0x1] = bandNumber;           // Band number
-        header[0x2] = width >> 8;           // Band width
-        header[0x3] = width;                // Band width
-        header[0x4] = _printer->bandHeight() >> 8; // Band height
-        header[0x5] = _printer->bandHeight(); // Band height
-        fwrite((char *)&header, 1, 0x6, _output);
-
         for (unsigned int c=0; c < colors; c++) {
             if (!cur[c])
                 continue;
+            header[0x0] = 0xC;                  // Signature
+            header[0x1] = bandNumber;           // Band number
+            header[0x2] = width >> 8;           // Band width
+            header[0x3] = width;                // Band width
+            header[0x4] = _printer->bandHeight() >> 8; // Band height
+            header[0x5] = _printer->bandHeight(); // Band height
+            fwrite((char *)&header, 1, 0x6, _output);
 
             size = cur[c]->size + 4+4+7*4;  // 4 for the BE/LE signature
                                             // 4 for the checksum
@@ -394,8 +403,8 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
             }
             header[0x0] = _printer->compVersion();      // Compression version
             fwrite((char *)&header, 1, 0x1, _output);
-            checksum = _writeBE(size, _output);         // Size
-            checksum += _writeBE(0x39ABCDEF, _output);  // Signature
+            _writeBE(size, _output);                    // Size
+            checksum = _writeBE(0x39ABCDEF, _output);   // Signature
             checksum += _writeBE(cur[c]->size, _output);// JBIG size
             if (!bandNumber)
                 checksum += _writeBE(0, _output);
@@ -409,16 +418,27 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
             _writeBE(0, _output);
             _writeBE(0, _output);
             fwrite(cur[c]->data, 1, cur[c]->size, _output);
+#ifdef ENABLE_DEBUG
+            if (c == 3) {
+                DEBUG("--- Taille du BIE : %lu\n", cur[c]->size);
+                fwrite(&cur[c]->size, sizeof(cur[c]->size), 1, test);
+                fwrite(cur[c]->data, 1, cur[c]->size, test);
+            }
+#endif /* ENABLE_DEBUG */
             for (unsigned int j=0; j < cur[c]->size; j++)
-                checksum += cur[c]->data[j];
+                checksum += (unsigned int)cur[c]->data[j];
             _writeBE(checksum, _output);
             
             tmp = cur[c]->next;
             delete cur[c];
             cur[c] = tmp;
-            bandNumber++;
         }
+        bandNumber++;
     }
+
+#ifdef ENABLE_DEBUG
+    fclose(test);
+#endif /* ENABLE_DEBUG */
 
     // Free the compression structures
     for (unsigned int c=0; c < colors; c++)
