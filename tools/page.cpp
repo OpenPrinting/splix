@@ -191,10 +191,10 @@ bool Page::process(quint8 color, quint16 width, quint16 height,
 
     if (compression == 0)
         _dump(color-1, width, height, content, err);
-    else if (compression == 0x13)
-        _dump(color-1, width, height, content, err);
     else if (compression == 0x11)
         _compression0x11(color-1, width, height, content, err);
+    else if (compression == 0x13)
+        _compression0x13(color-1, width, height, content, err);
 
     return true;
 }
@@ -249,6 +249,16 @@ bool Page::_compression0x11(quint8 color, quint16 width, quint16 height,
     _layers[color].append(band);
     _lastBand[color]++;
     return true;
+}
+
+bool Page::_compression0x13(quint8 color, quint16 width, quint16 height, 
+    QByteArray& data, QTextStream& err)
+{
+    unsigned long size = data.length();
+
+    _files[color].write((const char *)&size, sizeof(size));
+    err << "size=" << size << endl;
+    _files[color].write(data);
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8 : */

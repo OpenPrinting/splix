@@ -51,6 +51,9 @@ class Page
         bool                    _compression0x11(quint8 color, quint16 width, 
                                     quint16 height, QByteArray& data,
                                     QTextStream& err);
+        bool                    _compression0x13(quint8 color, quint16 width, 
+                                    quint16 height, QByteArray& data,
+                                    QTextStream& err);
 
     public:
         Page();
