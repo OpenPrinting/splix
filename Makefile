@@ -67,16 +67,16 @@ install:
 	done; \
 	install -d -m 755 ${CUPSPPD}/xerox
 	for filename in ${XEROX}; do \
-		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/samsung;\
+		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/xerox;\
 		for lang in ${LANGUAGES}; do \
-			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/samsung;\
+			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/xerox;\
 		done; \
 	done; \
 	install -d -m 755 ${CUPSPPD}/dell
 	for filename in ${DELL}; do \
-		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/samsung;\
+		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/dell;\
 		for lang in ${LANGUAGES}; do \
-			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/samsung;\
+			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/dell;\
 		done; \
 	done;
 
