@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     PPDFile ppd;
 
     // TEST TEST
-    freopen("/Users/aurelien/test.cups", "r", stdin);
+    freopen("/home/aurelien/test.cups", "r", stdin);
     // /TEST /TEST
 
     // Open the PPD file
@@ -53,6 +53,7 @@ int main(int argc, char **argv)
     Document doc;
     if (!doc.load())
         return 3;
+    doc.getNextRawPage(request);
     doc.getNextRawPage(request);
     return 0;
 }

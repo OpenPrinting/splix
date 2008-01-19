@@ -6,7 +6,7 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = SpliX
 PROJECT_NUMBER         = 2.0.0
-OUTPUT_DIRECTORY       = /Users/aurelien/Programmation/C++/Projets/splix/branches/branche-2.0/doc
+OUTPUT_DIRECTORY       = /home/aurelien/Programmation/C++/Projets/splix/branches/branche-2.0/doc
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -87,7 +87,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = /Users/aurelien/Programmation/C++/Projets/splix/branches/branche-2.0
+INPUT                  = /home/aurelien/Programmation/C++/Projets/splix/branches/branche-2.0
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \

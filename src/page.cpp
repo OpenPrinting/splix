@@ -26,10 +26,20 @@
  */
 Page::Page()
 {
+    _empty = true;
+    _xResolution = 0;
+    _yResolution = 0;
+    _planes[0] = NULL;
+    _planes[1] = NULL;
+    _planes[2] = NULL;
+    _planes[3] = NULL;
 }
 
 Page::~Page()
 {
+    for (unsigned int i=0; i < 4; i++)
+        if (_planes[i])
+            delete[] _planes[i];
 }
 
 

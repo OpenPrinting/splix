@@ -21,6 +21,7 @@
 #ifndef _PAGE_H_
 #define _PAGE_H_
 
+#include <stddef.h>
 
 /**
   * @brief This class contains a page representation.
@@ -36,6 +37,15 @@
 class Page
 {
     protected:
+        unsigned long           _xResolution;
+        unsigned long           _yResolution;
+        unsigned long           _width;
+        unsigned long           _height;
+        unsigned char           _colors;
+        unsigned long           _pageNr;
+        unsigned long           _compression;
+        unsigned char*          _planes[4];
+        bool                    _empty;
 
     public:
         /**
@@ -48,6 +58,118 @@ class Page
         virtual ~Page();
 
     public:
+        /**
+          * Convert a length (given for 72DPI) in the X resolution.
+          * @param f the float to convert.
+          * @return the converted value.
+          */
+        long double             convertToXResolution(long double f)
+                                    {return f * _xResolution / 72.;}
+        /**
+          * Convert a length (given for 72DPI) in the Y resolution.
+          * @param f the float to convert.
+          * @return the converted value.
+          */
+        long double             convertToYResolution(long double f)
+                                    {return f * _yResolution / 72.;}
+
+    public:
+        /**
+          * Set the X resolution.
+          * @param xRes the X resolution
+          */
+        void                    setXResolution(unsigned long xRes) 
+                                    {_xResolution = xRes;}
+        /**
+          * Set the Y resolution.
+          * @param xRes the Y resolution
+          */
+        void                    setYResolution(unsigned long yRes)
+                                    {_yResolution = yRes;}
+        /**
+          * Set the page width.
+          * @param width the page width
+          */
+        void                    setWidth(unsigned long width)
+                                    {_width = width;}
+        /**
+          * Set the page height.
+          * @param height the page height
+          */
+        void                    setHeight(unsigned long height)
+                                    {_height = height;}
+        /**
+          * Set the number of colors.
+          * @param nr the number of colors
+          */
+        void                    setColorsNumber(unsigned char nr)
+                                    {_colors = nr;}
+        /**
+          * Set this page number.
+          * @param nr this page number
+          */
+        void                    setPageNr(unsigned long nr)
+                                    {_pageNr = nr;}
+        /**
+          * Set the compression algorithm number to use.
+          * @param nr this compression algorithm number
+          */
+        void                    setCompression(unsigned long nr)
+                                    {_compression = nr;}
+
+        /**
+          * Register a new color plane.
+          * @param color the color number
+          * @param buffer the plane buffer.
+          */
+        void                    setPlaneBuffer(unsigned char color,
+                                    unsigned char* buffer) 
+                                    {_planes[color] = buffer; _empty = false;}
+
+        /**
+          * @return the X resolution.
+          */
+        unsigned long           xResolution() const {return _xResolution;}
+        /**
+          * @return the Y resolution.
+          */
+        unsigned long           yResolution() const {return _yResolution;}
+        /**
+          * @return the page width.
+          */
+        unsigned long           width() const {return _width;}
+        /**
+          * @return the page height.
+          */
+        unsigned long           height() const {return _height;}
+        /**
+          * @return the number of colors.
+          */
+        unsigned char           colorsNumber() const {return _colors;}
+        /**
+          * @return this page number.
+          */
+        unsigned long           pageNr() const {return _pageNr;}
+        /**
+          * @return the compression algorithm number.
+          */
+        unsigned long           compression() const {return _compression;}
+        /**
+          * Get the buffer associated to a plane.
+          * @param color the color plane number.
+          * @return the plane buffer. Otherwise it returns NULL if the color
+          *         plane number is incorrect or if there is no plane 
+          *         associated.
+          */ 
+        const unsigned char*    planeBuffer(unsigned char color) const
+                                    {return color < _colors ? _planes[color] :
+                                        NULL;}
+        /**
+          * @return TRUE if no planes has been set. Otherwise it returns FALSE.
+          */ 
+        bool                    isEmpty() const {return _empty;}
+
+
 };
 #endif /* _PAGE_H_ */
 

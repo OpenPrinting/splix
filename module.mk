@@ -19,3 +19,7 @@ $(rastertoqpdl_TARGET): $(rastertoqpdl_OBJ)
 	$(call printCmd, $(cmd_link))
 	$(Q)g++ -o $@ $^ $(rastertoqpdl_CXXFLAGS) $(rastertoqpdl_LDFLAGS) \
 		$(rastertoqpdl_LIBS)
+
+.PHONY: tags
+tags:
+	ctags --recurse --language-force=c++ --extra=+q --fields=+i *

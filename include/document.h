@@ -36,6 +36,8 @@ class Document
 {
     protected:
         cups_raster_t*          _raster;
+        unsigned long           _currentPage;
+        bool                    _lastPage;
 
     public:
         /**
@@ -57,6 +59,14 @@ class Document
           */
         bool                    load();
 
+        /**
+          * Load the next page into memory and store all the needed information
+          * in a @ref Page instance.
+          * If the page is empty, it means there is no more pages (check the
+          * @ref noMorePages method) or there is an error.
+          * @param request the request instance
+          * @return a @ref Page instance containing the current page.
+          */
         Page                    getNextRawPage(const Request& request);
 };
 
