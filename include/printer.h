@@ -23,11 +23,16 @@
 
 class Request;
 
+/**
+  * @brief This class contains all the needed information about the printer.
+  *
+  * This class is mainly used by the QPDL render.
+  */
 class Printer 
 {
     protected:
-        const char*             _manufacturer;
-        const char*             _model;
+        char*                   _manufacturer;
+        char*                   _model;
 
         unsigned long           _xresolution;
         unsigned long           _yresolution;
@@ -39,7 +44,13 @@ class Printer
 
 
     public:
+        /**
+          * Initialize a new instance.
+          */
         Printer();
+        /**
+          * Destroy the instance and free the internal memory used.
+          */
         virtual ~Printer();
 
     public:

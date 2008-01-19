@@ -8,9 +8,10 @@ MODE		:= debug
 
 SUBDIRS 	+= src
 TARGETS		:= rastertoqpdl
-CXXFLAGS	+= -Iinclude -Wall
-DEBUG_CXXFLAGS	:= -DDEBUG
-rastertoqpdl_LIBS	:= -lcups
+CXXFLAGS	+= `cups-config --cflags` -Iinclude -Wall
+DEBUG_CXXFLAGS	+= -DDEBUG
+rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
+rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 
 # Raster
 

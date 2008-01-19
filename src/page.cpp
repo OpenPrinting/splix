@@ -1,5 +1,5 @@
 /*
- * 	    printer.cpp               (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    page.cpp                  (C) 2006-2007, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,41 +18,20 @@
  *  $Id$
  * 
  */
-#include "printer.h"
-#include "request.h"
-#include "ppdfile.h"
+#include "page.h"
 
 /*
  * Constructeur - Destructeur
- * Init - Uninit
+ * Init - Uninit 
  */
-Printer::Printer()
+Page::Page()
 {
-    _manufacturer = NULL;
-    _model = NULL;
 }
 
-Printer::~Printer()
+Page::~Page()
 {
-    if (_manufacturer)
-        delete[] _manufacturer;
-    if (_model)
-        delete [] _model;
 }
 
-
-
-/*
- * Chargement des informations sur l'imprimante
- * Load the printer information
- */
-bool Printer::loadInformation(const Request& request)
-{
-    _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
-    _model = request.ppd()->get("ModelName").deepCopy();
-
-    return true;
-}
 
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

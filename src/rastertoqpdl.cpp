@@ -23,65 +23,37 @@
 #include "errlog.h"
 #include "version.h"
 #include "request.h"
+#include "ppdfile.h"
 
-ppd_file_t* openPPDFile(const char *ppdFile, const char *useropts)
-{
-    cups_option_t *options;
-    ppd_attr_t *attr;
-    ppd_file_t* ppd;
-    int nr;
-
-    // Open the PPD file
-    ppd = ppdOpenFile(ppdFile);
-    if (!ppd) {
-        ERRORMSG(_("Cannot open PPD file %s"), ppdFile);
-        return NULL;
-    }
-
-    // Mark the default values and the user options
-    ppdMarkDefaults(ppd);
-    nr = cupsParseOptions(useropts, 0, &options);
-    cupsMarkOptions(ppd, nr, options);
-    cupsFreeOptions(nr, options);
-
-    // Check if the PPD version is compatible with this filter
-    attr = ppdFindAttr(ppd, "FileVersion", NULL);
-    if (!attr) {
-        ERRORMSG(_("No FileVersion found in the PPD file: invalid "
-            "PPD file"));
-        ppdClose(ppd);
-        return NULL;
-    }
-    if (strcmp(attr->value, VERSION)) {
-        ERRORMSG(_("Invalid PPD file version: Splix V. %s but the PPD file "
-            "is designed for SpliX V. %s"), VERSION, attr->value);
-        ppdClose(ppd);
-        return NULL;
-    }
-
-    return ppd;
-}
+#include "document.h"
+#include "page.h"
 
 int main(int argc, char **argv)
 {
     const char *ppdFile = "../../splix/ppd/ml2250fr.ppd";
-    ppd_file_t* ppd;
     Request request;
+    PPDFile ppd;
+
+    // TEST TEST
+    freopen("/Users/aurelien/test.cups", "r", stdin);
+    // /TEST /TEST
 
     // Open the PPD file
-    if (!(ppd = openPPDFile(ppdFile, "")))
+    if (!ppd.open(ppdFile, VERSION, ""))
         return 1;
 
     // Load the request
-    if (!request.loadRequest(ppd, "ID-0001", "aurelien", "Job de test", 1)) {
-        ppdClose(ppd);
+    if (!request.loadRequest(&ppd, "ID-0001", "aurelien", "Job de test", 1))
         return 2;
-    }
 
     DEBUGMSG("Fabricant %s, model %s", request.printer()->manufacturer(), 
         request.printer()->model());
 
-    ppdClose(ppd);
+
+    Document doc;
+    if (!doc.load())
+        return 3;
+    doc.getNextRawPage(request);
     return 0;
 }
 

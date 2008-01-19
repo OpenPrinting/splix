@@ -20,6 +20,7 @@
  */
 #include "request.h"
 #include "errlog.h"
+#include "ppdfile.h"
 
 /*
  * Constructeur - Destructeur
@@ -39,7 +40,7 @@ Request::~Request()
  * Chargement d'une requête
  * Load a request
  */
-bool Request::loadRequest(ppd_file_t* ppd, const char *jobname, 
+bool Request::loadRequest(PPDFile* ppd, const char *jobname, 
     const char *username, const char *jobtitle, unsigned long copiesNr)
 {
     if (!ppd) {

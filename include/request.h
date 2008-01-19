@@ -21,9 +21,18 @@
 #ifndef _REQUEST_H_
 #define _REQUEST_H_
 
-#include <cups/ppd.h>
 #include "printer.h"
 
+class PPDFile;
+
+/**
+  * @brief This class contains all the information about the requested job.
+  *
+  * During the job information loading, this class will instantiate @ref Printer
+  * and initialize it to have information on the printer which will be used to
+  * print the job.
+  * This instance is mainly used by the QPDL render.
+  */
 class Request 
 {
     public:
@@ -35,7 +44,7 @@ class Request
         };
 
     protected:
-        ppd_file_t*             _ppd;
+        PPDFile*                _ppd;
 
         const char*             _username;
         const char*             _jobname;
@@ -47,13 +56,19 @@ class Request
         Duplex                  _duplex;
 
     public:
+        /**
+          * Initialize the instance.
+          */
         Request();
+        /**
+          * Destroy the instance.
+          */
         virtual ~Request();
 
     public:
         /**
           * Load a new request.
-          * @param ppd the PPD file handle
+          * @param ppd the PPDfile instance
           * @param jobname the job ID
           * @param username the name of the user which make this job
           * @param jobtitle the job title
@@ -61,16 +76,16 @@ class Request
           * @return TRUE if the request has been successfully loaded. Otherwise
           *         it returns FALSE.
           */
-        bool                    loadRequest(ppd_file_t* ppd, 
+        bool                    loadRequest(PPDFile* ppd, 
                                     const char *jobname, const char *username, 
                                     const char *jobtitle, 
                                     unsigned long copiesNr);
 
     public:
         /**
-          * @return the PPD file handle.
+          * @return the PPDFile instance.
           */
-        ppd_file_t*             ppd() const {return _ppd;}
+        PPDFile*                ppd() const {return _ppd;}
         /**
           * @return the printer instance.
           */

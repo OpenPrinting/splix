@@ -21,14 +21,43 @@
 #ifndef _DOCUMENT_H_
 #define _DOCUMENT_H_
 
+#include <cups/raster.h>
+
+class Page;
+class Request;
+
+/**
+  * @brief This class converts the job into usable pages.
+  *
+  * Two main methods permits to get a bitmap page (used by the compression
+  * algorithms) and to get the compressed pages (used by the QPDL render).
+  */
 class Document
 {
     protected:
+        cups_raster_t*          _raster;
+
     public:
+        /**
+          * Initialize the instance.
+          */
         Document();
+        /**
+          * Destroy the instance.
+          */
         virtual ~Document();
 
     public:
+        /**
+          * Load the file which contains the job.
+          * The file have to be opened on the file descriptor 0 (STDIN_FILENO)
+          * and be formatted as CUPS Raster.
+          * @return TRUE if it has been successfully opened. Otherwise it
+          *         returns FALSE.
+          */
+        bool                    load();
+
+        Page                    getNextRawPage(const Request& request);
 };
 
 #endif /* _DOCUMENT_H_ */
