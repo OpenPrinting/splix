@@ -34,13 +34,12 @@ class Printer
         char*                   _manufacturer;
         char*                   _model;
 
-        unsigned long           _xresolution;
-        unsigned long           _yresolution;
+        unsigned char           _qpdlVersion;
+        unsigned long           _bandHeight;
+
         unsigned char           _paperType;
         unsigned char           _paperSource;
 
-        unsigned char           _qpdlVersion;
-        unsigned char           _compressionVersion;
 
 
     public:
@@ -70,6 +69,10 @@ class Printer
           * @return the model name.
           */
         const char*             model() const {return _model;}
+        /**
+          * @return the height of a band.
+          */ 
+        unsigned long           bandHeight() const {return _bandHeight;}
 };
 
 #endif /* _PRINTER_H_ */

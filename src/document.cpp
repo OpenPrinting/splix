@@ -102,7 +102,7 @@ Page Document::getNextRawPage(const Request& request)
     planeSize = pageWidthInB * pageHeight;
     page.setWidth(pageWidth);
     page.setHeight(pageHeight);
-    page.setColorsNumber(colors);
+    page.setColorsNr(colors);
     page.setPageNr(_currentPage);
     page.setCompression(header.cupsCompression);
 

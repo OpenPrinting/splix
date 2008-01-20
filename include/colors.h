@@ -1,5 +1,5 @@
 /*
- * 	    printer.cpp               (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    colors.h                  (C) 2006-2007, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,45 +18,19 @@
  *  $Id$
  * 
  */
-#include "printer.h"
-#include "request.h"
-#include "ppdfile.h"
+#ifndef _COLORS_H_
+#define _COLORS_H_
 
-/*
- * Constructeur - Destructeur
- * Init - Uninit
- */
-Printer::Printer()
-{
-    _manufacturer = NULL;
-    _model = NULL;
-}
+class Page;
 
-Printer::~Printer()
-{
-    if (_manufacturer)
-        delete[] _manufacturer;
-    if (_model)
-        delete [] _model;
-}
+/**
+  * Optimize the black channel.
+  * Transform red, green and cyan dots in a black dot and remove red, green or
+  * cyan dot if a black dot is present.
+  */
+extern void applyBlackOptimization(Page& page);
 
-
-
-/*
- * Chargement des informations sur l'imprimante
- * Load the printer information
- */
-bool Printer::loadInformation(const Request& request)
-{
-    _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
-    _model = request.ppd()->get("ModelName").deepCopy();
-
-    // XXX XXX XXX XXX
-    _bandHeight = 0x80;
-
-    return true;
-}
-
+#endif /* _COLORS_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

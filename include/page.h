@@ -23,6 +23,8 @@
 
 #include <stddef.h>
 
+class Band;
+
 /**
   * @brief This class contains a page representation.
   *
@@ -46,6 +48,8 @@ class Page
         unsigned long           _compression;
         unsigned char*          _planes[4];
         bool                    _empty;
+        Band*                   _firstBand;
+        Band*                   _lastBand;
 
     public:
         /**
@@ -102,7 +106,7 @@ class Page
           * Set the number of colors.
           * @param nr the number of colors
           */
-        void                    setColorsNumber(unsigned char nr)
+        void                    setColorsNr(unsigned char nr)
                                     {_colors = nr;}
         /**
           * Set this page number.
@@ -116,7 +120,6 @@ class Page
           */
         void                    setCompression(unsigned long nr)
                                     {_compression = nr;}
-
         /**
           * Register a new color plane.
           * @param color the color number
@@ -125,6 +128,13 @@ class Page
         void                    setPlaneBuffer(unsigned char color,
                                     unsigned char* buffer) 
                                     {_planes[color] = buffer; _empty = false;}
+        /**
+          * Register a new band.
+          * Note that band instances will be destroyed when this instance will
+          * be destroyed.
+          * @param band the band instance.
+          */ 
+        void                    registerBand(Band *band);
 
         /**
           * @return the X resolution.
@@ -145,7 +155,7 @@ class Page
         /**
           * @return the number of colors.
           */
-        unsigned char           colorsNumber() const {return _colors;}
+        unsigned char           colorsNr() const {return _colors;}
         /**
           * @return this page number.
           */
@@ -161,13 +171,17 @@ class Page
           *         plane number is incorrect or if there is no plane 
           *         associated.
           */ 
-        const unsigned char*    planeBuffer(unsigned char color) const
+        unsigned char*          planeBuffer(unsigned char color) const
                                     {return color < _colors ? _planes[color] :
                                         NULL;}
         /**
           * @return TRUE if no planes has been set. Otherwise it returns FALSE.
           */ 
         bool                    isEmpty() const {return _empty;}
+        /**
+          * @return the first band or NULL if no bands has been registered.
+          */ 
+        const Band*             firstBand() const {return _firstBand;}
 
 
 };

@@ -21,6 +21,11 @@
 #ifndef _COMPRESS_H_
 #define _COMPRESS_H_
 
+class Page;
+class Request;
+
+extern bool compressPage(const Request& request, Page& page);
+
 #endif /* _COMPRESS_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

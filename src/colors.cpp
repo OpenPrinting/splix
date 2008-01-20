@@ -1,5 +1,5 @@
 /*
- * 	    printer.cpp               (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    colors.cpp                (C) 2006-2007, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,45 +18,14 @@
  *  $Id$
  * 
  */
-#include "printer.h"
-#include "request.h"
-#include "ppdfile.h"
+#include "colors.h"
+#include "page.h"
 
-/*
- * Constructeur - Destructeur
- * Init - Uninit
- */
-Printer::Printer()
+void applyBlackOptimization(Page& page)
 {
-    _manufacturer = NULL;
-    _model = NULL;
+    if (page.colorsNr() != 4)
+        return;
 }
-
-Printer::~Printer()
-{
-    if (_manufacturer)
-        delete[] _manufacturer;
-    if (_model)
-        delete [] _model;
-}
-
-
-
-/*
- * Chargement des informations sur l'imprimante
- * Load the printer information
- */
-bool Printer::loadInformation(const Request& request)
-{
-    _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
-    _model = request.ppd()->get("ModelName").deepCopy();
-
-    // XXX XXX XXX XXX
-    _bandHeight = 0x80;
-
-    return true;
-}
-
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

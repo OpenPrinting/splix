@@ -1,5 +1,5 @@
 /*
- * 	    printer.cpp               (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    band.cpp                  (C) 2006-2007, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,43 +18,32 @@
  *  $Id$
  * 
  */
-#include "printer.h"
-#include "request.h"
-#include "ppdfile.h"
+#include "band.h"
+#include "bandplane.h"
 
 /*
  * Constructeur - Destructeur
- * Init - Uninit
+ * Init - Uninit 
  */
-Printer::Printer()
+Band::Band()
 {
-    _manufacturer = NULL;
-    _model = NULL;
+    _colors = 0;
+    _parent = NULL;
+    _planes[0] = NULL;
+    _planes[1] = NULL;
+    _planes[2] = NULL;
+    _planes[3] = NULL;
+    _width = 0;
+    _height = 0;
+    _sibling = NULL;
 }
 
-Printer::~Printer()
+Band::~Band()
 {
-    if (_manufacturer)
-        delete[] _manufacturer;
-    if (_model)
-        delete [] _model;
-}
-
-
-
-/*
- * Chargement des informations sur l'imprimante
- * Load the printer information
- */
-bool Printer::loadInformation(const Request& request)
-{
-    _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
-    _model = request.ppd()->get("ModelName").deepCopy();
-
-    // XXX XXX XXX XXX
-    _bandHeight = 0x80;
-
-    return true;
+    for (unsigned int i=0; i < _colors; i++)
+        delete _planes[i];
+    if (_sibling)
+        delete _sibling;
 }
 
 

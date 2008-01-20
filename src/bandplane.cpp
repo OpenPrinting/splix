@@ -1,5 +1,5 @@
 /*
- * 	    printer.cpp               (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    bandplane.cpp             (C) 2006-2007, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,44 +18,25 @@
  *  $Id$
  * 
  */
-#include "printer.h"
-#include "request.h"
-#include "ppdfile.h"
+#include "bandplane.h"
+#include <stddef.h>
 
 /*
  * Constructeur - Destructeur
- * Init - Uninit
+ * Init - Uninit 
  */
-Printer::Printer()
+BandPlane::BandPlane()
 {
-    _manufacturer = NULL;
-    _model = NULL;
+    _size = 0;
+    _data = NULL;
 }
 
-Printer::~Printer()
+BandPlane::~BandPlane()
 {
-    if (_manufacturer)
-        delete[] _manufacturer;
-    if (_model)
-        delete [] _model;
+    if (_data)
+        delete[] _data;
 }
 
-
-
-/*
- * Chargement des informations sur l'imprimante
- * Load the printer information
- */
-bool Printer::loadInformation(const Request& request)
-{
-    _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
-    _model = request.ppd()->get("ModelName").deepCopy();
-
-    // XXX XXX XXX XXX
-    _bandHeight = 0x80;
-
-    return true;
-}
 
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

@@ -19,6 +19,7 @@
  * 
  */
 #include "page.h"
+#include "band.h"
 
 /*
  * Constructeur - Destructeur
@@ -33,6 +34,8 @@ Page::Page()
     _planes[1] = NULL;
     _planes[2] = NULL;
     _planes[3] = NULL;
+    _firstBand = NULL;
+    _lastBand = NULL;
 }
 
 Page::~Page()
@@ -40,9 +43,24 @@ Page::~Page()
     for (unsigned int i=0; i < 4; i++)
         if (_planes[i])
             delete[] _planes[i];
+    if (_firstBand)
+        delete _firstBand;
 }
 
 
+
+/*
+ * Enregistrement d'une nouvelle bande
+ * Register a new band
+ */
+void Page::registerBand(Band *band)
+{
+    if (_lastBand)
+        _lastBand->registerSibling(band);
+    else
+        _firstBand = band;
+    _lastBand = band;
+}
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

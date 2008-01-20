@@ -3,6 +3,7 @@
 #
 #  Compilation file for SpliX
 #
+# Options: DISABLE_JBIG
 
 MODE		:= debug
 
