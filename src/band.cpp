@@ -27,6 +27,7 @@
  */
 Band::Band()
 {
+    _bandNr = 0;
     _colors = 0;
     _parent = NULL;
     _planes[0] = NULL;
@@ -40,7 +41,13 @@ Band::Band()
 
 Band::Band(unsigned long nr, unsigned long width, unsigned long height)
 {
-    Band();
+    _colors = 0;
+    _parent = NULL;
+    _planes[0] = NULL;
+    _planes[1] = NULL;
+    _planes[2] = NULL;
+    _planes[3] = NULL;
+    _sibling = NULL;
     _bandNr = nr;
     _width = width;
     _height = height;

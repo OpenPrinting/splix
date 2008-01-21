@@ -44,13 +44,14 @@ static bool _isEmptyBand(unsigned char* band, unsigned long size)
 
 static bool _compressBandedPage(const Request& request, Page& page)
 {
-    unsigned long index, pageHeight, lineWidthInB, bandHeight, bandSize;
+    unsigned long index=0, pageHeight, lineWidthInB, bandHeight, bandSize;
     unsigned char *planes[4], *band;
     unsigned long bandNumber=1;
     unsigned char colors;
 
     colors = page.colorsNr();
     lineWidthInB = (page.width() + 7) / 8;
+    pageHeight = page.height();
     bandHeight = request.printer()->bandHeight();
     bandSize = lineWidthInB * bandHeight;
     band = new unsigned char[bandSize];
@@ -99,6 +100,7 @@ static bool _compressBandedPage(const Request& request, Page& page)
         index += bandSize;
         pageHeight = theEnd ? 0 : pageHeight - bandHeight;
     }
+    delete[] band;
 
     return true;
 }

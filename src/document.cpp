@@ -198,7 +198,7 @@ Page Document::getNextRawPage(const Request& request)
 #endif
 
     delete[] line;
-    return Page();
+    return page;
 }
 
 

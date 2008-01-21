@@ -20,6 +20,7 @@
  */
 #include "algo0x11.h"
 #include "bandplane.h"
+#include <string.h>
 
 /*
  * Constructeur - Destructeur
@@ -43,9 +44,12 @@ BandPlane* Algo0x11::compress(const Request& request, unsigned char *data,
         unsigned long width, unsigned long height)
 {
     BandPlane *plane;
+    unsigned char *buffer;
 
+    buffer = new unsigned char[width * height / 8];
+    memcpy(buffer, data, width*height / 8);
     plane = new BandPlane();
-    plane->setData(data);
+    plane->setData(buffer);
     plane->setDataSize(width * height / 8);
     return plane;
 }
