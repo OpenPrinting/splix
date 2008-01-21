@@ -21,8 +21,26 @@
 #include "compress.h"
 #include <string.h>
 #include "page.h"
+#include "band.h"
 #include "errlog.h"
 #include "request.h"
+#include "bandplane.h"
+
+#include "algo0x11.h"
+
+static bool _isEmptyBand(unsigned char* band, unsigned long size)
+{
+    unsigned long max = size / sizeof(unsigned long);
+
+    for (unsigned int i=0; i < max; i++) {
+        if (((unsigned long*)band)[i])
+            return false;
+    }
+    for (unsigned int i=0; i < size & 0x3; i++)
+        if (band[size-i-1])
+            return false;
+    return true;
+}
 
 static bool _compressBandedPage(const Request& request, Page& page)
 {
@@ -39,22 +57,47 @@ static bool _compressBandedPage(const Request& request, Page& page)
     for (unsigned int i=0; i < colors; i++)
         planes[i] = page.planeBuffer(i);
 
-    while (pageHeight > bandHeight) {
-        for (unsigned int i=0; i < colors; i++) {
-            memcpy(band, planes[i] + index, bandSize);
-            /*
-             * 1. On vérifier si la bande n'est pas blanche
-             *      |-> Si bande blanche, on passe
-             *      '-> Sinon, on compresse
-             * 2. On rajoute les informations de bande (numéro de bande et de
-             *    couleur).
-             * 3. On enregistre la bande dans la page.
-             * 4. On détruit les buffers de plans dans la page.
-             */
+    /*
+     * 1. On vérifier si la bande n'est pas blanche
+     *      |-> Si bande blanche, on passe
+     *      '-> Sinon, on compresse
+     * 2. On rajoute les informations de bande (numéro de bande et de
+     *    couleur).
+     * 3. On enregistre la bande dans la page.
+     * 4. On détruit les buffers de plans dans la page.
+     */
+    while (pageHeight) {
+        unsigned long bytesToCopy = bandSize;
+        Band *current = NULL;
+        bool theEnd = false;
+
+        // Special things to do for the last band
+        if (pageHeight < bandHeight) {
+            theEnd = true;
+            bytesToCopy = lineWidthInB * pageHeight;
+            memset(band, 0, bandSize);
         }
+
+        for (unsigned int i=0; i < colors; i++) {
+            BandPlane *plane;
+            Algo0x11 algo;
+
+            memcpy(band, planes[i] + index, bytesToCopy);
+            if (_isEmptyBand(band, bandSize))
+                continue;
+            plane = algo.compress(request, band, page.width(), bandHeight);
+            if (plane) {
+                plane->setColorNr(i);
+                if (!current)
+                    current = new Band(bandNumber, page.width(), bandHeight);
+                current->registerPlane(plane);
+            }
+        }
+        if (current)
+            page.registerBand(current);
         bandNumber++;
         index += bandSize;
-        pageHeight -= bandHeight;
+        pageHeight = theEnd ? 0 : pageHeight - bandHeight;
     }
 
     return true;
@@ -76,7 +119,7 @@ bool compressPage(const Request& request, Page& page)
             break;
 #endif /* DISABLE_JBIG */
         default:
-            ERRORMSG(_("No compression algorithm known for 0x%lX"), 
+            ERRORMSG(_("Compression algorithm 0x%lX does not exist"), 
                 page.compression());
     }
     return false;

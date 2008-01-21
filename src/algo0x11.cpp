@@ -1,5 +1,5 @@
 /*
- * 	    band.cpp                  (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    algo0x11.cpp              (C) 2006-2007, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,42 +18,37 @@
  *  $Id$
  * 
  */
-#include "band.h"
+#include "algo0x11.h"
 #include "bandplane.h"
 
 /*
  * Constructeur - Destructeur
- * Init - Uninit 
+ * Init - Uninit
  */
-Band::Band()
+Algo0x11::Algo0x11()
 {
-    _colors = 0;
-    _parent = NULL;
-    _planes[0] = NULL;
-    _planes[1] = NULL;
-    _planes[2] = NULL;
-    _planes[3] = NULL;
-    _width = 0;
-    _height = 0;
-    _sibling = NULL;
 }
 
-Band::Band(unsigned long nr, unsigned long width, unsigned long height)
+Algo0x11::~Algo0x11()
 {
-    Band();
-    _bandNr = nr;
-    _width = width;
-    _height = height;
 }
 
-Band::~Band()
-{
-    for (unsigned int i=0; i < _colors; i++)
-        delete _planes[i];
-    if (_sibling)
-        delete _sibling;
-}
 
+
+/*
+ * Routine de compression
+ * Compression routine
+ */
+BandPlane* Algo0x11::compress(const Request& request, unsigned char *data, 
+        unsigned long width, unsigned long height)
+{
+    BandPlane *plane;
+
+    plane = new BandPlane();
+    plane->setData(data);
+    plane->setDataSize(width * height / 8);
+    return plane;
+}
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

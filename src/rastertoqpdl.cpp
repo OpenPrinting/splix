@@ -27,6 +27,7 @@
 
 #include "document.h"
 #include "page.h"
+#include "compress.h"
 
 int main(int argc, char **argv)
 {
@@ -53,8 +54,13 @@ int main(int argc, char **argv)
     Document doc;
     if (!doc.load())
         return 3;
-    doc.getNextRawPage(request);
-    doc.getNextRawPage(request);
+    Page page = doc.getNextRawPage(request);
+    page.setCompression(0x11);
+    if (compressPage(request, page))
+        DEBUGMSG("Compression OK")
+    else
+        ERRORMSG("Compression Erreur");
+
     return 0;
 }
 

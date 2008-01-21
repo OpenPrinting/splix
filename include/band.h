@@ -47,6 +47,13 @@ class Band
           */
         Band();
         /**
+          * Initialize the band instance.
+          * @param nr the band number
+          * @param width the band width
+          * @param height the band height
+          */
+        Band (unsigned long nr, unsigned long width, unsigned long height);
+        /**
           * Destroy the instance
           */
         virtual ~Band();

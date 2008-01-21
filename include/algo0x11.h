@@ -1,5 +1,5 @@
 /*
- * 	    algorithm.h               (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    algo0x11.h                (C) 2006-2007, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,44 +18,29 @@
  *  $Id$
  * 
  */
-#ifndef _ALGORITHM_H_
-#define _ALGORITHM_H_
+#ifndef _ALGO0X11_H_
+#define _ALGO0X11_H_
 
-class Request;
-class BandPlane;
+#include "algorithm.h"
 
 /**
-  * @brief This super class is an interface to implement a compress algorithm.
+  * @brief This class implements the compression algorithm 0x11.
   */
-class Algorithm
+class Algo0x11 : public Algorithm
 {
     protected:
 
     public:
-        /**
-          * Initialize the instance.
-          */
-        Algorithm();
-        /**
-          * Destroy the instance.
-          */
-        virtual ~Algorithm();
+        Algo0x11();
+        virtual ~Algo0x11();
 
     public:
-        /**
-          * Compress data.
-          * @param request the request instance
-          * @param data the data to compress
-          * @param width the width of the data / band / page
-          * @param height the height of the data / band / page
-          * @return a pointer to a @ref BandPlane instance or NULL.
-          */
         virtual BandPlane*      compress(const Request& request, 
                                     unsigned char *data, unsigned long width,
-                                    unsigned long height) = 0;
+                                    unsigned long height);
 };
 
-#endif /* _ALGORITHM_H_ */
+#endif /* _ALGO0X11_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 
