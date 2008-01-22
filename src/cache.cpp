@@ -1,5 +1,5 @@
 /*
- * 	    core.cpp                  (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    cache.cpp                 (C) 2008, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,29 @@
  *  $Id$
  * 
  */
-#include "core.h"
+#include "cache.h"
+#include <stddef.h>
+
+/*
+ * Initialisation du cache
+ * Cache initialization
+ */
+bool initializeCache()
+{
+    return false;
+}
+
+
+
+/*
+ * Extraction d'une page du cache
+ * Cache page extraction
+ */
+Page* getPage(unsigned long nr)
+{
+    return NULL;
+}
+
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

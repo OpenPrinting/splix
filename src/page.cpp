@@ -40,9 +40,7 @@ Page::Page()
 
 Page::~Page()
 {
-    for (unsigned int i=0; i < 4; i++)
-        if (_planes[i])
-            delete[] _planes[i];
+    flushPlanes();
     if (_firstBand)
         delete _firstBand;
 }
@@ -60,6 +58,21 @@ void Page::registerBand(Band *band)
     else
         _firstBand = band;
     _lastBand = band;
+}
+
+
+/*
+ * Libération de la mémoire utilisée par les couches
+ * Flush the planes
+ */
+void Page::flushPlanes()
+{
+    for (unsigned int i=0; i < 4; i++) {
+        if (_planes[i]) {
+            delete[] _planes[i];
+            _planes[i] = NULL;
+        }
+    }
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

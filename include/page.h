@@ -77,6 +77,13 @@ class Page
         long double             convertToYResolution(long double f)
                                     {return f * _yResolution / 72.;}
 
+        /**
+          * Delete all planes registered and free the used memory.
+          * This function has to be called when planes are no longer
+          * used to free the huge amount of memory required for them.
+          */
+        void                    flushPlanes();
+
     public:
         /**
           * Set the X resolution.

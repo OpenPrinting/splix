@@ -100,6 +100,7 @@ static bool _compressBandedPage(const Request& request, Page& page)
         index += bandSize;
         pageHeight = theEnd ? 0 : pageHeight - bandHeight;
     }
+    page.flushPlanes();
     delete[] band;
 
     return true;
