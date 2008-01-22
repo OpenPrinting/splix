@@ -54,7 +54,7 @@ extern Page* getPage(unsigned long nr);
   * Set the new cache policy.
   * @param policy the new cache policy.
   */
-export void setCachePolicy(CachePolicy policy);
+extern void setCachePolicy(CachePolicy policy);
 
 #endif /* _CACHE_H_ */
 

@@ -1,5 +1,5 @@
 #
-#	module.mk			(C) 2007, Aurélien Croc (AP²C)
+#	module.mk			(C) 2007-2008, Aurélien Croc (AP²C)
 #
 #  Compilation file for SpliX
 #

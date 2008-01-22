@@ -1,3 +1,7 @@
+#
+#   Part of the SpliX project          (C) 2006-2008 by Aurélien Croc (AP²C)
+#
+
 rastertoqpdl_SRC	+= src/rastertoqpdl.cpp src/request.cpp \
 			   src/printer.cpp src/qpdl.cpp src/document.cpp \
 			   src/core.cpp src/compress.cpp src/algorithm.cpp \

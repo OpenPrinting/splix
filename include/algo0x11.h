@@ -1,5 +1,5 @@
 /*
- * 	    algo0x11.h                (C) 2006-2007, Aurélien Croc (AP²C)
+ * 	    algo0x11.h                (C) 2006-2008, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
