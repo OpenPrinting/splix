@@ -38,6 +38,7 @@ enum CachePolicy {
 
 /**
   * Initialize the cache mechanism and load the cache controller thread.
+  * @return TRUE if the initialization succeed. Otherwise it returns FALSE.
   */
 extern bool initializeCache();
 
@@ -48,6 +49,12 @@ extern bool initializeCache();
   *         found.
   */
 extern Page* getPage(unsigned long nr);
+
+/**
+  * Set the new cache policy.
+  * @param policy the new cache policy.
+  */
+export void setCachePolicy(CachePolicy policy);
 
 #endif /* _CACHE_H_ */
 

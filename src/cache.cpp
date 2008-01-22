@@ -42,5 +42,14 @@ Page* getPage(unsigned long nr)
 }
 
 
+
+/*
+ * Modification de la politique de gestion du cache
+ * Update the cache policy
+ */
+void setCachePolicy(CachePolicy policy)
+{
+}
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 
