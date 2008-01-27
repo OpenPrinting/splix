@@ -30,9 +30,11 @@
 #include "bandanalyser.h"
 #include <inttypes.h>
 #include <string.h>
+#ifndef DISABLE_JBIGUSE
 extern "C" {
 #   include <jbig.h>
 }
+#endif /* DISABLE_JBIGUSE */
 
 typedef struct compressedData_s {
     unsigned char*          data;
@@ -231,8 +233,10 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     // Compress the page
     if (_printer->compVersion() <= 0x11)
         errors = _compressByBands(document, width, height, clippingX);
+#ifndef DISABLE_JBIGUSE
     else if (_printer->compVersion() == 0x13)
         errors = _compressByDocument(document, width, height, clippingX);
+#endif /* DISABLE_JBIGUSE */
 
     if (errors)
         return -11;
@@ -246,6 +250,7 @@ int SPL2::printPage(Document *document, unsigned long nrCopies)
     return 0;
 }
 
+#ifndef DISABLE_JBIGUSE
 void callbackJBIGCompression(unsigned char *data, size_t len, void *arg)
 {
     rootCompressedData_t **root = (rootCompressedData_t **)arg;
@@ -446,6 +451,7 @@ int SPL2::_compressByDocument(Document *document, unsigned long width,
 
     return errors;
 }
+#endif /* DISABLE_JBIGUSE */
 
 int SPL2::_compressByBands(Document *document, unsigned long width, 
     unsigned long height, unsigned long clippingX)

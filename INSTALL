@@ -59,3 +59,13 @@ browser and add a new printer by selecting the correct printer in the list.
 	and HAVE FUN ;-)
 
 
+
+Note about the JBIG algorithm:
+------------------------------
+
+	It seems that this algorithm was previously (is?) patented. To compile
+SpliX without using this algorithm please compile and install SpliX by adding
+"DISABLE_JBIG=1" to the make line:
+		$ make DISABLE_JBIG=1
+		$ make install DISABLE_JBIG=1
+

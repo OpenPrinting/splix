@@ -17,7 +17,7 @@ all: src ppd
 
 .PHONY: src ppd 
 src ppd:
-	@$(MAKE) -C $@
+	@$(MAKE) -C $@ DISABLE_JBIG=$(DISABLE_JBIG)
 
 .PHONY: clean distclean
 clean:
@@ -31,7 +31,7 @@ distclean: clean
 .PHONY: install
 install: 
 	@$(MAKE) -C src install
-	@$(MAKE) -C ppd install
+	@$(MAKE) -C ppd install DISABLE_JBIG=$(DISABLE_JBIG)
 	@echo ""
 	@echo "             --- Everything is done! Have fun ---"
 	@echo ""

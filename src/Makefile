@@ -6,13 +6,18 @@
 
 CXXFLAGS	+= -I../include -Wall -g -O0 #-DENABLE_DEBUG
 LDFLAGS		+=
-LIBS		+= -lcups -lcupsimage -ljbig
+LIBS		+= -lcups -lcupsimage
 
 OBJECTS		:= spl2.o printer.o band.o compress.o bandanalyser.o
 HEADERS		:= include/spl2.h include/document.h include/printer.h \
 		   include/error.h include/band.h include/raster.h \
 		   include/bandanalyser.h
 
+ifeq ($(DISABLE_JBIG),1)
+CXXFLAGS += -DDISABLE_JBIGUSE
+else
+LIBS += -ljbig
+endif
 
 all: rastertospl2
 rastertospl2: $(OBJECTS) rastertospl2.o raster.o
