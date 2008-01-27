@@ -28,6 +28,7 @@
 #include "document.h"
 #include "page.h"
 #include "compress.h"
+#include "qpdl.h"
 
 int main(int argc, char **argv)
 {
@@ -57,6 +58,8 @@ int main(int argc, char **argv)
         DEBUGMSG("Compression OK")
     else
         ERRORMSG("Compression Erreur");
+    if (!renderPage(request, &page))
+        ERRORMSG("Rendu de la page erreur");
 
     return 0;
 }
