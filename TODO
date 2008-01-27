@@ -1,0 +1,15 @@
+* Ajouter les nouveaux types de papiers
+* Ajouter les différents supports disponibles (cf. clp300.ppd)
+* Ajouter le duplex inversé :
+	*ReverseDuplex RDuplexNoTumble/Reverse Long Edge: "@PJL SET DUPLEX =
+			ON<0A>@PJL SET BINDING = REVERSE_LONGEDGE<0A>"
+	*ReverseDuplex RDuplexTumble/Reverse Short Edge: "@PJL SET DUPLEX = ON<0A>@PJL
+			SET BINDING = REVERSE_SHORTEDGE<0A>"
+	=> Fonctionne comme le duplex sauf que le PJL change pour REVERSE_ (les
+	   pages ne sont pas renversées du côté logiciel)
+* Formats de papier :
+	- Size6 = 25
+	- No9Env = 26
+	- Oficio = 28
+
+* Problème CLP-610 avec la version QPDL 2 et 5 et le décompresseur... à voir
