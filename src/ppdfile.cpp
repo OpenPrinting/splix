@@ -119,9 +119,14 @@ PPDValue PPDFile::get(const char *name, const char *opt)
         attr = ppdFindAttr(_ppd, name, NULL);
     else
         attr = ppdFindAttr(_ppd, opt, name);
-    if (!attr)
-        return val;
-    val.set(attr->value);
+    if (!attr) {
+        ppd_choice_t *choice;
+        choice = ppdFindMarkedChoice(_ppd, name);
+        if (!choice)
+            return val;
+        val.set(choice->choice);
+    } else
+        val.set(attr->value);
     return val;
 }
 
@@ -218,8 +223,9 @@ bool PPDFile::Value::isTrue() const
 {
     if (!_out)
         return false;
-    if (!strcmp(_out, "1") || !strcmp(_out, "true") || !strcmp(_out, "enable") 
-            || !strcmp(_out, "enabled") || !strcmp(_out, "yes"))
+    if (!strcmp(_out, "1") || !strcasecmp(_out, "true") || 
+        !strcasecmp(_out, "enable") || !strcasecmp(_out, "enabled") || 
+        !strcasecmp(_out, "yes"))
         return true;
     return false;
 }

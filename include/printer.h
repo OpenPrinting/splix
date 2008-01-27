@@ -34,13 +34,16 @@ class Printer
         char*                   _manufacturer;
         char*                   _model;
 
-        unsigned char           _qpdlVersion;
+        bool                    _color;
+        unsigned long           _qpdlVersion;
         unsigned long           _bandHeight;
 
         unsigned char           _paperType;
         unsigned char           _paperSource;
-
-
+        
+        unsigned char           _unknownByte1;
+        unsigned char           _unknownByte2;
+        unsigned char           _unknownByte3;
 
     public:
         /**
@@ -73,6 +76,35 @@ class Printer
           * @return the height of a band.
           */ 
         unsigned long           bandHeight() const {return _bandHeight;}
+        /**
+          * @return the QPDL version.
+          */
+        unsigned long           qpdlVersion() const {return _qpdlVersion;}
+        /**
+         * @return TRUE if this printer is a color printer. Otherwise it returns
+         *         FALSE.
+         */
+        bool                    color() const {return _color;}
+        /**
+         * @return the paper source.
+         */
+        unsigned char           paperSource() const {return _paperSource;}
+        /**
+         * @return the paper type.
+         */
+        unsigned char           paperType() const {return _paperType;}
+        /**
+         * @return the unknown byte 1
+         */
+        unsigned char           unknownByte1() const {return _unknownByte1;}
+        /**
+         * @return the unknown byte 2
+         */
+        unsigned char           unknownByte2() const {return _unknownByte2;}
+        /**
+         * @return the unknown byte 3
+         */
+        unsigned char           unknownByte3() const {return _unknownByte3;}
 };
 
 #endif /* _PRINTER_H_ */

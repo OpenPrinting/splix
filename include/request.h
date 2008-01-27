@@ -36,11 +36,20 @@ class PPDFile;
 class Request 
 {
     public:
+        /**
+          * List the duplex modes.
+          */
         enum Duplex {
-            None,
+            /** Simplex mode. */
+            Simplex,
+            /** Duplex mode by the long edge. */
             LongEdge,
+            /** Duplex mode by the short edge. */
             ShortEdge,
-            Manual,
+            /** Manual duplex mode by the long edge. */
+            ManualLongEdge,
+            /** Manual duplex mode by the short edge. */
+            ManualShortEdge,
         };
 
     protected:
@@ -90,6 +99,10 @@ class Request
           * @return the printer instance.
           */
         const Printer*          printer() const {return &_printer;}
+        /**
+          * @return the duplex mode.
+          */ 
+        Duplex                  duplex() const {return _duplex;}
 
 };
 

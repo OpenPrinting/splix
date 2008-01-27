@@ -25,7 +25,8 @@ class Request;
 class BandPlane;
 
 /**
-  * @brief This super class is an interface to implement a compress algorithm.
+  * @brief This super class is an interface to implement a compression 
+  *        algorithm.
   */
 class Algorithm
 {

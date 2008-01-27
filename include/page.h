@@ -45,6 +45,7 @@ class Page
         unsigned long           _height;
         unsigned char           _colors;
         unsigned long           _pageNr;
+        unsigned long           _copiesNr;
         unsigned long           _compression;
         unsigned char*          _planes[4];
         bool                    _empty;
@@ -113,14 +114,18 @@ class Page
           * Set the number of colors.
           * @param nr the number of colors
           */
-        void                    setColorsNr(unsigned char nr)
-                                    {_colors = nr;}
+        void                    setColorsNr(unsigned char nr) {_colors = nr;}
         /**
           * Set this page number.
           * @param nr this page number
           */
-        void                    setPageNr(unsigned long nr)
-                                    {_pageNr = nr;}
+        void                    setPageNr(unsigned long nr) {_pageNr = nr;}
+        /**
+          * Set the number of copies needed.
+          * @param nr the number of copies to do
+          */
+        void                    setCopiesNr(unsigned long nr)
+                                    {_copiesNr = nr;}
         /**
           * Set the compression algorithm number to use.
           * @param nr this compression algorithm number
@@ -167,6 +172,10 @@ class Page
           * @return this page number.
           */
         unsigned long           pageNr() const {return _pageNr;}
+        /**
+          * @return the number of copies to do.
+          */
+        unsigned long           copiesNr() const {return _copiesNr;}
         /**
           * @return the compression algorithm number.
           */

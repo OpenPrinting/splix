@@ -31,7 +31,8 @@
 
 int main(int argc, char **argv)
 {
-    const char *ppdFile = "../../splix/ppd/ml2250fr.ppd";
+    const char *ppdFile = "../../splix/ppd/clp500fr.ppd";
+    //const char *ppdFile = "../../splix/ppd/ml2250fr.ppd";
     Request request;
     PPDFile ppd;
 
@@ -46,10 +47,6 @@ int main(int argc, char **argv)
     // Load the request
     if (!request.loadRequest(&ppd, "ID-0001", "aurelien", "Job de test", 1))
         return 2;
-
-    DEBUGMSG("Fabricant %s, model %s", request.printer()->manufacturer(), 
-        request.printer()->model());
-
 
     Document doc;
     if (!doc.load())

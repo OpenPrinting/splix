@@ -19,8 +19,12 @@
  * 
  */
 #include "printer.h"
+#include <string.h>
 #include "request.h"
 #include "ppdfile.h"
+#include "errlog.h"
+
+
 
 /*
  * Constructeur - Destructeur
@@ -48,11 +52,81 @@ Printer::~Printer()
  */
 bool Printer::loadInformation(const Request& request)
 {
+    const char *paperType, *paperSource;
+    PPDValue value;
+
+    // Get some printer information
+    /** @todo bandHeight */
+    _bandHeight = 0x80; // XXX XXX XXX XXX XXX TODO TODO TODO TODO
     _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
     _model = request.ppd()->get("ModelName").deepCopy();
+    _color = request.ppd()->get("ColorDevice");
+    _qpdlVersion = request.ppd()->get("QPDLVersion", "QPDL");
+    if (!_qpdlVersion || _qpdlVersion > 2) {
+        ERRORMSG(_("Invalid QPDL version. Operation aborted."));
+        return false;
+    }
+    value = request.ppd()->get("docHeaderValues", "General");
+    value.setPreformatted();
+    if (value.isNull()) {
+        ERRORMSG(_("Unknown header values. Operation aborted."));
+        return false;
+    }
+    _unknownByte1 = ((const char *)value)[0];
+    _unknownByte2 = ((const char *)value)[1];
+    _unknownByte3 = ((const char *)value)[2];
 
-    // XXX XXX XXX XXX
-    _bandHeight = 0x80;
+    // Get the paper information
+    paperType = request.ppd()->get("MediaSize");
+    if (!paperType)
+        paperType = request.ppd()->get("PageSize");
+    if (!paperType) {
+        ERRORMSG(_("Cannot get paper size information. Operation aborted."));
+        return false;
+    }
+    if (!(strcasecmp(paperType, "Letter"))) _paperType = 0;
+    else if (!(strcasecmp(paperType, "Legal"))) _paperType = 1;
+    else if (!(strcasecmp(paperType, "A4"))) _paperType = 2;
+    else if (!(strcasecmp(paperType, "Executive"))) _paperType = 3;
+    else if (!(strcasecmp(paperType, "Ledger"))) _paperType = 4;
+    else if (!(strcasecmp(paperType, "A3"))) _paperType = 5;
+    else if (!(strcasecmp(paperType, "Env10"))) _paperType = 6;
+    else if (!(strcasecmp(paperType, "Monarch"))) _paperType = 7;
+    else if (!(strcasecmp(paperType, "C5"))) _paperType = 8;
+    else if (!(strcasecmp(paperType, "DL"))) _paperType = 9;
+    else if (!(strcasecmp(paperType, "B4"))) _paperType = 10;
+    else if (!(strcasecmp(paperType, "B5"))) _paperType = 11;
+    else if (!(strcasecmp(paperType, "EnvISOB5"))) _paperType = 12;
+    else if (!(strcasecmp(paperType, "A5"))) _paperType = 16;
+    else if (!(strcasecmp(paperType, "A6"))) _paperType = 17;
+    else if (!(strcasecmp(paperType, "EnvISOB6"))) _paperType = 18;
+    else if (!(strcasecmp(paperType, "C6"))) _paperType = 23;
+    else if (!(strcasecmp(paperType, "Folio"))) _paperType = 24;
+    else {
+        ERRORMSG(_("Invalid paper size \"%s\". Operation aborted."), paperType);
+        return false;
+    }
+
+    paperSource = request.ppd()->get("InputSlot");
+    if (!paperSource) {
+        ERRORMSG(_("Cannot get input slot information. Operation aborted."));
+        return false;
+    }
+    if (!(strcasecmp(paperSource, "Auto"))) _paperSource = 1;
+    else if (!(strcasecmp(paperSource, "Manual"))) _paperSource = 2;
+    else if (!(strcasecmp(paperSource, "Multi"))) _paperSource = 3;
+    else if (!(strcasecmp(paperSource, "Upper"))) _paperSource = 4;
+    else if (!(strcasecmp(paperSource, "Lower"))) _paperSource = 5;
+    else if (!(strcasecmp(paperSource, "Envelope"))) _paperSource = 6;
+    else if (!(strcasecmp(paperSource, "Tray3"))) _paperSource = 7;
+    else {
+        ERRORMSG(_("Invalid paper source \"%s\". Operation aborted."), 
+            paperSource);
+        return false;
+    }
+
+    DEBUGMSG(_("%s printer %s with QPDL v. %lu"), _color ? "Color" : 
+        "Monochrome", _model, _qpdlVersion);
 
     return true;
 }

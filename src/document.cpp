@@ -81,7 +81,8 @@ Page Document::getNextRawPage(const Request& request)
         ERRORMSG(_("The raster hasn't been loaded"));
         return page;
     }
-    if (!cupsRasterReadHeader(_raster, &header) || !header.cupsBytesPerLine) {
+    if (!cupsRasterReadHeader(_raster, &header) || !header.cupsBytesPerLine ||
+        !header.PageSize[1]) {
         DEBUGMSG(_("No more pages"));
         _lastPage = true;
         return page;
@@ -105,6 +106,7 @@ Page Document::getNextRawPage(const Request& request)
     page.setColorsNr(colors);
     page.setPageNr(_currentPage);
     page.setCompression(header.cupsCompression);
+    page.setCopiesNr(header.NumCopies);
 
     // Calculate clippings and margins
     if (lineSize > pageWidthInB) {
@@ -181,6 +183,7 @@ Page Document::getNextRawPage(const Request& request)
 
     DEBUGMSG(_("Page %lu has been successfully loaded into memory"), 
         page.pageNr());
+/** @todo to remove */
 // TO REMOVE XXX XXX XXX
 #if 0
     for (unsigned int i=0; i < colors; i++) {

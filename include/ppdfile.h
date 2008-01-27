@@ -25,7 +25,7 @@
 
 /**
   * @class PPDFile
-  * @brief Manage easily PPD files.
+  * @brief This class provides an easy method to manage PPD files.
   *
   * This class provides methods to access in a easy way to data contained in PPD
   * files. During the opening of the file, the PPD version can be compared with
@@ -112,6 +112,11 @@ class PPDFile
                   */
                 bool                isFalse() const {return !isTrue();}
 
+		/**
+                  * @return TRUE if the key is set to true, enable, enabled,
+                  *         yes, 1. Otherwise it returns FALSE.
+		  */
+		operator bool() const {return isTrue();}
                 /**
                  * @return the string pointer.
                  */

@@ -54,6 +54,9 @@ bool Request::loadRequest(PPDFile* ppd, const char *jobname,
     _jobtitle = jobtitle;
     _copiesNr = copiesNr;
 
+    /** @todo Get the real duplex mode */
+    _duplex = Simplex;
+
     if (!_printer.loadInformation(*this)) {
         ERRORMSG(_("Request: cannot load printer information"));
         return false;
