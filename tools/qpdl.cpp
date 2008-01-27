@@ -166,10 +166,10 @@ QPDLDocument::Result QPDLDocument::_readPageHeader(QFile& data,
             arg(_resolutionX).arg(_resolutionY) << endl;
         out << "    " << QString(_("Paper type....... = %1")).
             arg(_paperType <= MAX_PAPER_TYPE ? _paperTypeName[_paperType] :
-            "*Unknown*") << endl;
+            QString("*Unknown* (%1)").arg(_paperType)) << endl;
         out << "    " << QString(_("Paper source..... = %1")).
             arg(_paperSource<=MAX_PAPER_SOURCE ? _paperSourceName[_paperSource]:
-            "*Unknown*") << endl;
+            QString("*Unknown* (%1)").arg(_paperSource)) << endl;
         out << "    " << QString(_("Printable area... = %1×%2")).
             arg(_width).arg(_height) << endl;
         out << "    " << QString(_("Duplex - Tumble.. = %1 %2")).
@@ -316,7 +316,10 @@ bool QPDLDocument::_processBandAnalysis(quint8 color, quint16 width,
         if (((quint8)content.at(3) & 0xF) != 0x09 || 
             (quint8)content.at(2) != 0xAB || (quint8)content.at(1) != 0xCD || 
             (quint8)content.at(0) != 0xEF) {
-            err << QString(_("QPDL: Invalid signature")) << endl;
+            err << QString(_("QPDL: Invalid signature (0x%1%2%3%4)")).
+                arg((quint8)content.at(0),0,16).arg((quint8)content.at(1),0,16).
+                arg((quint8)content.at(2),0,16).arg((quint8)content.at(3),0,16) 
+                << endl;
             return false;
         } else {
             be = false;

@@ -1,3 +1,9 @@
+Sun Jan 27 23:47:45 2008 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		The JBIG compression used is or was under patent. A new 
+		Makefile rule permits to not compile the JBIG code.
+	--- RELEASE OF THE VERSION V. 1.1.1 ---
+
 Fri Nov 16 03:08:01 2007 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
 		The JBIG compression used by newer printers
