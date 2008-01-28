@@ -42,21 +42,21 @@ static bool _isEmptyBand(unsigned char* band, unsigned long size)
     return true;
 }
 
-static bool _compressBandedPage(const Request& request, Page& page)
+static bool _compressBandedPage(const Request& request, Page* page)
 {
     unsigned long index=0, pageHeight, lineWidthInB, bandHeight, bandSize;
     unsigned char *planes[4], *band;
     unsigned long bandNumber=1;
     unsigned char colors;
 
-    colors = page.colorsNr();
-    lineWidthInB = (page.width() + 7) / 8;
-    pageHeight = page.height();
+    colors = page->colorsNr();
+    lineWidthInB = (page->width() + 7) / 8;
+    pageHeight = page->height();
     bandHeight = request.printer()->bandHeight();
     bandSize = lineWidthInB * bandHeight;
     band = new unsigned char[bandSize];
     for (unsigned int i=0; i < colors; i++)
-        planes[i] = page.planeBuffer(i);
+        planes[i] = page->planeBuffer(i);
 
     /*
      * 1. On vérifier si la bande n'est pas blanche
@@ -86,29 +86,29 @@ static bool _compressBandedPage(const Request& request, Page& page)
             memcpy(band, planes[i] + index, bytesToCopy);
             if (_isEmptyBand(band, bandSize))
                 continue;
-            plane = algo.compress(request, band, page.width(), bandHeight);
+            plane = algo.compress(request, band, page->width(), bandHeight);
             if (plane) {
                 plane->setColorNr(i);
                 if (!current)
-                    current = new Band(bandNumber, page.width(), bandHeight);
+                    current = new Band(bandNumber, page->width(), bandHeight);
                 current->registerPlane(plane);
             }
         }
         if (current)
-            page.registerBand(current);
+            page->registerBand(current);
         bandNumber++;
         index += bandSize;
         pageHeight = theEnd ? 0 : pageHeight - bandHeight;
     }
-    page.flushPlanes();
+    page->flushPlanes();
     delete[] band;
 
     return true;
 }
 
-bool compressPage(const Request& request, Page& page)
+bool compressPage(const Request& request, Page* page)
 {
-    switch(page.compression()) {
+    switch(page->compression()) {
         case 0x11:
             return _compressBandedPage(request, page);
         case 0x13:
@@ -123,7 +123,7 @@ bool compressPage(const Request& request, Page& page)
 #endif /* DISABLE_JBIG */
         default:
             ERRORMSG(_("Compression algorithm 0x%lX does not exist"), 
-                page.compression());
+                page->compression());
     }
     return false;
 }

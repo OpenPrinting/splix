@@ -64,7 +64,7 @@ bool Document::load()
  * Extraction d'une nouvelle page de la requête
  * Exact a new job page
  */
-Page Document::getNextRawPage(const Request& request)
+Page* Document::getNextRawPage(const Request& request)
 {
     cups_page_header_t header;
     unsigned long pageWidth, pageWidthInB, pageHeight, clippingX=0, clippingY=0;
@@ -72,41 +72,42 @@ Page Document::getNextRawPage(const Request& request)
     unsigned long bytesToCopy, marginWidthInB=0, marginHeight=0;
     unsigned char *line, *planes[4];
     unsigned char colors;
-    Page page;
+    Page *page;
 
     // Read the header
     if (_lastPage)
-        return page;
+        return NULL;
     if (!_raster) {
         ERRORMSG(_("The raster hasn't been loaded"));
-        return page;
+        return NULL;
     }
     if (!cupsRasterReadHeader(_raster, &header) || !header.cupsBytesPerLine ||
         !header.PageSize[1]) {
         DEBUGMSG(_("No more pages"));
         _lastPage = true;
-        return page;
+        return NULL;
     }
 
     // Make some calculations and store important data
-    page.setXResolution(header.HWResolution[0]);
-    page.setYResolution(header.HWResolution[1]);
+    page = new Page;
+    page->setXResolution(header.HWResolution[0]);
+    page->setYResolution(header.HWResolution[1]);
     colors = header.cupsColorSpace == CUPS_CSPACE_K ? 1 : 4;
     documentWidth = (header.cupsWidth + 7) & ~7;
     documentHeight = header.cupsHeight;
     lineSize = header.cupsBytesPerLine / colors;
-    pageWidth = ceill(page.convertToXResolution(header.PageSize[0]));
-    pageHeight = ceill(page.convertToYResolution(header.PageSize[1]));
-    marginWidthInB = (ceill(page.convertToXResolution(header.Margins[0]))+7)/8; 
-    marginHeight = ceill(page.convertToYResolution(header.Margins[1]));
+    pageWidth = ceill(page->convertToXResolution(header.PageSize[0]));
+    pageHeight = ceill(page->convertToYResolution(header.PageSize[1]));
+    marginWidthInB =(ceill(page->convertToXResolution(header.Margins[0]))+7)/8; 
+    marginHeight = ceill(page->convertToYResolution(header.Margins[1]));
     pageWidthInB = (pageWidth + 7) / 8;
     planeSize = pageWidthInB * pageHeight;
-    page.setWidth(pageWidth);
-    page.setHeight(pageHeight);
-    page.setColorsNr(colors);
-    page.setPageNr(_currentPage);
-    page.setCompression(header.cupsCompression);
-    page.setCopiesNr(header.NumCopies);
+    page->setWidth(pageWidth);
+    page->setHeight(pageHeight);
+    page->setColorsNr(colors);
+    page->setPageNr(_currentPage);
+    page->setCompression(header.cupsCompression);
+    page->setCopiesNr(header.NumCopies);
 
     // Calculate clippings and margins
     if (lineSize > pageWidthInB) {
@@ -141,7 +142,8 @@ Page Document::getNextRawPage(const Request& request)
             for (unsigned int i=0; i < colors; i++)
                 delete[] planes[i];
             delete[] line;
-            return page;
+            delete page;
+            return NULL;
         }
         clippingY--;
     }
@@ -154,7 +156,8 @@ Page Document::getNextRawPage(const Request& request)
                 for (unsigned int j=0; j < colors; j++)
                     delete[] planes[j];
                 delete[] line;
-                return page;
+                delete page;
+                return NULL;
             }
             memcpy(planes[i] + index + marginWidthInB, line + clippingX, 
                 bytesToCopy);
@@ -172,17 +175,18 @@ Page Document::getNextRawPage(const Request& request)
             for (unsigned int j=0; j < colors; j++)
                 delete[] planes[j];
             delete[] line;
-            return page;
+            delete page;
+            return NULL;
         }
         documentHeight--;
     }
     _currentPage++;
 
     for (unsigned int i=0; i < colors; i++)
-        page.setPlaneBuffer(i, planes[i]);
+        page->setPlaneBuffer(i, planes[i]);
 
     DEBUGMSG(_("Page %lu has been successfully loaded into memory"), 
-        page.pageNr());
+        page->pageNr());
 /** @todo to remove */
 // TO REMOVE XXX XXX XXX
 #if 0
@@ -194,8 +198,8 @@ Page Document::getNextRawPage(const Request& request)
         else if (i == 2) fn = "/home/aurelien/test3.pbm";
         else if (i == 3) fn = "/home/aurelien/test4.pbm";
         prout = fopen(fn, "w");
-        fprintf(prout, "P4\n%u %u\n\n", page.width(), page.height());
-        fwrite(planes[0], 1, pageWidthInB * page.height(), prout);
+        fprintf(prout, "P4\n%u %u\n\n", page->width(), page->height());
+        fwrite(planes[0], 1, pageWidthInB * page->height(), prout);
         fclose(prout);
     }
 #endif

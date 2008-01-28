@@ -52,14 +52,22 @@ int main(int argc, char **argv)
     Document doc;
     if (!doc.load())
         return 3;
-    Page page = doc.getNextRawPage(request);
-    page.setCompression(0x11);
+    Page *page = doc.getNextRawPage(request);
+    if (!page) {
+        ERRORMSG("No page");
+        return 0;
+    }
+    page->setCompression(0x11);
     if (compressPage(request, page))
         DEBUGMSG("Compression OK")
-    else
+    else {
         ERRORMSG("Compression Erreur");
-    if (!renderPage(request, &page))
+        delete page;
+        return 0;
+    }
+    if (!renderPage(request, page))
         ERRORMSG("Rendu de la page erreur");
+    delete page;
 
     return 0;
 }

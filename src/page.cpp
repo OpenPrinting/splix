@@ -58,6 +58,7 @@ void Page::registerBand(Band *band)
     else
         _firstBand = band;
     _lastBand = band;
+    band->registerParent(this);
 }
 
 

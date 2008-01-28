@@ -24,7 +24,7 @@
 class Page;
 class Request;
 
-extern bool compressPage(const Request& request, Page& page);
+extern bool compressPage(const Request& request, Page* page);
 
 #endif /* _COMPRESS_H_ */
 

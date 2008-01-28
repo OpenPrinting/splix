@@ -49,8 +49,7 @@ BandPlane* Algo0x11::compress(const Request& request, unsigned char *data,
     buffer = new unsigned char[width * height / 8];
     memcpy(buffer, data, width*height / 8);
     plane = new BandPlane();
-    plane->setData(buffer);
-    plane->setDataSize(width * height / 8);
+    plane->setData(buffer, width * height / 8);
     return plane;
 }
 

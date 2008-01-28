@@ -81,13 +81,13 @@ class Band
           * Set the band width.
           * @param width the band width
           */
-        void                    setBandWidth(unsigned long width)
+        void                    setWidth(unsigned long width)
                                     {_width = width;}
         /**
           * Set the band height.
           * @param height the band height
           */
-        void                    setBandHeight(unsigned long height)
+        void                    setHeight(unsigned long height)
                                     {_height = height;}
         /**
           * Register sibling.
@@ -119,11 +119,11 @@ class Band
         /**
           * @return the band width.
           */
-        unsigned long           bandWidth() const {return _width;}
+        unsigned long           width() const {return _width;}
         /**
           * @return the band height.
           */
-        unsigned long           bandHeight() const {return _height;}
+        unsigned long           height() const {return _height;}
         /**
           * @return the next sibling or NULL if there is no sibling.
           */

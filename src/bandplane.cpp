@@ -38,6 +38,24 @@ BandPlane::~BandPlane()
 }
 
 
+/*
+ * Enregistrement des données
+ * Set data
+ */
+void BandPlane::setData(unsigned char *data, unsigned long size)
+{
+    if (!data)
+        size = 0;
+    if (_data)
+        delete[] _data;
+
+    _data = data;
+    _size = size;
+    _checksum = 0;
+    for (unsigned int i=0; i < _size; i++)
+        _checksum += (unsigned char)_data[i];
+}
+
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

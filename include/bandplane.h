@@ -31,6 +31,7 @@ class BandPlane
         unsigned char           _colorNr;
         unsigned long           _size;
         unsigned char*          _data;
+        unsigned long           _checksum;
 
     public:
         /**
@@ -49,16 +50,13 @@ class BandPlane
           */
         void                    setColorNr(unsigned char nr) {_colorNr = nr;}
         /**
-          * Set the data size.
-          * @param size the data size
-          */
-        void                    setDataSize(unsigned long size) {_size = size;}
-        /**
           * Set the data buffer.
           * The buffer will be freed during the destruction of this instance.
-          * @param data the data
+          * @param data the data buffer
+          * @param size the size of the data
           */
-        void                    setData(unsigned char *data) {_data = data;}
+        void                    setData(unsigned char *data, 
+                                    unsigned long size);
 
         /**
           * @return the color number.
@@ -72,6 +70,10 @@ class BandPlane
           * @return the data.
           */
         const unsigned char*    data() const {return _data;}
+        /**
+          * @return the checksum.
+          */
+        unsigned long           checksum() const {return _checksum;}
 };
 
 #endif /* _BANDPLANE_H_ */

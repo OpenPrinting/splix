@@ -67,7 +67,7 @@ class Document
           * @param request the request instance
           * @return a @ref Page instance containing the current page.
           */
-        Page                    getNextRawPage(const Request& request);
+        Page*                   getNextRawPage(const Request& request);
 };
 
 #endif /* _DOCUMENT_H_ */
