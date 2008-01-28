@@ -185,8 +185,8 @@ Page* Document::getNextRawPage(const Request& request)
     for (unsigned int i=0; i < colors; i++)
         page->setPlaneBuffer(i, planes[i]);
 
-    DEBUGMSG(_("Page %lu has been successfully loaded into memory"), 
-        page->pageNr());
+    DEBUGMSG(_("Page %lu (%u×%u) has been successfully loaded into memory"), 
+        page->pageNr(), header.cupsWidth, header.cupsHeight);
 /** @todo to remove */
 // TO REMOVE XXX XXX XXX
 #if 0

@@ -131,7 +131,7 @@ static bool _renderBand(const Request& request, const Band* band)
             size += 4;
         }
         for (unsigned int j=0; j < 4; j++)
-            checkSum += header[size - j];
+            checkSum += header[size - j - 1];
         if (write(STDOUT_FILENO, (unsigned char*)&header, size) == -1) {
             ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
             return false;

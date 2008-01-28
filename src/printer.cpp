@@ -34,6 +34,8 @@ Printer::Printer()
 {
     _manufacturer = NULL;
     _model = NULL;
+    _beginPJL = NULL;
+    _endPJL = NULL;
 }
 
 Printer::~Printer()
@@ -42,6 +44,10 @@ Printer::~Printer()
         delete[] _manufacturer;
     if (_model)
         delete [] _model;
+    if (_beginPJL)
+        delete [] _beginPJL;
+    if (_endPJL)
+        delete [] _endPJL;
 }
 
 
@@ -75,6 +81,22 @@ bool Printer::loadInformation(const Request& request)
     _unknownByte1 = ((const char *)value)[0];
     _unknownByte2 = ((const char *)value)[1];
     _unknownByte3 = ((const char *)value)[2];
+
+    // Get PJL information
+    value = request.ppd()->get("beginPJL", "PJL");
+    value.setPreformatted();
+    if (value.isNull()) {
+        ERRORMSG(_("No PJL header found. Operation aborted."));
+        return false;
+    }
+    _beginPJL = value.deepCopy();
+    value = request.ppd()->get("endPJL", "PJL");
+    value.setPreformatted();
+    if (value.isNull()) {
+        ERRORMSG(_("No PJL footer found. Operation aborted."));
+        return false;
+    }
+    _endPJL = value.deepCopy();
 
     // Get the paper information
     paperType = request.ppd()->get("MediaSize");
@@ -131,6 +153,24 @@ bool Printer::loadInformation(const Request& request)
     return true;
 }
 
+bool Printer::sendPJLHeader(const Request& request) const
+{
+    printf("%s", _beginPJL);
+
+    /** @todo add the PJL header */
+
+    printf("@PJL ENTER LANGUAGE = QPDL\n");
+    fflush(stdout);
+
+    return true;
+}
+
+bool Printer::sendPJLFooter(const Request& request) const
+{
+    printf("%s", _endPJL);
+
+    return true;
+}
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

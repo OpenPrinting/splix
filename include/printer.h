@@ -33,6 +33,8 @@ class Printer
     protected:
         char*                   _manufacturer;
         char*                   _model;
+        char*                   _beginPJL;
+        char*                   _endPJL;
 
         bool                    _color;
         unsigned long           _qpdlVersion;
@@ -62,6 +64,21 @@ class Printer
           *         Otherwise it returns FALSE.
           */
         bool                    loadInformation(const Request& request);
+
+        /**
+          * Send the PJL header.
+          * The PJL header will be sent to STDOUT. Like the other methods which
+          * send data to the printer, if you need to redirect the data to
+          * somewhere else, use the freopen function to redirect STDOUT.
+          * @return TRUE if it succeed. Otherwise it returns FALSE.
+          */
+        bool                    sendPJLHeader(const Request& request) const;
+        /**
+          * Send the PJL footer.
+          * The PJL footer will be sent to STDOUT.
+          * @return TRUE if it succeed. Otherwise it returns FALSE.
+          */
+        bool                    sendPJLFooter(const Request& request) const;
 
     public:
         /**

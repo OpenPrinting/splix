@@ -65,9 +65,12 @@ int main(int argc, char **argv)
         delete page;
         return 0;
     }
+
+    request.printer()->sendPJLHeader(request);
     if (!renderPage(request, page))
         ERRORMSG("Rendu de la page erreur");
     delete page;
+    request.printer()->sendPJLFooter(request);
 
     return 0;
 }
