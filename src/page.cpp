@@ -51,7 +51,6 @@ Page::~Page()
  * Enregistrement d'une nouvelle bande
  * Register a new band
  */
-#include "errlog.h"
 void Page::registerBand(Band *band)
 {
     if (_lastBand)
