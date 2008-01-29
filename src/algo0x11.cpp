@@ -118,10 +118,6 @@ bool Algo0x11::_compress(const unsigned char *data, unsigned long size,
                 break;
             }
 
-            for (unsigned int j=0; j < 0x202; j++) 
-                printf("%x ", data[r + j]);
-            printf("\n");
-
             // Check the best similar piece of data
             for (unsigned long i=0; i < TABLE_PTR_SIZE; i++) {
                 unsigned long rTmp, counter;
@@ -226,10 +222,12 @@ BandPlane* Algo0x11::compress(const Request& request, unsigned char *data,
     widthInB = width / 8;
     size = widthInB * height;
     tmp = new unsigned char[size];
+    memset(tmp, 0, size);
     // Inverse columns and lines
     for (unsigned long y = 0; y < height; y++) {
-        for (unsigned long x = 0; x < widthInB; x++)
-            tmp[y*widthInB + x] = data[x*height + y];
+        for (unsigned long x = 0; x < widthInB; x++) {
+            tmp[x*height + y] = ~data[y*widthInB + x];
+        }
     }
 
     // Lookup for the best occurs

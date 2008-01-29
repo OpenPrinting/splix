@@ -84,8 +84,10 @@ static bool _compressBandedPage(const Request& request, Page* page)
             Algo0x11 algo;
 
             memcpy(band, planes[i] + index, bytesToCopy);
-            if (_isEmptyBand(band, bandSize))
+/*            if (_isEmptyBand(band, bandSize)) {
+                DEBUGMSG("VIDE ?");
                 continue;
+            }*/
             plane = algo.compress(request, band, page->width(), bandHeight);
             if (plane) {
                 plane->setColorNr(i+1);

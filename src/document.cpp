@@ -100,6 +100,7 @@ Page* Document::getNextRawPage(const Request& request)
     pageHeight = ceill(page->convertToYResolution(header.PageSize[1]));
     marginWidthInB =(ceill(page->convertToXResolution(header.Margins[0]))+7)/8; 
     marginHeight = ceill(page->convertToYResolution(header.Margins[1]));
+    pageWidth = (pageWidth + 7) & ~7;
     pageWidthInB = (pageWidth + 7) / 8;
     planeSize = pageWidthInB * pageHeight;
     page->setWidth(pageWidth);
@@ -185,8 +186,9 @@ Page* Document::getNextRawPage(const Request& request)
     for (unsigned int i=0; i < colors; i++)
         page->setPlaneBuffer(i, planes[i]);
 
-    DEBUGMSG(_("Page %lu (%u×%u) has been successfully loaded into memory"), 
-        page->pageNr(), header.cupsWidth, header.cupsHeight);
+    DEBUGMSG(_("Page %lu (%u×%u on %lu×%lu) has been successfully loaded into "
+        "memory"), page->pageNr(), header.cupsWidth, header.cupsHeight, 
+        page->width(), page->height());
 /** @todo to remove */
 // TO REMOVE XXX XXX XXX
 #if 0
@@ -198,7 +200,7 @@ Page* Document::getNextRawPage(const Request& request)
         else if (i == 2) fn = "/home/aurelien/test3.pbm";
         else if (i == 3) fn = "/home/aurelien/test4.pbm";
         prout = fopen(fn, "w");
-        fprintf(prout, "P4\n%u %u\n\n", page->width(), page->height());
+        fprintf(prout, "P4\n%lu %lu\n\n", page->width(), page->height());
         fwrite(planes[0], 1, pageWidthInB * page->height(), prout);
         fclose(prout);
     }

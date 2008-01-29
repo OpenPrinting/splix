@@ -181,6 +181,7 @@ static bool _renderBand(const Request& request, const Band* band)
 bool renderPage(const Request& request, Page* page)
 {
     unsigned char duplex=0, tumble=0, paperSource;
+    unsigned long width, height;
     unsigned char header[0x11];
     const Band* band;
 
@@ -215,16 +216,19 @@ bool renderPage(const Request& request, Page* page)
             break;
     }
 
+    width = page->width() * 72 / page->xResolution();
+    height = page->height() * 72 / page->yResolution();
+
     // Send the page header
     header[0x0] = 0;                                // Signature
     header[0x1] = page->yResolution() / 100;        // Y Resolution
     header[0x2] = page->copiesNr() >> 8;            // Number of copies 8-15
     header[0x3] = page->copiesNr();                 // Number of copies 0-7
     header[0x4] = request.printer()->paperType();   // Paper type
-    header[0x5] = page->width() >> 8;               // Printable area width
-    header[0x6] = page->width();                    // Printable area width
-    header[0x7] = page->height() >> 8;              // Printable area height
-    header[0x8] = page->height();                   // Printable area height
+    header[0x5] = width >> 8;                       // Printable area width
+    header[0x6] = width;                            // Printable area width
+    header[0x7] = height >> 8;                      // Printable area height
+    header[0x8] = height;                           // Printable area height
     header[0x9] = paperSource;                      // Paper source
     header[0xa] = request.printer()->unknownByte1();// ??? XXX
     header[0xb] = duplex;                           // Duplex
