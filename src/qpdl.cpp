@@ -21,6 +21,7 @@
 #include "qpdl.h"
 #include <errno.h>
 #include <unistd.h>
+#include <inttypes.h>
 #include <string.h>
 #include "page.h"
 #include "band.h"
@@ -106,10 +107,24 @@ static bool _renderBand(const Request& request, const Band* band)
         }
 
         // Send the sub-header
-        header[0x0] = 0x9 + (subVersion << 0x4);    // Sub-header signature 1
-        header[0x1] = 0xAB;                         // Sub-header signature 2
-        header[0x2] = 0xCD;                         // Sub-header signature 3
-        header[0x3] = 0xEF;                         // Sub-header signature 4
+        switch (plane->endian()) {
+            case BandPlane::Dependant:
+                *(uint32_t *)&header = (uint32_t)(0x09ABCDEF + 
+                    (subVersion << 28));                // Sub-header signature
+                break;
+            case BandPlane::BigEndian:
+                header[0x0] = 0x9 + (subVersion << 0x4);// Sub-header signature1
+                header[0x1] = 0xAB;                     // Sub-header signature2
+                header[0x2] = 0xCD;                     // Sub-header signature3
+                header[0x3] = 0xEF;                     // Sub-header signature4
+                break;
+            case BandPlane::LittleEndian:
+                header[0x0] = 0xEF;                     // Sub-header signature4
+                header[0x1] = 0xCD;                     // Sub-header signature3
+                header[0x2] = 0xAB;                     // Sub-header signature2
+                header[0x3] = 0x9 + (subVersion << 0x4);// Sub-header signature1
+                break;
+        };
         size = 4;
         if (subVersion == 3) {
             checkSum += 0x39 + 0xAB + 0xCD + 0xEF;

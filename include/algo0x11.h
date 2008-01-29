@@ -22,6 +22,15 @@
 #define _ALGO0X11_H_
 
 #include "algorithm.h"
+#include <inttypes.h>
+
+#define COMPRESS_SAMPLE_RATE    0x800
+#define TABLE_PTR_SIZE          0x40
+#define MAX_UNCOMPRESSED_BYTES  0x80
+#define MAX_COMPRESSED_BYTES    0x202
+#define MIN_COMPRESSED_BYTES    0x2
+
+#define COMPRESSION_FLAG        0x80
 
 /**
   * @brief This class implements the compression algorithm 0x11.
@@ -29,6 +38,16 @@
 class Algo0x11 : public Algorithm
 {
     protected:
+        uint32_t                _ptrArray[TABLE_PTR_SIZE];
+
+    protected:
+        static int              __compare(const void *n1, const void *n2);
+        bool                    _lookupBestOccurs(const unsigned char* data,
+                                    unsigned long size);
+        bool                    _compress(const unsigned char *data, 
+                                    unsigned long size, 
+                                    unsigned char* &output, 
+                                    unsigned long &outputSize);
 
     public:
         Algo0x11();

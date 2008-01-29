@@ -27,11 +27,22 @@
   */
 class BandPlane
 {
+    public:
+        enum Endian {
+            /** Machine dependant */
+            Dependant,
+            /** Big endian */
+            BigEndian,
+            /** Little endian */
+            LittleEndian,
+        };
+
     protected:
         unsigned char           _colorNr;
         unsigned long           _size;
         unsigned char*          _data;
         unsigned long           _checksum;
+        Endian                  _endian;
 
     public:
         /**
@@ -57,6 +68,11 @@ class BandPlane
           */
         void                    setData(unsigned char *data, 
                                     unsigned long size);
+        /**
+          * Set the endian to use.
+          * @param endian the endian to use.
+          */
+        void                    setEndian(Endian endian) {_endian = endian;}
 
         /**
           * @return the color number.
@@ -70,6 +86,10 @@ class BandPlane
           * @return the data.
           */
         const unsigned char*    data() const {return _data;}
+        /**
+          * @return the endian to use.
+          */
+        Endian                  endian() const {return _endian;}
         /**
           * @return the checksum.
           */

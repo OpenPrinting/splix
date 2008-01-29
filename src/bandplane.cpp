@@ -27,6 +27,7 @@
  */
 BandPlane::BandPlane()
 {
+    _endian = Dependant;
     _size = 0;
     _data = NULL;
 }
