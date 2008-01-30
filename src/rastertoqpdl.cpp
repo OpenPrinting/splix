@@ -24,6 +24,7 @@
 #include "version.h"
 #include "request.h"
 #include "ppdfile.h"
+#include "rendering.h"
 
 #include "document.h"
 #include "page.h"
@@ -49,28 +50,9 @@ int main(int argc, char **argv)
     if (!request.loadRequest(&ppd, "ID-0001", "aurelien", "Job de test", 1))
         return 2;
 
-    Document doc;
-    if (!doc.load())
-        return 3;
-    Page *page = doc.getNextRawPage(request);
-    if (!page) {
-        ERRORMSG("No page");
-        return 0;
-    }
-    page->setCompression(0x11);
-    if (compressPage(request, page))
-        DEBUGMSG("Compression OK")
-    else {
-        ERRORMSG("Compression Erreur");
-        delete page;
-        return 0;
-    }
-
-    request.printer()->sendPJLHeader(request);
-    if (!renderPage(request, page))
-        ERRORMSG("Rendu de la page erreur");
-    delete page;
-    request.printer()->sendPJLFooter(request);
+    // Render the request
+    if (!render(request))
+        return 1;
 
     return 0;
 }

@@ -21,9 +21,9 @@
 #include "colors.h"
 #include "page.h"
 
-void applyBlackOptimization(Page& page)
+void applyBlackOptimization(Page* page)
 {
-    if (page.colorsNr() != 4)
+    if (!page || page->colorsNr() != 4)
         return;
 }
 

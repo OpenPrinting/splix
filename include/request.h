@@ -63,6 +63,7 @@ class Request
         Printer                 _printer;
 
         Duplex                  _duplex;
+        bool                    _reverseDuplex;
 
     public:
         /**
@@ -103,6 +104,22 @@ class Request
           * @return the duplex mode.
           */ 
         Duplex                  duplex() const {return _duplex;}
+        /**
+          * @return TRUE if it's a reversed duplex. Otherwise it returns FALSE.
+          */
+        bool                    reverseDuplex() const {return _reverseDuplex;}
+        /**
+          * @return the user name.
+          */
+        const char*             userName() const {return _username;}
+        /**
+          * @return the job name.
+          */
+        const char*             jobName() const {return _jobname;}
+        /**
+          * @return the job title.
+          */
+        const char*             jobTitle() const {return _jobtitle;}
 
 };
 

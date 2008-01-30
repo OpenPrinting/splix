@@ -54,10 +54,11 @@ class Document
           * Load the file which contains the job.
           * The file have to be opened on the file descriptor 0 (STDIN_FILENO)
           * and be formatted as CUPS Raster.
+          * @param request the request instance
           * @return TRUE if it has been successfully opened. Otherwise it
           *         returns FALSE.
           */
-        bool                    load();
+        bool                    load(const Request& request);
 
         /**
           * Load the next page into memory and store all the needed information

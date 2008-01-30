@@ -19,10 +19,11 @@
  * 
  */
 #include "printer.h"
+#include <time.h>
 #include <string.h>
+#include "errlog.h"
 #include "request.h"
 #include "ppdfile.h"
-#include "errlog.h"
 
 
 
@@ -155,9 +156,89 @@ bool Printer::loadInformation(const Request& request)
 
 bool Printer::sendPJLHeader(const Request& request) const
 {
+    const char *reverse;
+    struct tm *timeinfo;
+    time_t timestamp;
+
+    time(&timestamp);
+    timeinfo = localtime(&timestamp);
+
     printf("%s", _beginPJL);
 
-    /** @todo add the PJL header */
+    // Information about the job
+    printf("@PJL DEFAULT SERVICEDATE=%04u%02u%02u\n", 1900+timeinfo->tm_year,
+        timeinfo->tm_mon+1, timeinfo->tm_mday);
+    printf("@PJL SET USERNAME=\"%s\"\n", request.userName());
+    printf("@PJL SET JOBNAME=\"%s\"\n", request.jobTitle());
+
+   // Set some printer options
+    if (!request.ppd()->get("EconoMode").isNull() && 
+        request.ppd()->get("EconoMode") != "0")
+        printf("@PJL SET ECONOMODE=%s\n", (const char *)request.ppd()->
+                get("EconoMode"));
+    if (!request.ppd()->get("EconoMode").isNull() &&
+        request.ppd()->get("PowerSave") != "False") {
+        printf("@PJL DEFAULT POWERSAVE=ON\n");
+        printf("@PJL DEFAULT POWERSAVETIME=%s\n", (const char *)request.ppd()->
+                get("PowerSave"));
+    } else
+        printf("@PJL DEFAULT POWERSAVE=OFF\n");
+    if (request.ppd()->get("JamRecovery").isTrue())
+        printf("@PJL SET JAMRECOVERY=ON\n");
+    else
+        printf("@PJL SET JAMRECOVERY=OFF\n");
+    if (request.printer()->color()) {
+        if (!strcasecmp(request.ppd()->get("ColorModel"), "CMYK"))
+            printf("@PJL SET COLORMODE=COLOR\n");
+        else
+            printf("@PJL SET COLORMODE=MONO\n");
+    }
+
+    // Information about the duplex
+    reverse = request.reverseDuplex() ? "REVERSE_" : "";
+    switch (request.duplex()) {
+        case Request::Simplex:
+            printf("@PJL SET DUPLEX=OFF\n");
+            break;
+        case Request::LongEdge:
+            printf("@PJL SET DUPLEX=ON\n");
+            printf("@PJL SET BINDING=%sLONGEDGE\n", reverse);
+            break;
+        case Request::ShortEdge:
+            printf("@PJL SET DUPLEX=ON\n");
+            printf("@PJL SET BINDING=%sSHORTEDGE\n", reverse);
+            break;
+        case Request::ManualLongEdge:
+            printf("@PJL SET DUPLEX=MANUAL\n");
+            printf("@PJL SET BINDING=LONGEDGE\n");
+            break;
+        case Request::ManualShortEdge:
+            printf("@PJL SET DUPLEX=MANUAL\n");
+            printf("@PJL SET BINDING=SHORTEDGE\n");
+            break;
+    }
+ 
+    // Set some job options
+    if (request.ppd()->get("MediaType").isNull())
+        printf("@PJL SET PAPERTYPE=OFF\n");
+    else
+        printf("@PJL SET PAPERTYPE=%s\n", (const char *)request.ppd()->
+                get("MediaType"));
+    if (request.ppd()->get("Altitude").isNull())
+        printf("@PJL SET ALTITUDE=LOW\n");
+    else
+        printf("@PJL SET ALTITUDE=%s\n", (const char *)request.ppd()->
+                get("Altitude"));
+    if (request.ppd()->get("TonerDensity").isNull())
+        printf("@PJL SET DENSITY=3\n");
+    else
+        printf("@PJL SET DENSITY=%s\n", (const char *)request.ppd()->
+                get("TonerDensity"));
+    if (request.ppd()->get("SRTMode").isNull())
+        printf("@PJL SET RET=NORMAL\n");
+    else
+        printf("@PJL SET RET=%s\n", (const char *)request.ppd()->
+                get("SRTMode"));
 
     printf("@PJL ENTER LANGUAGE = QPDL\n");
     fflush(stdout);

@@ -1,5 +1,5 @@
 /*
- * 	    cache.cpp                 (C) 2008, Aurélien Croc (AP²C)
+ * 	    rendering.h               (C) 2006-2008, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,44 +18,20 @@
  *  $Id$
  * 
  */
-#include "cache.h"
-#include <stddef.h>
+#ifndef _RENDERING_H_
+#define _RENDERING_H_
 
-static CachePolicy _policy = EveryPagesIncreasing;
-static unsigned long _pageRequested = 0;
+class Request;
 
+/**
+  * Render the request.
+  * @param request the request
+  * @return TRUE if the request has been successfully rendered. Otherwise it
+  *         returns FALSE.
+  */
+extern bool render(const Request& request);
 
-
-/*
- * Initialisation du cache
- * Cache initialization
- */
-bool initializeCache()
-{
-    return false;
-}
-
-
-
-/*
- * Extraction d'une page du cache
- * Cache page extraction
- */
-Page* getPage(unsigned long nr)
-{
-    return NULL;
-}
-
-
-
-/*
- * Modification de la politique de gestion du cache
- * Update the cache policy
- */
-void setCachePolicy(CachePolicy policy)
-{
-    _policy = policy;
-}
+#endif /* _RENDERING_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

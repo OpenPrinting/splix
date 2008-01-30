@@ -103,20 +103,20 @@ class PPDFile
 
                 /**
                   * @return TRUE if the key is set to true, enable, enabled,
-                  *         yes, 1. Otherwise it returns FALSE.
+                  *         yes, 1 or on. Otherwise it returns FALSE.
                   */
                 bool                isTrue() const;
                 /**
                   * @return FALSE if the key is set to true, enable, enabled,
-                  *         yes, 1. Otherwise it returns TRUE.
+                  *         yes, 1 or on. Otherwise it returns TRUE.
                   */
                 bool                isFalse() const {return !isTrue();}
 
-		/**
+		        /**
                   * @return TRUE if the key is set to true, enable, enabled,
-                  *         yes, 1. Otherwise it returns FALSE.
-		  */
-		operator bool() const {return isTrue();}
+                  *         yes, 1 or on. Otherwise it returns FALSE.
+		          */
+                operator bool() const {return isTrue();}
                 /**
                  * @return the string pointer.
                  */
@@ -146,6 +146,22 @@ class PPDFile
                  */
                 operator long double() const 
                         {return _out ? strtold(_out, (char**)NULL) : 0;}
+                /**
+                 * Compare the value with a string.
+                 * The comparison is case insensitive.
+                 * @param val the string to compare to
+                 * @return TRUE if the strings are equivalent. Otherwise it
+                 *         returns FALSE.
+                 */
+                bool    operator == (const char* val) const;
+                /**
+                 * Compare the value with a string.
+                 * The comparison is case insensitive.
+                 * @param val the string to compare to
+                 * @return TRUE if the strings are different. Otherwise it
+                 *         returns FALSE.
+                 */
+                bool    operator != (const char* val) const;
         };
 
     protected:

@@ -49,13 +49,14 @@ bool Request::loadRequest(PPDFile* ppd, const char *jobname,
     }
 
     _ppd = ppd;
-    _jobname = jobname;
-    _username = username;
-    _jobtitle = jobtitle;
+    _jobname = jobname ? jobname : _("Unknown");
+    _username = username ? username : getenv("USER");
+    _jobtitle = jobtitle ? jobtitle : _("Unknown job title");
     _copiesNr = copiesNr;
 
     /** @todo Get the real duplex mode */
     _duplex = Simplex;
+    _reverseDuplex = false;
 
     if (!_printer.loadInformation(*this)) {
         ERRORMSG(_("Request: cannot load printer information"));

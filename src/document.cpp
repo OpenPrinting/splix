@@ -31,7 +31,6 @@
 Document::Document()
 {
     _raster = NULL;
-    _currentPage = 0;
 }
 
 Document::~Document()
@@ -46,9 +45,9 @@ Document::~Document()
  * Ouverture du fichier contenant la requête
  * Open the file which contains the job
  */
-bool Document::load()
+bool Document::load(const Request& request)
 {
-    _currentPage = 0;
+    _currentPage = 1;
     _lastPage = false;
     _raster = cupsRasterOpen(STDIN_FILENO, CUPS_RASTER_READ);
     if (!_raster) {

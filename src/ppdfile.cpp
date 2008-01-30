@@ -225,9 +225,23 @@ bool PPDFile::Value::isTrue() const
         return false;
     if (!strcmp(_out, "1") || !strcasecmp(_out, "true") || 
         !strcasecmp(_out, "enable") || !strcasecmp(_out, "enabled") || 
-        !strcasecmp(_out, "yes"))
+        !strcasecmp(_out, "yes") || !strcasecmp(_out, "on"))
         return true;
     return false;
+}
+
+bool PPDFile::Value::operator == (const char* val) const
+{
+    if (!_out)
+        return false;
+    return !strcasecmp(_out, val);
+}
+
+bool PPDFile::Value::operator != (const char* val) const
+{
+    if (!_out)
+        return true;
+    return strcasecmp(_out, val);
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

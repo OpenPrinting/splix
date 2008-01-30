@@ -28,7 +28,7 @@ class Page;
   * Transform red, green and cyan dots in a black dot and remove red, green or
   * cyan dot if a black dot is present.
   */
-extern void applyBlackOptimization(Page& page);
+extern void applyBlackOptimization(Page* page);
 
 #endif /* _COLORS_H_ */
 
