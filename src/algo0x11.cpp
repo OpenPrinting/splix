@@ -40,6 +40,7 @@ int Algo0x11::__compare(const void *n1, const void *n2)
 bool Algo0x11::_lookupBestOccurs(const unsigned char* data, unsigned long size)
 {
     uint32_t occurs[COMPRESS_SAMPLE_RATE * 2];
+    bool oneIsPresent = false;
     unsigned char b;
     unsigned long i;
 
@@ -60,12 +61,16 @@ bool Algo0x11::_lookupBestOccurs(const unsigned char* data, unsigned long size)
     // Order the array
     qsort(occurs, COMPRESS_SAMPLE_RATE, sizeof(uint32_t)*2, __compare);
 
-    /** @todo append the value 0 to improve the compression. */
-    // Get the first 0x40 elements
-    for (i=0; i < TABLE_PTR_SIZE; i++)
+    // Set the pointer table to use for compression
+    for (i=0; i < TABLE_PTR_SIZE; i++) {
         _ptrArray[i] = occurs[i*2 + 1] + 1;
+        if (_ptrArray[i] == 1)
+            oneIsPresent = true;
+    }
+    // Append the value 1 which improves the compression of multiple same bytes
+    if (!oneIsPresent)
+        _ptrArray[TABLE_PTR_SIZE-1] = 1;
 
-    // _maxSizeArray a été supprimé. Est-ce inutile ? XXX XXX XXX XXX
     return true;
 }
 
@@ -209,34 +214,20 @@ Algo0x11::~Algo0x11()
 BandPlane* Algo0x11::compress(const Request& request, unsigned char *data, 
         unsigned long width, unsigned long height)
 {
-    unsigned long outputSize, widthInB, size;
-    unsigned char *tmp, *output;
+    unsigned long outputSize, size = width * height / 8;
+    unsigned char *output;
     BandPlane *plane;
 
-    if (!data || !width || !height) {
+    if (!data || !size) {
         ERRORMSG(_("Invalid given data for compression (0x11)"));
         return NULL;
     }
 
-    // Make these information available to all sub-functions
-    widthInB = width / 8;
-    size = widthInB * height;
-    tmp = new unsigned char[size];
-    memset(tmp, 0, size);
-    // Inverse columns and lines
-    for (unsigned long y = 0; y < height; y++) {
-        for (unsigned long x = 0; x < widthInB; x++) {
-            tmp[x*height + y] = ~data[y*widthInB + x];
-        }
-    }
-
     // Lookup for the best occurs
-    if (!_lookupBestOccurs(tmp, size) || 
-        !_compress(tmp, size, output, outputSize)) {
-        delete[] tmp;
+    if (!_lookupBestOccurs(data, size) || 
+        !_compress(data, size, output, outputSize)) {
         return NULL;
     }
-    delete[] tmp;
 
     // Register the result into a band plane
     plane = new BandPlane();

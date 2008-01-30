@@ -32,11 +32,11 @@ static bool _isEmptyBand(unsigned char* band, unsigned long size)
 {
     unsigned long max = size / sizeof(unsigned long);
 
-    for (unsigned int i=0; i < max; i++) {
+    for (unsigned long i=0; i < max; i++) {
         if (((unsigned long*)band)[i])
             return false;
     }
-    for (unsigned int i=0; i < size & 0x3; i++)
+    for (unsigned long i=0; i < size & 0x3; i++)
         if (band[size-i-1])
             return false;
     return true;
@@ -46,7 +46,7 @@ static bool _compressBandedPage(const Request& request, Page* page)
 {
     unsigned long index=0, pageHeight, lineWidthInB, bandHeight, bandSize;
     unsigned char *planes[4], *band;
-    unsigned long bandNumber=1;
+    unsigned long bandNumber=0;
     unsigned char colors;
 
     colors = page->colorsNr();
@@ -68,13 +68,14 @@ static bool _compressBandedPage(const Request& request, Page* page)
      * 4. On détruit les buffers de plans dans la page.
      */
     while (pageHeight) {
-        unsigned long bytesToCopy = bandSize;
+        unsigned long localHeight = bandHeight, bytesToCopy = bandSize;
         Band *current = NULL;
         bool theEnd = false;
 
         // Special things to do for the last band
         if (pageHeight < bandHeight) {
             theEnd = true;
+            localHeight = pageHeight;
             bytesToCopy = lineWidthInB * pageHeight;
             memset(band, 0, bandSize);
         }
@@ -83,11 +84,27 @@ static bool _compressBandedPage(const Request& request, Page* page)
             BandPlane *plane;
             Algo0x11 algo;
 
-            memcpy(band, planes[i] + index, bytesToCopy);
-/*            if (_isEmptyBand(band, bandSize)) {
-                DEBUGMSG("VIDE ?");
+            // Copy the data into the band depending on the algorithm options
+            if (algo.reverseLineColumn()) {
+                for (unsigned int y=0; y < localHeight; y++) {
+                    for (unsigned int x=0; x < lineWidthInB; x++) {
+                            band[x * bandHeight + y] = planes[i][index + x +
+                                y*lineWidthInB];
+                    }
+                }
+            } else
+                memcpy(band, planes[i] + index, bytesToCopy);
+
+            // Does the band is empty?
+            if (_isEmptyBand(band, bandSize))
                 continue;
-            }*/
+
+            // Check if bytes have to be reversed
+            if (algo.inverseByte())
+                for (unsigned int j=0; j < bytesToCopy; j++)
+                    band[j] = ~band[j];
+
+            // Call the compression method
             plane = algo.compress(request, band, page->width(), bandHeight);
             if (plane) {
                 plane->setColorNr(i+1);

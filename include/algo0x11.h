@@ -57,6 +57,8 @@ class Algo0x11 : public Algorithm
         virtual BandPlane*      compress(const Request& request, 
                                     unsigned char *data, unsigned long width,
                                     unsigned long height);
+        virtual bool            reverseLineColumn() {return true;}
+        virtual bool            inverseByte() {return true;}
 };
 
 #endif /* _ALGO0X11_H_ */

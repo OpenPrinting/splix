@@ -54,6 +54,19 @@ class Algorithm
         virtual BandPlane*      compress(const Request& request, 
                                     unsigned char *data, unsigned long width,
                                     unsigned long height) = 0;
+        /**
+          * Reverse line and column.
+          * the byte at (x=1, y=0) is placed at (x=0, y=1) etc.
+          * This is used by algorithm 0x11 (at least).
+          * @return TRUE if this operation is needed. Otherwise returns FALSE.
+          */
+        virtual bool            reverseLineColumn() {return false;}
+        /**
+          * Inverse the byte.
+          * Do a NOT operation on each byte.
+          * @return TRUE if this operation is needed. Otherwise returns FALSE.
+          */
+        virtual bool            inverseByte() {return false;}
 };
 
 #endif /* _ALGORITHM_H_ */
