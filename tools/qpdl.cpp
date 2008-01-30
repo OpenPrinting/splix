@@ -224,8 +224,10 @@ QPDLDocument::Result QPDLDocument::_readPageContent(QFile& data,
             (quint8)header.at(BAND_WIDTH_L);
         height = ((quint8)header.at(BAND_HEIGHT_H) << 8) + 
             (quint8)header.at(BAND_HEIGHT_L);
-        if (!_quiet)
+        if (!_quiet) {
             out << '.';
+            out.flush();
+        }
 
         // Read the band data -- SPLc in QPDL V. 0 or 1
         if (_type == SPLc && _qpdl <= 1) {
