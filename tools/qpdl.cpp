@@ -346,7 +346,7 @@ bool QPDLDocument::_processBandAnalysis(quint8 color, quint16 width,
                 QChar('0')) << endl;
             return false;
         }
-        content.remove(content.size() - 5, 4);
+        content.remove(content.size() - 4, 4);
     }
     content.remove(0, 4);
 
