@@ -46,7 +46,9 @@ bool render(const Request& request)
     // Send each page
     page = document.getNextRawPage(request);
     while (page) {
+#ifndef DISABLE_BLACKOPTIM
         applyBlackOptimization(page);
+#endif /* DISABLE_BLACKOPTIM */
         page->setCompression(0x11); // XXX XXX XXX FIXME TO REMOVE
         if (compressPage(request, page)) {
             if (!renderPage(request, page))

@@ -20,19 +20,16 @@
  */
 #include <cups/ppd.h>
 #include <cups/cups.h>
+#include <stdlib.h>
 #include "errlog.h"
 #include "version.h"
 #include "request.h"
 #include "ppdfile.h"
 #include "rendering.h"
 
-#include "document.h"
-#include "page.h"
-#include "compress.h"
-#include "qpdl.h"
-
 int main(int argc, char **argv)
 {
+    //const char *ppdFile = getenv("PPD");
     const char *ppdFile = "../../splix/ppd/clp500fr.ppd";
     //const char *ppdFile = "../../splix/ppd/ml2250fr.ppd";
     Request request;
@@ -43,6 +40,7 @@ int main(int argc, char **argv)
     // /TEST /TEST
 
     // Open the PPD file
+    //if (!ppd.open(ppdFile, VERSION, argv[5]))
     if (!ppd.open(ppdFile, VERSION, ""))
         return 1;
 

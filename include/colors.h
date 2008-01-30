@@ -21,6 +21,8 @@
 #ifndef _COLORS_H_
 #define _COLORS_H_
 
+#ifndef DISABLE_BLACKOPTIM
+
 class Page;
 
 /**
@@ -30,6 +32,7 @@ class Page;
   */
 extern void applyBlackOptimization(Page* page);
 
+#endif /* DISABLE_BLACKOPTIM */
 #endif /* _COLORS_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

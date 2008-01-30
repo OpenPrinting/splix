@@ -4,6 +4,7 @@
 #  Compilation file for SpliX
 #
 # Options: DISABLE_JBIG
+#          DISABLE_BLACKOPTIM
 
 MODE		:= debug
 
