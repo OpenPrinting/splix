@@ -50,12 +50,11 @@ extern bool uninitializeCache();
 
 
 /**
-  * Extract a specific page from the cache.
-  * @param nr the page number to extract
+  * Extract the next page (depending on the curernt cache policy)
   * @return the instance of the page. Otherwise it returns NULL if no page are
   *         found.
   */
-extern Page* getPage(unsigned long nr);
+extern Page* getNextPage();
 
 /**
   * Register a new page in the cache.

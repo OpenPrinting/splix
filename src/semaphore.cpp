@@ -71,7 +71,7 @@ Semaphore& Semaphore::operator --(int)
     pthread_mutex_lock(&_lock);
     while (!_counter)
         pthread_cond_wait(&_cond, &_lock);
-    _counter++;
+    _counter--;
     pthread_mutex_unlock(&_lock);
 
     return *this;

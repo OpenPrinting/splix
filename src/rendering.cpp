@@ -69,8 +69,7 @@ static void *_compressPage(void* data)
             DEBUGMSG(_("Page %lu has been compressed and is ready for "
                 "rendering"), page->pageNr());
 
-            /** @todo register the page into the cache */
-
+            registerPage(page);
         } else
             ERRORMSG(_("Error while compressing the page. Check the previous "
                 "message. Trying to print the other pages."));
@@ -84,6 +83,7 @@ static void *_compressPage(void* data)
 bool render(const Request& request)
 {
     pthread_t threads[THREADS];
+    Page *page;
 
     // Load the document
     if (!document.load(request)) {
@@ -109,19 +109,15 @@ bool render(const Request& request)
     // Send the PJL Header
     request.printer()->sendPJLHeader(request);
 
-
-
-
-    DEBUGMSG("J'attend....");
-
-
-
-
-
-
-
-
-
+    for (;;) {
+        DEBUGMSG("J'attend....");
+        page = getNextPage();
+        if (!page)
+            break;
+        if (!renderPage(request, page))
+            ERRORMSG(_("Error while rendering the page. Check the previous "
+                        "message. Trying to print the other pages."));
+    }
 
     // Send the PJL footer
     request.printer()->sendPJLFooter(request);
