@@ -69,6 +69,11 @@ class Document
           * @return a @ref Page instance containing the current page.
           */
         Page*                   getNextRawPage(const Request& request);
+        /**
+          * @return the number of pages or 0 if its number is not yet known.
+          */
+        unsigned long           numberOfPages() const 
+                                    {return _lastPage ? _currentPage - 1: 0;}
 };
 
 #endif /* _DOCUMENT_H_ */

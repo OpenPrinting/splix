@@ -21,6 +21,7 @@
 #include <cups/ppd.h>
 #include <cups/cups.h>
 #include <stdlib.h>
+#include "cache.h"
 #include "errlog.h"
 #include "version.h"
 #include "request.h"
@@ -36,7 +37,7 @@ int main(int argc, char **argv)
     PPDFile ppd;
 
     // TEST TEST
-    freopen("/home/aurelien/test.cups", "r", stdin);
+    freopen("/home/aurelien/rapport.cups", "r", stdin);
     // /TEST /TEST
 
     // Open the PPD file
@@ -48,9 +49,19 @@ int main(int argc, char **argv)
     if (!request.loadRequest(&ppd, "ID-0001", "aurelien", "Job de test", 1))
         return 2;
 
+#ifndef DISABLE_THREADS
+    if (!initializeCache())
+        return 3;
+#endif /* DISABLE_THREADS */
+
     // Render the request
     if (!render(request))
-        return 1;
+        return 4;
+
+#ifndef DISABLE_THREADS
+    if (!uninitializeCache())
+        return 3;
+#endif /* DISABLE_THREADS */
 
     return 0;
 }

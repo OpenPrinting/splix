@@ -43,19 +43,95 @@ enum CachePolicy {
 extern bool initializeCache();
 
 /**
+  * Uninitialize the cache mechanism and unload the cache controller thread.
+  * @return TRUE if the uninitialization succeed. Otherwise it returns FALSE.
+  */
+extern bool uninitializeCache();
+
+
+/**
   * Extract a specific page from the cache.
-  * @param nr the page number to extract.
+  * @param nr the page number to extract
   * @return the instance of the page. Otherwise it returns NULL if no page are
   *         found.
   */
 extern Page* getPage(unsigned long nr);
 
 /**
+  * Register a new page in the cache.
+  * @param page the page instance to register in the cache
+  */
+extern void registerPage(Page* page);
+
+/**
   * Set the new cache policy.
-  * @param policy the new cache policy.
+  * @param policy the new cache policy
   */
 extern void setCachePolicy(CachePolicy policy);
 
+/**
+  * Set the number of pages in the document.
+  * @param nr the number of pages
+  */
+extern void setNumberOfPages(unsigned long nr);
+
+
+/**
+  * @brief This class represent a cache entry to store a page.
+  * To preserve memory a swapping mechanism is present.
+  */
+class CacheEntry {
+    protected:
+        Page*                   _page;
+        CacheEntry*             _next;
+        char*                   _tempFile;
+        int                     _swap;
+
+    public:
+        /**
+          * Initialize the cache entry instance.
+          * @param page the page instance associated to this entry.
+          */
+        CacheEntry(Page* page);
+        /**
+          * Destroy the cache entry instance.
+          */
+        virtual ~CacheEntry();
+
+    public:
+        /**
+          * Register a sibling.
+          * @param entry the sibling instance.
+          */
+        void                    registerSibling(CacheEntry *entry)
+                                    {_next = entry;}
+        /**
+          * Swap the page instance on the disk.
+          * @return TRUE if the page has been successfully swapped. Otherwise it
+          *         returns FALSE.
+          */
+        bool                    swapToDisk();
+        /**
+          * Restore a previously swapped page into memory.
+          * @return TRUE if the page has been successfully restored. Otherwise 
+          *         it returns FALSE.
+          */
+        bool                    restoreIntoMemory();
+
+        /**
+          * @return the page instance.
+          */
+        Page*                   page() const {return _page;}
+        /**
+          * @return the sibling instance.
+          */
+        CacheEntry*             sibling() const {return _next;}
+        /**
+         * @return TRUE if the page is currently swapped on disk. Otherwise
+         *         returns FALSE.
+         */
+        bool                    isSwapped() const {return _swap ? true : false;}
+};
 #endif /* _CACHE_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

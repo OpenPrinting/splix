@@ -4,14 +4,15 @@
 #  Compilation file for SpliX
 #
 # Options: DISABLE_JBIG
+# 	   DISABLE_THREADS
 #          DISABLE_BLACKOPTIM
 
 MODE		:= debug
 
 SUBDIRS 	+= src
 TARGETS		:= rastertoqpdl
-CXXFLAGS	+= `cups-config --cflags` -Iinclude -Wall
-DEBUG_CXXFLAGS	+= -DDEBUG
+CXXFLAGS	+= `cups-config --cflags` -Iinclude -Wall -DTHREADS=2
+DEBUG_CXXFLAGS	+= -DDEBUG 
 rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 
