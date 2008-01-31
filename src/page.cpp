@@ -19,7 +19,9 @@
  * 
  */
 #include "page.h"
+#include <unistd.h>
 #include "band.h"
+#include "errlog.h"
 
 /*
  * Constructeur - Destructeur
@@ -36,6 +38,7 @@ Page::Page()
     _planes[3] = NULL;
     _firstBand = NULL;
     _lastBand = NULL;
+    _bandsNr = 0;
 }
 
 Page::~Page()
@@ -59,7 +62,9 @@ void Page::registerBand(Band *band)
         _firstBand = band;
     _lastBand = band;
     band->registerParent(this);
+    _bandsNr++;
 }
+
 
 
 /*
@@ -75,6 +80,70 @@ void Page::flushPlanes()
         }
     }
 }
+
+
+
+/*
+ * Mise sur disque / Rechargement
+ * Swapping / restoring
+ */
+bool Page::swapToDisk(int fd)
+{
+    unsigned long i;
+    Band* band;
+
+    if (_planes[0] || _planes[1] || _planes[2] || _planes[3]) {
+        ERRORMSG(_("Cannot swap page instance which still contains bitmap "
+            "representation"));
+        return false;
+    }
+    write(fd, &_xResolution, sizeof(_xResolution));
+    write(fd, &_yResolution, sizeof(_yResolution));
+    write(fd, &_width, sizeof(_width));
+    write(fd, &_height, sizeof(_height));
+    write(fd, &_colors, sizeof(_colors));
+    write(fd, &_pageNr, sizeof(_pageNr));
+    write(fd, &_copiesNr, sizeof(_copiesNr));
+    write(fd, &_compression, sizeof(_compression));
+    write(fd, &_empty, sizeof(_empty));
+    write(fd, &_bandsNr, sizeof(_bandsNr));
+    for (i=0, band = _firstBand; i < _bandsNr; i++) {
+        if (!band->swapToDisk(fd))
+            return false;
+        band = band->sibling();
+    }
+
+    return true;
+}
+
+Page* Page::restoreIntoMemory(int fd)
+{
+    unsigned long nr;
+    Page* page;
+
+    page = new Page();
+    read(fd, &page->_xResolution, sizeof(page->_xResolution));
+    read(fd, &page->_yResolution, sizeof(page->_yResolution));
+    read(fd, &page->_width, sizeof(page->_width));
+    read(fd, &page->_height, sizeof(page->_height));
+    read(fd, &page->_colors, sizeof(page->_colors));
+    read(fd, &page->_pageNr, sizeof(page->_pageNr));
+    read(fd, &page->_copiesNr, sizeof(page->_copiesNr));
+    read(fd, &page->_compression, sizeof(page->_compression));
+    read(fd, &page->_empty, sizeof(page->_empty));
+    read(fd, &nr, sizeof(nr));
+    for (unsigned int i=0; i < nr; i++) {
+        Band *band = Band::restoreIntoMemory(fd);
+        if (!band) {
+            delete page;
+            return NULL;
+        }
+        page->registerBand(band);
+    }
+
+    return page;
+}
+
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

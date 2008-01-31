@@ -84,7 +84,6 @@ class CacheEntry {
         Page*                   _page;
         CacheEntry*             _next;
         char*                   _tempFile;
-        int                     _swap;
 
     public:
         /**
@@ -129,7 +128,8 @@ class CacheEntry {
          * @return TRUE if the page is currently swapped on disk. Otherwise
          *         returns FALSE.
          */
-        bool                    isSwapped() const {return _swap ? true : false;}
+        bool                    isSwapped() const 
+                                    {return _tempFile ? true : false;}
 };
 #endif /* _CACHE_H_ */
 

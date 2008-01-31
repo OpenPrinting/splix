@@ -20,9 +20,11 @@
  */
 #ifndef DISABLE_THREADS
 #include "cache.h"
-#include <stddef.h>
+#include <fcntl.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 #include "page.h"
 #include "errlog.h"
 #include "semaphore.h"
@@ -319,12 +321,11 @@ CacheEntry::CacheEntry(Page* page)
     _tempFile = NULL;
     _next = NULL;
     _page = page;
-    _swap = 0;
 }
 
 CacheEntry::~CacheEntry()
 {
-    if (_swap) {
+    if (_tempFile) {
         ERRORMSG(_("Destroy a cache entry which is still swapped on disk."));
         unlink(_tempFile);
         delete[] _tempFile;
@@ -333,14 +334,70 @@ CacheEntry::~CacheEntry()
 
 bool CacheEntry::swapToDisk()
 {
-    /** @todo a implémenter */
-    return false;
+    const char *path = "/tmp/splixV2-pageXXXXXX";
+    int fd;
+
+    if (_tempFile) {
+        ERRORMSG(_("Trying to swap a page instance on the disk which is "
+            "already swapped."));
+        return false;
+    }
+
+    // Create the temporarily file
+    _tempFile = new char[strlen(path)+1];
+    strcpy(_tempFile, path);
+    if ((fd = mkstemp(_tempFile)) == -1) {
+        delete[] _tempFile;
+        _tempFile = NULL;
+        ERRORMSG(_("Cannot swap a page into disk (%i)"), errno);
+        return false;
+    }
+
+    // Swap the instance into the file
+    if (!_page->swapToDisk(fd)) {
+        unlink(_tempFile);
+        delete[] _tempFile;
+        _tempFile = NULL;
+        ERRORMSG(_("Cannot swap a page into disk"));
+        return false;
+    }
+
+    close(fd);
+    delete _page;
+    _page = NULL;
+
+    return true;
 }
 
 bool CacheEntry::restoreIntoMemory()
 {
-    /** @todo a implémenter */
-    return false;
+    int fd;
+
+    if (!_tempFile) {
+        ERRORMSG(_("Trying to restore a page instance into memory which is "
+            "aready into memory"));
+        return false;
+    }
+
+    // Open the swap file
+    if ((fd = open(_tempFile, O_RDONLY)) == -1) {
+        ERRORMSG(_("Cannot restore page into memory (%i)"), errno);
+        return false;
+    }
+
+    // Restore the instance
+    if (!(_page = Page::restoreIntoMemory(fd))) {
+        ERRORMSG(_("Cannot restore page into memory"));
+        return false;
+    }
+
+    // Destroy the swap file
+    close(fd);
+    unlink(_tempFile);
+    delete[] _tempFile;
+    _tempFile = NULL;
+
+    return true;
 }
 
 #endif /* DISABLE_THREADS */

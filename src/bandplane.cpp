@@ -19,7 +19,7 @@
  * 
  */
 #include "bandplane.h"
-#include <stddef.h>
+#include <unistd.h>
 
 /*
  * Constructeur - Destructeur
@@ -57,6 +57,38 @@ void BandPlane::setData(unsigned char *data, unsigned long size)
         _checksum += (unsigned char)_data[i];
 }
 
+
+
+/*
+ * Mise sur disque / Rechargement
+ * Swapping / restoring
+ */
+bool BandPlane::swapToDisk(int fd)
+{
+    write(fd, &_colorNr, sizeof(_colorNr));
+    write(fd, &_size, sizeof(_size));
+    write(fd, _data, _size);
+    write(fd, &_checksum, sizeof(_checksum));
+    write(fd, &_endian, sizeof(_endian));
+    return true;
+}
+
+BandPlane* BandPlane::restoreIntoMemory(int fd)
+{
+    unsigned char* data;
+    BandPlane* plane;
+
+    plane = new BandPlane();
+    read(fd, &plane->_colorNr, sizeof(plane->_colorNr));
+    read(fd, &plane->_size, sizeof(plane->_size));
+    data = new unsigned char[plane->_size];
+    read(fd, data, plane->_size);
+    plane->_data = data;
+    read(fd, &plane->_checksum, sizeof(plane->_checksum));
+    read(fd, &plane->_endian, sizeof(plane->_endian));
+
+    return plane;
+}
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

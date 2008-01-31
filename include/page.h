@@ -49,6 +49,7 @@ class Page
         unsigned long           _compression;
         unsigned char*          _planes[4];
         bool                    _empty;
+        unsigned long           _bandsNr;
         Band*                   _firstBand;
         Band*                   _lastBand;
 
@@ -199,7 +200,21 @@ class Page
           */ 
         const Band*             firstBand() const {return _firstBand;}
 
-
+    public:
+        /**
+          * Swap this instance on the disk.
+          * @param fd the file descriptor where the instance has to be swapped
+          * @return TRUE if the instance has been successfully swapped. 
+          *         Otherwise it returns FALSE.
+          */
+        bool                    swapToDisk(int fd);
+        /**
+          * Restore an instance from the disk into memory.
+          * @param fd the file descriptor where the instance has been swapped
+          * @return a page instance if it has been successfully restored. 
+          *         Otherwise it returns NULL.
+          */
+        static Page*            restoreIntoMemory(int fd);
 };
 #endif /* _PAGE_H_ */
 

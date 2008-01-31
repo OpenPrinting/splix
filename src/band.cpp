@@ -19,6 +19,8 @@
  * 
  */
 #include "band.h"
+#include <unistd.h>
+#include "errlog.h"
 #include "bandplane.h"
 
 /*
@@ -61,6 +63,45 @@ Band::~Band()
         delete _sibling;
 }
 
+
+
+/*
+ * Mise sur disque / Rechargement
+ * Swapping / restoring
+ */
+bool Band::swapToDisk(int fd)
+{
+    write(fd, &_bandNr, sizeof(_bandNr));
+    write(fd, &_colors, sizeof(_colors));
+    write(fd, &_width, sizeof(_width));
+    write(fd, &_height, sizeof(_height));
+    for (unsigned int i=0; i < _colors; i++)
+        if (!_planes[i]->swapToDisk(fd))
+            return false;
+    return true;
+}
+
+Band* Band::restoreIntoMemory(int fd)
+{
+    unsigned char colors;
+    Band* band;
+
+    band = new Band();
+    read(fd, &band->_bandNr, sizeof(band->_bandNr));
+    read(fd, &colors, sizeof(colors));
+    read(fd, &band->_width, sizeof(band->_width));
+    read(fd, &band->_height, sizeof(band->_height));
+    for (unsigned int i=0; i < colors; i++) {
+        BandPlane *plane = BandPlane::restoreIntoMemory(fd);
+        if (!plane) {
+            delete band;
+            return NULL;
+        }
+        band->registerPlane(plane);
+    }
+
+    return band;
+}
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 
