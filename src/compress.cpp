@@ -30,13 +30,16 @@
 
 static bool _isEmptyBand(unsigned char* band, unsigned long size)
 {
-    unsigned long max = size / sizeof(unsigned long);
+    unsigned long max, mod;
+
+    max = size / sizeof(unsigned long);
+    mod = size % sizeof(unsigned long);
 
     for (unsigned long i=0; i < max; i++) {
         if (((unsigned long*)band)[i])
             return false;
     }
-    for (unsigned long i=0; i < size & 0x3; i++)
+    for (unsigned long i=0; i < mod; i++)
         if (band[size-i-1])
             return false;
     return true;
@@ -96,12 +99,12 @@ static bool _compressBandedPage(const Request& request, Page* page)
                 memcpy(band, planes[i] + index, bytesToCopy);
 
             // Does the band is empty?
-            if (_isEmptyBand(band, bandSize))
-                continue;
+             if (_isEmptyBand(band, bandSize))
+                 continue;
 
             // Check if bytes have to be reversed
             if (algo.inverseByte())
-                for (unsigned int j=0; j < bytesToCopy; j++)
+                for (unsigned int j=0; j < bandSize; j++)
                     band[j] = ~band[j];
 
             // Call the compression method
