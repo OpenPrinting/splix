@@ -25,11 +25,12 @@
 
 #define _(X)            X
 
-#define ERRORMSG(X, args ...)  fprintf(stderr, "[33mERROR: " X "[0m\n", ##args);
 #ifdef DEBUG
-#   define DEBUGMSG(X, args ...)   fprintf(stderr, "[32mDEBUG: " X "[0m\n", ##args);
+#   define ERRORMSG(X, args ...) fprintf(stderr, "[33mERROR: " X "[0m\n", ##args);
+#   define DEBUGMSG(X, args ...) fprintf(stderr, "[32mDEBUG: " X "[0m\n", ##args);
 #else
-#   define DEBUGMSG(X, args ...)
+#   define ERRORMSG(X, args ...) fprintf(stderr, "ERROR: " X "\n", ##args);
+#   define DEBUGMSG(X, args ...) fprintf(stderr, "DEBUG: " X "\n", ##args);
 #endif /* DEBUG */
 
 #endif /* _ERRLOG_H_ */
