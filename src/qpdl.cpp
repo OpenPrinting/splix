@@ -216,8 +216,8 @@ bool renderPage(const Request& request, Page* page)
             break;
     }
 
-    width = page->width() * 72 / page->xResolution();
-    height = page->height() * 72 / page->yResolution();
+    width = page->width();
+    height = page->height();
 
     // Send the page header
     header[0x0] = 0;                                // Signature

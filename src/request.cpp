@@ -55,7 +55,8 @@ bool Request::loadRequest(PPDFile* ppd, const char *jobname,
     _copiesNr = copiesNr;
 
     /** @todo Get the real duplex mode */
-    _duplex = Simplex;
+    //_duplex = Simplex;
+    _duplex = ManualLongEdge;
     _reverseDuplex = false;
 
     if (!_printer.loadInformation(*this)) {

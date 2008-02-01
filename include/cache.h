@@ -82,6 +82,7 @@ extern void setNumberOfPages(unsigned long nr);
 class CacheEntry {
     protected:
         Page*                   _page;
+        CacheEntry*             _previous;
         CacheEntry*             _next;
         char*                   _tempFile;
 
@@ -98,11 +99,16 @@ class CacheEntry {
 
     public:
         /**
-          * Register a sibling.
-          * @param entry the sibling instance.
+          * Set the next cache entry.
+          * @param entry the next cache entry
           */
-        void                    registerSibling(CacheEntry *entry)
-                                    {_next = entry;}
+        void                    setNext(CacheEntry *entry) {_next = entry;}
+        /**
+          * Set the previous cache entry.
+          * @param entry the previous cache entry
+          */
+        void                    setPrevious(CacheEntry *entry) 
+                                    {_previous = entry;}
         /**
           * Swap the page instance on the disk.
           * @return TRUE if the page has been successfully swapped. Otherwise it
@@ -121,9 +127,13 @@ class CacheEntry {
           */
         Page*                   page() const {return _page;}
         /**
-          * @return the sibling instance.
+          * @return the next instance.
           */
-        CacheEntry*             sibling() const {return _next;}
+        CacheEntry*             next() const {return _next;}
+        /**
+          * @return the previous instance.
+          */
+        CacheEntry*             previous() const {return _previous;}
         /**
          * @return TRUE if the page is currently swapped on disk. Otherwise
          *         returns FALSE.

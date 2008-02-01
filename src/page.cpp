@@ -24,6 +24,12 @@
 #include "errlog.h"
 
 /*
+ * This magic formula reverse the bit of a byte. ie. the bit 1 becomes the 
+ * bit 8, the bit 2 becomes the bit 7 etc.
+ */
+#define REVERSE_BITS(N) ((N * 0x0202020202ULL & 0x010884422010ULL) % 1023)
+
+/*
  * Constructeur - Destructeur
  * Init - Uninit 
  */
@@ -63,6 +69,29 @@ void Page::registerBand(Band *band)
     _lastBand = band;
     band->registerParent(this);
     _bandsNr++;
+}
+
+
+
+/*
+ * Rotation des couches
+ * Rotate bitmaps planes
+ */
+void Page::rotate()
+{
+    unsigned long size, midSize;
+    unsigned char tmp;
+
+    size  = _width * _height / 8;
+    midSize = size / 2;
+
+    for (unsigned int i=0; i < _colors; i++) {
+        for (unsigned long j=0; j < midSize; j++) {
+            tmp = _planes[i][j];
+            _planes[i][j] = REVERSE_BITS(_planes[i][size - j - 1]);
+            _planes[i][size - j - 1] = REVERSE_BITS(tmp);
+        }
+    }
 }
 
 

@@ -44,8 +44,10 @@ static Semaphore _lock;
 static void *_compressPage(void* data)
 {
     const Request *request = (const Request *)data;
+    bool rotateEvenPages;
     Page* page;
 
+    rotateEvenPages = request->duplex() == Request::ManualLongEdge;
     do {
         // Load the page
         {
@@ -56,6 +58,14 @@ static void *_compressPage(void* data)
         if (!page) {
             setNumberOfPages(document.numberOfPages());
             break;
+        }
+
+        // Make rotation on even pages for ManualLongEdge duplex mode
+        if (rotateEvenPages) {
+            if (page->pageNr() % 2)
+                rotateEvenPages = false;
+            else
+                page->rotate();
         }
 
         // Apply some colors optimizations
@@ -83,6 +93,7 @@ static void *_compressPage(void* data)
 bool render(const Request& request)
 {
     pthread_t threads[THREADS];
+    bool manualDuplex;
     Page *page;
 
     // Load the document
@@ -100,23 +111,30 @@ bool render(const Request& request)
         }
     }
 
+    // Prepare the manual duplex
+    if (request.duplex() == Request::ManualLongEdge || 
+        request.duplex() == Request::ManualShortEdge) {
+            manualDuplex = true;
+            setCachePolicy(EvenDecreasing);
+    }
+
+    //Load the first page
     /*
-     * Ne pas envoyer l'en-tête si duplex en mode manuel : attendre la
-     * disponibilité de la dernière page, afin d'éviter le timeout de
-     * l'imprimante si le document comporte beaucoup de pages
+     * NOTE: To prevent printer timeout, PJL header must be sent when the first
+     * page to render is available (which is very quickly for normal request but
+     * can take very long time if a big document in manual duplex is printed).
      */
+    page = getNextPage();
 
     // Send the PJL Header
     request.printer()->sendPJLHeader(request);
 
-    for (;;) {
-        DEBUGMSG("J'attend....");
-        page = getNextPage();
-        if (!page)
-            break;
+    // Render the whole document
+    while (page) {
         if (!renderPage(request, page))
             ERRORMSG(_("Error while rendering the page. Check the previous "
                         "message. Trying to print the other pages."));
+        page = getNextPage();
     }
 
     // Send the PJL footer

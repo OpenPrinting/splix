@@ -86,6 +86,11 @@ class Page
           */
         void                    flushPlanes();
 
+        /**
+          * Make a 180° rotation of the bitmap planes
+          */
+        void                    rotate();
+
     public:
         /**
           * Set the X resolution.
