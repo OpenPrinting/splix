@@ -13,3 +13,13 @@
 	- Oficio = 28
 
 * Problème CLP-610 avec la version QPDL 2 et 5 et le décompresseur... à voir
+
+
+
+* Ajouter algorithme 0x13
+* Ajouter le support du QPDL 5
+* Gérer les profils de couleur Samsung
+* Ajouter la taille d'une bande dans le PPD
+* Épurere les fichiers PPD
+
+--> Tester les couleurs et l'intégration sous CUPS et rerirer les XXX du code

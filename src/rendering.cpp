@@ -134,6 +134,7 @@ bool render(const Request& request)
         if (!renderPage(request, page))
             ERRORMSG(_("Error while rendering the page. Check the previous "
                         "message. Trying to print the other pages."));
+        fprintf(stderr, "PAGE: %lu %lu\n", page->pageNr(), page->copiesNr());
         page = getNextPage();
     }
 
