@@ -18,9 +18,10 @@
  *  $Id$
  * 
  */
+#include <errno.h>
+#include <stdlib.h>
 #include <cups/ppd.h>
 #include <cups/cups.h>
-#include <stdlib.h>
 #include "cache.h"
 #include "errlog.h"
 #include "version.h"
@@ -31,12 +32,28 @@
 
 int main(int argc, char **argv)
 {
-    //const char *ppdFile = getenv("PPD");
-    const char *ppdFile = "../../splix/ppd/clp500fr.ppd";
-    //const char *ppdFile = "../../splix/ppd/ml2250fr.ppd";
+    const char *jobid, *user, *title, *options, *ppdFile, *file;
+    unsigned long copies;
     Request request;
     PPDFile ppd;
 
+
+    // Check the given arguments
+    if (argc != 6 && argc != 7) {
+        fprintf(stderr, _("Usage: %s job-id user title copies options "
+            "[file]\n"), argv[0]);
+        return 1;
+    }
+    jobid = argv[1];
+    user = argv[2];
+    title = argv[3];
+    options = argv[5];
+    file = argc == 7 ? argv[6] : NULL;
+    copies = strtol(argv[4], (char **)NULL, 10);
+    ppdFile = getenv("PPD");
+
+
+    // Get more information on the SpliX environment (for debugging)
     DEBUGMSG(_("SpliX filter V. %s by Aurélien Croc (AP²C)"), VERSION);
     DEBUGMSG(_("More information at: http://splix.ap2c.org"));
     DEBUGMSG(_("Compiled with: Threads=%s (#=%u, Cache=%u), JBIG=%s, "
@@ -44,17 +61,18 @@ int main(int argc, char **argv)
         THREADS, CACHESIZE, opt_jbig ? _("enabled") : _("disabled"), 
         opt_blackoptim ? _("enabled") : _("disabled"));
 
-    // TEST TEST
-    freopen("/home/aurelien/rapport.cups", "r", stdin);
-    // /TEST /TEST
+    // Open the given file
+    if (file && !freopen(file, "r", stdin)) {
+        ERRORMSG(_("Cannot open file %s"), file);
+        return errno;
+    }
 
     // Open the PPD file
-    //if (!ppd.open(ppdFile, PPDVERSION, argv[5]))
-    if (!ppd.open(ppdFile, PPDVERSION, ""))
+    if (!ppd.open(ppdFile, PPDVERSION, options))
         return 1;
 
     // Load the request
-    if (!request.loadRequest(&ppd, "ID-0001", "aurelien", "Job de test", 1))
+    if (!request.loadRequest(&ppd, jobid, user, title, copies))
         return 2;
 
 #ifndef DISABLE_THREADS
@@ -68,7 +86,7 @@ int main(int argc, char **argv)
 
 #ifndef DISABLE_THREADS
     if (!uninitializeCache())
-        return 3;
+        return 5;
 #endif /* DISABLE_THREADS */
 
     return 0;
