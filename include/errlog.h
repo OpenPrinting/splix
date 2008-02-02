@@ -29,8 +29,8 @@
 #   define ERRORMSG(X, args ...) fprintf(stderr, "[33mERROR: " X "[0m\n", ##args);
 #   define DEBUGMSG(X, args ...) fprintf(stderr, "[32mDEBUG: " X "[0m\n", ##args);
 #else
-#   define ERRORMSG(X, args ...) fprintf(stderr, "ERROR: " X "\n", ##args);
-#   define DEBUGMSG(X, args ...) fprintf(stderr, "DEBUG: " X "\n", ##args);
+#   define ERRORMSG(X, args ...) fprintf(stderr, "ERROR: SpliX " X "\n", ##args);
+#   define DEBUGMSG(X, args ...) fprintf(stderr, "DEBUG: SpliX " X "\n", ##args);
 #endif /* DEBUG */
 
 #endif /* _ERRLOG_H_ */

@@ -210,6 +210,20 @@ static void* _cacheControllerThread(void *_exitVar)
         // Waiting for a job
         _work--;
 
+#ifdef DUMP_CACHE
+        if (_pagesInMemory) {
+            CacheEntry *tmp = _inMemory;
+
+            fprintf(stderr, _("DEBUG: [34mCache dump: "));
+            for (unsigned int i=0; i < _pagesInMemory && tmp; i++) {
+                fprintf(stderr, "%lu ", tmp->page()->pageNr());
+                tmp = tmp->next();
+            }
+            fprintf(stderr, "[0m\n");
+        } else
+            fprintf(stderr, _("DEBUG: [34mCache empty[0m\n"));
+#endif /* DUMP_CACHE */
+
         // Does the thread needs to exit?
         if (*needToExit)
             break;
@@ -291,6 +305,7 @@ static void* _cacheControllerThread(void *_exitVar)
                 entry->setPrevious(NULL);
                 _pageAvailable++;
                 _pageTableLock.unlock();
+                DEBUGMSG("On file la page %lu", entry->page()->pageNr());
 
             // So check whether the page can be kept in memory or have to
             // be swapped on the disk
@@ -416,7 +431,7 @@ Page* getNextPage()
     while (nr && (!_numberOfPages || _numberOfPages >= nr)) {
         {
             _pageTableLock.lock();
-            if (_maxPagesInTable > nr && _pages[nr - 1] && 
+            if (_maxPagesInTable >= nr && _pages[nr - 1] && 
                 !_pages[nr - 1]->isSwapped()) {
                 entry = _pages[nr - 1];
                 _pages[nr - 1] = NULL;
@@ -432,7 +447,7 @@ Page* getNextPage()
                     _inMemoryLast = NULL;
                 _pageTableLock.unlock();
                 break;
-            } else if (_maxPagesInTable > nr && _pages[nr - 1] && 
+            } else if (_maxPagesInTable >= nr && _pages[nr - 1] && 
                 _pages[nr - 1]->isSwapped())
                 _work++;
             _pageRequested = nr;
