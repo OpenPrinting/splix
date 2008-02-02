@@ -418,7 +418,7 @@ Page* getNextPage()
             break;
         case OddIncreasing:
             if (!_lastPageRequested)
-                nr = 3;
+                nr = 1;
             else
                 nr = _lastPageRequested + 2;
             break;

@@ -28,12 +28,14 @@ class Page;
   * Render a page and send the result to STDOUT.
   * If the output needs to be redirected to a file, please use the 
   * freopen function to redirect the output to a specific place.
-  * @param request the request instance.
-  * @param page the page instance.
+  * @param request the request instance
+  * @param page the page instance
+  * @param lastPage set to TRUE if it's the last page (only used with manual
+  *                 duplex)
   * @return TRUE if the page has been rendered into QPDL. Otherwise it returns
   *         FALSE.
   */
-extern bool renderPage(const Request& request, Page* page);
+extern bool renderPage(const Request& request, Page* page, bool lastPage=false);
 #endif /* _QPDL_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

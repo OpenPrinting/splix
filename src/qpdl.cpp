@@ -178,7 +178,7 @@ static bool _renderBand(const Request& request, const Band* band)
     return true;
 }
 
-bool renderPage(const Request& request, Page* page)
+bool renderPage(const Request& request, Page* page, bool lastPage)
 {
     unsigned char duplex=0, tumble=0, paperSource;
     unsigned long width, height;
@@ -208,10 +208,14 @@ bool renderPage(const Request& request, Page* page)
         case Request::ManualLongEdge:
             duplex = 0;
             tumble = page->pageNr() % 2;
-            if (tumble)
+            if (tumble && !lastPage)
                 paperSource = 3; // Multi source
             break;
         case Request::ManualShortEdge:
+            duplex = 1;
+            tumble = page->pageNr() % 2;
+            if (tumble && !lastPage)
+                paperSource = 3; // Multi source
             /** @todo what about the Short edge? The page isn't rotated?  */
             break;
     }

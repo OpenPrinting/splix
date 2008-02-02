@@ -92,8 +92,8 @@ static void *_compressPage(void* data)
 
 bool render(Request& request)
 {
+    bool manualDuplex=false, checkLastPage=false, lastPage=false;
     pthread_t threads[THREADS];
-    bool manualDuplex;
     Page *page;
 
     // Load the document
@@ -126,19 +126,18 @@ bool render(Request& request)
      */
     page = getNextPage();
 
-    // Cancer the manual duplex if there is just one page
-    if (document.numberOfPages() == 1) {
-        manualDuplex = false;
-        request.setDuplex(Request::Simplex);
-        setCachePolicy(OddIncreasing);
-    }
+    // Prevent troubles if the last page is an odd page (in manual duplex mode)
+    if (manualDuplex && document.numberOfPages() % 2)
+        checkLastPage = true;
 
     // Send the PJL Header
     request.printer()->sendPJLHeader(request);
 
     // Render the whole document
     while (page) {
-        if (!renderPage(request, page))
+        if (checkLastPage && document.numberOfPages() == page->pageNr())
+            lastPage = true;
+        if (!renderPage(request, page, lastPage))
             ERRORMSG(_("Error while rendering the page. Check the previous "
                         "message. Trying to print the other pages."));
         fprintf(stderr, "PAGE: %lu %lu\n", page->pageNr(), page->copiesNr());
