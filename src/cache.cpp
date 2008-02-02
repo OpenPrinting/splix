@@ -146,7 +146,6 @@ static void __manageMemoryCache(CacheEntry *entry)
 {
     _pageTableLock.lock();
 
-    ERRORMSG("==> On touche au cache");
     // Append an entry
     if (entry) {
         __registerIntoCacheList(entry, _pagesInMemory >= CACHESIZE);
@@ -210,20 +209,6 @@ static void* _cacheControllerThread(void *_exitVar)
 
         // Waiting for a job
         _work--;
-
-        CacheEntry *tmp = _inMemory;
-        if (_pagesInMemory) {
-            fprintf(stderr, "[34mEN CACHE : ");
-            for (unsigned int i=0; i < _pagesInMemory; i++) {
-                fprintf(stderr, "%lu ", tmp->page()->pageNr());
-                tmp = tmp->next();
-            }
-            fprintf(stderr, "\n");
-        } else
-            fprintf(stderr, "[34mCACHE VIDE\n");
-
-
-        ERRORMSG("---");
 
         // Does the thread needs to exit?
         if (*needToExit)
@@ -306,7 +291,6 @@ static void* _cacheControllerThread(void *_exitVar)
                 entry->setPrevious(NULL);
                 _pageAvailable++;
                 _pageTableLock.unlock();
-                DEBUGMSG("[36mPage obtenue");
 
             // So check whether the page can be kept in memory or have to
             // be swapped on the disk
@@ -388,7 +372,6 @@ void registerPage(Page* page)
         }
         _waitingListLock.unlock();
     }
-    DEBUGMSG("[35m On ajoute la page %lu", page->pageNr());
     _work++;
 }
 
@@ -455,7 +438,6 @@ Page* getNextPage()
             _pageRequested = nr;
             _pageTableLock.unlock();
         }
-        DEBUGMSG("On se bloque en attendant la page");
         _pageAvailable--;
     };
 
