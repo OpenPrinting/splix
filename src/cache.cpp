@@ -66,7 +66,7 @@ static unsigned long _pagesInMemory = 0;
 static void __registerIntoCacheList(CacheEntry *entry, bool swapLast)
 {
     unsigned long pageNr;
-    CacheEntry *tmp;
+    CacheEntry *tmp=NULL;
 
     if (!_inMemory) {
         entry->setNext(NULL);

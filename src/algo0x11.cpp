@@ -78,7 +78,7 @@ bool Algo0x11::_compress(const unsigned char *data, unsigned long size,
     unsigned char* &output, unsigned long &outputSize)
 {
     unsigned long r, w=4, uncompSize=0, maxCompSize, bestCompCounter, bestPtr;
-    unsigned long rawDataCounter = 0, rawDataCounterPtr, maxOutputSize;
+    unsigned long rawDataCounter = 0, rawDataCounterPtr=0, maxOutputSize;
     unsigned char *out;
 
     // Create the output buffer
