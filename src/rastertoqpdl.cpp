@@ -27,6 +27,7 @@
 #include "request.h"
 #include "ppdfile.h"
 #include "rendering.h"
+#include "options.h"
 
 int main(int argc, char **argv)
 {
@@ -36,13 +37,20 @@ int main(int argc, char **argv)
     Request request;
     PPDFile ppd;
 
+    DEBUGMSG(_("SpliX filter V. %s by Aurélien Croc (AP²C)"), VERSION);
+    DEBUGMSG(_("More information at: http://splix.ap2c.org"));
+    DEBUGMSG(_("Compiled with: Threads=%s (#=%u, Cache=%u), JBIG=%s, "
+        "BlackOptim=%s"), opt_threads ? _("enabled") : _("disabled"), 
+        THREADS, CACHESIZE, opt_jbig ? _("enabled") : _("disabled"), 
+        opt_blackoptim ? _("enabled") : _("disabled"));
+
     // TEST TEST
     freopen("/home/aurelien/rapport.cups", "r", stdin);
     // /TEST /TEST
 
     // Open the PPD file
-    //if (!ppd.open(ppdFile, VERSION, argv[5]))
-    if (!ppd.open(ppdFile, VERSION, ""))
+    //if (!ppd.open(ppdFile, PPDVERSION, argv[5]))
+    if (!ppd.open(ppdFile, PPDVERSION, ""))
         return 1;
 
     // Load the request

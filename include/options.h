@@ -1,5 +1,5 @@
 /*
- * 	    version.h                 (C) 2006-2008, Aurélien Croc (AP²C)
+ * 	    options.h                 (C) 2006-2008, Aurélien Croc (AP²C)
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,13 +18,28 @@
  *  $Id$
  * 
  */
-#ifndef _VERSION_H_
-#define _VERSION_H_
+#ifndef _OPTIONS_H_
+#define _OPTIONS_H_
 
-#define PPDVERSION "1.1.0"
-#define VERSION "2.0.0"
+#ifdef DISABLE_JBIG
+    bool opt_jbig = false;
+#else
+    bool opt_jbig = true;
+#endif /* DISABLE_JBIG */
 
-#endif /* _VERSION_H_ */
+#ifdef DISABLE_THREADS
+    bool opt_threads = false;
+#else
+    bool opt_threads = true;
+#endif /* DISABLE_THREADS */
+
+#ifdef DISABLE_BLACKOPTIM
+    bool opt_blackoptim = false;
+#else
+    bool opt_blackoptim = true;
+#endif /* DISABLE_BLACKOPTIM */
+
+#endif /* _OPTIONS_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 
