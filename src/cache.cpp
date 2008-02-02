@@ -63,75 +63,93 @@ static unsigned long _pagesInMemory = 0;
  * Contrôleur de cache (thread)
  * Cache controller (thread)
  */
+static void __registerIntoCacheList(CacheEntry *entry, bool swapLast)
+{
+    unsigned long pageNr;
+    CacheEntry *tmp;
+
+    if (!_inMemory) {
+        entry->setNext(NULL);
+        entry->setPrevious(NULL);
+        _inMemory = entry;
+        _inMemoryLast = entry;
+        _pagesInMemory = 1;
+        return;
+    }
+
+    // Locate the previous cache entry
+    pageNr = entry->page()->pageNr();
+    switch (_policy) {
+        case OddIncreasing:
+        case EveryPagesIncreasing:
+            tmp = _inMemoryLast;
+            while (tmp && tmp->page()->pageNr() > pageNr)
+                tmp = tmp->previous();
+            break;
+        case EvenDecreasing:
+            if (pageNr % 2) {
+                // Odd page
+                tmp = _inMemoryLast;
+                while (tmp) {
+                    if (!(tmp->page()->pageNr() % 2) || tmp->page()->pageNr() < 
+                        pageNr)
+                        break;
+                    tmp = tmp->previous();
+                }
+
+            } else {
+                // Even page
+                tmp = _inMemory;
+                while (tmp && !(tmp->page()->pageNr() % 2)) {
+                    if (tmp->page()->pageNr() < pageNr)
+                        break;
+                    tmp = tmp->next();
+                }
+                tmp = tmp ? tmp->previous() : _inMemoryLast;
+            }
+            break;
+    }
+
+    // Register the new entry
+    if (swapLast && tmp == _inMemoryLast) {
+        entry->swapToDisk();
+        swapLast = false;
+    } else {
+        if  (!tmp) {
+            entry->setPrevious(NULL);
+            entry->setNext(_inMemory);
+            _inMemory->setPrevious(entry);
+            _inMemory = entry;
+        } else {
+            entry->setPrevious(tmp);
+            entry->setNext(tmp->next());
+            if (tmp->next())
+                tmp->next()->setPrevious(entry);
+            else
+                _inMemoryLast = entry;
+            tmp->setNext(entry);
+        }
+        if (!swapLast)
+            _pagesInMemory++;
+    }
+
+    // Swap to disk the last entry if needed
+    if (swapLast) {
+        tmp = _inMemoryLast;
+        _inMemoryLast = tmp->previous();
+        tmp->previous()->setNext(NULL);
+        tmp->swapToDisk();
+    }
+}
+
 static void __manageMemoryCache(CacheEntry *entry)
 {
     _pageTableLock.lock();
+
+    ERRORMSG("==> On touche au cache");
     // Append an entry
     if (entry) {
-        // First page into memory
-        if (!_pagesInMemory) {
-            entry->setNext(NULL);
-            entry->setPrevious(NULL);
-            _inMemory = entry;
-            _inMemoryLast = entry;
-            _pagesInMemory++;
-
-        // Cache isn't full: add the page
-        } else if (_pagesInMemory < CACHESIZE) {
-            switch (_policy) {
-                case OddIncreasing:
-                case EveryPagesIncreasing:
-                    entry->setNext(NULL);
-                    entry->setPrevious(_inMemoryLast);
-                    _inMemoryLast->setNext(entry);
-                    _inMemoryLast = entry;
-                    _pagesInMemory++;
-                    break;
-                case EvenDecreasing:
-                    if (entry->page()->pageNr() % 2) {
-                        // Odd page
-                        entry->setNext(NULL);
-                        entry->setPrevious(_inMemoryLast);
-                        _inMemoryLast->setNext(entry);
-                        _inMemoryLast = entry;
-                        _pagesInMemory++;
-                    } else {
-                        // Even page
-                        entry->setPrevious(NULL);
-                        entry->setNext(_inMemory);
-                        _inMemory->setPrevious(entry);
-                        _inMemory = entry;
-                        _pagesInMemory++;
-                    }
-                    break;
-            }
-
-        // Cache is full
-        } else {
-            switch (_policy) {
-                case OddIncreasing:
-                case EveryPagesIncreasing:
-                    entry->swapToDisk();
-                    break;
-                case EvenDecreasing:
-                    if (entry->page()->pageNr() % 2) {
-                        // Odd page
-                        entry->swapToDisk();
-                    } else {
-                        // Even page
-                        // Register this page into memory
-                        entry->setPrevious(NULL);
-                        entry->setNext(_inMemory);
-                        _inMemory->setPrevious(entry);
-                        _inMemory = entry;
-                        // Swap the last page in the cache
-                        _inMemoryLast->swapToDisk();
-                        _inMemoryLast = _inMemoryLast->previous();
-                        _inMemoryLast->setNext(NULL);
-                    }
-                    break;
-            }
-        }
+        __registerIntoCacheList(entry, _pagesInMemory >= CACHESIZE);
 
     // Preload the best page
     } else {
@@ -174,6 +192,8 @@ static void __manageMemoryCache(CacheEntry *entry)
                 _inMemoryLast = _pages[nr-1];
             }
             _pagesInMemory++;
+            if (nr == _pageRequested)
+                _pageAvailable++;
         }
     }
     _pageTableLock.unlock();
@@ -190,6 +210,20 @@ static void* _cacheControllerThread(void *_exitVar)
 
         // Waiting for a job
         _work--;
+
+        CacheEntry *tmp = _inMemory;
+        if (_pagesInMemory) {
+            fprintf(stderr, "[34mEN CACHE : ");
+            for (unsigned int i=0; i < _pagesInMemory; i++) {
+                fprintf(stderr, "%lu ", tmp->page()->pageNr());
+                tmp = tmp->next();
+            }
+            fprintf(stderr, "\n");
+        } else
+            fprintf(stderr, "[34mCACHE VIDE\n");
+
+
+        ERRORMSG("---");
 
         // Does the thread needs to exit?
         if (*needToExit)
@@ -267,10 +301,12 @@ static void* _cacheControllerThread(void *_exitVar)
 
             // Does the main thread needs this page?
             if (_pageRequested == entry->page()->pageNr()) {
-                _pagesInMemory++;
-                _pageAvailable++;
+                _pageTableLock.lock();
                 entry->setNext(NULL);
                 entry->setPrevious(NULL);
+                _pageAvailable++;
+                _pageTableLock.unlock();
+                DEBUGMSG("[36mPage obtenue");
 
             // So check whether the page can be kept in memory or have to
             // be swapped on the disk
@@ -352,6 +388,7 @@ void registerPage(Page* page)
         }
         _waitingListLock.unlock();
     }
+    DEBUGMSG("[35m On ajoute la page %lu", page->pageNr());
     _work++;
 }
 
@@ -365,6 +402,7 @@ Page* getNextPage()
 {
     CacheEntry *entry = NULL;
     unsigned long nr=0;
+    bool notUnregister = false;
     Page *page;
 
     // Get the next page number
@@ -399,6 +437,8 @@ Page* getNextPage()
                 !_pages[nr - 1]->isSwapped()) {
                 entry = _pages[nr - 1];
                 _pages[nr - 1] = NULL;
+                if (!entry->previous() && !entry->next() && entry != _inMemory)
+                    notUnregister = true;
                 if (entry->previous())
                     entry->previous()->setNext(entry->next());
                 if (entry->next())
@@ -415,6 +455,7 @@ Page* getNextPage()
             _pageRequested = nr;
             _pageTableLock.unlock();
         }
+        DEBUGMSG("On se bloque en attendant la page");
         _pageAvailable--;
     };
 
@@ -427,7 +468,8 @@ Page* getNextPage()
     delete entry;
 
     // Preload a new page
-    _pagesInMemory--;
+    if (!notUnregister)
+        _pagesInMemory--;
     _work++;
 
     return page;

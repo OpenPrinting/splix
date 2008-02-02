@@ -14,6 +14,7 @@ TARGETS		:= rastertoqpdl
 CXXFLAGS	+= `cups-config --cflags` -Iinclude -Wall
 CXXFLAGS	+= -DTHREADS=2 -DCACHESIZE=2
 DEBUG_CXXFLAGS	+= -DDEBUG 
+OPTIMIZED_CXXFLAGS += -DDEBUG -g
 rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 
