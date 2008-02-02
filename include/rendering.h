@@ -29,7 +29,7 @@ class Request;
   * @return TRUE if the request has been successfully rendered. Otherwise it
   *         returns FALSE.
   */
-extern bool render(const Request& request);
+extern bool render(Request& request);
 
 #endif /* _RENDERING_H_ */
 

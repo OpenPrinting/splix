@@ -90,7 +90,7 @@ static void *_compressPage(void* data)
     return NULL;
 }
 
-bool render(const Request& request)
+bool render(Request& request)
 {
     pthread_t threads[THREADS];
     bool manualDuplex;
@@ -125,6 +125,13 @@ bool render(const Request& request)
      * can take very long time if a big document in manual duplex is printed).
      */
     page = getNextPage();
+
+    // Cancer the manual duplex if there is just one page
+    if (document.numberOfPages() == 1) {
+        manualDuplex = false;
+        request.setDuplex(Request::Simplex);
+        setCachePolicy(OddIncreasing);
+    }
 
     // Send the PJL Header
     request.printer()->sendPJLHeader(request);

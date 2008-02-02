@@ -93,6 +93,11 @@ class Request
 
     public:
         /**
+         * Update the duplex mode.
+         */
+        void                    setDuplex (Duplex duplex) {_duplex = duplex;}
+
+        /**
           * @return the PPDFile instance.
           */
         PPDFile*                ppd() const {return _ppd;}
