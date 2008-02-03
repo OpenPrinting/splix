@@ -9,3 +9,4 @@ rastertoqpdl_SRC	+= src/rastertoqpdl.cpp src/request.cpp \
 			   src/band.cpp src/bandplane.cpp src/algo0x11.cpp \
 			   src/cache.cpp src/rendering.cpp src/semaphore.cpp
 
+pstoqpdl_SRC		+= src/pstoqpdl.cpp src/ppdfile.cpp
