@@ -175,7 +175,7 @@ static void __manageMemoryCache(CacheEntry *entry)
                 if (nr == 2)
                     nr = 1;
                 else
-                    nr += 2;
+                    nr -= 2;
                 break;
         }
         if (nr <= _maxPagesInTable && _pages[nr-1]) {
