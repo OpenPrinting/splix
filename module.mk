@@ -7,32 +7,35 @@
 # 	   DISABLE_THREADS
 #          DISABLE_BLACKOPTIM
 
-MODE		:= debug
+MODE			:= debug
 
-SUBDIRS 	+= src
-TARGETS		:= rastertoqpdl pstoqpdl
-CXXFLAGS	+= `cups-config --cflags` -Iinclude -Wall
-CXXFLAGS	+= -DTHREADS=2 -DCACHESIZE=2
-DEBUG_CXXFLAGS	+= -DDEBUG  -DDUMP_CACHE
-OPTIMIZED_CXXFLAGS += -g
+SUBDIRS 		+= src
+TARGETS			:= rastertoqpdl pstoqpdl
+
+
+# Flags
+CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall
+CXXFLAGS		+= -DTHREADS=2 -DCACHESIZE=2
+DEBUG_CXXFLAGS		+= -DDEBUG  -DDUMP_CACHE
+OPTIMIZED_CXXFLAGS 	+= -g
 OPTIMIZED_CXXFLAGS += -g 
 rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 pstoqpdl_LDFLAGS	:= `cups-config --ldflags`
 pstoqpdl_LIBS		:= `cups-config --libs` -lcupsimage
 
-# Raster
 
-$(rastertoqpdl_TARGET): $(rastertoqpdl_OBJ)
-	$(call printCmd, $(cmd_link))
-	$(Q)g++ -o $@ $^ $(rastertoqpdl_CXXFLAGS) $(rastertoqpdl_LDFLAGS) \
-		$(rastertoqpdl_LIBS)
+# Get some information
+CUPSFILTER		:= `cups-config --serverbin`/filter
+ifeq ($(ARCHI),Darwin)
+PSTORASTER		:= pstocupsraster
+else
+PSTORASTER		:= pstoraster
+endif
 
-$(pstoqpdl_TARGET): $(pstoqpdl_OBJ)
-	$(call printCmd, $(cmd_link))
-	$(Q)g++ -o $@ $^ $(pstoqpdl_CXXFLAGS) $(pstoqpdl_LDFLAGS) \
-		$(pstoqpdl_LIBS)
 
-.PHONY: tags
-tags:
-	ctags --recurse --language-force=c++ --extra=+q --fields=+i *
+# Specific information needed by pstoqpdl
+src_pstoqpdl_cpp_FLAGS	:= -DRASTERDIR=\"$(CUPSFILTER)\"
+src_pstoqpdl_cpp_FLAGS	+= -DRASTERTOQPDL=\"rastertoqpdl\"
+src_pstoqpdl_cpp_FLAGS	+= -DPSTORASTER=\"$(PSTORASTER)\"
+
