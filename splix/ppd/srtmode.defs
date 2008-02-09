@@ -1,0 +1,15 @@
+/*
+ *      srtmode.defs                   (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * SRT mode       
+ *
+ * $Id$
+ */
+
+Option "SRTMode/SRT Mode" PickOne AnySetup 10
+	*Choice "NORMAL/Normal" ""
+	Choice "ENHANCE/Text enhance" ""
+	Choice "GRAY/Image enhance" ""
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+

@@ -1,0 +1,83 @@
+Sun Jan 27 23:47:45 2008 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		The JBIG compression used is or was under patent. A new 
+		Makefile rule permits to not compile the JBIG code.
+	--- RELEASE OF THE VERSION V. 1.1.1 ---
+
+Fri Nov 16 03:08:01 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		The JBIG compression used by newer printers
+		LOTS of new printer supported
+	* Implement new debugging tools
+	* Rewrite all the PPD files
+	* Reformat the code
+	* Bug fix:
+		Fix the Duplex bug
+		Prevent from loading an old PPD file
+		The code should now compile under IRIX
+	--- RELEASE OF THE VERSION V. 1.1.0 ---
+
+Fri Oct 19 17:12:28 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		The X clipping was miss-calculated.
+	--- RELEASE OF THE VERSION V. 1.0.2 ---
+
+Sat Feb 10 15:18:01 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		ML-2010 resolution bug is now fixed
+	--- RELEASE OF THE VERSION V. 1.0.1-1 ---
+
+Sun Feb 04 02:45:18 2007 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		Support for QPDL v. 0, 1 and 2
+		Duplex support
+		new PJL informations
+		new printer support (Xerox..)
+	* Bug fix:
+		300 DPI resolution
+		monochrome document printed on color printers
+	* Rewrite some parts of the PPD files
+
+	--- RELEASE OF THE VERSION V. 1.0.1 ---
+		
+Wed Nov 29 11:58:45 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		Compression optimization: skip empty bands
+		Ghostscript correction for black layer (color printers)
+
+Sun Nov 26 04:21:15 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		English translation of the SPL-2 documentation
+	* Bug fix:
+		Fix the different SPL-C bugs
+
+Sat Nov 11 18:28:57 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Add:
+		Color support for CLP-300, CLP-500, CLP-510 and CLP-600
+
+Sat Nov 11 14:27:18 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		margins are now correct
+
+	--- RELEASE OF THE VERSION V. 0.0.2 ---
+
+Fri Nov 10 17:35:12 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		Last band bug
+		Makefile bug for FreeBSD users
+	* Add: 
+		support for asymetric resolutions (1200x600 DPI)
+		
+Sun Sep 24 13:45:40 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	* Bug fix:
+		SpliX works with CUPS version 1.2 or later
+		The destination directory is now created by the Makefile
+		The SRT mode is just available for later printers (ML-2250)
+		Bad data sent to printers with 64-Bits architectures
+	* Translation add:
+		German and italian
+
+Thu Aug 25 02:16:22 2006 Aurélien Croc <programmation AT ap2c DOT org>
+	I DECLARE USABLE THE FIRST VERSION: V. 0.0.1
+	        ~~~ HAVE FUN ~~~
+

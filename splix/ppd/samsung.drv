@@ -1,0 +1,229 @@
+/*
+ *      samsung.drv                    (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Contains the Samsung printers drivers
+ *
+ * $Id$
+ */
+
+Manufacturer "Samsung"
+
+#import "version.defs"
+#import "spl2.defs"
+#import "filter.defs"
+
+//
+// Specific black & white printer definition
+//
+{
+    #import "monochrome.defs"
+    #import "powersave.defs"
+    #import "tonerdensity.defs"
+    #import "tonersave.defs"
+    #import "jamrecovery.defs"
+
+    // QPDL Version 1
+    {
+        Attribute QPDL QPDLVersion "1"
+        Attribute General docHeaderValues "<0><0><0>"
+
+        {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+            {
+                ModelName "ML-1510"
+                PCFileName "ml1510.ppd"
+            } {
+                ModelName "ML-1520"
+                PCFileName "ml1520.ppd"
+            } {
+                ModelName "ML-1610"
+                PCFileName "ml1610.ppd"
+            } {
+                ModelName "ML-1710"
+                PCFileName "ml1710.ppd"
+            } {
+                ModelName "ML-1740"
+                PCFileName "ml1740.ppd"
+            } {
+                #import "srtmode.defs"
+                ModelName "ML-1750"
+                PCFileName "ml1750.ppd"
+            }
+        } {
+            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+
+            // Multi-tray
+            InputSlot 3 "Multi/Multi-Purpose Tray"
+            InputSlot 4 "Upper/Tray 1"
+            InputSlot 5 "Lower/Tray 2"
+            InputSlot 6 "Envelope/Envelope Tray"
+            InputSlot 7 "Tray3/Tray 3"
+            // But tray 2, Envelope and Tray3 are options...
+            Installable "OptionTray2/Tray 2 Installed"
+            UIConstraints "*OptionTray2 False *InputSlot Lower"
+            Installable "OptionTrayEnv/Envelope Tray Installed"
+            UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
+            Installable "OptionTray3/Tray 3 Installed"
+            UIConstraints "*OptionTray3 False *InputSlot Tray3"
+
+            #import "srtmode.defs"
+            {
+                Throughput 22
+                ModelName "ML-2250"
+                PCFileName "ml2250.ppd"
+            } {
+                Duplex normal
+
+                {
+                        ModelName "ML-3560"
+                        PCFileName "ml3560.ppd"
+                } {
+                    Resolution k 1 0 0 0 "300dpi/300 DPI"
+                    {
+                        ModelName "ML-2150"
+                        PCFileName "ml2150.ppd"
+                    } {
+                        ModelName "ML-2550"
+                        PCFileName "ml2550.ppd"
+                    }
+                }
+            }
+        }
+    }
+
+    // QPDL Version 2
+    {
+        Attribute QPDL QPDLVersion "2"
+        Attribute General docHeaderValues "<0><0><1>"
+
+        {
+            Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
+            {
+                ModelName "ML-1630"
+                PCFileName "ml1630.ppd"
+            } {
+                // TODO Oficio 
+                ModelName "ML-2010"
+                PCFileName "ml2010.ppd"
+            } {
+                #import "srtmode.defs"
+
+                ModelName "ML-2510"
+                PCFileName "ml2510.ppd"
+            }
+        } {
+            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+
+            Duplex normal
+
+            ModelName "ML-3050"
+            PCFileName "ml3050.ppd"
+        }
+    }
+}
+
+
+
+
+//
+// Specific color printer definition
+//
+{
+    #import "powersave.defs"
+
+    // Color printers V. 1 (old algorithms)
+    {
+        #import "color-v1.defs"
+        #import "jamrecovery.defs"
+
+        // Multi-tray
+        InputSlot 3 "Multi/Multi-Purpose Tray"
+        InputSlot 4 "Upper/Tray 1"
+        InputSlot 5 "Lower/Tray 2"
+        // But tray 2 is optional..
+        Installable "OptionTray2/Tray 2 Installed"
+        UIConstraints "*OptionTray2 False *InputSlot Lower"
+
+        Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+        Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+
+        Duplex normal
+
+        Attribute QPDL QPDLVersion "1"
+        Attribute General docHeaderValues "<0><0><1>"
+
+        {
+            Throughput 20
+            ModelName "CLP-500"
+            PCFileName "clp500.ppd"
+        } {
+            Throughput 24
+            ModelName "CLP-510"
+            PCFileName "clp510.ppd"
+        } {
+            ModelName "CLP-610"
+            PCFileName "clp610.ppd"
+        }
+    }
+
+    // Color printers V. 2 (JBIG algorithm)
+    {
+        #import "color-v2.defs"
+        Attribute QPDL PacketSize "512"
+
+
+        // QPDL Version 1
+        {
+            Attribute QPDL QPDLVersion "1"
+            Attribute General docHeaderValues "<0><0><0>"
+
+            {
+                ModelName "CLP-200"
+                PCFileName "clp200.ppd"
+            } { 
+                Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+                Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+
+                Throughput 20
+
+                ModelName "CLP-600"
+                PCFileName "clp600.ppd"
+            }
+        }
+
+        // QPDL Version 2
+        {
+            Attribute QPDL QPDLVersion "2"
+            Attribute General docHeaderValues "<0><0><1>"
+
+            {
+                ModelName "CLX-2170"
+                PCFileName "clx2170.ppd"
+            } {
+                Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+
+                {
+                    Resolution - 1 0 0 0 "300dpi/300 DPI"
+                    Throughput 4
+
+                    ModelName "CLP-300"
+                    PCFileName "clp300.ppd"
+                } {
+                    Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
+                    {
+                        ModelName "CLX-216X"
+                        PCFileName "clx216x.ppd"
+                    } {
+                        ModelName "CLX-3160"
+                        PCFileName "clx3160.ppd"
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+

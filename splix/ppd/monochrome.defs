@@ -1,0 +1,20 @@
+/*
+ *      monochrome.defs                (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Monochrome printers
+ *
+ * $Id$
+ */
+
+Attribute QPDL ColorPrinter "0"
+
+// Black & White support
+ColorDevice false
+*ColorModel Gray/Grayscale k chunky 17
+
+// Supported resolutions
+*Resolution k 1 0 0 0 "600dpi/600 DPI"
+
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+
