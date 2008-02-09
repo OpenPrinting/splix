@@ -59,6 +59,7 @@ class Algo0x11 : public Algorithm
                                     unsigned long height);
         virtual bool            reverseLineColumn() {return true;}
         virtual bool            inverseByte() {return true;}
+        virtual bool            splitIntoBands() {return true;}
 };
 
 #endif /* _ALGO0X11_H_ */

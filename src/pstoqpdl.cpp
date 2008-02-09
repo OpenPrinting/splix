@@ -26,6 +26,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <sys/types.h>
 
 
@@ -33,7 +34,7 @@
  * Appel des filtres
  * Filter call
  */
-static bool _linkFilters(const char *arg1, const char *arg2, const char *arg3,
+static int _linkFilters(const char *arg1, const char *arg2, const char *arg3,
     const char *arg4, const char *arg5) 
 {
     int rasterInput[2], rasterOutput[2];
@@ -42,32 +43,44 @@ static bool _linkFilters(const char *arg1, const char *arg2, const char *arg3,
     // Call pstoraster
     if (pipe(rasterInput) || pipe(rasterOutput)) {
         ERRORMSG(_("Cannot create pipe (%i)"), errno);
-        return false;
+        return 0;
     }
 
     // Launch SpliX
     if (!(splix = fork())) {
         // SpliX code
-
-        dup2(rasterOutput[1], STDIN_FILENO);
+        close(rasterInput[1]);
+        close(rasterInput[0]);
+        close(rasterOutput[1]);
+        dup2(rasterOutput[0], STDIN_FILENO);
         close(rasterOutput[0]);
-        execl("debug/rastertoqpdl", "rastertoqpdl", arg1, arg2, arg3, arg4, arg5, 
-            (char *)NULL);
+        execl(RASTERDIR "/" RASTERTOQPDL, RASTERDIR "/" RASTERTOQPDL, arg1, 
+            arg2, arg3, arg4, arg5, (char *)NULL);
         ERRORMSG(_("Cannot execute rastertoqpdl (%i)"), errno);
         exit(0);
     }
     DEBUGMSG(_("SpliX launched with PID=%u"), splix);
     
     // Launch the raster
+    dup2(rasterInput[1], STDOUT_FILENO);
+    close(rasterOutput[0]);
+    close(rasterInput[1]);
     if (!(raster = fork())) {
         // Raster code
-        DEBUGMSG("Hi");
+        dup2(rasterInput[0], STDIN_FILENO);
+        dup2(rasterOutput[1], STDOUT_FILENO);
+        close(rasterInput[0]);
+        close(rasterOutput[1]);
+        execl(RASTERDIR "/" PSTORASTER, RASTERDIR "/" PSTORASTER, arg1, arg2, 
+            arg3, arg4, arg5,(char *)NULL);
+        ERRORMSG(_("Cannot execute pstoraster (%i)"), errno);
         exit(0);
     }
     DEBUGMSG(_("raster launched with PID=%u"), raster);
-    close(rasterInput[1]);
+    close(rasterInput[0]);
+    close(rasterOutput[1]);
 
-    return true;
+    return splix;
 }
 
 
@@ -145,8 +158,12 @@ static char *_readCMSFile(PPDFile& ppd, bool csa)
 int main(int argc, char **argv)
 {
     const char *jobid, *user, *title, *options, *ppdFile, *file;
+    const char *paperType;
     unsigned long copies;
+    bool pageSetup=false;
+    char buffer[1024];
     char *crd, *csa;
+    int pid, err;
     PPDFile ppd;
 
     // Check the given arguments
@@ -163,7 +180,6 @@ int main(int argc, char **argv)
     copies = strtol(argv[4], (char **)NULL, 10);
     ppdFile = getenv("PPD");
 
-
     // Get more information on the SpliX environment (for debugging)
     DEBUGMSG(_("PS => SpliX filter V. %s by Aurélien Croc (AP²C)"), VERSION);
     DEBUGMSG(_("More information at: http://splix.ap2c.org"));
@@ -174,35 +190,96 @@ int main(int argc, char **argv)
         return errno;
     }
 
-    // Open the PPD file
+    // Open the PPD file and get paper information
     if (!ppd.open(ppdFile, PPDVERSION, options))
         return 1;
+    paperType = ppd.get("MediaType");
+    if (!(strcasecmp(paperType, "OFF")))
+        paperType = "NORMAL";
 
     // Call the other filters
-    if (!_linkFilters(argv[1], argv[2], argv[3], argv[4], argv[5])) {
+    if (!(pid = _linkFilters(argv[1], argv[2], argv[3], argv[4], argv[5]))) {
         ERRORMSG(_("Filter error.. Cannot continue"));
         return 1;
     }
 
-    // Get the CRD and CSA information
+    // Get the CRD and CSA information and send the PostScript data
     crd = _readCMSFile(ppd, false);
     csa = _readCMSFile(ppd, true);
     if (!crd || !csa) {
-        DEBUGMSG(_("CMS data are missing. Color correction aborted"));
+        ERRORMSG(_("CMS data are missing. Color correction aborted"));
         if (crd)
             delete[] crd;
         if (csa)
             delete[] csa;
+        while (!(feof(stdin))) {
+            fgets((char *)&buffer, sizeof(buffer), stdin);
+            fprintf(stdout, "%s", (char *)&buffer); 
+        }
+    } else {
+        // Check for the header
+        while (!(feof(stdin))) {
+            if (!fgets((char *)&buffer, sizeof(buffer), stdin))
+                break;
+
+            // End of the PS header ?
+            if (!(memcmp("%%Creator", (char *)&buffer, 9))) {
+                if (paperType)
+                    fprintf(stdout, "/MediaChoice (%s) def\n", paperType);
+                fprintf(stdout, "%s", crd);
+                fprintf(stdout, "%s", csa);
+                fprintf(stdout, "%s", (char *)&buffer); 
+                break;
+
+            // End of the header not found?
+            } else if (!(memcmp("%%%%BeginPro", (char *)&buffer, 10)) ||
+                !(memcmp("%%BeginRes", (char *)&buffer, 10)) ||
+                !(memcmp("%%EndComments", (char *)&buffer, 13))) {
+                ERRORMSG(_("End of PostScript header not found"));
+                fprintf(stdout, "%s", (char *)&buffer); 
+                break;
+            }
+            fprintf(stdout, "%s", (char *)&buffer); 
+        }
+
+        // Check for each page
+        while (!(feof(stdin))) {
+            if (!fgets((char *)&buffer, sizeof(buffer), stdin))
+                break;
+            if (!(memcmp("%%Page:", (char *)&buffer, 7))) {
+                char tmp[sizeof(buffer)];
+
+                if (!fgets((char *)&tmp, sizeof(tmp), stdin)) {
+                    fprintf(stdout, "%s", (char *)&buffer);
+                    break;
+                }
+                if (!(memcmp("%%BeginPageSetup", (char *)&tmp, 16)))
+                    pageSetup = true;
+                else
+                    fprintf(stdout, "%s", csa);
+                fprintf(stdout, "%s", (char *)&buffer);
+                fprintf(stdout, "%s", (char *)&tmp);
+            } else if (pageSetup && !(memcmp("%%EndPageSetup", 
+                (char *)&buffer, 14))) {
+                fprintf(stdout, "%s", (char *)&buffer);
+                fprintf(stdout, "%s", csa);
+                pageSetup = false;
+            } else 
+                fprintf(stdout, "%s", (char *)&buffer);
+        }
     }
 
 
+    // Close the output and wait for Splix to be finished
+    fclose(stdout);
+    waitpid(pid, &err, 0);
 
 
     if (crd)
         delete[] crd;
     if (csa)
         delete[] csa;
-    return 0;
+    return err;
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

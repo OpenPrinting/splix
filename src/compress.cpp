@@ -27,6 +27,7 @@
 #include "bandplane.h"
 
 #include "algo0x11.h"
+#include "algo0x13.h"
 
 static bool _isEmptyBand(unsigned char* band, unsigned long size)
 {
@@ -128,6 +129,38 @@ static bool _compressBandedPage(const Request& request, Page* page)
     return true;
 }
 
+static bool _compressWholePage(const Request& request, Page* page)
+{
+    unsigned long bandNumber=0;
+    Band *current = NULL;
+    Algo0x13 algo[4];
+
+    do {
+        current = NULL;
+        for (unsigned int i=0; i < page->colorsNr(); i++) {
+            BandPlane *plane;
+
+            // Call the compression method
+            plane = algo[i].compress(request, page->planeBuffer(i), 
+                page->width(), page->height());
+            if (plane) {
+                plane->setColorNr(i ? i : 4);
+                if (!current)
+                    current = new Band(bandNumber, page->width(), 
+                        request.printer()->bandHeight());
+                current->registerPlane(plane);
+            }
+        }
+        if (current)
+            page->registerBand(current);
+        bandNumber++;
+    } while (current);
+
+    page->flushPlanes();
+
+    return true;
+}
+
 bool compressPage(const Request& request, Page* page)
 {
     switch(page->compression()) {
@@ -135,8 +168,7 @@ bool compressPage(const Request& request, Page* page)
             return _compressBandedPage(request, page);
         case 0x13:
 #ifndef DISABLE_JBIG
-            /* TODO TODO TODO */
-            break;
+            return _compressWholePage(request, page);
 #else
             ERRORMSG(_("J-BIG compression algorithm has been disabled during "
                 "the compilation. Please recompile SpliX and enable the "

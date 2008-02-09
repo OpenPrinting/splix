@@ -18,11 +18,14 @@ CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall
 CXXFLAGS		+= -DTHREADS=2 -DCACHESIZE=2
 DEBUG_CXXFLAGS		+= -DDEBUG  -DDUMP_CACHE
 OPTIMIZED_CXXFLAGS 	+= -g
-OPTIMIZED_CXXFLAGS += -g 
+OPTIMIZED_CXXFLAGS 	+= -g 
 rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 pstoqpdl_LDFLAGS	:= `cups-config --ldflags`
 pstoqpdl_LIBS		:= `cups-config --libs` -lcupsimage
+ifndef $(DISABLE_JBIG)
+rastertoqpdl_LIBS	+= -ljbig
+endif
 
 
 # Get some information

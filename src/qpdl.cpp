@@ -127,26 +127,52 @@ static bool _renderBand(const Request& request, const Band* band)
         };
         size = 4;
         if (subVersion == 3) {
+            uint32_t state;
+
             checkSum += 0x39 + 0xAB + 0xCD + 0xEF;
-            memset(header + size, 0, 6*4);
-            if (!band->bandNr()) {
-                header[size] = 0x00;                // First band
-            } else if (nextBand) {
-                header[size] = 0x01;                // Next band available
+            if (!band->bandNr())
+                state = 0x0;                        // First band
+            else if (nextBand) {
+                state = 0x01000000;                 // Next band available
                 checkSum += 0x01;
             } else {
-                header[size] = 0x02;                // Last band
+                state = 0x02000000;                 // Last band
                 checkSum += 0x02;
             }
-            size += 6*4;
-            header[size+0] = plane->dataSize() >> 24;// Data size 24 - 31
-            header[size+1] = plane->dataSize() >> 16;// Data size 16 - 23
-            header[size+2] = plane->dataSize() >> 8;// Data size 8 - 15
-            header[size+3] = plane->dataSize();     // Data size 0 - 7
-            size += 4;
-        }
-        for (unsigned int j=0; j < 4; j++)
-            checkSum += header[size - j - 1];
+            memset(header + size + 4, 0, 6*4);
+
+            switch (plane->endian()) {
+            case BandPlane::Dependant:
+                *(uint32_t*)(&header + size) = (uint32_t)plane->dataSize();
+                *(uint32_t*)(&header + size + 4) = (uint32_t)state;
+                break;
+            case BandPlane::BigEndian:
+                header[size+0] = plane->dataSize() >> 24;   // Data size 24 - 31
+                header[size+1] = plane->dataSize() >> 16;   // Data size 16 - 23
+                header[size+2] = plane->dataSize() >> 8;    // Data size 8 - 15
+                header[size+3] = plane->dataSize();         // Data size 0 - 7
+                header[size+4] = state >> 24;               // State 24 - 31
+                header[size+5] = state >> 16;               // State 16 - 23
+                header[size+6] = state >> 8;                // State 8 - 15
+                header[size+7] = state;                     // State 0 - 7
+                break;
+            case BandPlane::LittleEndian:
+                header[size+0] = plane->dataSize();         // Data size 0 - 7
+                header[size+1] = plane->dataSize() >> 8;    // Data size 8 - 15
+                header[size+2] = plane->dataSize() >> 16;   // Data size 16 - 23
+                header[size+3] = plane->dataSize() >> 24;   // Data size 24 - 31
+                header[size+4] = state;                     // State 0 - 7
+                header[size+5] = state >> 8;                // State 8 - 15
+                header[size+6] = state >> 16;               // State 16 - 23
+                header[size+7] = state >> 24;               // State 24 - 31
+                break;
+            }
+            for (unsigned int j=0; j < 4; j++)
+                checkSum += header[size + j];
+            size += 4 + 4 + 5*4;
+        } else
+            for (unsigned int j=0; j < 4; j++)
+                checkSum += header[size - j - 1];
         if (write(STDOUT_FILENO, (unsigned char*)&header, size) == -1) {
             ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
             return false;

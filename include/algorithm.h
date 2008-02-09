@@ -67,6 +67,12 @@ class Algorithm
           * @return TRUE if this operation is needed. Otherwise returns FALSE.
           */
         virtual bool            inverseByte() {return false;}
+        /**
+          * Split into bands
+          * @return TRUE if each planes has to ben split into bands. Otherwise 
+          *         it returns FALSE.
+          */
+        virtual bool            splitIntoBands() {return false;}
 };
 
 #endif /* _ALGORITHM_H_ */
