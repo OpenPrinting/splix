@@ -3,7 +3,7 @@
 *% Created by the CUPS PPD Compiler v1.2.0.
 *FormatVersion: "4.3"
 *FileVersion: "2.0.0"
-*LanguageVersion: English
+*LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ph6100.ppd"
 *Product: "(ESP Ghostscript)"
@@ -46,22 +46,22 @@
 *PageSize Executive/Executive - 7.25x10.5in: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageSize Ledger/Ledger - 17x11in: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageSize A3/A3 - 297x420mm: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageSize Env10/#10 Envelope - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageSize Env10/Enveloppe n°10 - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageSize Monarch/Monarch - 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageSize C5/C5 - 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageSize DL/DL - 110x220mm: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
 *PageSize B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
 *PageSize B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
-*PageSize EnvISOB5/ISOB5 Envelope - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
-*PageSize Postcard/Postcard - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
-*PageSize DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
+*PageSize EnvISOB5/Enveloppe ISOB5 - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageSize Postcard/Carte postale - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
+*PageSize DoublePostcardRotated/Double carte postale (tournée) - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
 *PageSize A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
 *PageSize A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
 *PageSize B6/B6 - 128x182mm: "<</PageSize[363 516]/ImagingBBox null>>setpagedevice"
 *PageSize C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
 *PageSize Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
-*PageSize EnvPersonal/Personal Envelope - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
-*PageSize Env9/#9 Envelope - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
+*PageSize EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
+*PageSize Env9/Enveloppe n°9 - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
 *PageSize Oficio/Oficio - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
@@ -73,22 +73,22 @@
 *PageRegion Executive/Executive - 7.25x10.5in: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageRegion Ledger/Ledger - 17x11in: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageRegion A3/A3 - 297x420mm: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageRegion Env10/#10 Envelope - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageRegion Env10/Enveloppe n°10 - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageRegion Monarch/Monarch - 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion C5/C5 - 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageRegion DL/DL - 110x220mm: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
 *PageRegion B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
 *PageRegion B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvISOB5/ISOB5 Envelope - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
-*PageRegion Postcard/Postcard - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
-*PageRegion DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvISOB5/Enveloppe ISOB5 - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageRegion Postcard/Carte postale - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
+*PageRegion DoublePostcardRotated/Double carte postale (tournée) - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
 *PageRegion A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
 *PageRegion A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
 *PageRegion B6/B6 - 128x182mm: "<</PageSize[363 516]/ImagingBBox null>>setpagedevice"
 *PageRegion C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
 *PageRegion Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvPersonal/Personal Envelope - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
-*PageRegion Env9/#9 Envelope - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
+*PageRegion Env9/Enveloppe n°9 - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
 *PageRegion Oficio/Oficio - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
@@ -98,22 +98,22 @@
 *ImageableArea Executive/Executive - 7.25x10.5in: "12.50 12.50 509.50 743.50"
 *ImageableArea Ledger/Ledger - 17x11in: "12.50 12.50 1211.50 779.50"
 *ImageableArea A3/A3 - 297x420mm: "12.50 12.50 829.50 1178.50"
-*ImageableArea Env10/#10 Envelope - 4.13x9.5in: "12.50 12.50 284.50 671.50"
+*ImageableArea Env10/Enveloppe n°10 - 4.13x9.5in: "12.50 12.50 284.50 671.50"
 *ImageableArea Monarch/Monarch - 3.875x7.5in: "12.50 12.50 266.50 527.50"
 *ImageableArea C5/C5 - 162x229mm: "12.50 12.50 446.50 636.50"
 *ImageableArea DL/DL - 110x220mm: "12.50 12.50 299.50 611.50"
 *ImageableArea B4/B4 - 257x364mm: "12.50 12.50 716.50 1019.50"
 *ImageableArea B5/B5 - 182x257mm: "12.50 12.50 503.50 716.50"
-*ImageableArea EnvISOB5/ISOB5 Envelope - 176x250mm: "12.50 12.50 486.50 696.50"
-*ImageableArea Postcard/Postcard - 100x148mm: "12.50 12.50 271.50 406.50"
-*ImageableArea DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "12.50 12.50 407.50 554.50"
+*ImageableArea EnvISOB5/Enveloppe ISOB5 - 176x250mm: "12.50 12.50 486.50 696.50"
+*ImageableArea Postcard/Carte postale - 100x148mm: "12.50 12.50 271.50 406.50"
+*ImageableArea DoublePostcardRotated/Double carte postale (tournée) - 148x200mm: "12.50 12.50 407.50 554.50"
 *ImageableArea A5/A5 - 148x210mm: "12.50 12.50 407.50 582.50"
 *ImageableArea A6/A6 - 105x148mm: "12.50 12.50 284.50 407.50"
 *ImageableArea B6/B6 - 128x182mm: "12.50 12.50 350.50 503.50"
 *ImageableArea C6/C6 - 114x162mm: "12.50 12.50 310.50 446.50"
 *ImageableArea Folio/Folio - 210x330mm: "12.50 12.50 582.50 922.50"
-*ImageableArea EnvPersonal/Personal Envelope - 3.625x6.5in: "12.50 12.50 248.50 455.50"
-*ImageableArea Env9/#9 Envelope - 3.875x8.875in: "12.50 12.50 266.50 626.50"
+*ImageableArea EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "12.50 12.50 248.50 455.50"
+*ImageableArea Env9/Enveloppe n°9 - 3.875x8.875in: "12.50 12.50 266.50 626.50"
 *ImageableArea Oficio/Oficio - 216x340mm: "12.50 12.50 599.50 959.50"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter - 8.5x11in: "612.00 792.00"
@@ -122,22 +122,22 @@
 *PaperDimension Executive/Executive - 7.25x10.5in: "522.00 756.00"
 *PaperDimension Ledger/Ledger - 17x11in: "1224.00 792.00"
 *PaperDimension A3/A3 - 297x420mm: "842.00 1191.00"
-*PaperDimension Env10/#10 Envelope - 4.13x9.5in: "297.00 684.00"
+*PaperDimension Env10/Enveloppe n°10 - 4.13x9.5in: "297.00 684.00"
 *PaperDimension Monarch/Monarch - 3.875x7.5in: "279.00 540.00"
 *PaperDimension C5/C5 - 162x229mm: "459.00 649.00"
 *PaperDimension DL/DL - 110x220mm: "312.00 624.00"
 *PaperDimension B4/B4 - 257x364mm: "729.00 1032.00"
 *PaperDimension B5/B5 - 182x257mm: "516.00 729.00"
-*PaperDimension EnvISOB5/ISOB5 Envelope - 176x250mm: "499.00 709.00"
-*PaperDimension Postcard/Postcard - 100x148mm: "284.00 419.00"
-*PaperDimension DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "420.00 567.00"
+*PaperDimension EnvISOB5/Enveloppe ISOB5 - 176x250mm: "499.00 709.00"
+*PaperDimension Postcard/Carte postale - 100x148mm: "284.00 419.00"
+*PaperDimension DoublePostcardRotated/Double carte postale (tournée) - 148x200mm: "420.00 567.00"
 *PaperDimension A5/A5 - 148x210mm: "420.00 595.00"
 *PaperDimension A6/A6 - 105x148mm: "297.00 420.00"
 *PaperDimension B6/B6 - 128x182mm: "363.00 516.00"
 *PaperDimension C6/C6 - 114x162mm: "323.00 459.00"
 *PaperDimension Folio/Folio - 210x330mm: "595.00 935.00"
-*PaperDimension EnvPersonal/Personal Envelope - 3.625x6.5in: "261.00 468.00"
-*PaperDimension Env9/#9 Envelope - 3.875x8.875in: "279.00 639.00"
+*PaperDimension EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "261.00 468.00"
+*PaperDimension Env9/Enveloppe n°9 - 3.875x8.875in: "279.00 639.00"
 *PaperDimension Oficio/Oficio - 216x340mm: "612.00 972.00"
 *MaxMediaWidth: "0.00"
 *MaxMediaHeight: "0.00"
@@ -152,73 +152,73 @@
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
 *DefaultInputSlot: Auto
-*InputSlot Auto/Automatic Selection: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Auto/Sélection automatique: "<</MediaPosition 1>>setpagedevice"
 *InputSlot Manual/Manuel: "<</MediaPosition 2>>setpagedevice"
-*InputSlot Multi/Multi-Purpose Tray: "<</MediaPosition 3>>setpagedevice"
+*InputSlot Multi/Plusieurs choix de bacs: "<</MediaPosition 3>>setpagedevice"
 *InputSlot Upper/Bac 1: "<</MediaPosition 4>>setpagedevice"
 *InputSlot Lower/Bac 2: "<</MediaPosition 5>>setpagedevice"
 *CloseUI: *InputSlot
 *OpenUI *MediaType/Type de support: PickOne
 *OrderDependency: 10.0 AnySetup *MediaType
 *DefaultMediaType: OFF
-*MediaType OFF/Use Printer Default: ""
+*MediaType OFF/Utiliser la configuration imprimante: ""
 *MediaType NORMAL/Papier ordinaire: ""
-*MediaType THICK/Papier Ã©pais: ""
-*MediaType THIN/Thin Paper: ""
-*MediaType BOND/Bond: ""
-*MediaType OHP/Transparency: ""
-*MediaType CARD/Papier cartonnÃ©: ""
-*MediaType LABEL/Label: ""
-*MediaType USED/Preprinted: ""
+*MediaType THICK/Papier épais: ""
+*MediaType THIN/Papier fin: ""
+*MediaType BOND/Papier Bond: ""
+*MediaType OHP/Transparent: ""
+*MediaType CARD/Papier cartonné: ""
+*MediaType LABEL/Étiquette: ""
+*MediaType USED/Papier pré-imprimé: ""
 *MediaType COLOR/Couleur: ""
-*MediaType ENV/Envelope: ""
-*MediaType COTTON/Cotton: ""
-*MediaType RECYCLED/Recycled: ""
+*MediaType ENV/Enveloppe: ""
+*MediaType COTTON/Coton: ""
+*MediaType RECYCLED/Papier recyclé: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
-*OpenUI *PowerSave/Power Save: PickOne
+*OpenUI *PowerSave/Économie d'énergie: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
 *DefaultPowerSave: 5
-*PowerSave False/DÃ©sactivÃ©: ""
-*PowerSave 5/5 Minutes: ""
-*PowerSave 10/10 Minutes: ""
-*PowerSave 15/15 Minutes: ""
-*PowerSave 30/30 Minutes: ""
-*PowerSave 45/45 Minutes: ""
-*PowerSave 60/1 Hour: ""
+*PowerSave False/Désactivé: ""
+*PowerSave 5/5 minutes: ""
+*PowerSave 10/10 minutes: ""
+*PowerSave 15/15 minutes: ""
+*PowerSave 30/30 minutes: ""
+*PowerSave 45/45 minutes: ""
+*PowerSave 60/1 heure: ""
 *CloseUI: *PowerSave
 *OpenUI *Resolution: PickOne
 *OrderDependency: 10.0 AnySetup *Resolution
 *DefaultResolution: 600dpi
-*Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
-*Resolution 1200x600dpi/1200x600 DPI: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
-*Resolution 1200dpi/1200 DPI: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 600dpi/600 PPP: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 1200x600dpi/1200x600 PPP: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 1200dpi/1200 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
 *CloseUI: *Resolution
 *OpenUI *ColorModel/Mode couleur: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: CMYK
-*ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
+*ColorModel Gray/Niveau de gris: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
 *ColorModel CMYK/Couleur: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 17>>setpagedevice"
 *CloseUI: *ColorModel
-*OpenUI *JamRecovery/Reprint When Jam: Boolean
+*OpenUI *JamRecovery/Réimpression si bourrage: Boolean
 *OrderDependency: 10.0 AnySetup *JamRecovery
 *DefaultJamRecovery: False
-*JamRecovery False/DÃ©sactivÃ©: ""
+*JamRecovery False/Désactivé: ""
 *JamRecovery True/Oui: ""
 *CloseUI: *JamRecovery
 *OpenUI *Duplex/Impression recto-verso: PickOne
 *OrderDependency: 10.0 AnySetup *Duplex
 *DefaultDuplex: None
-*Duplex None/Off (1-Sided): "<</Duplex false>>setpagedevice"
-*Duplex DuplexNoTumble/Long-Edge (Portrait): "<</Duplex true/Tumble false>>setpagedevice"
-*Duplex DuplexTumble/Short-Edge (Landscape): "<</Duplex true/Tumble true>>setpagedevice"
+*Duplex None/Simple (recto): "<</Duplex false>>setpagedevice"
+*Duplex DuplexNoTumble/Côté long (Portrait): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Côté court (Paysage): "<</Duplex true/Tumble true>>setpagedevice"
 *CloseUI: *Duplex
-*OpenGroup: InstallableOptions/Installable Options
-*OpenUI *OptionTray2/Tray 2 Installed: Boolean
+*OpenGroup: InstallableOptions/Modules optionnels
+*OpenUI *OptionTray2/Bac à feuilles 2 installé: Boolean
 *OrderDependency: 10.0 AnySetup *OptionTray2
 *DefaultOptionTray2: False
-*OptionTray2 False/Non InstallÃ©e: ""
-*OptionTray2 True/InstallÃ©e: ""
+*OptionTray2 False/Non Installée: ""
+*OptionTray2 True/Installée: ""
 *CloseUI: *OptionTray2
 *CloseGroup: InstallableOptions
 *DefaultFont: Courier
@@ -257,4 +257,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ph6100.ppd, 14279 bytes.
+*% End of ph6100.ppd, 14473 bytes.

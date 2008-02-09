@@ -16,8 +16,8 @@ DRIVERS		:= $(DELL) $(SAMSUNG) $(XEROX)
 DRIVERSEXT	:= ppd
 POEXT		:= po
 PODIR		:= po
-LANGUAGES 	:= fr it de
-ifneq ($(DISABLE_JBIG),1)
+LANGUAGES 	:= fr
+ifndef $(DISABLE_JBIG)
 SAMSUNG 	+= clp200 clp300 clp600 clx216x clx2170 clx3160
 XEROX		+= ph6110
 endif
@@ -40,16 +40,19 @@ $(DRIVER): $(SOURCE)
 
 $(LANGDRIVERSEXT): $(SOURCE) $(patsubst %, $(PODIR)/%.$(POEXT), $(LANGUAGES))
 	lang=$(patsubst $(MASTERDRIVER)%.$(DRIVERSEXT),%, $@); \
-	./compile.sh samsung.drv -c ${PODIR}/$$lang.${POEXT} -l $$lang -d ${PODIR}/$$lang; \
+	./compile.sh samsung.drv -l $$lang -c ${PODIR}/$$lang.${POEXT} -d ${PODIR}/$$lang; \
 	for filename in ${SAMSUNG}; do \
+		recode utf8..latin1 ${PODIR}/$$lang/$$filename.${DRIVERSEXT}; \
 		mv ${PODIR}/$$lang/$$filename.${DRIVERSEXT} $$filename$$lang.${DRIVERSEXT}; \
 	done; \
-	./compile.sh xerox.drv -c ${PODIR}/$$lang.${POEXT} -l $$lang -d ${PODIR}/$$lang; \
+	./compile.sh xerox.drv -l $$lang -c ${PODIR}/$$lang.${POEXT} -d ${PODIR}/$$lang; \
 	for filename in ${XEROX}; do \
+		recode utf8..latin1 ${PODIR}/$$lang/$$filename.${DRIVERSEXT}; \
 		mv ${PODIR}/$$lang/$$filename.${DRIVERSEXT} $$filename$$lang.${DRIVERSEXT}; \
 	done; \
-	./compile.sh dell.drv -c ${PODIR}/$$lang.${POEXT} -l $$lang -d ${PODIR}/$$lang; \
+	./compile.sh dell.drv -l $$lang -c ${PODIR}/$$lang.${POEXT} -d ${PODIR}/$$lang; \
 	for filename in ${DELL}; do \
+		recode utf8..latin1 ${PODIR}/$$lang/$$filename.${DRIVERSEXT}; \
 		mv ${PODIR}/$$lang/$$filename.${DRIVERSEXT} $$filename$$lang.${DRIVERSEXT}; \
 	done;
 

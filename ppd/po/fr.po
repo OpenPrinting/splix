@@ -35,7 +35,7 @@ msgid "A3 - 297x420mm"
 msgstr "A3 - 297x420mm"
 
 msgid "#10 Envelope - 4.13x9.5in"
-msgstr "Enveloppe #10 - 4.13x9.5in"
+msgstr "Enveloppe n¬∞10 - 4.13x9.5in"
 
 msgid "Monarch - 3.875x7.5in"
 msgstr "Monarch - 3.875x7.5in"
@@ -71,7 +71,7 @@ msgid "Folio - 210x330mm"
 msgstr "Folio - 210x330mm"
 
 msgid "Resolution"
-msgstr "RÈsolution"
+msgstr "R√©solution"
 
 msgid "300 DPI"
 msgstr "300 PPP"
@@ -89,7 +89,7 @@ msgid "InputSlot"
 msgstr "Source du papier"
 
 msgid "Automatic Selection"
-msgstr "SÈlection automatique"
+msgstr "S√©lection automatique"
 
 msgid "Manual Feed"
 msgstr "Chargement manuel"
@@ -98,16 +98,16 @@ msgid "Multi-Purpose Tray"
 msgstr "Plusieurs choix de bacs"
 
 msgid "Tray 1"
-msgstr "Bac ‡ feuilles 1"
+msgstr "Bac √† feuilles 1"
 
 msgid "Tray 2"
-msgstr "Bac ‡ feuilles 2"
+msgstr "Bac √† feuilles 2"
 
 msgid "Envelope Tray"
-msgstr "Bac ‡ enveloppes"
+msgstr "Bac √† enveloppes"
 
 msgid "Tray 3"
-msgstr "Bac ‡ feuilles 3"
+msgstr "Bac √† feuilles 3"
 
 msgid "Paper Type"
 msgstr "Type de papier"
@@ -119,13 +119,13 @@ msgid "Plain Paper"
 msgstr "Papier ordinaire"
 
 msgid "Thick Paper"
-msgstr "Papier Èpais"
+msgstr "Papier √©pais"
 
 msgid "Thin Paper"
 msgstr "Papier fin"
 
 msgid "Bond"
-msgstr "Papier cartonnÈ"
+msgstr "Papier Bond"
 
 msgid "Transparency"
 msgstr "Transparent"
@@ -134,28 +134,28 @@ msgid "Card Stock"
 msgstr "Carte de visite"
 
 msgid "Label"
-msgstr "…tiquette"
+msgstr "√âtiquette"
 
 msgid "Preprinted"
-msgstr "Papier PrÈ-imprimÈ"
+msgstr "Papier pr√©-imprim√©"
 
 msgid "Colored Paper"
-msgstr "Papier colorÈ"
+msgstr "Papier color√©"
 
 msgid "Envelope"
 msgstr "Enveloppe"
 
 msgid "Power Save"
-msgstr "…conomie d'Ènergie"
+msgstr "√âconomie d'√©nergie"
 
 msgid "On"
-msgstr "ActivÈ"
+msgstr "Activ√©"
 
 msgid "Off"
-msgstr "DÈsactivÈ"
+msgstr "D√©sactiv√©"
 
 msgid "Toner Density"
-msgstr "DensitÈ de toner"
+msgstr "Densit√© de toner"
 
 msgid "Light"
 msgstr "Clair"
@@ -167,16 +167,16 @@ msgid "Dark"
 msgstr "Sombre"
 
 msgid "Toner Save"
-msgstr "…conomie de toner"
+msgstr "√âconomie de toner"
 
 msgid "Save"
-msgstr "…conomiser"
+msgstr "√âconomiser"
 
 msgid "Standard"
 msgstr "Standard"
 
 msgid "Reprint When Jam"
-msgstr "RÈimpression si bourrage"
+msgstr "R√©impression si bourrage"
 
 msgid "SRT Mode"
 msgstr "Optimisation texte / image"
@@ -194,19 +194,19 @@ msgid "Installable Options"
 msgstr "Modules optionnels"
 
 msgid "Tray 2 Installed"
-msgstr "Bac ‡ feuilles 2 installÈ"
+msgstr "Bac √† feuilles 2 install√©"
 
 msgid "Not Installed"
-msgstr "Non installÈ"
+msgstr "Non install√©"
 
 msgid "Installed"
-msgstr "InstallÈ"
+msgstr "Install√©"
 
 msgid "Envelope Tray Installed"
-msgstr "Bac ‡ enveloppes installÈ"
+msgstr "Bac √† enveloppes install√©"
 
 msgid "Tray 3 Installed"
-msgstr "Bac ‡ feuilles 3 installÈ"
+msgstr "Bac √† feuilles 3 install√©"
 
 msgid "5 Minutes"
 msgstr "5 minutes"
@@ -281,128 +281,128 @@ msgid "Double-Sided Printing"
 msgstr "Impression recto-verso"
 
 msgid "Long-Edge Binding"
-msgstr "CÙtÈ long"
+msgstr "C√¥t√© long"
 
 msgid "Short-Edge Binding"
-msgstr "CÙtÈ court"
+msgstr "C√¥t√© court"
 
 msgid "Media Source"
-msgstr "TRANSLATE Media Source"
+msgstr "Source du papier"
 
 msgid "2-Sided Printing"
-msgstr "TRANSLATE 2-Sided Printing"
+msgstr "Recto-verso"
 
 msgid "Off (1-Sided)"
-msgstr "TRANSLATE Off (1-Sided)"
+msgstr "Simple (recto)"
 
 msgid "Long-Edge (Portrait)"
-msgstr "TRANSLATE Long-Edge (Portrait)"
+msgstr "C√¥t√© long (Portrait)"
 
 msgid "Short-Edge (Landscape)"
-msgstr "TRANSLATE Short-Edge (Landscape)"
+msgstr "C√¥t√© court (Paysage)"
 
 msgid "Phaser-3117"
-msgstr "TRANSLATE Phaser-3117"
+msgstr "Phaser-3117"
 
 msgid "ML-3560"
-msgstr "TRANSLATE ML-3560"
+msgstr "ML-3560"
 
 msgid "ML-1630"
-msgstr "TRANSLATE ML-1630"
+msgstr "ML-1630"
 
 msgid "ML-2510"
-msgstr "TRANSLATE ML-2510"
+msgstr "ML-2510"
 
 msgid "ML-3050"
-msgstr "TRANSLATE ML-3050"
+msgstr "ML-3050"
 
 msgid "CLP-610"
-msgstr "TRANSLATE CLP-610"
+msgstr "CLP-610"
 
 msgid "CLP-200"
-msgstr "TRANSLATE CLP-200"
+msgstr "CLP-200"
 
 msgid "CLX-2170"
-msgstr "TRANSLATE CLX-2170"
+msgstr "CLX-2170"
 
 msgid "CLX-216X"
-msgstr "TRANSLATE CLX-216X"
+msgstr "CLX-216X"
 
 msgid "CLX-3160"
-msgstr "TRANSLATE CLX-3160"
+msgstr "CLX-3160"
 
 msgid "Dell"
-msgstr "TRANSLATE Dell"
+msgstr "Dell"
 
 msgid "1100"
-msgstr "TRANSLATE 1100"
+msgstr "1100"
 
 msgid "1110"
-msgstr "TRANSLATE 1110"
+msgstr "1110"
 
 msgid "Phaser 3115"
-msgstr "TRANSLATE Phaser 3115"
+msgstr "Phaser 3115"
 
 msgid "Phaser 3116"
-msgstr "TRANSLATE Phaser 3116"
+msgstr "Phaser 3116"
 
 msgid "Phaser 3120"
-msgstr "TRANSLATE Phaser 3120"
+msgstr "Phaser 3120"
 
 msgid "Phaser 3121"
-msgstr "TRANSLATE Phaser 3121"
+msgstr "Phaser 3121"
 
 msgid "Phaser 3130"
-msgstr "TRANSLATE Phaser 3130"
+msgstr "Phaser 3130"
 
 msgid "Phaser 3420"
-msgstr "TRANSLATE Phaser 3420"
+msgstr "Phaser 3420"
 
 msgid "Phaser 3425"
-msgstr "TRANSLATE Phaser 3425"
+msgstr "Phaser 3425"
 
 msgid "Phaser 5500"
-msgstr "TRANSLATE Phaser 5500"
+msgstr "Phaser 5500"
 
 msgid "Phaser 3150"
-msgstr "TRANSLATE Phaser 3150"
+msgstr "Phaser 3150"
 
 msgid "Phaser 3117"
-msgstr "TRANSLATE Phaser 3117"
+msgstr "Phaser 3117"
 
 msgid "Phaser 3122"
-msgstr "TRANSLATE Phaser 3122"
+msgstr "Phaser 3122"
 
 msgid "Phaser 6110"
-msgstr "TRANSLATE Phaser 6110"
+msgstr "Phaser 6110"
 
 msgid "Postcard - 100x148mm"
-msgstr "TRANSLATE Postcard - 100x148mm"
+msgstr "Carte postale - 100x148mm"
 
 msgid "DoublePostcardRotated - 148x200mm"
-msgstr "TRANSLATE DoublePostcardRotated - 148x200mm"
+msgstr "Double carte postale (tourn√©e) - 148x200mm"
 
 msgid "B6 - 128x182mm"
-msgstr "TRANSLATE B6 - 128x182mm"
+msgstr "B6 - 128x182mm"
 
 msgid "Personal Envelope - 3.625x6.5in"
-msgstr "TRANSLATE Personal Envelope - 3.625x6.5in"
+msgstr "Enveloppe personnelle - 3.625x6.5in"
 
 msgid "#9 Envelope - 3.875x8.875in"
-msgstr "TRANSLATE #9 Envelope - 3.875x8.875in"
+msgstr "Enveloppe n¬∞9 - 3.875x8.875in"
 
 msgid "Oficio - 216x340mm"
-msgstr "TRANSLATE Oficio - 216x340mm"
+msgstr "Oficio - 216x340mm"
 
 msgid "Cotton"
-msgstr "TRANSLATE Cotton"
+msgstr "Coton"
 
 msgid "Recycled"
-msgstr "TRANSLATE Recycled"
+msgstr "Papier recycl√©"
 
 msgid "Archive"
-msgstr "TRANSLATE Archive"
+msgstr "Archive"
 
 msgid "Reverse duplex"
-msgstr "TRANSLATE Reverse duplex"
+msgstr "Recto-verso invers√©"
 
