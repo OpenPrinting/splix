@@ -10,7 +10,8 @@
 
 
 // Supported paper format
-HWMargins 0.16in 0.55cm 0.16in 0.55cm
+//HWMargins 0.16in 0.55cm 0.16in 0.55cm
+HWMargins 12.5 12.5 12.5 12.5
 *MediaSize Letter
 MediaSize Legal
 MediaSize A4
