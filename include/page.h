@@ -153,6 +153,11 @@ class Page
           * @param band the band instance.
           */ 
         void                    registerBand(Band *band);
+        /**
+         * Set this page empty.
+         * This is useful in case of compression error.
+         */
+        void                    setEmpty() {_empty = true;}
 
         /**
           * @return the X resolution.

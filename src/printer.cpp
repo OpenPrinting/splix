@@ -74,7 +74,7 @@ bool Printer::loadInformation(const Request& request)
     _model = request.ppd()->get("ModelName").deepCopy();
     _color = request.ppd()->get("ColorDevice");
     _qpdlVersion = request.ppd()->get("QPDLVersion", "QPDL");
-    if (!_qpdlVersion || _qpdlVersion > 2) {
+    if (!_qpdlVersion || (_qpdlVersion > 2 && _qpdlVersion != 5)) {
         ERRORMSG(_("Invalid QPDL version. Operation aborted."));
         return false;
     }

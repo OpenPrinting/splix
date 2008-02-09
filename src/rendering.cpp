@@ -77,11 +77,12 @@ static void *_compressPage(void* data)
         if (compressPage(*request, page)) {
             DEBUGMSG(_("Page %lu has been compressed and is ready for "
                 "rendering"), page->pageNr());
-
-            registerPage(page);
-        } else
+        } else {
             ERRORMSG(_("Error while compressing the page. Check the previous "
                 "message. Trying to print the other pages."));
+            page->setEmpty();
+        }
+        registerPage(page);
     } while (page);
 
     DEBUGMSG(_("Compression thread: work done. See ya"));
@@ -136,10 +137,12 @@ bool render(Request& request)
     while (page) {
         if (checkLastPage && document.numberOfPages() == page->pageNr())
             lastPage = true;
-        if (!renderPage(request, page, lastPage))
-            ERRORMSG(_("Error while rendering the page. Check the previous "
-                        "message. Trying to print the other pages."));
-        fprintf(stderr, "PAGE: %lu %lu\n", page->pageNr(), page->copiesNr());
+        if (!page->isEmpty()) {
+            if (!renderPage(request, page, lastPage))
+                ERRORMSG(_("Error while rendering the page. Check the previous "
+                    "message. Trying to print the other pages."));
+            fprintf(stderr, "PAGE: %lu %lu\n", page->pageNr(), page->copiesNr());
+        }
         page = getNextPage();
     }
 

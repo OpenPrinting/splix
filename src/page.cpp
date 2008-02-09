@@ -108,6 +108,7 @@ void Page::flushPlanes()
             _planes[i] = NULL;
         }
     }
+    _empty = false;
 }
 
 

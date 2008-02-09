@@ -28,8 +28,8 @@
 *QPDL BandSize: "128"
 *PJL BeginPJL: "<1B>%-12345X"
 *PJL EndPJL: "<09><1B>%-12345X"
-*QPDL QPDLVersion: "1"
 *General DocHeaderValues: "<0><0><1>"
+*QPDL QPDLVersion: "1"
 *General CMSFile: "CLP-500"
 *cupsVersion: 1.2
 *cupsModelNumber: 0

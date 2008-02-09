@@ -229,8 +229,8 @@ QPDLDocument::Result QPDLDocument::_readPageContent(QFile& data,
             out.flush();
         }
 
-        // Read the band data -- SPLc in QPDL V. 0 or 1
-        if (_type == SPLc && _qpdl <= 1) {
+        // Read the band data -- SPLc in QPDL V. 0, 1 or 5
+        if (_type == SPLc && (_qpdl <= 1 || _qpdl == 5)) {
             while (!data.atEnd()) {
                 // Read the color
                 data.getChar(&color);
