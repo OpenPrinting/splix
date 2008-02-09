@@ -24,8 +24,7 @@ package. Finally, the libjbig is needed.
 Summary:
 	* CUPS
 	* libcups
-	* libjbig
-	* cupsddk (?)
+	* libjbig (If the JBIG algorithm compilation is enabled)
 
 Installation:
 -------------
@@ -65,7 +64,7 @@ Note about the JBIG algorithm:
 
 	It seems that this algorithm was previously (is?) patented. To compile
 SpliX without using this algorithm please compile and install SpliX by adding
-"DISABLE_JBIG=1" to the make line:
-		$ make DISABLE_JBIG=1
-		$ make install DISABLE_JBIG=1
+"DISABLE_JBIG" to the make line:
+		$ make DISABLE_JBIG
+		$ make install DISABLE_JBIG
 

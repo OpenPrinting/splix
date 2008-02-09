@@ -1,3 +1,6 @@
+Fri Feb 09 03:39:12 2008 Aurélien Croc <programmation AT ap2c DOT org>
+	* Replace the current SpliX version by the branch 2.0
+
 Sun Jan 27 23:47:45 2008 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
 		The JBIG compression used is or was under patent. A new 
