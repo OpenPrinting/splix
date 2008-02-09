@@ -6,7 +6,8 @@
  * $Id$
  */
 
-Filter application/vnd.cups-raster 0 rastertospl2
+Filter application/vnd.cups-raster 0 rastertoqpdl
+Filter application/vnd.cups-raster 50 pstoqpdl
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
 

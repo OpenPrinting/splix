@@ -34,7 +34,8 @@
 *cupsVersion: 1.2
 *cupsModelNumber: 0
 *cupsManualCopies: False
-*cupsFilter: "application/vnd.cups-raster 0 rastertospl2"
+*cupsFilter: "application/vnd.cups-raster 0 rastertoqpdl"
+*cupsFilter: "application/vnd.cups-raster 50 pstoqpdl"
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -238,4 +239,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ph6110.ppd, 13426 bytes.
+*% End of ph6110.ppd, 13481 bytes.

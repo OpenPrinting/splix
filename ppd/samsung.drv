@@ -10,12 +10,12 @@ Manufacturer "Samsung"
 
 #import "version.defs"
 #import "spl2.defs"
-#import "filter.defs"
 
 //
 // Specific black & white printer definition
 //
 {
+    #import "filter.defs"
     #import "monochrome.defs"
     #import "powersave.defs"
     #import "tonerdensity.defs"
@@ -132,6 +132,7 @@ Manufacturer "Samsung"
 // Specific color printer definition
 //
 {
+    #import "filterColor.defs"
     #import "powersave.defs"
 
     // Color printers V. 1 (old algorithms)
