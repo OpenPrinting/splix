@@ -29,6 +29,7 @@ endif
 
 
 # Get some information
+CMSBASE			:= `cups-config --datadir`/model/samsung/cms
 CUPSFILTER		:= `cups-config --serverbin`/filter
 ifeq ($(ARCHI),Darwin)
 PSTORASTER		:= pstocupsraster
@@ -41,4 +42,5 @@ endif
 src_pstoqpdl_cpp_FLAGS	:= -DRASTERDIR=\"$(CUPSFILTER)\"
 src_pstoqpdl_cpp_FLAGS	+= -DRASTERTOQPDL=\"rastertoqpdl\"
 src_pstoqpdl_cpp_FLAGS	+= -DPSTORASTER=\"$(PSTORASTER)\"
+src_pstoqpdl_cpp_FLAGS	+= -DCMSBASE=\"$(CMSBASE)\"
 

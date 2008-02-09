@@ -63,8 +63,11 @@ bool Printer::loadInformation(const Request& request)
     PPDValue value;
 
     // Get some printer information
-    /** @todo bandHeight */
-    _bandHeight = 0x80; // XXX XXX XXX XXX XXX TODO TODO TODO TODO
+    if (request.ppd()->get("bandSize", "QPDL").isNull()) {
+        ERRORMSG(_("Unknown band size. Operation aborted."));
+        return false;
+    }
+    _bandHeight = request.ppd()->get("bandSize", "QPDL");
     _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
     _model = request.ppd()->get("ModelName").deepCopy();
     _color = request.ppd()->get("ColorDevice");
@@ -120,11 +123,16 @@ bool Printer::loadInformation(const Request& request)
     else if (!(strcasecmp(paperType, "B4"))) _paperType = 10;
     else if (!(strcasecmp(paperType, "B5"))) _paperType = 11;
     else if (!(strcasecmp(paperType, "EnvISOB5"))) _paperType = 12;
+    else if (!(strcasecmp(paperType, "Postcard"))) _paperType = 14;
+    else if (!(strcasecmp(paperType, "DoublePostcardRotated"))) _paperType = 15;
     else if (!(strcasecmp(paperType, "A5"))) _paperType = 16;
     else if (!(strcasecmp(paperType, "A6"))) _paperType = 17;
-    else if (!(strcasecmp(paperType, "EnvISOB6"))) _paperType = 18;
+    else if (!(strcasecmp(paperType, "B6"))) _paperType = 18;
     else if (!(strcasecmp(paperType, "C6"))) _paperType = 23;
     else if (!(strcasecmp(paperType, "Folio"))) _paperType = 24;
+    else if (!(strcasecmp(paperType, "EnvPersonal"))) _paperType = 25;
+    else if (!(strcasecmp(paperType, "Env9"))) _paperType = 26;
+    else if (!(strcasecmp(paperType, "Oficio"))) _paperType = 28;
     else {
         ERRORMSG(_("Invalid paper size \"%s\". Operation aborted."), paperType);
         return false;

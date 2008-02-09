@@ -21,7 +21,7 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
-#define PPDVERSION "1.1.0"
+#define PPDVERSION "2.0.0"
 #define VERSION "2.0.0"
 
 #endif /* _VERSION_H_ */

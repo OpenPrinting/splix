@@ -119,8 +119,8 @@ static char *_readCMSFile(PPDFile& ppd, bool csa)
     size = strlen(file) + 30;
     tmp = new char[size];
     if (xResolution)
-        snprintf(tmp, size, "%s-%lux%lucms%s", file, xResolution, yResolution,
-            csa ? "2" : "");
+        snprintf(tmp, size, CMSBASE "/%s-%lux%lucms%s", file, xResolution, 
+            yResolution, csa ? "2" : "");
     else
         snprintf(tmp, size, "%scms%s", file, csa ? "2" : "");
 
