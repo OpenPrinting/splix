@@ -29,18 +29,23 @@ Manufacturer "Xerox"
         {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
             {
+                #import "manualduplex.defs"
                 ModelName "Phaser 3115"
                 PCFileName "ph3115.ppd"
             } {
+                #import "manualduplex.defs"
                 ModelName "Phaser 3116"
                 PCFileName "ph3116.ppd"
             } {
+                #import "manualduplex.defs"
                 ModelName "Phaser 3120"
                 PCFileName "ph3120.ppd"
             } {
+                #import "manualduplex.defs"
                 ModelName "Phaser 3121"
                 PCFileName "ph3121.ppd"
             } {
+                #import "manualduplex.defs"
                 ModelName "Phaser 3130"
                 PCFileName "ph3130.ppd"
             } {
@@ -66,6 +71,7 @@ Manufacturer "Xerox"
             InputSlot 3 "Multi/Multi-Purpose Tray"
             InputSlot 4 "Upper/Tray 1"
             InputSlot 5 "Lower/Tray 2"
+            #import "manualduplex.defs"
             
             ModelName "Phaser 3150"
             PCFileName "ph3150.ppd"
@@ -74,6 +80,7 @@ Manufacturer "Xerox"
 
     // QPDL Version 2
     {
+        #import "manualduplex.defs"
         Attribute QPDL QPDLVersion "2"
         Attribute General docHeaderValues "<0><0><1>"
 

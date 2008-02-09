@@ -21,6 +21,7 @@ Manufacturer "Dell"
     #import "tonerdensity.defs"
     #import "tonersave.defs"
     #import "jamrecovery.defs"
+    #import "manualduplex.defs"
 
     // QPDL Version 1
     {

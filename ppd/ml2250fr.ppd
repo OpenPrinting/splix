@@ -31,6 +31,7 @@
 *QPDL ColorPrinter: "0"
 *QPDL QPDLVersion: "1"
 *General docHeaderValues: "<0><0><0>"
+*QPDL manualDuplex: "1"
 *cupsVersion: 1.2
 *cupsModelNumber: 0
 *cupsManualCopies: False
@@ -231,6 +232,13 @@
 *SRTMode ENHANCE/Text enhance: ""
 *SRTMode GRAY/Image enhance: ""
 *CloseUI: *SRTMode
+*OpenUI *Duplex/Impression recto-verso: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex None/Off (1-Sided): "<</Duplex false>>setpagedevice"
+*Duplex DuplexNoTumble/Long-Edge (Portrait): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short-Edge (Landscape): "<</Duplex true/Tumble true>>setpagedevice"
+*CloseUI: *Duplex
 *OpenGroup: InstallableOptions/Installable Options
 *OpenUI *OptionTray2/Tray 2 Installed: Boolean
 *OrderDependency: 10.0 AnySetup *OptionTray2
@@ -287,4 +295,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2250.ppd, 15102 bytes.
+*% End of ml2250.ppd, 15493 bytes.

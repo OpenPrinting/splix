@@ -29,6 +29,7 @@
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
 *QPDL PacketSize: "512"
+*QPDL manualDuplex: "1"
 *QPDL QPDLVersion: "1"
 *General docHeaderValues: "<0><0><0>"
 *General CMSFile: "CLP-600"
@@ -196,6 +197,13 @@
 *ColorModel Gray/Grayscale: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 19>>setpagedevice"
 *ColorModel CMYK/Color: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 19>>setpagedevice"
 *CloseUI: *ColorModel
+*OpenUI *Duplex/2-Sided Printing: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex None/Off (1-Sided): "<</Duplex false>>setpagedevice"
+*Duplex DuplexNoTumble/Long-Edge (Portrait): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short-Edge (Landscape): "<</Duplex true/Tumble true>>setpagedevice"
+*CloseUI: *Duplex
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -232,4 +240,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp600.ppd, 13086 bytes.
+*% End of clp600.ppd, 13471 bytes.

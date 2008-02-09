@@ -29,6 +29,7 @@ Manufacturer "Samsung"
 
         {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
+            #import "manualduplex.defs"
             {
                 ModelName "ML-1510"
                 PCFileName "ml1510.ppd"
@@ -68,6 +69,7 @@ Manufacturer "Samsung"
 
             #import "srtmode.defs"
             {
+                #import "manualduplex.defs"
                 Throughput 22
                 ModelName "ML-2250"
                 PCFileName "ml2250.ppd"
@@ -98,12 +100,12 @@ Manufacturer "Samsung"
 
         {
             Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+            #import "manualduplex.defs"
 
             {
                 ModelName "ML-1630"
                 PCFileName "ml1630.ppd"
             } {
-                // TODO Oficio 
                 ModelName "ML-2010"
                 PCFileName "ml2010.ppd"
             } {
@@ -178,6 +180,7 @@ Manufacturer "Samsung"
     {
         #import "color-v2.defs"
         Attribute QPDL PacketSize "512"
+        #import "manualduplex.defs"
 
 
         // QPDL Version 1

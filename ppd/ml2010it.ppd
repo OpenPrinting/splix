@@ -31,6 +31,7 @@
 *QPDL ColorPrinter: "0"
 *QPDL QPDLVersion: "2"
 *General docHeaderValues: "<0><0><1>"
+*QPDL manualDuplex: "1"
 *cupsVersion: 1.2
 *cupsModelNumber: 0
 *cupsManualCopies: False
@@ -213,6 +214,13 @@
 *JamRecovery False/Non installato: ""
 *JamRecovery True/On: ""
 *CloseUI: *JamRecovery
+*OpenUI *Duplex/Fronte-retro: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex None/Off (1-Sided): "<</Duplex false>>setpagedevice"
+*Duplex DuplexNoTumble/Long-Edge (Portrait): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Short-Edge (Landscape): "<</Duplex true/Tumble true>>setpagedevice"
+*CloseUI: *Duplex
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -249,4 +257,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml2010.ppd, 13500 bytes.
+*% End of ml2010.ppd, 13881 bytes.
