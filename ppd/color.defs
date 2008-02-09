@@ -6,8 +6,6 @@
  * $Id$
  */
 
-Attribute QPDL ColorPrinter "1"
-
 // Supported resolutions
 *Resolution - 1 0 0 0 "600dpi/600 DPI"
 

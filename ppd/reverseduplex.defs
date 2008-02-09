@@ -1,0 +1,14 @@
+/*
+ *      reverseduplex.defs             (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Reverse duplex
+ *
+ * $Id$
+ */
+
+Option "ReverseDuplex/Reverse duplex" Boolean AnySetup 10
+	*Choice "False/Off" ""
+	Choice "True/On" ""
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+

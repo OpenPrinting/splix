@@ -376,3 +376,33 @@ msgstr "TRANSLATE Phaser 3122"
 msgid "Phaser 6110"
 msgstr "TRANSLATE Phaser 6110"
 
+msgid "Postcard - 100x148mm"
+msgstr "TRANSLATE Postcard - 100x148mm"
+
+msgid "DoublePostcardRotated - 148x200mm"
+msgstr "TRANSLATE DoublePostcardRotated - 148x200mm"
+
+msgid "B6 - 128x182mm"
+msgstr "TRANSLATE B6 - 128x182mm"
+
+msgid "Personal Envelope - 3.625x6.5in"
+msgstr "TRANSLATE Personal Envelope - 3.625x6.5in"
+
+msgid "#9 Envelope - 3.875x8.875in"
+msgstr "TRANSLATE #9 Envelope - 3.875x8.875in"
+
+msgid "Oficio - 216x340mm"
+msgstr "TRANSLATE Oficio - 216x340mm"
+
+msgid "Cotton"
+msgstr "TRANSLATE Cotton"
+
+msgid "Recycled"
+msgstr "TRANSLATE Recycled"
+
+msgid "Archive"
+msgstr "TRANSLATE Archive"
+
+msgid "Reverse duplex"
+msgstr "TRANSLATE Reverse duplex"
+

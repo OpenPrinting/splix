@@ -2,7 +2,7 @@
 *% PPD file for ML-1710 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.0.
 *FormatVersion: "4.3"
-*FileVersion: "1.1.0"
+*FileVersion: "2.0.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml1710.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung ML-1710"
 *ShortNickName: "Samsung ML-1710"
-*NickName: "Samsung ML-1710, 1.1.0"
+*NickName: "Samsung ML-1710, 2.0.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -25,6 +25,7 @@
 *LandscapeOrientation: Plus90
 *TTRasterizer: Type42
 *% Driver-defined attributes...
+*QPDL bandSize: "128"
 *PJL beginPJL: "<1B>%-12345X"
 *PJL endPJL: "<09><1B>%-12345X"
 *QPDL ColorPrinter: "0"
@@ -50,11 +51,16 @@
 *PageSize B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
 *PageSize B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
 *PageSize EnvISOB5/ISOB5 Envelope - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageSize Postcard/Postcard - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
+*PageSize DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
 *PageSize A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
 *PageSize A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
-*PageSize EnvISOB6/ISOB6 Envelope - 176x125mm: "<</PageSize[499 354]/ImagingBBox null>>setpagedevice"
+*PageSize B6/B6 - 128x182mm: "<</PageSize[363 516]/ImagingBBox null>>setpagedevice"
 *PageSize C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
 *PageSize Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
+*PageSize EnvPersonal/Personal Envelope - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
+*PageSize Env9/#9 Envelope - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
+*PageSize Oficio/Oficio - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageSize
 *OpenUI *PageRegion/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageRegion
@@ -72,31 +78,41 @@
 *PageRegion B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
 *PageRegion B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
 *PageRegion EnvISOB5/ISOB5 Envelope - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageRegion Postcard/Postcard - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
+*PageRegion DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
 *PageRegion A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
 *PageRegion A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
-*PageRegion EnvISOB6/ISOB6 Envelope - 176x125mm: "<</PageSize[499 354]/ImagingBBox null>>setpagedevice"
+*PageRegion B6/B6 - 128x182mm: "<</PageSize[363 516]/ImagingBBox null>>setpagedevice"
 *PageRegion C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
 *PageRegion Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvPersonal/Personal Envelope - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
+*PageRegion Env9/#9 Envelope - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
+*PageRegion Oficio/Oficio - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
-*ImageableArea Letter/Letter - 8.5x11in: "11.52 15.59 600.48 776.41"
-*ImageableArea Legal/Legal - 8.5x14in: "11.52 15.59 600.48 992.41"
-*ImageableArea A4/A4 - 210x297mm: "11.52 15.59 583.48 826.41"
-*ImageableArea Executive/Executive - 7.25x10.5in: "11.52 15.59 510.48 740.41"
-*ImageableArea Ledger/Ledger - 17x11in: "11.52 15.59 1212.48 776.41"
-*ImageableArea A3/A3 - 297x420mm: "11.52 15.59 830.48 1175.41"
-*ImageableArea Env10/#10 Envelope - 4.13x9.5in: "11.52 15.59 285.48 668.41"
-*ImageableArea Monarch/Monarch - 3.875x7.5in: "11.52 15.59 267.48 524.41"
-*ImageableArea C5/C5 - 162x229mm: "11.52 15.59 447.48 633.41"
-*ImageableArea DL/DL - 110x220mm: "11.52 15.59 300.48 608.41"
-*ImageableArea B4/B4 - 257x364mm: "11.52 15.59 717.48 1016.41"
-*ImageableArea B5/B5 - 182x257mm: "11.52 15.59 504.48 713.41"
-*ImageableArea EnvISOB5/ISOB5 Envelope - 176x250mm: "11.52 15.59 487.48 693.41"
-*ImageableArea A5/A5 - 148x210mm: "11.52 15.59 408.48 579.41"
-*ImageableArea A6/A6 - 105x148mm: "11.52 15.59 285.48 404.41"
-*ImageableArea EnvISOB6/ISOB6 Envelope - 176x125mm: "11.52 15.59 487.48 338.41"
-*ImageableArea C6/C6 - 114x162mm: "11.52 15.59 311.48 443.41"
-*ImageableArea Folio/Folio - 210x330mm: "11.52 15.59 583.48 919.41"
+*ImageableArea Letter/Letter - 8.5x11in: "12.50 12.50 599.50 779.50"
+*ImageableArea Legal/Legal - 8.5x14in: "12.50 12.50 599.50 995.50"
+*ImageableArea A4/A4 - 210x297mm: "12.50 12.50 582.50 829.50"
+*ImageableArea Executive/Executive - 7.25x10.5in: "12.50 12.50 509.50 743.50"
+*ImageableArea Ledger/Ledger - 17x11in: "12.50 12.50 1211.50 779.50"
+*ImageableArea A3/A3 - 297x420mm: "12.50 12.50 829.50 1178.50"
+*ImageableArea Env10/#10 Envelope - 4.13x9.5in: "12.50 12.50 284.50 671.50"
+*ImageableArea Monarch/Monarch - 3.875x7.5in: "12.50 12.50 266.50 527.50"
+*ImageableArea C5/C5 - 162x229mm: "12.50 12.50 446.50 636.50"
+*ImageableArea DL/DL - 110x220mm: "12.50 12.50 299.50 611.50"
+*ImageableArea B4/B4 - 257x364mm: "12.50 12.50 716.50 1019.50"
+*ImageableArea B5/B5 - 182x257mm: "12.50 12.50 503.50 716.50"
+*ImageableArea EnvISOB5/ISOB5 Envelope - 176x250mm: "12.50 12.50 486.50 696.50"
+*ImageableArea Postcard/Postcard - 100x148mm: "12.50 12.50 271.50 406.50"
+*ImageableArea DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "12.50 12.50 407.50 554.50"
+*ImageableArea A5/A5 - 148x210mm: "12.50 12.50 407.50 582.50"
+*ImageableArea A6/A6 - 105x148mm: "12.50 12.50 284.50 407.50"
+*ImageableArea B6/B6 - 128x182mm: "12.50 12.50 350.50 503.50"
+*ImageableArea C6/C6 - 114x162mm: "12.50 12.50 310.50 446.50"
+*ImageableArea Folio/Folio - 210x330mm: "12.50 12.50 582.50 922.50"
+*ImageableArea EnvPersonal/Personal Envelope - 3.625x6.5in: "12.50 12.50 248.50 455.50"
+*ImageableArea Env9/#9 Envelope - 3.875x8.875in: "12.50 12.50 266.50 626.50"
+*ImageableArea Oficio/Oficio - 216x340mm: "12.50 12.50 599.50 959.50"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter - 8.5x11in: "612.00 792.00"
 *PaperDimension Legal/Legal - 8.5x14in: "612.00 1008.00"
@@ -111,14 +127,19 @@
 *PaperDimension B4/B4 - 257x364mm: "729.00 1032.00"
 *PaperDimension B5/B5 - 182x257mm: "516.00 729.00"
 *PaperDimension EnvISOB5/ISOB5 Envelope - 176x250mm: "499.00 709.00"
+*PaperDimension Postcard/Postcard - 100x148mm: "284.00 419.00"
+*PaperDimension DoublePostcardRotated/DoublePostcardRotated - 148x200mm: "420.00 567.00"
 *PaperDimension A5/A5 - 148x210mm: "420.00 595.00"
 *PaperDimension A6/A6 - 105x148mm: "297.00 420.00"
-*PaperDimension EnvISOB6/ISOB6 Envelope - 176x125mm: "499.00 354.00"
+*PaperDimension B6/B6 - 128x182mm: "363.00 516.00"
 *PaperDimension C6/C6 - 114x162mm: "323.00 459.00"
 *PaperDimension Folio/Folio - 210x330mm: "595.00 935.00"
+*PaperDimension EnvPersonal/Personal Envelope - 3.625x6.5in: "261.00 468.00"
+*PaperDimension Env9/#9 Envelope - 3.875x8.875in: "279.00 639.00"
+*PaperDimension Oficio/Oficio - 216x340mm: "612.00 972.00"
 *MaxMediaWidth: "0.00"
 *MaxMediaHeight: "0.00"
-*HWMargins: 11.52 15.59 11.52 15.59
+*HWMargins: 12.50 12.50 12.50 12.50
 *CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
 *ParamCustomPageSize Width: 1 points 0.00 0.00
 *ParamCustomPageSize Height: 2 points 0.00 0.00
@@ -146,6 +167,9 @@
 *MediaType USED/Preprinted: ""
 *MediaType COLOR/Colore: ""
 *MediaType ENV/Envelope: ""
+*MediaType COTTON/Cotton: ""
+*MediaType RECYCLED/Recycled: ""
+*MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
 *OpenUI *ColorModel/Modo Colore: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
@@ -225,4 +249,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1710.ppd, 11635 bytes.
+*% End of ml1710.ppd, 13489 bytes.

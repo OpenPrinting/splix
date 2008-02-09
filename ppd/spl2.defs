@@ -8,6 +8,7 @@
 #include <font.defs>
 #include <media.defs>
 
+#media "Oficio/Oficio - 216x340mm" 612 972
 
 // Supported paper format
 //HWMargins 0.16in 0.55cm 0.16in 0.55cm
@@ -26,14 +27,18 @@ MediaSize B4
 MediaSize B5
 MediaSize EnvISOB5
 // Not listed
-// JPost
-// JDouble
+MediaSize Postcard
+MediaSize DoublePostcardRotated
 MediaSize A5
 MediaSize A6
-MediaSize EnvISOB6
+MediaSize B6
 // Custom
 MediaSize C6
 MediaSize Folio
+MediaSize EnvPersonal
+MediaSize Env9
+MediaSize Oficio
+
 VariablePaperSize yes
 
 // Supported input slots
@@ -62,7 +67,11 @@ Option "MediaType/Paper Type" PickOne AnySetup 10
    Choice "USED/Preprinted" ""
    Choice "COLOR/Colored Paper" ""
    Choice "ENV/Envelope" ""
+   Choice "COTTON/Cotton" ""
+   Choice "RECYCLED/Recycled" ""
+   Choice "ARCHIVE/Archive" ""
 
+Attribute QPDL bandSize "128"
 Attribute PJL beginPJL "<1B>%-12345X"
 Attribute PJL endPJL "<09><1B>%-12345X"
 
