@@ -257,7 +257,6 @@ bool Page::_compression0x13(quint8 color, quint16 width, quint16 height,
     unsigned long size = data.length();
 
     _files[color].write((const char *)&size, sizeof(size));
-    err << "size=" << size << endl;
     _files[color].write(data);
 }
 
