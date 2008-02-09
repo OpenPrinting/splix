@@ -191,7 +191,8 @@ static bool _renderBand(const Request& request, const Band* band)
         header[3] = checkSum;                       // Checksum 0 - 7
         size = 4;
             // Close the plane if needed
-        if (color && version == 1 && (i+1) == band->planesNr()) {
+        if (color && (version == 1 || version == 5) && 
+            (i+1) == band->planesNr()) {
             header[4] = 0;
             size++;
         }
