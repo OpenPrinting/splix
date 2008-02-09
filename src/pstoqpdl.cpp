@@ -115,13 +115,13 @@ static char *_readCMSFile(PPDFile& ppd, bool csa)
     } else if (resolution == "300dpi") 
         xResolution = yResolution = 300;
 
-    // Create the real filename
+    // Get the real filename
     size = strlen(file) + 30;
     tmp = new char[size];
     if (xResolution)
         snprintf(tmp, size, CMSBASE "/%s-%lux%lucms%s", file, xResolution, 
             yResolution, csa ? "2" : "");
-    else
+    if (!xResolution || access(tmp, R_OK))
         snprintf(tmp, size, "%scms%s", file, csa ? "2" : "");
 
     // Check if it exists, open it and read it

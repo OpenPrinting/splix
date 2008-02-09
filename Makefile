@@ -1,5 +1,5 @@
 #
-#	Makefile		(C) 2006-2007, Aurélien Croc (AP²C)
+#	Makefile		(C) 2006-2008, Aurélien Croc (AP²C)
 #
 # This project is under the GPL Licence
 #
