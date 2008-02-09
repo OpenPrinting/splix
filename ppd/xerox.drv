@@ -1,0 +1,152 @@
+/*
+ *      xerox.drv                      (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Contains the Xerox printers drivers
+ *
+ * $Id$
+ */
+Manufacturer "Xerox"
+
+#import "version.defs"
+#import "spl2.defs"
+#import "filter.defs"
+
+//
+// Specific black & white printer definition
+//
+{
+    #import "monochrome.defs"
+    #import "powersave.defs"
+    #import "tonerdensity.defs"
+    #import "tonersave.defs"
+    #import "jamrecovery.defs"
+
+    // QPDL Version 1
+    {
+        Attribute QPDL QPDLVersion "1"
+        Attribute General docHeaderValues "<0><0><0>"
+
+        {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+            {
+                ModelName "Phaser 3115"
+                PCFileName "ph3115.ppd"
+            } {
+                ModelName "Phaser 3116"
+                PCFileName "ph3116.ppd"
+            } {
+                ModelName "Phaser 3120"
+                PCFileName "ph3120.ppd"
+            } {
+                ModelName "Phaser 3121"
+                PCFileName "ph3121.ppd"
+            } {
+                ModelName "Phaser 3130"
+                PCFileName "ph3130.ppd"
+            } {
+                // Multi-tray
+                InputSlot 3 "Multi/Multi-Purpose Tray"
+                InputSlot 4 "Upper/Tray 1"
+                InputSlot 5 "Lower/Tray 2"
+
+                Duplex normal
+                {
+                    ModelName "Phaser 3420"
+                    PCFileName "ph3420.ppd"
+                } {
+                    ModelName "Phaser 3425"
+                    PCFileName "ph3425.ppd"
+                } {
+                    ModelName "Phaser 5500"
+                    PCFileName "ph5500.ppd"
+                }
+            }
+        } {
+            // Multi-tray
+            InputSlot 3 "Multi/Multi-Purpose Tray"
+            InputSlot 4 "Upper/Tray 1"
+            InputSlot 5 "Lower/Tray 2"
+            
+            ModelName "Phaser 3150"
+            PCFileName "ph3150.ppd"
+        }
+    }
+
+    // QPDL Version 2
+    {
+        Attribute QPDL QPDLVersion "2"
+        Attribute General docHeaderValues "<0><0><1>"
+
+        {
+            ModelName "Phaser 3117"
+            PCFileName "ph3117.ppd"
+        } {
+            Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
+            {
+                ModelName "Phaser 3122"
+                PCFileName "ph3122.ppd"
+            }
+        }
+    }
+}
+
+
+//
+// Specific color printer definition
+//
+{
+    #import "powersave.defs"
+
+    // Color printers V. 1 (old algorithms)
+    {
+        #import "color-v1.defs"
+        #import "jamrecovery.defs"
+
+        // Multi-tray
+        InputSlot 3 "Multi/Multi-Purpose Tray"
+        InputSlot 4 "Upper/Tray 1"
+        InputSlot 5 "Lower/Tray 2"
+        // But tray 2 is optional..
+        Installable "OptionTray2/Tray 2 Installed"
+        UIConstraints "*OptionTray2 False *InputSlot Lower"
+
+        Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+        Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+
+        Duplex normal
+
+        Attribute QPDL QPDLVersion "1"
+        Attribute General docHeaderValues "<0><0><1>"
+
+        {
+            Throughput 20
+            ModelName "Phaser 6100"
+            PCFileName "ph6100.ppd"
+        }
+    }
+
+    // Color printers V. 2 (JBIG algorithm)
+    {
+        #import "color-v2.defs"
+        Attribute QPDL PacketSize "512"
+
+        // QPDL Version 2
+        {
+            Attribute QPDL QPDLVersion "2"
+            Attribute General docHeaderValues "<0><0><1>"
+            Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+            Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+            Duplex normal
+
+            {
+                ModelName "Phaser 6110"
+                PCFilename "ph6110.ppd"
+            }
+        }
+    }
+}
+
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+
