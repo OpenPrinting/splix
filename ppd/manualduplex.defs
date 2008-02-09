@@ -7,7 +7,7 @@
  */
 
 Duplex normal
-Attribute QPDL manualDuplex "1"
+Attribute QPDL ManualDuplex "On"
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
 

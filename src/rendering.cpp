@@ -74,7 +74,6 @@ static void *_compressPage(void* data)
 #endif /* DISABLE_BLACKOPTIM */
 
         // Compress the page
-        page->setCompression(0x13); // XXX XXX XXX FIXME TO REMOVE
         if (compressPage(*request, page)) {
             DEBUGMSG(_("Page %lu has been compressed and is ready for "
                 "rendering"), page->pageNr());
@@ -182,7 +181,6 @@ bool render(const Request& request)
 #ifndef DISABLE_BLACKOPTIM
         applyBlackOptimization(page);
 #endif /* DISABLE_BLACKOPTIM */
-        page->setCompression(0x11); // XXX XXX XXX FIXME TO REMOVE
         if (compressPage(request, page)) {
             if (!renderPage(request, page))
                 ERRORMSG(_("Error while rendering the page. Check the previous "

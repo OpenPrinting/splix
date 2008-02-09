@@ -39,6 +39,7 @@ class Printer
         bool                    _color;
         unsigned long           _qpdlVersion;
         unsigned long           _bandHeight;
+        unsigned long           _packetSize;
 
         unsigned char           _paperType;
         unsigned char           _paperSource;
@@ -93,6 +94,10 @@ class Printer
           * @return the height of a band.
           */ 
         unsigned long           bandHeight() const {return _bandHeight;}
+        /**
+          * @return the maximum size of a packet.
+          */ 
+        unsigned long           packetSize() const {return _packetSize;}
         /**
           * @return the QPDL version.
           */

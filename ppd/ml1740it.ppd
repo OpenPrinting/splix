@@ -25,13 +25,13 @@
 *LandscapeOrientation: Plus90
 *TTRasterizer: Type42
 *% Driver-defined attributes...
-*QPDL bandSize: "128"
-*PJL beginPJL: "<1B>%-12345X"
-*PJL endPJL: "<09><1B>%-12345X"
+*QPDL BandSize: "128"
+*PJL BeginPJL: "<1B>%-12345X"
+*PJL EndPJL: "<09><1B>%-12345X"
 *QPDL ColorPrinter: "0"
 *QPDL QPDLVersion: "1"
-*General docHeaderValues: "<0><0><0>"
-*QPDL manualDuplex: "1"
+*General DocHeaderValues: "<0><0><0>"
+*QPDL ManualDuplex: "On"
 *cupsVersion: 1.2
 *cupsModelNumber: 0
 *cupsManualCopies: False
@@ -257,4 +257,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1740.ppd, 13870 bytes.
+*% End of ml1740.ppd, 13871 bytes.

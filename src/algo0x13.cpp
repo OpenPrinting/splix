@@ -20,8 +20,10 @@
  */
 #include "algo0x13.h"
 #include <string.h>
-#include "bandplane.h"
 #include "errlog.h"
+#include "request.h"
+#include "printer.h"
+#include "bandplane.h"
 
 #ifndef DISABLE_JBIG
 
@@ -116,7 +118,7 @@ Algo0x13::~Algo0x13()
 BandPlane* Algo0x13::compress(const Request& request, unsigned char *data, 
         unsigned long width, unsigned long height)
 {
-    info_t info = {&_list, NULL, NULL, 0, 512*1024};
+    info_t info = {&_list, NULL, NULL, 0, 0};
     BandPlane *plane;
     bandList_t* tmp;
 
@@ -127,6 +129,11 @@ BandPlane* Algo0x13::compress(const Request& request, unsigned char *data,
 
     // Compress if it's the first time
     if (!_compressed) {
+        info.maxSize = request.printer()->packetSize();
+        if (!info.maxSize) {
+            ERRORMSG(_("PacketSize is set to 0!"));
+            info.maxSize = 512*1024;
+        }
         jbg_enc_init(&_state, width, height, 1, &data, _callback, &info);
         jbg_enc_options(&_state, 0, JBG_DELAY_AT | JBG_LRLTWO | JBG_TPBON, 
             height, 0, 0);

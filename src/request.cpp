@@ -43,6 +43,9 @@ Request::~Request()
 bool Request::loadRequest(PPDFile* ppd, const char *jobname, 
     const char *username, const char *jobtitle, unsigned long copiesNr)
 {
+    bool manualDuplex;
+    PPDValue value;
+
     if (!ppd) {
         ERRORMSG(_("Request: NULL PPD handle given"));
         return false;
@@ -54,10 +57,18 @@ bool Request::loadRequest(PPDFile* ppd, const char *jobname,
     _jobtitle = jobtitle ? jobtitle : _("Unknown job title");
     _copiesNr = copiesNr;
 
-    /** @todo Get the real duplex mode */
-    //_duplex = Simplex;
-    _duplex = ManualLongEdge;
-    _reverseDuplex = false;
+    // Get the duplex information
+    _reverseDuplex = ppd->get("ReverseDuplex").isTrue();
+    manualDuplex = ppd->get("ManualDuplex", "QPDL").isTrue();
+    value = ppd->get("Duplex");
+    if (value.isNull())
+        value = ppd->get("JCLDuplex");
+    if (value == "DuplexNoTumble")
+        _duplex = manualDuplex ? ManualLongEdge : LongEdge;
+    else if (value == "DuplexTumble")
+        _duplex = manualDuplex ? ManualShortEdge : ShortEdge;
+    else
+        _duplex = Simplex;
 
     if (!_printer.loadInformation(*this)) {
         ERRORMSG(_("Request: cannot load printer information"));

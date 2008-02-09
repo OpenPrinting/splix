@@ -238,7 +238,7 @@ bool renderPage(const Request& request, Page* page, bool lastPage)
                 paperSource = 3; // Multi source
             break;
         case Request::ManualShortEdge:
-            duplex = 1;
+            duplex = 0;
             tumble = page->pageNr() % 2;
             if (tumble && !lastPage)
                 paperSource = 3; // Multi source

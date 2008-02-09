@@ -11,7 +11,6 @@
 #media "Oficio/Oficio - 216x340mm" 612 972
 
 // Supported paper format
-//HWMargins 0.16in 0.55cm 0.16in 0.55cm
 HWMargins 12.5 12.5 12.5 12.5
 *MediaSize Letter
 MediaSize Legal
@@ -71,9 +70,9 @@ Option "MediaType/Paper Type" PickOne AnySetup 10
    Choice "RECYCLED/Recycled" ""
    Choice "ARCHIVE/Archive" ""
 
-Attribute QPDL bandSize "128"
-Attribute PJL beginPJL "<1B>%-12345X"
-Attribute PJL endPJL "<09><1B>%-12345X"
+Attribute QPDL BandSize "128"
+Attribute PJL BeginPJL "<1B>%-12345X"
+Attribute PJL EndPJL "<09><1B>%-12345X"
 
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */

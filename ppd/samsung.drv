@@ -25,7 +25,7 @@ Manufacturer "Samsung"
     // QPDL Version 1
     {
         Attribute QPDL QPDLVersion "1"
-        Attribute General docHeaderValues "<0><0><0>"
+        Attribute General DocHeaderValues "<0><0><0>"
 
         {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
@@ -96,7 +96,7 @@ Manufacturer "Samsung"
     // QPDL Version 2
     {
         Attribute QPDL QPDLVersion "2"
-        Attribute General docHeaderValues "<0><0><1>"
+        Attribute General DocHeaderValues "<0><0><1>"
 
         {
             Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
@@ -153,7 +153,7 @@ Manufacturer "Samsung"
         Duplex normal
 
         Attribute QPDL QPDLVersion "1"
-        Attribute General docHeaderValues "<0><0><1>"
+        Attribute General DocHeaderValues "<0><0><1>"
 
         {
             Attribute General CMSFile "CLP-500"
@@ -186,7 +186,7 @@ Manufacturer "Samsung"
         // QPDL Version 1
         {
             Attribute QPDL QPDLVersion "1"
-            Attribute General docHeaderValues "<0><0><0>"
+            Attribute General DocHeaderValues "<0><0><0>"
             {
                 Attribute General CMSFile "CLP-200"
 
@@ -206,7 +206,7 @@ Manufacturer "Samsung"
         // QPDL Version 2
         {
             Attribute QPDL QPDLVersion "2"
-            Attribute General docHeaderValues "<0><0><1>"
+            Attribute General DocHeaderValues "<0><0><1>"
 
             {
                 Attribute General CMSFile "CLX-2170"

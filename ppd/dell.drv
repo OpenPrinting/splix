@@ -26,7 +26,7 @@ Manufacturer "Dell"
     // QPDL Version 1
     {
         Attribute QPDL QPDLVersion "1"
-        Attribute General docHeaderValues "<0><0><0>"
+        Attribute General DocHeaderValues "<0><0><0>"
 
         {
             Resolution k 1 0 0 0 "300dpi/300 DPI"

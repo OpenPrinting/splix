@@ -25,12 +25,12 @@
 *LandscapeOrientation: Plus90
 *TTRasterizer: Type42
 *% Driver-defined attributes...
-*QPDL bandSize: "128"
-*PJL beginPJL: "<1B>%-12345X"
-*PJL endPJL: "<09><1B>%-12345X"
+*QPDL BandSize: "128"
+*PJL BeginPJL: "<1B>%-12345X"
+*PJL EndPJL: "<09><1B>%-12345X"
 *QPDL PacketSize: "512"
 *QPDL QPDLVersion: "2"
-*General docHeaderValues: "<0><0><1>"
+*General DocHeaderValues: "<0><0><1>"
 *cupsVersion: 1.2
 *cupsModelNumber: 0
 *cupsManualCopies: False

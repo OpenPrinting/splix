@@ -188,22 +188,6 @@ Page* Document::getNextRawPage(const Request& request)
     DEBUGMSG(_("Page %lu (%u×%u on %lu×%lu) has been successfully loaded into "
         "memory"), page->pageNr(), header.cupsWidth, header.cupsHeight, 
         page->width(), page->height());
-/** @todo to remove */
-// TO REMOVE XXX XXX XXX
-#if 0
-    for (unsigned int i=0; i < colors; i++) {
-        FILE *prout;
-        const char *fn;
-        if (i == 0) fn = "/home/aurelien/test1.pbm";
-        else if (i == 1) fn = "/home/aurelien/test2.pbm";
-        else if (i == 2) fn = "/home/aurelien/test3.pbm";
-        else if (i == 3) fn = "/home/aurelien/test4.pbm";
-        prout = fopen(fn, "w");
-        fprintf(prout, "P4\n%lu %lu\n\n", page->width(), page->height());
-        fwrite(planes[0], 1, pageWidthInB * page->height(), prout);
-        fclose(prout);
-    }
-#endif
 
     delete[] line;
     return page;

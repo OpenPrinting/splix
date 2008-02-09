@@ -63,11 +63,13 @@ bool Printer::loadInformation(const Request& request)
     PPDValue value;
 
     // Get some printer information
-    if (request.ppd()->get("bandSize", "QPDL").isNull()) {
+    if (request.ppd()->get("BandSize", "QPDL").isNull()) {
         ERRORMSG(_("Unknown band size. Operation aborted."));
         return false;
     }
-    _bandHeight = request.ppd()->get("bandSize", "QPDL");
+    _bandHeight = request.ppd()->get("BandSize", "QPDL");
+    _packetSize = request.ppd()->get("PacketSize", "QPDL");
+    _packetSize *= 1024;
     _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
     _model = request.ppd()->get("ModelName").deepCopy();
     _color = request.ppd()->get("ColorDevice");
@@ -76,7 +78,7 @@ bool Printer::loadInformation(const Request& request)
         ERRORMSG(_("Invalid QPDL version. Operation aborted."));
         return false;
     }
-    value = request.ppd()->get("docHeaderValues", "General");
+    value = request.ppd()->get("DocHeaderValues", "General");
     value.setPreformatted();
     if (value.isNull()) {
         ERRORMSG(_("Unknown header values. Operation aborted."));
@@ -87,14 +89,14 @@ bool Printer::loadInformation(const Request& request)
     _unknownByte3 = ((const char *)value)[2];
 
     // Get PJL information
-    value = request.ppd()->get("beginPJL", "PJL");
+    value = request.ppd()->get("BeginPJL", "PJL");
     value.setPreformatted();
     if (value.isNull()) {
         ERRORMSG(_("No PJL header found. Operation aborted."));
         return false;
     }
     _beginPJL = value.deepCopy();
-    value = request.ppd()->get("endPJL", "PJL");
+    value = request.ppd()->get("EndPJL", "PJL");
     value.setPreformatted();
     if (value.isNull()) {
         ERRORMSG(_("No PJL footer found. Operation aborted."));
