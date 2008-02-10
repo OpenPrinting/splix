@@ -73,6 +73,10 @@ directory. Install them with the command:
 
 		# make installcms CMSDIR=/path/to/cms/directory
 
+	Samsung color profile files are available at:
+
+		http://splix.ap2c.org/samsung_cms.tar.bz2
+
 
 
 Compilation options:
