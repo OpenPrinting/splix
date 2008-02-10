@@ -1,0 +1,14 @@
+/*
+ *      altitude.defs                  (C) 2008, Aurélien Croc (AP²C)
+ * 
+ * Altitude
+ *
+ * $Id$
+ */
+
+Option "Altitude/Air pressure" PickOne AnySetup 10
+	*Choice "LOW/Low" ""
+	Choice "HIGH/High" ""
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+
