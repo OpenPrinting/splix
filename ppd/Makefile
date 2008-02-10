@@ -17,7 +17,7 @@ DRIVERSEXT	:= ppd
 POEXT		:= po
 PODIR		:= po
 LANGUAGES 	:= fr
-ifndef $(DISABLE_JBIG)
+ifeq ($(DISABLE_JBIG),0)
 SAMSUNG 	+= clp200 clp300 clp600 clx216x clx2170 clx3160
 XEROX		+= ph6110
 endif

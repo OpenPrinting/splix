@@ -131,6 +131,7 @@ static bool _compressBandedPage(const Request& request, Page* page)
 
 static bool _compressWholePage(const Request& request, Page* page)
 {
+#ifndef DISABLE_JBIG
     unsigned long bandNumber=0;
     Band *current = NULL;
     Algo0x13 algo[4];
@@ -159,6 +160,9 @@ static bool _compressWholePage(const Request& request, Page* page)
     page->flushPlanes();
 
     return true;
+#else
+    return false;
+#endif /* DISABLE_JBIG */
 }
 
 bool compressPage(const Request& request, Page* page)

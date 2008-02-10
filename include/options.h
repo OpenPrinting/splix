@@ -29,6 +29,8 @@
 
 #ifdef DISABLE_THREADS
     bool opt_threads = false;
+#define THREADS 0
+#define CACHESIZE 0
 #else
     bool opt_threads = true;
 #endif /* DISABLE_THREADS */

@@ -11,11 +11,19 @@ MODE			:= debug
 
 SUBDIRS 		+= src
 TARGETS			:= rastertoqpdl pstoqpdl
+PRE_GENERIC_TARGETS	:= optionList
+
+
+# Default options
+THREADS			?= 2
+CACHESIZE		?= 30
+DISABLE_JBIG		?= 0
+DISABLE_THREADS		?= 0
+DISABLE_BLACKOPTIM	?= 0
 
 
 # Flags
 CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall
-CXXFLAGS		+= -DTHREADS=2 -DCACHESIZE=2
 DEBUG_CXXFLAGS		+= -DDEBUG  -DDUMP_CACHE
 OPTIMIZED_CXXFLAGS 	+= -g
 OPTIMIZED_CXXFLAGS 	+= -g 
@@ -23,8 +31,21 @@ rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 pstoqpdl_LDFLAGS	:= `cups-config --ldflags`
 pstoqpdl_LIBS		:= `cups-config --libs` -lcupsimage
-ifndef $(DISABLE_JBIG)
+
+
+# Update compilation flags with defined options
+ifneq ($(DISABLE_THREADS),0)
+CXXFLAGS		+= -DDISABLE_THREADS
+else
+CXXFLAGS		+= -DTHREADS=$(THREADS) -DCACHESIZE=$(CACHESIZE)
+endif
+ifneq ($(DISABLE_JBIG),0)
+CXXFLAGS		+= -DDISABLE_JBIG
+else
 rastertoqpdl_LIBS	+= -ljbig
+endif
+ifneq ($(DISABLE_BLACKOPTIM),0)
+CXXFLAGS		+= -DDISABLE_BLACKOPTIM
 endif
 
 

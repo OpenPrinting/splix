@@ -17,6 +17,8 @@
 #      * OPTIMIZED_CFLAGS
 #      * OPTIMIZED_CXXFLAGS
 #      * TARGETS
+#      * GENERIC_TARGETS
+#      * PRE_GENERIC_TARGETS
 #      * directory1_directory2_file_ext_FLAGS
 #
 # Each project must be listed in the TARGETS variable. Next:
@@ -159,6 +161,7 @@ endif
 # +--------------------------------------------------------------------------+
 
 _TARGETS	:= $(foreach target,$(TARGETS),$(TARGETDIR)/$(target))
+_TARGETS	:= $(PRE_GENERIC_TARGETS) $(_TARGETS) $(GENERIC_TARGETS)
 
 all: $(_TARGETS)
 debug: $(_TARGETS)
