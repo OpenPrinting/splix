@@ -2,4 +2,3 @@
 	* Add other compressin algorithms (0x12 for text!) ?
 	* Stop sending the job if a SIGTERM is received
 
-* Add the JPG ALTITUDE

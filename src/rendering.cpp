@@ -163,7 +163,7 @@ bool render(Request& request)
 
 #else /* DISABLE_THREADS */
 
-bool render(const Request& request)
+bool render(Request& request)
 {
     Document document;
     Page* page;

@@ -28,6 +28,8 @@ MASTERDRIVER	:= $(shell echo "${DRIVERS}" | awk '{ print $$1 }')
 DRIVER		:= $(MASTERDRIVER).$(DRIVERSEXT)
 LANGDRIVERS	:= $(foreach name, $(LANGUAGES), $(MASTERDRIVER)$(name))
 LANGDRIVERSEXT	:= $(addsuffix .$(DRIVERSEXT), $(LANGDRIVERS))
+printCmd        = $(if $(filter $(V),1),,$(shell echo "@echo \"    $(1)\""))
+
 
 all:
 
@@ -63,27 +65,33 @@ update: $(patsubst %, $(PODIR)/%.$(POEXT), $(LANGUAGES))
 	./compile.sh dell.drv lang $@
 	./compile.sh xerox.drv lang $@
 
+cmd_install_samsung	= INSTALL           Samsung PPD files
+cmd_install_xerox	= INSTALL           Xerox PPD files
+cmd_install_dell	= INSTALL           Dell PPD files
 .PHONY: install
 install:
-	install -d -m 755 ${CUPSPPD}/samsung
-	for filename in ${SAMSUNG}; do \
-		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/samsung;\
+	$(call printCmd, $(cmd_install_samsung))
+	$(Q)install -d -m 755 ${DESTDIR}${CUPSPPD}/samsung
+	$(Q)for filename in ${SAMSUNG}; do \
+		install -m 644 $$filename.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/samsung;\
 		for lang in ${LANGUAGES}; do \
-			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/samsung;\
+			install -m 644 $$filename$$lang.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/samsung;\
 		done; \
-	done; \
-	install -d -m 755 ${CUPSPPD}/xerox
-	for filename in ${XEROX}; do \
-		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/xerox;\
+	done;
+	$(call printCmd, $(cmd_install_xerox))
+	$(Q)install -d -m 755 ${DESTDIR}${CUPSPPD}/xerox
+	$(Q)for filename in ${XEROX}; do \
+		install -m 644 $$filename.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/xerox;\
 		for lang in ${LANGUAGES}; do \
-			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/xerox;\
+			install -m 644 $$filename$$lang.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/xerox;\
 		done; \
-	done; \
-	install -d -m 755 ${CUPSPPD}/dell
-	for filename in ${DELL}; do \
-		install -m 644 $$filename.${DRIVERSEXT} ${CUPSPPD}/dell;\
+	done;
+	$(call printCmd, $(cmd_install_dell))
+	$(Q)install -d -m 755 ${DESTDIR}${CUPSPPD}/dell
+	$(Q)for filename in ${DELL}; do \
+		install -m 644 $$filename.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/dell;\
 		for lang in ${LANGUAGES}; do \
-			install -m 644 $$filename$$lang.${DRIVERSEXT} ${CUPSPPD}/dell;\
+			install -m 644 $$filename$$lang.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/dell;\
 		done; \
 	done;
 

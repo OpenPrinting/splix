@@ -6,8 +6,11 @@
 # Options: DISABLE_JBIG
 # 	   DISABLE_THREADS
 #          DISABLE_BLACKOPTIM
+# Compilation option:
+# 	   V=1          Verbose mode
+# 	   DESTDIR=xxx  Change the destination directory prefix
 
-MODE			:= debug
+MODE			:= optimized
 
 SUBDIRS 		+= src
 TARGETS			:= rastertoqpdl pstoqpdl
@@ -26,7 +29,6 @@ DISABLE_BLACKOPTIM	?= 0
 CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall
 DEBUG_CXXFLAGS		+= -DDEBUG  -DDUMP_CACHE
 OPTIMIZED_CXXFLAGS 	+= -g
-OPTIMIZED_CXXFLAGS 	+= -g 
 rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 pstoqpdl_LDFLAGS	:= `cups-config --ldflags`
@@ -50,13 +52,15 @@ endif
 
 
 # Get some information
-CMSBASE			:= `cups-config --datadir`/model/samsung/cms
 CUPSFILTER		:= `cups-config --serverbin`/filter
+CUPSPPD			:= `cups-config --datadir`/model
+CMSBASE			:= $(CUPSPPD)/samsung/cms
 ifeq ($(ARCHI),Darwin)
 PSTORASTER		:= pstocupsraster
 else
 PSTORASTER		:= pstoraster
 endif
+export CUPSFILTER CUPSPPD
 
 
 # Specific information needed by pstoqpdl

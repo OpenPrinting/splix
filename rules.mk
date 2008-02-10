@@ -14,6 +14,25 @@ $(pstoqpdl_TARGET): $(pstoqpdl_OBJ)
 	$(Q)g++ -o $@ $^ $(pstoqpdl_CXXFLAGS) $(pstoqpdl_LDFLAGS) \
 		$(pstoqpdl_LIBS)
 
+.PHONY: install
+cmd_install_raster	= INSTALL           $(rastertoqpdl_TARGET)
+cmd_install_ps		= INSTALL           $(pstoqpdl_TARGET)
+install: $(rastertoqpdl_TARGET) $(pstoqpdl_TARGET)
+	$(Q)mkdir -p $(DESTDIR)${CUPSFILTER}
+	$(call printCmd, $(cmd_install_raster))
+	$(Q)install -m 655 -s $(rastertoqpdl_TARGET) $(DESTDIR)${CUPSFILTER}
+	$(call printCmd, $(cmd_install_ps))
+	$(Q)install -m 655 -s $(pstoqpdl_TARGET) $(DESTDIR)${CUPSFILTER}
+	$(Q)$(MAKE) --no-print-directory -C ppd install Q=$(Q) \
+		DESTDIR=$(abspath $(DESTDIR))
+	@echo ""
+	@echo "             --- Everything is done! Have fun ---"
+	@echo ""
+
+
+
+# Specific rules used for development and information
+
 .PHONY: tags optionList
 tags:
 	ctags --recurse --language-force=c++ --extra=+q --fields=+i \
@@ -36,15 +55,17 @@ else
 BLACKOPTIMSTATE := enabled
 endif
 
+
+MSG	:=    +---------------------------------------------+\n
+MSG	+=    |      COMPILATION PARAMETERS SUMMARY         |\n
+MSG	+=    +---------------------------------------------+\n
+MSG	+=    |      THREADS     = %8s                 |\n
+MSG	+=    |      THREADS Nr  = %8i                 |\n
+MSG	+=    |      CACHESIZE   = %8i                 |\n
+MSG	+=    |      JBIG        = %8s                 |\n
+MSG	+=    |      BLACK OPTIM = %8s                 |\n
+MSG	+=    +---------------------------------------------+\n
+MSG	+=   (Do a \"make clean\" before updating these values)\n\n
 optionList:
-	@printf "   +---------------------------------------------+\n"
-	@printf "   |      COMPILATION PARAMETERS SUMMARY         |\n"
-	@printf "   +---------------------------------------------+\n"
-	@printf "   |      THREADS     = %8s                 |\n" $(THREADSSTATE)
-	@printf "   |      THREADS #   = %8i                 |\n" $(THREADS)
-	@printf "   |      CACHESIZE   = %8i                 |\n" $(CACHESIZE)
-	@printf "   |      JBIG        = %8s                 |\n" $(JBIGSTATE)
-	@printf "   |      BLACK OPTIM = %8s                 |\n" $(BLACKOPTIMSTATE)
-	@printf "   +---------------------------------------------+\n"
-	@printf "  (Do a \"make clean\" before updating these values)\n"
-	@echo ""
+	@printf " $(MSG)" $(THREADSSTATE) $(THREADS) $(CACHESIZE) $(JBIGSTATE) \
+		$(BLACKOPTIMSTATE)
