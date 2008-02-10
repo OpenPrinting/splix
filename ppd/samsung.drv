@@ -10,6 +10,7 @@ Manufacturer "Samsung"
 
 #import "version.defs"
 #import "spl2.defs"
+#import "altitude.defs"
 
 //
 // Specific black & white printer definition

@@ -176,6 +176,12 @@
 *MediaType RECYCLED/Papier recyclé: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
+*OpenUI *Altitude/Pression de l'air: PickOne
+*OrderDependency: 10.0 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/Faible: ""
+*Altitude HIGH/Forte: ""
+*CloseUI: *Altitude
 *OpenUI *PowerSave/Économie d'énergie: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
 *DefaultPowerSave: 5
@@ -257,4 +263,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp510.ppd, 14434 bytes.
+*% End of clp510.ppd, 14613 bytes.

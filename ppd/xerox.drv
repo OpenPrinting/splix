@@ -10,6 +10,7 @@ Manufacturer "Xerox"
 #import "version.defs"
 #import "spl2.defs"
 #import "filter.defs"
+#import "altitude.defs"
 
 //
 // Specific black & white printer definition

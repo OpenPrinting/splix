@@ -6,8 +6,6 @@
  * $Id$
  */
 
-Attribute QPDL ColorPrinter "0"
-
 // Black & White support
 ColorDevice false
 *ColorModel Gray/Grayscale k chunky 17

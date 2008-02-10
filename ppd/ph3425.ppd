@@ -28,7 +28,6 @@
 *QPDL BandSize: "128"
 *PJL BeginPJL: "<1B>%-12345X"
 *PJL EndPJL: "<09><1B>%-12345X"
-*QPDL ColorPrinter: "0"
 *QPDL QPDLVersion: "1"
 *General DocHeaderValues: "<0><0><0>"
 *cupsVersion: 1.2
@@ -175,6 +174,12 @@
 *MediaType RECYCLED/Recycled: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
+*OpenUI *Altitude/Air pressure: PickOne
+*OrderDependency: 10.0 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/Low: ""
+*Altitude HIGH/High: ""
+*CloseUI: *Altitude
 *OpenUI *ColorModel/Color Mode: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: Gray
@@ -260,4 +265,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ph3425.ppd, 14091 bytes.
+*% End of ph3425.ppd, 14237 bytes.

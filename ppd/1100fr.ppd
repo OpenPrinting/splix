@@ -28,7 +28,6 @@
 *QPDL BandSize: "128"
 *PJL BeginPJL: "<1B>%-12345X"
 *PJL EndPJL: "<09><1B>%-12345X"
-*QPDL ColorPrinter: "0"
 *QPDL ManualDuplex: "On"
 *QPDL QPDLVersion: "1"
 *General DocHeaderValues: "<0><0><0>"
@@ -173,6 +172,12 @@
 *MediaType RECYCLED/Papier recyclé: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
+*OpenUI *Altitude/Pression de l'air: PickOne
+*OrderDependency: 10.0 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/Faible: ""
+*Altitude HIGH/Forte: ""
+*CloseUI: *Altitude
 *OpenUI *ColorModel/Mode couleur: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: Gray
@@ -258,4 +263,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of 1100.ppd, 14134 bytes.
+*% End of 1100.ppd, 14289 bytes.

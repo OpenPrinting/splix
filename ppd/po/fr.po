@@ -406,3 +406,12 @@ msgstr "Archive"
 msgid "Reverse duplex"
 msgstr "Recto-verso inversé"
 
+msgid "Air pressure"
+msgstr "Pression de l'air"
+
+msgid "Low"
+msgstr "Faible"
+
+msgid "High"
+msgstr "Forte"
+
