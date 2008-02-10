@@ -1,3 +1,18 @@
+Sun Feb 10 18:25:47 2008 Aurélien Croc <programmation AT ap2c DOT org>
+	* Driver rewritten from scratch
+	* Improvment:
+		- Margin bug solved
+		- Algorithm 0x11 optimized
+		- Black color correction optimized
+		- Color profile used for color printers
+		- New printer options (Altitude...)
+		- New paper size supported (Oficio, Size6, No9Env)
+		- Manual duplex supported
+		- Reversed duplex supported
+		- QPDL V. 5 supported
+		- Driver optimized for multi-core processors
+	* Better PPD translations
+
 Fri Feb 09 03:39:12 2008 Aurélien Croc <programmation AT ap2c DOT org>
 	* Replace the current SpliX version by the branch 2.0
 

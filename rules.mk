@@ -14,20 +14,32 @@ $(pstoqpdl_TARGET): $(pstoqpdl_OBJ)
 	$(Q)g++ -o $@ $^ $(pstoqpdl_CXXFLAGS) $(pstoqpdl_LDFLAGS) \
 		$(pstoqpdl_LIBS)
 
-.PHONY: install
+.PHONY: install installcms
 cmd_install_raster	= INSTALL           $(rastertoqpdl_TARGET)
 cmd_install_ps		= INSTALL           $(pstoqpdl_TARGET)
+cmd_install_cms		= INSTALL           color profile files
 install: $(rastertoqpdl_TARGET) $(pstoqpdl_TARGET)
 	$(Q)mkdir -p $(DESTDIR)${CUPSFILTER}
 	$(call printCmd, $(cmd_install_raster))
-	$(Q)install -m 655 -s $(rastertoqpdl_TARGET) $(DESTDIR)${CUPSFILTER}
+	$(Q)install -m 755 -s $(rastertoqpdl_TARGET) $(DESTDIR)${CUPSFILTER}
 	$(call printCmd, $(cmd_install_ps))
-	$(Q)install -m 655 -s $(pstoqpdl_TARGET) $(DESTDIR)${CUPSFILTER}
+	$(Q)install -m 755 -s $(pstoqpdl_TARGET) $(DESTDIR)${CUPSFILTER}
 	$(Q)$(MAKE) --no-print-directory -C ppd install Q=$(Q) \
-		DESTDIR=$(abspath $(DESTDIR))
+		DESTDIR=$(abspath $(DESTDIR)) DISABLE_JBIG=$(DISABLE_JBIG)
 	@echo ""
+	@echo "PLEASE INSTALL MANUALLY COLOR PROFILE FILES (CHECK INSTALL)"
 	@echo "             --- Everything is done! Have fun ---"
 	@echo ""
+
+installcms:
+	@if [ "$(CMSDIR)" -a -d "$(CMSDIR)" ]; then \
+		mkdir -p $(DESTDIR)$(CMSBASE); \
+		install -m 644 "$(CMSDIR)"/* $(DESTDIR)$(CMSBASE); \
+		echo "Color profile files has been copied."; \
+	else \
+		echo "Usage: make installcms CMSDIR=/path/to/cms"; \
+	fi
+
 
 
 

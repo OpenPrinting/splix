@@ -1,30 +1,36 @@
 HOW-TO INSTALL AND USE THIS DRIVER:
 ===================================
 
+
+
 Introduction:
 ------------
 
-	This driver is usable by all printer devices which understand the SPL II
-language. It covers several _Samsung_, _Xerox_, _Dell_ and _Ricoh_ printers like
-the ML-2250 which uses it as a native printer language (Check the technical
-documentation for more information).
+	This driver is usable by all printer devices which understand the QPDL
+(Quick Page Description Language) language. It covers several _Samsung_, 
+_Xerox_, _Dell_ and _Ricoh_ printers like the ML-2250 which uses it as a native 
+printer language (Check the technical documentation for more information).
+
+
 
 Requested:
 ----------
 
-	To use this driver you need.... a SPL II printer! Last but not least you
-need CUPS. It has been tested with CUPS V. 1.1.23, 1.3.0  and worked fine of 
+	To use this driver you need.... a QPDL printer! Last but not least you
+need CUPS. It has been tested with CUPS V. 1.1.23, 1.3.0  and works fine of 
 course..
 
 	If you're using a distribution with a real package manager you need to
 install the cups developement package (libcups...-devel or something like that).
-Sometimes, the program "pppdo" is needed. It is located in the _cupsddk_
-package. Finally, the libjbig is needed.
+To finish the libjbig is needed if the JBIG algorithm compilation isn't 
+disabled.
 
 Summary:
 	* CUPS
 	* libcups
-	* libjbig (If the JBIG algorithm compilation is enabled)
+	* libjbig (If the JBIG algorithm compilation isn't disabled)
+
+
 
 Installation:
 -------------
@@ -38,10 +44,8 @@ Installation:
   |                this file is modified between versions.                |
   +=======================================================================+
 
-	If you're CUPS installation is not locate in /usr, please edit and
-update the Makefile.
-
-	Then, perform the compilation by doing:
+	Perform the compilation by doing (It is possible to customize some 
+compilation options. Please check at the end of this file):
 
 		$ make
 
@@ -59,12 +63,62 @@ browser and add a new printer by selecting the correct printer in the list.
 
 
 
-Note about the JBIG algorithm:
-------------------------------
+Installation of the color profile for color printers:
+-----------------------------------------------------
 
-	It seems that this algorithm was previously (is?) patented. To compile
-SpliX without using this algorithm please compile and install SpliX by adding
-"DISABLE_JBIG" to the make line:
-		$ make DISABLE_JBIG
-		$ make install DISABLE_JBIG
+	Color printers needs color profile files to get better results. These
+files are provided by your printer manufacturer and you have to install them
+manually. To do that, download the linux official drivers and locate the "cms"
+directory. Install them with the command:
+
+		# make installcms CMSDIR=/path/to/cms/directory
+
+
+
+Compilation options:
+--------------------
+
+	SpliX code can be tuned by using specific make options. All these
+options are:
+
+		* DISABLE_JBIG=1 [0 by default]:
+			Since some of the JBIG algorithm may patented, this
+			option disable the use of this algorithm. Unfortunatly
+			_JBIG printers_ (such as CLP-600) won't work with SpliX.
+		* DISABLE_THREADS=1 [0 by default]:
+			This option will disable the use of threads in the SpliX
+			code. If it is disabled, _manual duplex_ will no longer 
+			work.
+		* DISABLE_BLACKOPTIM=1 [0 by default]:
+			A black correction algorithm is used to optimize the use
+			of black and color toner on color printers. This option
+			will disable the use of this algorithm. Colors of a 
+			printed page will be different, more toner may be used
+			and black may not be dark.
+		* THREADS=XX [2 by default]:
+			Specify the number of _compression_ threads to use. Note
+			that compression is a full CPU time job. Specify more
+			than physical CPU core avaiable may be stupid.
+			For instance quad core owners should use THREADS=4.
+		* CACHESIZE=XX [30 by default]:
+			Specify the number of _compressed_ kept into memory
+			waiting for the rendering. This option is important with
+			the use of manual duplex. Note that a standard
+			compressed A4 paper is about 300ko. So 30 pages into
+			memory will use an average of 9Mo of RAM. Other pages
+			are swapped into the disk. A little CACHESIZE value will
+			increase disk access and increase the job rendering time.
+
+	Example:
+
+		$ make DISABLE_JBIG=1 THREADS=4 CACHESIZE=100
+
+	This will disable the use of the JBIG algorithm. Threads and black
+optimization algorithm will be compiled. Then, manual duplex will be available.
+The number of compression threads will be 4 and the maximum number of compressed
+pages which will be kept into the memory will be 100 (with a maximum average of
+memory of 30Mo)
+
+
+	=== PLEASE GIVE THESE OPTIONS TO MAKE AND MAKE INSTALL RULES ===
 
