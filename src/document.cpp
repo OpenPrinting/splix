@@ -108,6 +108,9 @@ Page* Document::getNextRawPage(const Request& request)
     page->setPageNr(_currentPage);
     page->setCompression(header.cupsCompression);
     page->setCopiesNr(header.NumCopies);
+    /** @todo why i should remove that code? */
+    marginWidthInB = 0;
+    marginHeight = 0;
 
     // Calculate clippings and margins
     if (lineSize > pageWidthInB) {
