@@ -186,13 +186,15 @@ bool Printer::sendPJLHeader(const Request& request) const
         request.ppd()->get("EconoMode") != "0")
         printf("@PJL SET ECONOMODE=%s\n", (const char *)request.ppd()->
                 get("EconoMode"));
-    if (!request.ppd()->get("EconoMode").isNull() &&
-        request.ppd()->get("PowerSave") != "False") {
-        printf("@PJL DEFAULT POWERSAVE=ON\n");
-        printf("@PJL DEFAULT POWERSAVETIME=%s\n", (const char *)request.ppd()->
-                get("PowerSave"));
-    } else
-        printf("@PJL DEFAULT POWERSAVE=OFF\n");
+    if (!request.ppd()->get("PowerSave").isNull()) {
+        if (request.ppd()->get("PowerSave") != "False") {
+            printf("@PJL DEFAULT POWERSAVE=ON\n");
+            printf("@PJL DEFAULT POWERSAVETIME=%s\n",
+                (const char *)request.ppd()->get("PowerSave"));
+        } else
+            printf("@PJL DEFAULT POWERSAVE=OFF\n");
+    }
+
     if (request.ppd()->get("JamRecovery").isTrue())
         printf("@PJL SET JAMRECOVERY=ON\n");
     else
