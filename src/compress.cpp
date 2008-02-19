@@ -111,7 +111,7 @@ static bool _compressBandedPage(const Request& request, Page* page)
             // Call the compression method
             plane = algo.compress(request, band, page->width(), bandHeight);
             if (plane) {
-                plane->setColorNr(i ? i : 4);
+                plane->setColorNr(i + 1);
                 if (!current)
                     current = new Band(bandNumber, page->width(), bandHeight);
                 current->registerPlane(plane);
@@ -145,7 +145,7 @@ static bool _compressWholePage(const Request& request, Page* page)
             plane = algo[i].compress(request, page->planeBuffer(i), 
                 page->width(), page->height());
             if (plane) {
-                plane->setColorNr(i ? i : 4);
+                plane->setColorNr(i + 1);
                 if (!current)
                     current = new Band(bandNumber, page->width(), 
                         request.printer()->bandHeight());

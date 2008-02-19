@@ -26,10 +26,10 @@ DISABLE_BLACKOPTIM	?= 0
 
 
 # Flags
-CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall
+CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall -I/opt/local/include
 DEBUG_CXXFLAGS		+= -DDEBUG  -DDUMP_CACHE
 OPTIMIZED_CXXFLAGS 	+= -g
-rastertoqpdl_LDFLAGS	:= `cups-config --ldflags`
+rastertoqpdl_LDFLAGS	:= `cups-config --ldflags` -L/opt/local/lib
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
 pstoqpdl_LDFLAGS	:= `cups-config --ldflags`
 pstoqpdl_LIBS		:= `cups-config --libs` -lcupsimage
