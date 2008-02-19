@@ -48,45 +48,45 @@ void applyBlackOptimization(Page* page)
      */
     for (unsigned long i=0; i < sizeByUL; i++) {
         // Clear cyan, magenta and yellow dots if a black dot is present
-        mask = ((unsigned long *)planes[0])[i];
+        mask = ((unsigned long *)planes[3])[i];
         if (mask) {
+            ((unsigned long *)planes[0])[i] &= ~mask;
             ((unsigned long *)planes[1])[i] &= ~mask;
             ((unsigned long *)planes[2])[i] &= ~mask;
-            ((unsigned long *)planes[3])[i] &= ~mask;
         }
 
         // Set a black dot if cyan, magenta and yellow dots are present and
         // clear them
-        mask = ((unsigned long *)planes[1])[i];
+        mask = ((unsigned long *)planes[0])[i];
+        mask &= ((unsigned long *)planes[1])[i];
         mask &= ((unsigned long *)planes[2])[i];
-        mask &= ((unsigned long *)planes[3])[i];
         if (mask) {
-            ((unsigned long *)planes[0])[i] |= mask;
+            ((unsigned long *)planes[3])[i] |= mask;
+            ((unsigned long *)planes[0])[i] &= ~mask;
             ((unsigned long *)planes[1])[i] &= ~mask;
             ((unsigned long *)planes[2])[i] &= ~mask;
-            ((unsigned long *)planes[3])[i] &= ~mask;
         }
     }
 
     for (unsigned long i=1; i <= mod; i++) {
         // Clear cyan, magenta and yellow dots if a black dot is present
-        bmask = planes[0][size - i];
+        bmask = planes[3][size - i];
         if (bmask) {
+            planes[0][size - i] &= ~bmask;
             planes[1][size - i] &= ~bmask;
             planes[2][size - i] &= ~bmask;
-            planes[3][size - i] &= ~bmask;
         }
 
         // Set a black dot if cyan, magenta and yellow dots are present and
         // clear them
-        bmask = planes[1][size - i];
+        bmask = planes[0][size - i];
+        bmask &= planes[1][size - i];
         bmask &= planes[2][size - i];
-        bmask &= planes[3][size - i];
         if (bmask) {
-            planes[0][size - i] |= bmask;
+            planes[3][size - i] |= bmask;
+            planes[0][size - i] &= ~bmask;
             planes[1][size - i] &= ~bmask;
             planes[2][size - i] &= ~bmask;
-            planes[3][size - i] &= ~bmask;
         }
     }
 }
