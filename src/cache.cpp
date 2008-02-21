@@ -305,7 +305,6 @@ static void* _cacheControllerThread(void *_exitVar)
                 entry->setPrevious(NULL);
                 _pageAvailable++;
                 _pageTableLock.unlock();
-                DEBUGMSG("On file la page %lu", entry->page()->pageNr());
 
             // So check whether the page can be kept in memory or have to
             // be swapped on the disk
