@@ -116,7 +116,7 @@ static char *_readCMSFile(PPDFile& ppd, bool csa)
         xResolution = yResolution = 300;
 
     // Get the real filename
-    size = strlen(file) + 30;
+    size = strlen(file) + 30 + strlen(CMSBASE);
     tmp = new char[size];
     if (xResolution)
         snprintf(tmp, size, CMSBASE "/%s-%lux%lucms%s", file, xResolution, 
