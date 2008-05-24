@@ -19,6 +19,7 @@
  * 
  */
 #include "compress.h"
+#include <math.h>
 #include <string.h>
 #include "page.h"
 #include "band.h"
@@ -49,6 +50,7 @@ static bool _isEmptyBand(unsigned char* band, unsigned long size)
 static bool _compressBandedPage(const Request& request, Page* page)
 {
     unsigned long index=0, pageHeight, lineWidthInB, bandHeight, bandSize;
+    unsigned long hardMarginXInB, hardMarginY;
     unsigned char *planes[4], *band;
     unsigned long bandNumber=0;
     unsigned char colors;
@@ -57,11 +59,20 @@ static bool _compressBandedPage(const Request& request, Page* page)
     lineWidthInB = (page->width() + 7) / 8;
     pageHeight = page->height();
     bandHeight = request.printer()->bandHeight();
+    hardMarginXInB = ((unsigned long)ceill(page->convertToXResolution(request.
+        printer()->hardMarginX())) + 7) / 8;
+    hardMarginY = ceill(page->convertToYResolution(request.printer()->
+        hardMarginY()));
     bandSize = lineWidthInB * bandHeight;
+    pageHeight -= hardMarginY;
+    index = hardMarginY * lineWidthInB;
     band = new unsigned char[bandSize];
     for (unsigned int i=0; i < colors; i++)
         planes[i] = page->planeBuffer(i);
 
+    ERRORMSG("Hard margins X=%li Y=%li", hardMarginXInB, hardMarginY);
+    ERRORMSG("Line width in bytes=%li, index=%li (%li)", lineWidthInB, index,
+        index / lineWidthInB);
     /*
      * 1. On vérifier si la bande n'est pas blanche
      *      |-> Si bande blanche, on passe

@@ -70,7 +70,6 @@ Page* Document::getNextRawPage(const Request& request)
     unsigned long pageWidth, pageWidthInB, pageHeight, clippingX=0, clippingY=0;
     unsigned long documentWidth, documentHeight, lineSize, planeSize, index=0;
     unsigned long bytesToCopy, marginWidthInB=0, marginHeight=0;
-    unsigned long hardMarginX, hardMarginY;
     unsigned char *line, *planes[4];
     unsigned char colors;
     Page *page;
@@ -101,10 +100,6 @@ Page* Document::getNextRawPage(const Request& request)
         printer()->pageWidth())) + 7) & ~7;
     pageHeight = ceill(page->convertToYResolution(request.printer()->
         pageHeight()));
-    hardMarginX = ceill(page->convertToXResolution(request.printer()->
-        hardMarginX()));
-    hardMarginY = ceill(page->convertToYResolution(request.printer()->
-        hardMarginY()));
     marginWidthInB =(ceill(page->convertToXResolution(header.Margins[0]))+7)/8; 
     marginHeight = ceill(page->convertToYResolution(header.Margins[1]));
     pageWidthInB = (pageWidth + 7) / 8;
@@ -117,21 +112,21 @@ Page* Document::getNextRawPage(const Request& request)
     page->setCopiesNr(header.NumCopies);
 
     // Calculate clippings and margins
-    if (lineSize > pageWidthInB) {
-        clippingX = (lineSize - pageWidthInB) / 2;
-        bytesToCopy = pageWidthInB;
+    if (lineSize > pageWidthInB - 2 * marginWidthInB) {
+        clippingX = (lineSize - (pageWidthInB - 2 * marginWidthInB)) / 2;
+        bytesToCopy = pageWidthInB - 2 * marginWidthInB;
     } else {
-        if (lineSize + marginWidthInB > pageWidthInB)
-            marginWidthInB = pageWidthInB - lineSize;
+        clippingX = 0;
+        marginWidthInB = (pageWidthInB - lineSize) / 2;
         bytesToCopy = lineSize;
     }
-    if (header.cupsHeight > pageHeight)
-        clippingY = (header.cupsHeight - pageHeight) / 2;
-    else {
-        if (documentHeight + marginHeight > pageHeight)
-            index = pageWidthInB * (pageHeight - documentHeight);
-        else
-            index = pageWidthInB * marginHeight;
+
+    if (documentHeight > pageHeight - 2 * marginHeight) {
+        clippingY = (documentHeight - (pageHeight - 2 * marginHeight)) / 2;
+        index = pageWidthInB * marginHeight;
+    } else {
+        clippingY = 0;
+        index = pageWidthInB * ((pageHeight - documentHeight)/2);
     }
     documentHeight -= clippingY;
     clippingY *= colors;
@@ -139,8 +134,8 @@ Page* Document::getNextRawPage(const Request& request)
 
     ERRORMSG("Document X=%li Y=%li", documentWidth, documentHeight);
     ERRORMSG("Page X=%li Y=%li",  pageWidth, pageHeight);
-    ERRORMSG("Clipping X=%li Y=%li marginWidthInB=%li",  clippingX, clippingY,
-        marginWidthInB);
+    ERRORMSG("Clipping X=%li Y=%li marginWidthInB=%li index=%li(%li)", 
+        clippingX, clippingY, marginWidthInB, index, index / pageWidthInB);
 
 
     // Prepare planes and clip vertically the document if needed
@@ -161,7 +156,7 @@ Page* Document::getNextRawPage(const Request& request)
     }
 
     // Load the bitmap
-    int l=0;
+    //int l=0; // XXX
     while (pageHeight && documentHeight) {
         for (unsigned int i=0; i < colors; i++) {
             if (cupsRasterReadPixels(_raster, line, lineSize) < 1) {
@@ -174,10 +169,10 @@ Page* Document::getNextRawPage(const Request& request)
             }
             memcpy(planes[i] + index + marginWidthInB, line + clippingX, 
                 bytesToCopy);
-    if (l == 1) // XXX
-        memset(planes[i] + index, 0xff, bytesToCopy); // XXX
-    l++;
-    *(planes[i] + index) = 0xF0;
+    //if (l == 1) // XXX
+        //memset(planes[i] + index, 0xff, bytesToCopy); // XXX
+    //l++; // XXX
+    //*(planes[i] + index) = 0xF0; // XXX 
         }
         index += pageWidthInB;
         pageHeight--;
