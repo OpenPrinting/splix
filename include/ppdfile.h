@@ -57,6 +57,8 @@ class PPDFile
                 const char*         _value;
                 char*               _preformatted;
                 const char*         _out;
+                float               _width;
+                float               _height;
 
             public:
                 /**
@@ -81,12 +83,27 @@ class PPDFile
                  */
                 PPDFile::Value&     set(const char *value);
                 /**
+                 * Set width and height
+                 * @param width the width.
+                 * @param height the height.
+                 * @return itself.
+                 */
+                PPDFile::Value&     set(float width, float height);
+                /**
                  * Specify the represented string is preformatted.
                  * @return itself.
                  */
                 PPDFile::Value&     setPreformatted();
 
             public:
+                /**
+                 * @return the width value.
+                 */
+                float               width() const {return _width;}
+                /**
+                 * @return the height value.
+                 */
+                float               height() const {return _height;}
                 /**
                   * @return TRUE if there is no associated string. Otherwise it
                   *         returns FALSE.
@@ -204,7 +221,14 @@ class PPDFile
           *         or the group/key doesn't exists or if there is no data 
           *         associated.
           */
-        Value                     get(const char *name, const char *opt=NULL);
+        Value                   get(const char *name, const char *opt=NULL);
+        /**
+          * Get the page size information.
+          * @param name the page format name
+          * @return a PPDValue instance containing the width and the height of
+          *         the page format requested.
+          */
+        Value                   getPageSize(const char *name);
 };
 
 /**

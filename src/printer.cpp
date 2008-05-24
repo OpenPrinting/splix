@@ -104,6 +104,10 @@ bool Printer::loadInformation(const Request& request)
     }
     _endPJL = value.deepCopy();
 
+    // Get the hard margins
+    _hardMarginX = request.ppd()->get("HardMarginX", "General");
+    _hardMarginY = request.ppd()->get("HardMarginY", "General");
+
     // Get the paper information
     paperType = request.ppd()->get("MediaSize");
     if (!paperType)
@@ -139,6 +143,16 @@ bool Printer::loadInformation(const Request& request)
         ERRORMSG(_("Invalid paper size \"%s\". Operation aborted."), paperType);
         return false;
     }
+
+    value = request.ppd()->getPageSize(paperType);
+    if (value.width() == 0. || value.height() == 0.) {
+        ERRORMSG(_("Null paper size \"%s\" found. Operation aborted."), 
+            paperType);
+        return false;
+    }
+    _pageWidth = value.width();
+    _pageHeight = value.height();
+    ERRORMSG(_("Page size %fx%f"), _pageWidth, _pageHeight);
 
     paperSource = request.ppd()->get("InputSlot");
     if (!paperSource) {

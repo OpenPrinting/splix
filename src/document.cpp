@@ -23,6 +23,7 @@
 #include <math.h>
 #include "page.h"
 #include "errlog.h"
+#include "request.h"
 
 /*
  * Constructeur - Destructeur
@@ -69,6 +70,7 @@ Page* Document::getNextRawPage(const Request& request)
     unsigned long pageWidth, pageWidthInB, pageHeight, clippingX=0, clippingY=0;
     unsigned long documentWidth, documentHeight, lineSize, planeSize, index=0;
     unsigned long bytesToCopy, marginWidthInB=0, marginHeight=0;
+    //unsigned long hardMarginX, hardMarginY;
     unsigned char *line, *planes[4];
     unsigned char colors;
     Page *page;
@@ -95,11 +97,12 @@ Page* Document::getNextRawPage(const Request& request)
     documentWidth = (header.cupsWidth + 7) & ~7;
     documentHeight = header.cupsHeight;
     lineSize = header.cupsBytesPerLine / colors;
-    pageWidth = ceill(page->convertToXResolution(header.PageSize[0]));
-    pageHeight = ceill(page->convertToYResolution(header.PageSize[1]));
+    pageWidth = ((unsigned long)ceill(page->convertToXResolution(request.
+        printer()->pageWidth())) + 7) & ~7;
+    pageHeight = ceill(page->convertToYResolution(request.printer()->
+        pageHeight()));
     marginWidthInB =(ceill(page->convertToXResolution(header.Margins[0]))+7)/8; 
     marginHeight = ceill(page->convertToYResolution(header.Margins[1]));
-    pageWidth = (pageWidth + 7) & ~7;
     pageWidthInB = (pageWidth + 7) / 8;
     planeSize = pageWidthInB * pageHeight;
     page->setWidth(pageWidth);
@@ -109,8 +112,8 @@ Page* Document::getNextRawPage(const Request& request)
     page->setCompression(header.cupsCompression);
     page->setCopiesNr(header.NumCopies);
     /** @todo why i should remove that code? */
-    marginWidthInB = 0;
-    marginHeight = 0;
+    //marginWidthInB = 0;
+    //marginHeight = 0;
 
     // Calculate clippings and margins
     if (lineSize > pageWidthInB) {
@@ -133,6 +136,11 @@ Page* Document::getNextRawPage(const Request& request)
     clippingY *= colors;
     line = new unsigned char[header.cupsBytesPerLine];
 
+    ERRORMSG("Document X=%li Y=%li", documentWidth, documentHeight);
+    ERRORMSG("Page X=%li Y=%li",  pageWidth, pageHeight);
+    ERRORMSG("Clipping X=%li Y=%li marginWidthInB=%li",  clippingX, clippingY,
+        marginWidthInB);
+
 
     // Prepare planes and clip vertically the document if needed
     for (unsigned char i=0; i < colors; i++) {
@@ -152,6 +160,7 @@ Page* Document::getNextRawPage(const Request& request)
     }
 
     // Load the bitmap
+    int l=0;
     while (pageHeight && documentHeight) {
         for (unsigned int i=0; i < colors; i++) {
             if (cupsRasterReadPixels(_raster, line, lineSize) < 1) {
@@ -164,6 +173,10 @@ Page* Document::getNextRawPage(const Request& request)
             }
             memcpy(planes[i] + index + marginWidthInB, line + clippingX, 
                 bytesToCopy);
+    if (l == 1) // XXX
+        memset(planes[i] + index, 0xff, bytesToCopy); // XXX
+    l++;
+    *(planes[i] + index) = 0xF0;
         }
         index += pageWidthInB;
         pageHeight--;

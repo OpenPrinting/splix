@@ -48,6 +48,12 @@ class Printer
         unsigned char           _unknownByte2;
         unsigned char           _unknownByte3;
 
+        float                   _pageWidth;
+        float                   _pageHeight;
+
+        unsigned long           _hardMarginX;
+        unsigned long           _hardMarginY;
+
     public:
         /**
           * Initialize a new instance.
@@ -112,6 +118,14 @@ class Printer
          */
         unsigned char           paperSource() const {return _paperSource;}
         /**
+         * @return the page width.
+         */
+        float                   pageWidth() const {return _pageWidth;}
+        /**
+         * @return the page height.
+         */
+        float                   pageHeight() const {return _pageHeight;}
+        /**
          * @return the paper type.
          */
         unsigned char           paperType() const {return _paperType;}
@@ -127,6 +141,15 @@ class Printer
          * @return the unknown byte 3
          */
         unsigned char           unknownByte3() const {return _unknownByte3;}
+        /**
+         * @return the hard margin of the printer in the X direction.
+         */
+        unsigned long           hardMarginX() const {return _hardMarginX;}
+        /**
+         * @return the hard margin of the printer in the Y direction.
+         */
+        unsigned long           hardMarginY() const {return _hardMarginY;}
+
 };
 
 #endif /* _PRINTER_H_ */

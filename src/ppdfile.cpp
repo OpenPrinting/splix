@@ -130,6 +130,17 @@ PPDValue PPDFile::get(const char *name, const char *opt)
     return val;
 }
 
+PPDValue PPDFile::getPageSize(const char *name)
+{
+    ppd_size_t *s;
+    PPDValue val;
+
+    if (!(s = ppdPageSize(_ppd, name)))
+        return val;
+    val.set(s->width, s->length);
+    return val;
+}
+
 
 
 /*
@@ -141,6 +152,8 @@ PPDFile::Value::Value()
     _value = NULL;
     _out = NULL;
     _preformatted = NULL;
+    _width = 0.;
+    _height = 0.;
 }
 
 PPDFile::Value::Value(const char *value)
@@ -164,6 +177,14 @@ PPDFile::Value& PPDFile::Value::set(const char *value)
     }
     _value = value;
     _out = _value;
+
+    return *this;
+}
+
+PPDFile::Value& PPDFile::Value::set(float width, float height)
+{
+    _width = width;
+    _height = height;
 
     return *this;
 }
