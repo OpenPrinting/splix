@@ -38,7 +38,7 @@ MediaSize EnvPersonal
 MediaSize Env9
 MediaSize Oficio
 
-VariablePaperSize yes
+// VariablePaperSize yes
 
 // Supported input slots
 *InputSlot 1 "Auto/Automatic Selection"

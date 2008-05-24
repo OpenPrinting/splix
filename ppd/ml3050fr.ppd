@@ -1,6 +1,6 @@
 *PPD-Adobe: "4.3"
 *% PPD file for ML-3050 with CUPS.
-*% Created by the CUPS PPD Compiler v1.2.0.
+*% Created by the CUPS PPD Compiler v1.2.3.
 *FormatVersion: "4.3"
 *FileVersion: "2.0.0"
 *LanguageVersion: French
@@ -28,9 +28,11 @@
 *QPDL BandSize: "128"
 *PJL BeginPJL: "<1B>%-12345X"
 *PJL EndPJL: "<09><1B>%-12345X"
+*General HardMarginX: "9"
+*General HardMarginY: "27"
 *QPDL QPDLVersion: "2"
 *General DocHeaderValues: "<0><0><1>"
-*cupsVersion: 1.2
+*cupsVersion: 1.3
 *cupsModelNumber: 0
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-raster 0 rastertoqpdl"
@@ -137,15 +139,6 @@
 *PaperDimension EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "261.00 468.00"
 *PaperDimension Env9/Enveloppe n°9 - 3.875x8.875in: "279.00 639.00"
 *PaperDimension Oficio/Oficio - 216x340mm: "612.00 972.00"
-*MaxMediaWidth: "0.00"
-*MaxMediaHeight: "0.00"
-*HWMargins: 12.50 12.50 12.50 12.50
-*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
-*ParamCustomPageSize Width: 1 points 0.00 0.00
-*ParamCustomPageSize Height: 2 points 0.00 0.00
-*ParamCustomPageSize WidthOffset: 3 points 0 0
-*ParamCustomPageSize HeightOffset: 4 points 0 0
-*ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
@@ -262,4 +255,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml3050.ppd, 14296 bytes.
+*% End of ml3050.ppd, 13941 bytes.
