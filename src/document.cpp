@@ -70,7 +70,7 @@ Page* Document::getNextRawPage(const Request& request)
     unsigned long pageWidth, pageWidthInB, pageHeight, clippingX=0, clippingY=0;
     unsigned long documentWidth, documentHeight, lineSize, planeSize, index=0;
     unsigned long bytesToCopy, marginWidthInB=0, marginHeight=0;
-    //unsigned long hardMarginX, hardMarginY;
+    unsigned long hardMarginX, hardMarginY;
     unsigned char *line, *planes[4];
     unsigned char colors;
     Page *page;
@@ -101,6 +101,10 @@ Page* Document::getNextRawPage(const Request& request)
         printer()->pageWidth())) + 7) & ~7;
     pageHeight = ceill(page->convertToYResolution(request.printer()->
         pageHeight()));
+    hardMarginX = ceill(page->convertToXResolution(request.printer()->
+        hardMarginX()));
+    hardMarginY = ceill(page->convertToYResolution(request.printer()->
+        hardMarginY()));
     marginWidthInB =(ceill(page->convertToXResolution(header.Margins[0]))+7)/8; 
     marginHeight = ceill(page->convertToYResolution(header.Margins[1]));
     pageWidthInB = (pageWidth + 7) / 8;
@@ -111,9 +115,6 @@ Page* Document::getNextRawPage(const Request& request)
     page->setPageNr(_currentPage);
     page->setCompression(header.cupsCompression);
     page->setCopiesNr(header.NumCopies);
-    /** @todo why i should remove that code? */
-    //marginWidthInB = 0;
-    //marginHeight = 0;
 
     // Calculate clippings and margins
     if (lineSize > pageWidthInB) {
