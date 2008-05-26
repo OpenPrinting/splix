@@ -132,12 +132,6 @@ Page* Document::getNextRawPage(const Request& request)
     clippingY *= colors;
     line = new unsigned char[header.cupsBytesPerLine];
 
-    ERRORMSG("Document X=%li Y=%li", documentWidth, documentHeight);
-    ERRORMSG("Page X=%li Y=%li",  pageWidth, pageHeight);
-    ERRORMSG("Clipping X=%li Y=%li marginWidthInB=%li index=%li(%li)", 
-        clippingX, clippingY, marginWidthInB, index, index / pageWidthInB);
-
-
     // Prepare planes and clip vertically the document if needed
     for (unsigned char i=0; i < colors; i++) {
         planes[i] = new unsigned char[planeSize];

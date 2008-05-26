@@ -152,7 +152,6 @@ bool Printer::loadInformation(const Request& request)
     }
     _pageWidth = value.width();
     _pageHeight = value.height();
-    ERRORMSG(_("Page size %fx%f"), _pageWidth, _pageHeight);
 
     paperSource = request.ppd()->get("InputSlot");
     if (!paperSource) {
