@@ -59,6 +59,8 @@ class PPDFile
                 const char*         _out;
                 float               _width;
                 float               _height;
+                float               _marginX;
+                float               _marginY;
 
             public:
                 /**
@@ -83,12 +85,15 @@ class PPDFile
                  */
                 PPDFile::Value&     set(const char *value);
                 /**
-                 * Set width and height
+                 * Set width, height and X, Y margins
                  * @param width the width.
                  * @param height the height.
+                 * @param marginX the X margin.
+                 * @param marginY the Y margin.
                  * @return itself.
                  */
-                PPDFile::Value&     set(float width, float height);
+                PPDFile::Value&     set(float width, float height, float
+                                        marginX, float marginY);
                 /**
                  * Specify the represented string is preformatted.
                  * @return itself.
@@ -104,6 +109,14 @@ class PPDFile
                  * @return the height value.
                  */
                 float               height() const {return _height;}
+                /**
+                 * @return the X margin value.
+                 */
+                float               marginX() const {return _marginX;}
+                /**
+                 * @return the Y margin value.
+                 */
+                float               marginY() const {return _marginY;}
                 /**
                   * @return TRUE if there is no associated string. Otherwise it
                   *         returns FALSE.

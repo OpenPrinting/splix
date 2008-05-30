@@ -104,10 +104,6 @@ bool Printer::loadInformation(const Request& request)
     }
     _endPJL = value.deepCopy();
 
-    // Get the hard margins
-    _hardMarginX = request.ppd()->get("HardMarginX", "General");
-    _hardMarginY = request.ppd()->get("HardMarginY", "General");
-
     // Get the paper information
     paperType = request.ppd()->get("MediaSize");
     if (!paperType)
@@ -152,6 +148,8 @@ bool Printer::loadInformation(const Request& request)
     }
     _pageWidth = value.width();
     _pageHeight = value.height();
+    _hardMarginX = value.marginX();
+    _hardMarginY = value.marginY();
 
     paperSource = request.ppd()->get("InputSlot");
     if (!paperSource) {

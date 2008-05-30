@@ -51,8 +51,8 @@ class Printer
         float                   _pageWidth;
         float                   _pageHeight;
 
-        unsigned long           _hardMarginX;
-        unsigned long           _hardMarginY;
+        float                   _hardMarginX;
+        float                   _hardMarginY;
 
     public:
         /**
@@ -144,11 +144,11 @@ class Printer
         /**
          * @return the hard margin of the printer in the X direction.
          */
-        unsigned long           hardMarginX() const {return _hardMarginX;}
+        float                   hardMarginX() const {return _hardMarginX;}
         /**
          * @return the hard margin of the printer in the Y direction.
          */
-        unsigned long           hardMarginY() const {return _hardMarginY;}
+        float                   hardMarginY() const {return _hardMarginY;}
 
 };
 
