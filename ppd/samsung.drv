@@ -12,9 +12,6 @@ Manufacturer "Samsung"
 #import "spl2.defs"
 #import "altitude.defs"
 
-Attribute General HardMarginX   "9"
-Attribute General HardMarginY   "27"
-
 //
 // Specific black & white printer definition
 //

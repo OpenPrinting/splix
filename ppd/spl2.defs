@@ -11,7 +11,7 @@
 #media "Oficio/Oficio - 216x340mm" 612 972
 
 // Supported paper format
-HWMargins 12.5 12.5 12.5 30
+HWMargins 10.75 15 10.75 15
 *MediaSize Letter
 MediaSize Legal
 MediaSize A4
