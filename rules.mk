@@ -58,10 +58,13 @@ installcms:
 
 # Specific rules used for development and information
 
-.PHONY: tags optionList
+.PHONY: tags optionList ppd
 tags:
 	ctags --recurse --language-force=c++ --extra=+q --fields=+i \
 	      --exclude=doc --exclude=.svn * 
+
+ppd:
+	@$(MAKE) --no-print-directory -C ppd/ ppd DISABLE_JBIG=$(DISABLE_JBIG)
 
 
 ifneq ($(DISABLE_JBIG),0)
