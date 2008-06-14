@@ -32,12 +32,25 @@ install: $(rastertoqpdl_TARGET) $(pstoqpdl_TARGET)
 	@echo ""
 
 installcms:
-	@if [ "$(CMSDIR)" -a -d "$(CMSDIR)" ]; then \
-		mkdir -p $(DESTDIR)$(CMSBASE); \
-		install -m 644 "$(CMSDIR)"/* $(DESTDIR)$(CMSBASE); \
-		echo "Color profile files has been copied."; \
+	@if [ "$$CMSDIR" -a -d "$$CMSDIR" ]; then \
+		CMSBASE=$(CUPSPPD)/$$MANUFACTURER; \
+		if [ "$$MANUFACTURER" -a -d "$$CMSBASE" ]; then \
+			CMSBASE=$$CMSBASE/cms; \
+			mkdir -p $(DESTDIR)$$CMSBASE; \
+			install -m 644 "$(CMSDIR)"/* $(DESTDIR)$$CMSBASE; \
+			if [ $$? = 0 ]; then \
+				echo "Color profile files has been copied."; \
+			fi; \
+		else \
+			if [ "$$MANUFACTURER" ]; then \
+				echo "Invalid manufacturer"; \
+			fi; \
+			echo "Usage: make installcms CMSDIR=/path/to/cms " \
+				"MANUFACTURER={samsung,xerox,dell}";\
+		fi; \
 	else \
-		echo "Usage: make installcms CMSDIR=/path/to/cms"; \
+		echo "Usage: make installcms CMSDIR=/path/to/cms" \
+			"MANUFACTURER={samsung,xerox,dell}"; \
 	fi
 
 

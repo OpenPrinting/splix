@@ -21,6 +21,7 @@
 #include "ppdfile.h"
 #include "errlog.h"
 #include "version.h"
+#include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -34,6 +35,17 @@
  * Appel des filtres
  * Filter call
  */
+static char *_toLower(const char *data)
+{
+    char *tmp = new char[strlen(data) + 1];
+    unsigned int i;
+
+    for (i=0; data[i]; i++)
+        tmp[i] = (char) tolower(data[i]);
+    tmp[i] = 0;
+    return tmp;
+}
+
 static int _linkFilters(const char *arg1, const char *arg2, const char *arg3,
     const char *arg4, const char *arg5) 
 {
@@ -89,7 +101,7 @@ static int _linkFilters(const char *arg1, const char *arg2, const char *arg3,
  * Lecture des fichiers CRD / CSA
  * CSA / CRD read
  */
-static char *_readCMSFile(PPDFile& ppd, bool csa)
+static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
 {
     unsigned long xResolution=0, yResolution=0, size;
     PPDValue resolution;
@@ -116,13 +128,14 @@ static char *_readCMSFile(PPDFile& ppd, bool csa)
         xResolution = yResolution = 300;
 
     // Get the real filename
-    size = strlen(file) + 30 + strlen(CMSBASE);
+    size = strlen(CUPSPPD) + strlen(manufacturer) + strlen(file) + 64;
     tmp = new char[size];
     if (xResolution)
-        snprintf(tmp, size, CMSBASE "/%s-%lux%lucms%s", file, xResolution, 
-            yResolution, csa ? "2" : "");
+        snprintf(tmp, size, CUPSPPD "/%s/cms/%s-%lux%lucms%s", manufacturer, 
+            file, xResolution, yResolution, csa ? "2" : "");
     if (!xResolution || access(tmp, R_OK))
-        snprintf(tmp, size, "%scms%s", file, csa ? "2" : "");
+        snprintf(tmp, size, CUPSPPD "/%s/cms/%scms%s", manufacturer, 
+            file, csa ? "2" : "");
 
     // Check if it exists, open it and read it
     if (stat(tmp, &fi) || !(handle = fopen(tmp, "r"))) {
@@ -158,7 +171,7 @@ static char *_readCMSFile(PPDFile& ppd, bool csa)
 int main(int argc, char **argv)
 {
     const char *jobid, *user, *title, *options, *ppdFile, *file;
-    const char *paperType;
+    const char *paperType, *manufacturer;
     unsigned long copies;
     bool pageSetup=false;
     char buffer[1024];
@@ -193,6 +206,7 @@ int main(int argc, char **argv)
     // Open the PPD file and get paper information
     if (!ppd.open(ppdFile, PPDVERSION, options))
         return 1;
+    manufacturer = _toLower(ppd.get("Manufacturer"));
     paperType = ppd.get("MediaType");
     if (!(strcasecmp(paperType, "OFF")))
         paperType = "NORMAL";
@@ -204,8 +218,8 @@ int main(int argc, char **argv)
     }
 
     // Get the CRD and CSA information and send the PostScript data
-    crd = _readCMSFile(ppd, false);
-    csa = _readCMSFile(ppd, true);
+    crd = _readCMSFile(ppd, manufacturer, false);
+    csa = _readCMSFile(ppd, manufacturer, true);
     if (!crd || !csa) {
         ERRORMSG(_("CMS data are missing. Color correction aborted"));
         if (crd)

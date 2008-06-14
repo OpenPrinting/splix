@@ -54,7 +54,6 @@ endif
 # Get some information
 CUPSFILTER		:= `cups-config --serverbin`/filter
 CUPSPPD			:= `cups-config --datadir`/model
-CMSBASE			:= $(CUPSPPD)/samsung/cms
 ifeq ($(ARCHI),Darwin)
 PSTORASTER		:= pstocupsraster
 else
@@ -67,5 +66,5 @@ export CUPSFILTER CUPSPPD
 src_pstoqpdl_cpp_FLAGS	:= -DRASTERDIR=\"$(CUPSFILTER)\"
 src_pstoqpdl_cpp_FLAGS	+= -DRASTERTOQPDL=\"rastertoqpdl\"
 src_pstoqpdl_cpp_FLAGS	+= -DPSTORASTER=\"$(PSTORASTER)\"
-src_pstoqpdl_cpp_FLAGS	+= -DCMSBASE=\"$(CMSBASE)\"
+src_pstoqpdl_cpp_FLAGS	+= -DCUPSPPD=\"$(CUPSPPD)\"
 
