@@ -34,7 +34,7 @@
 *cupsModelNumber: 0
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-raster 0 rastertoqpdl"
-*cupsFilter: "application/vnd.cups-raster 50 pstoqpdl"
+*cupsFilter: "application/vnd.cups-postscript 50 pstoqpdl"
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -256,4 +256,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ph3420.ppd, 14090 bytes.
+*% End of ph3420.ppd, 14094 bytes.

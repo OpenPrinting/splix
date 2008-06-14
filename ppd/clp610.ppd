@@ -34,7 +34,7 @@
 *cupsVersion: 1.3
 *cupsModelNumber: 0
 *cupsManualCopies: False
-*cupsFilter: "application/vnd.cups-raster 0 pstoqpdl"
+*cupsFilter: "application/vnd.cups-postscript 0 pstoqpdl"
 *UIConstraints: *OptionTray2 False *InputSlot Lower
 *UIConstraints: *InputSlot Lower *OptionTray2 False
 *OpenUI *PageSize/Media Size: PickOne
@@ -260,4 +260,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp610.ppd, 14171 bytes.
+*% End of clp610.ppd, 14175 bytes.
