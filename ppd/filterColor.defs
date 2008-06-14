@@ -6,7 +6,7 @@
  * $Id$
  */
 
-Filter application/vnd.cups-raster 0 pstoqpdl
+Filter application/vnd.cups-postscript 0 pstoqpdl
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
 
