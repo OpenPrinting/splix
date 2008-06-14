@@ -35,6 +35,7 @@
 
 static Document document;
 static Semaphore _lock;
+static bool _returnState=true;
 
 /*
  * This function is executed by each compression thread
@@ -81,6 +82,7 @@ static void *_compressPage(void* data)
             ERRORMSG(_("Error while compressing the page. Check the previous "
                 "message. Trying to print the other pages."));
             page->setEmpty();
+            _returnState = false;
         }
         registerPage(page);
     } while (page);
@@ -138,9 +140,11 @@ bool render(Request& request)
         if (checkLastPage && document.numberOfPages() == page->pageNr())
             lastPage = true;
         if (!page->isEmpty()) {
-            if (!renderPage(request, page, lastPage))
+            if (!renderPage(request, page, lastPage)) {
                 ERRORMSG(_("Error while rendering the page. Check the previous "
                     "message. Trying to print the other pages."));
+                _returnState = false;
+            }
             fprintf(stderr, "PAGE: %lu %lu\n", page->pageNr(), page->copiesNr());
         }
         page = getNextPage();
@@ -157,7 +161,7 @@ bool render(Request& request)
             ERRORMSG(_("An error occurred while waiting the end of a thread"));
     }
 
-    return true;
+    return _returnState;
 }
 
 

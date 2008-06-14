@@ -81,8 +81,10 @@ int main(int argc, char **argv)
 #endif /* DISABLE_THREADS */
 
     // Render the request
-    if (!render(request))
+    if (!render(request)) {
+        uninitializeCache();
         return 4;
+    }
 
 #ifndef DISABLE_THREADS
     if (!uninitializeCache())

@@ -221,7 +221,7 @@ int main(int argc, char **argv)
     crd = _readCMSFile(ppd, manufacturer, false);
     csa = _readCMSFile(ppd, manufacturer, true);
     if (!crd || !csa) {
-        ERRORMSG(_("CMS data are missing. Color correction aborted"));
+        WARNMSG(_("CMS data are missing. Color correction aborted"));
         if (crd)
             delete[] crd;
         if (csa)
@@ -288,12 +288,11 @@ int main(int argc, char **argv)
     fclose(stdout);
     waitpid(pid, &err, 0);
 
-
     if (crd)
         delete[] crd;
     if (csa)
         delete[] csa;
-    return err;
+    return WEXITSTATUS(err);
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
