@@ -7,7 +7,7 @@
  */
 
 Filter application/vnd.cups-raster 0 rastertoqpdl
-Filter application/vnd.cups-postscript 50 pstoqpdl
+/* Filter application/vnd.cups-postscript 50 pstoqpdl */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
 
