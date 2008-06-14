@@ -12,7 +12,6 @@ SAMSUNG		:= clp500 clp510 clp610 ml1510 ml1520 ml1610 ml1630 ml1710 \
 		   ml3560
 XEROX		:= ph3115 ph3116 ph3117 ph3120 ph3121 ph3122 ph3130 ph3150 \
 		   ph3420 ph3425 ph5500 ph6100
-DRIVERS		:= $(DELL) $(SAMSUNG) $(XEROX)
 DRIVERSEXT	:= ppd
 POEXT		:= po
 PODIR		:= po
@@ -21,6 +20,7 @@ ifeq ($(DISABLE_JBIG),0)
 SAMSUNG 	+= clp200 clp300 clp600 clx216x clx2170 clx3160
 XEROX		+= ph6110
 endif
+DRIVERS		:= $(DELL) $(SAMSUNG) $(XEROX)
 
 # === DON'T CHANGE ANYTHING AFTER THIS MESSAGE ====
 
@@ -33,6 +33,7 @@ printCmd        = $(if $(filter $(V),1),,$(shell echo "@echo \"    $(1)\""))
 
 all:
 
+.PHONY: ppd
 ppd: $(DRIVER) $(LANGDRIVERSEXT)
 
 $(DRIVER): $(SOURCE)

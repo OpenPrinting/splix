@@ -1,6 +1,6 @@
 *PPD-Adobe: "4.3"
 *% PPD file for CLP-300 with CUPS.
-*% Created by the CUPS PPD Compiler v1.2.0.
+*% Created by the CUPS PPD Compiler v1.2.3.
 *FormatVersion: "4.3"
 *FileVersion: "2.0.0"
 *LanguageVersion: French
@@ -33,10 +33,10 @@
 *QPDL QPDLVersion: "2"
 *General DocHeaderValues: "<0><0><1>"
 *General CMSFile: "CLP-300"
-*cupsVersion: 1.2
+*cupsVersion: 1.3
 *cupsModelNumber: 0
 *cupsManualCopies: False
-*cupsFilter: "application/vnd.cups-raster 0 pstoqpdl"
+*cupsFilter: "application/vnd.cups-postscript 0 pstoqpdl"
 *OpenUI *PageSize/Media Size: PickOne
 *OrderDependency: 10 AnySetup *PageSize
 *DefaultPageSize: Letter
@@ -92,29 +92,29 @@
 *PageRegion Oficio/Oficio - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
-*ImageableArea Letter/Letter - 8.5x11in: "12.50 12.50 599.50 779.50"
-*ImageableArea Legal/Legal - 8.5x14in: "12.50 12.50 599.50 995.50"
-*ImageableArea A4/A4 - 210x297mm: "12.50 12.50 582.50 829.50"
-*ImageableArea Executive/Executive - 7.25x10.5in: "12.50 12.50 509.50 743.50"
-*ImageableArea Ledger/Ledger - 17x11in: "12.50 12.50 1211.50 779.50"
-*ImageableArea A3/A3 - 297x420mm: "12.50 12.50 829.50 1178.50"
-*ImageableArea Env10/Enveloppe n°10 - 4.13x9.5in: "12.50 12.50 284.50 671.50"
-*ImageableArea Monarch/Monarch - 3.875x7.5in: "12.50 12.50 266.50 527.50"
-*ImageableArea C5/C5 - 162x229mm: "12.50 12.50 446.50 636.50"
-*ImageableArea DL/DL - 110x220mm: "12.50 12.50 299.50 611.50"
-*ImageableArea B4/B4 - 257x364mm: "12.50 12.50 716.50 1019.50"
-*ImageableArea B5/B5 - 182x257mm: "12.50 12.50 503.50 716.50"
-*ImageableArea EnvISOB5/Enveloppe ISOB5 - 176x250mm: "12.50 12.50 486.50 696.50"
-*ImageableArea Postcard/Carte postale - 100x148mm: "12.50 12.50 271.50 406.50"
-*ImageableArea DoublePostcardRotated/Double carte postale (tournée) - 148x200mm: "12.50 12.50 407.50 554.50"
-*ImageableArea A5/A5 - 148x210mm: "12.50 12.50 407.50 582.50"
-*ImageableArea A6/A6 - 105x148mm: "12.50 12.50 284.50 407.50"
-*ImageableArea B6/B6 - 128x182mm: "12.50 12.50 350.50 503.50"
-*ImageableArea C6/C6 - 114x162mm: "12.50 12.50 310.50 446.50"
-*ImageableArea Folio/Folio - 210x330mm: "12.50 12.50 582.50 922.50"
-*ImageableArea EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "12.50 12.50 248.50 455.50"
-*ImageableArea Env9/Enveloppe n°9 - 3.875x8.875in: "12.50 12.50 266.50 626.50"
-*ImageableArea Oficio/Oficio - 216x340mm: "12.50 12.50 599.50 959.50"
+*ImageableArea Letter/Letter - 8.5x11in: "10.75 15.00 601.25 777.00"
+*ImageableArea Legal/Legal - 8.5x14in: "10.75 15.00 601.25 993.00"
+*ImageableArea A4/A4 - 210x297mm: "10.75 15.00 584.25 827.00"
+*ImageableArea Executive/Executive - 7.25x10.5in: "10.75 15.00 511.25 741.00"
+*ImageableArea Ledger/Ledger - 17x11in: "10.75 15.00 1213.25 777.00"
+*ImageableArea A3/A3 - 297x420mm: "10.75 15.00 831.25 1176.00"
+*ImageableArea Env10/Enveloppe n°10 - 4.13x9.5in: "10.75 15.00 286.25 669.00"
+*ImageableArea Monarch/Monarch - 3.875x7.5in: "10.75 15.00 268.25 525.00"
+*ImageableArea C5/C5 - 162x229mm: "10.75 15.00 448.25 634.00"
+*ImageableArea DL/DL - 110x220mm: "10.75 15.00 301.25 609.00"
+*ImageableArea B4/B4 - 257x364mm: "10.75 15.00 718.25 1017.00"
+*ImageableArea B5/B5 - 182x257mm: "10.75 15.00 505.25 714.00"
+*ImageableArea EnvISOB5/Enveloppe ISOB5 - 176x250mm: "10.75 15.00 488.25 694.00"
+*ImageableArea Postcard/Carte postale - 100x148mm: "10.75 15.00 273.25 404.00"
+*ImageableArea DoublePostcardRotated/Double carte postale (tournée) - 148x200mm: "10.75 15.00 409.25 552.00"
+*ImageableArea A5/A5 - 148x210mm: "10.75 15.00 409.25 580.00"
+*ImageableArea A6/A6 - 105x148mm: "10.75 15.00 286.25 405.00"
+*ImageableArea B6/B6 - 128x182mm: "10.75 15.00 352.25 501.00"
+*ImageableArea C6/C6 - 114x162mm: "10.75 15.00 312.25 444.00"
+*ImageableArea Folio/Folio - 210x330mm: "10.75 15.00 584.25 920.00"
+*ImageableArea EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "10.75 15.00 250.25 453.00"
+*ImageableArea Env9/Enveloppe n°9 - 3.875x8.875in: "10.75 15.00 268.25 624.00"
+*ImageableArea Oficio/Oficio - 216x340mm: "10.75 15.00 601.25 957.00"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/Letter - 8.5x11in: "612.00 792.00"
 *PaperDimension Legal/Legal - 8.5x14in: "612.00 1008.00"
@@ -139,15 +139,6 @@
 *PaperDimension EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "261.00 468.00"
 *PaperDimension Env9/Enveloppe n°9 - 3.875x8.875in: "279.00 639.00"
 *PaperDimension Oficio/Oficio - 216x340mm: "612.00 972.00"
-*MaxMediaWidth: "0.00"
-*MaxMediaHeight: "0.00"
-*HWMargins: 12.50 12.50 12.50 12.50
-*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
-*ParamCustomPageSize Width: 1 points 0.00 0.00
-*ParamCustomPageSize Height: 2 points 0.00 0.00
-*ParamCustomPageSize WidthOffset: 3 points 0 0
-*ParamCustomPageSize HeightOffset: 4 points 0 0
-*ParamCustomPageSize Orientation: 5 int 0 0
 *RequiresPageRegion All: True
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10.0 AnySetup *InputSlot
@@ -173,6 +164,12 @@
 *MediaType RECYCLED/Papier recyclé: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
+*OpenUI *Altitude/Pression de l'air: PickOne
+*OrderDependency: 10.0 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/Faible: ""
+*Altitude HIGH/Forte: ""
+*CloseUI: *Altitude
 *OpenUI *PowerSave/Économie d'énergie: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
 *DefaultPowerSave: 5
@@ -240,4 +237,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp300.ppd, 13651 bytes.
+*% End of clp300.ppd, 13426 bytes.
