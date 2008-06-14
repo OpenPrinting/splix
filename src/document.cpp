@@ -150,7 +150,6 @@ Page* Document::getNextRawPage(const Request& request)
     }
 
     // Load the bitmap
-    //int l=0; // XXX
     while (pageHeight && documentHeight) {
         for (unsigned int i=0; i < colors; i++) {
             if (cupsRasterReadPixels(_raster, line, lineSize) < 1) {
@@ -163,10 +162,6 @@ Page* Document::getNextRawPage(const Request& request)
             }
             memcpy(planes[i] + index + marginWidthInB, line + clippingX, 
                 bytesToCopy);
-    //if (l == 1) // XXX
-        //memset(planes[i] + index, 0xff, bytesToCopy); // XXX
-    //l++; // XXX
-    //*(planes[i] + index) = 0xF0; // XXX 
         }
         index += pageWidthInB;
         pageHeight--;
