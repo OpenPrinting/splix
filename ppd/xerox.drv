@@ -74,8 +74,13 @@ Manufacturer "Xerox"
             InputSlot 5 "Lower/Tray 2"
             #import "manualduplex.defs"
             
-            ModelName "Phaser 3150"
-            PCFileName "ph3150.ppd"
+            {
+               ModelName "Phaser 3150"
+               PCFileName "ph3150.ppd"
+            } {
+               ModelName "Phaser 3160"
+               PCFileName "ph3160.ppd"
+            }
         }
     }
 

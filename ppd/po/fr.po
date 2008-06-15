@@ -415,3 +415,12 @@ msgstr "Faible"
 msgid "High"
 msgstr "Forte"
 
+msgid "ML-2251"
+msgstr "TRANSLATE ML-2251"
+
+msgid "CLP-550"
+msgstr "TRANSLATE CLP-550"
+
+msgid "Phaser 3160"
+msgstr "TRANSLATE Phaser 3160"
+

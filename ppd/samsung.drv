@@ -72,8 +72,13 @@ Manufacturer "Samsung"
             {
                 #import "manualduplex.defs"
                 Throughput 22
-                ModelName "ML-2250"
-                PCFileName "ml2250.ppd"
+		{
+                	ModelName "ML-2250"
+	                PCFileName "ml2250.ppd"
+		} {
+                	ModelName "ML-2251"
+	                PCFileName "ml2251.ppd"
+		}
             } {
                 Duplex normal
 
@@ -162,8 +167,13 @@ Manufacturer "Samsung"
                 Attribute General CMSFile "CLP-500"
                 Throughput 20
 
-                ModelName "CLP-500"
-                PCFileName "clp500.ppd"
+		{
+                	ModelName "CLP-500"
+	                PCFileName "clp500.ppd"
+		} {
+                	ModelName "CLP-550"
+	                PCFileName "clp550.ppd"
+		}
             } {
                 Attribute General CMSFile "CLP-510"
                 Throughput 24
