@@ -53,7 +53,7 @@ void Algo0x13::_callback(unsigned char *data, size_t len, void *arg)
         *(info->list) = bandList;
         info->last = bandList;
         if (len != 20)
-            ERRORMSG(_("the first BIG *MUST* be 20 bytes long (currently=%lu"),
+            ERRORMSG(_("the first BIG *MUST* be 20 bytes long (currently=%zu"),
                 len);
         info->data = NULL;
         info->size = 0;
@@ -87,7 +87,7 @@ void Algo0x13::_callback(unsigned char *data, size_t len, void *arg)
             toCopy = freeSpace < len ? freeSpace : len;
             memcpy(info->data + info->size, data, toCopy);
             info->size += toCopy;
-            data -= toCopy;
+            data += toCopy;
             len -= toCopy;
         }
     }
