@@ -202,7 +202,7 @@ static bool _compressWholePage(const Request& request, Page* page)
     } while (current);
 
     page->flushPlanes();
-    delete buffer;
+    delete[] buffer;
 
     return true;
 }
