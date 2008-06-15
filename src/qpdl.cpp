@@ -29,7 +29,7 @@
 #include "request.h"
 #include "bandplane.h"
 
-static bool _renderBand(const Request& request, const Band* band)
+static bool _renderBand(const Request& request, const Band* band, bool mono)
 {
     unsigned long version, subVersion, compression, size, dataSize, checkSum;
     bool color, headerSent=false;
@@ -92,7 +92,7 @@ static bool _renderBand(const Request& request, const Band* band)
             size = 0x0;
             // Add color information if it's a color printer
         if (color) {
-            header[size] = plane->colorNr();        // Color number
+            header[size] = mono ? 4 : plane->colorNr(); // Color number
             size++;
         }
             // Append the last information and send the header
@@ -276,7 +276,7 @@ bool renderPage(const Request& request, Page* page, bool lastPage)
     // Send the page bands
     band = page->firstBand();
     while (band) {
-        if (!_renderBand(request, band))
+        if (!_renderBand(request, band, page->colorsNr() == 1))
             return false;
         band = band->sibling();
     }
