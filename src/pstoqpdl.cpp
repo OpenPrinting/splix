@@ -149,13 +149,14 @@ static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
         fclose(handle);
         return NULL;
     }
-    res = new char[fi.st_size];
+    res = new char[fi.st_size + 1];
     if (!fread(res, 1, fi.st_size, handle)) {
         ERRORMSG(_("Cannot read CMS file %s (%i)"), tmp, errno);
         delete[] tmp;
         fclose(handle);
         return NULL;
     }
+    res[fi.st_size] = 0;
     fclose(handle);
     delete[] tmp;
 
