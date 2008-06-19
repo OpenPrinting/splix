@@ -200,7 +200,7 @@ DEPENDENCIES    := $(foreach lang,$(LANGUAGES),$(patsubst %.$(lang), %.d, \
 # Generate dependencies files for C++ source file
 $(DEPDIR)/%.d: %.cpp
 	@mkdir -p $(dir $@)
-	@$(CXX) $(CXXFLAGS) -MM -MG -MT "\$$(DEPDIR)/$(basename $<).d \
+	@$(CXX) $(CXXFLAGS) -MM -MP -MG -MT "\$$(DEPDIR)/$(basename $<).d \
 		\$$(BUILDDIR)/$(basename $<).o" -MG "$<" -MF $@
 
 # Load dependencies files 
