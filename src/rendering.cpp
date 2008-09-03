@@ -62,11 +62,8 @@ static void *_compressPage(void* data)
         }
 
         // Make rotation on even pages for ManualLongEdge duplex mode
-        if (rotateEvenPages) {
-            if (page->pageNr() % 2)
-                rotateEvenPages = false;
-            else
-                page->rotate();
+        if (rotateEvenPages && !(page->pageNr() % 2)) {
+            page->rotate();
         }
 
         // Apply some colors optimizations
