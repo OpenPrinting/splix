@@ -135,9 +135,9 @@ QPDLDocument::Result QPDLDocument::_readPageHeader(QFile& data,
 
     // Printable area size
     _width = ((quint8)header.at(HEADER_WIDTH_H) << 8) + 
-        header.at(HEADER_WIDTH_L);
+        (quint8)header.at(HEADER_WIDTH_L);
     _height = ((quint8)header.at(HEADER_HEIGHT_H) << 8) + 
-        header.at(HEADER_HEIGHT_L);
+        (quint8)header.at(HEADER_HEIGHT_L);
 
     // Copies number
     _nrCopies = ((quint8)header.at(HEADER_NRCOPIES_H) << 8) +
