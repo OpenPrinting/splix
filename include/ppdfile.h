@@ -192,6 +192,11 @@ class PPDFile
                  *         returns FALSE.
                  */
                 bool    operator != (const char* val) const;
+                /**
+                 * Assignment operator.
+                 * @param val the specified value.
+                 */
+                void    operator = (const Value &val);
         };
 
     protected:

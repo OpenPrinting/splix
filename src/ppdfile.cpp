@@ -276,5 +276,25 @@ bool PPDFile::Value::operator != (const char* val) const
     return strcasecmp(_out, val);
 }
 
+
+
+/*
+ * Opérateur d'assignation
+ * Assignment operator
+ */
+void PPDFile::Value::operator = (const PPDFile::Value::Value &val)
+{
+    if (_preformatted)
+        delete[] _preformatted;
+    _value = val._value;
+    _out = val._out;
+    _preformatted = val._preformatted;
+    _width = val._width;
+    _height = val._height;
+    _marginX = val._marginX;
+    _marginY = val._marginY;
+}
+
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 
