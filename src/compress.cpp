@@ -151,7 +151,7 @@ static bool _compressBandedPage(const Request& request, Page* page)
 static bool _compressWholePage(const Request& request, Page* page)
 {
     unsigned long hardMarginX, hardMarginXInB, hardMarginY, lineWidthInB;
-    unsigned long pageWidth, pageHeight, index;
+    unsigned long pageWidth, bandHeight, planeHeight, pageHeight, index;
     unsigned long bandNumber=0;
     unsigned char *buffer;
     Band *current = NULL;
@@ -163,12 +163,15 @@ static bool _compressWholePage(const Request& request, Page* page)
         hardMarginY()));
 //    hardMarginX = hardMarginY = 0;
     hardMarginXInB = hardMarginX / 8;
-    pageWidth = page->width() - hardMarginX;
-    pageHeight = page->height() - hardMarginY;
+    pageWidth = page->width() - hardMarginX * 2;
+    pageHeight = page->height() - hardMarginY * 2;
     page->setWidth(pageWidth);
     page->setHeight(pageHeight);
     lineWidthInB = (pageWidth + 7) / 8;
-    buffer = new unsigned char[lineWidthInB * pageHeight];
+    bandHeight = request.printer()->bandHeight();
+    // Alignment of the page height on band height
+    planeHeight = ((pageHeight + bandHeight - 1) / bandHeight) * bandHeight;
+    buffer = new unsigned char[lineWidthInB * planeHeight];
 
     do {
         current = NULL;
@@ -176,10 +179,10 @@ static bool _compressWholePage(const Request& request, Page* page)
             unsigned char *curPlane = page->planeBuffer(i);
             BandPlane *plane;
 
-            index = hardMarginY * (lineWidthInB + hardMarginXInB) + 
+            index = hardMarginY * (lineWidthInB + 2 * hardMarginXInB) + 
                 hardMarginXInB;
             for (unsigned int y=0; y < pageHeight; y++, 
-                    index += hardMarginXInB) {
+                    index += 2 * hardMarginXInB) {
                 for (unsigned int x=0; x < lineWidthInB; x++, index++) {
                     buffer[x + y * lineWidthInB] = curPlane[index];
                 }
@@ -187,7 +190,7 @@ static bool _compressWholePage(const Request& request, Page* page)
 
             // Call the compression method
             plane = algo[i].compress(request, buffer, page->width(), 
-                page->height());
+                planeHeight);
             if (plane) {
                 plane->setColorNr(i + 1);
                 if (!current)
