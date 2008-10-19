@@ -144,6 +144,7 @@ bool render(Request& request)
             }
             fprintf(stderr, "PAGE: %lu %lu\n", page->pageNr(), page->copiesNr());
         }
+        delete page;
         page = getNextPage();
     }
 
@@ -192,8 +193,8 @@ bool render(Request& request)
         } else
             ERRORMSG(_("Error while compressing the page. Check the previous "
                 "message. Trying to print the other pages."));
-        delete page;
         fprintf(stderr, "PAGE: %lu %lu\n", page->pageNr(), page->copiesNr());
+        delete page;
         page = document.getNextRawPage(request);
     }
 
