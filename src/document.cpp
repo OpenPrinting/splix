@@ -132,6 +132,11 @@ Page* Document::getNextRawPage(const Request& request)
     pageHeight -= 2*marginHeight;
     clippingY *= colors;
     line = new unsigned char[header.cupsBytesPerLine];
+    DEBUGMSG(_("Document width=%lu height=%lu"), documentWidth, documentHeight);
+    DEBUGMSG(_("Page width=%lu (%lu) height=%lu"), pageWidth, pageWidthInB, pageHeight);
+    DEBUGMSG(_("Margin width in bytes=%lu height=%lu"), marginWidthInB, marginHeight);
+    DEBUGMSG(_("Clipping X=%lu Y=%lu"), clippingX, clippingY);
+    DEBUGMSG(_("Line size=%lu, Plane size=%lu, bytes to copy=%lu"), lineSize, planeSize, bytesToCopy);
 
     // Prepare planes and clip vertically the document if needed
     for (unsigned char i=0; i < colors; i++) {

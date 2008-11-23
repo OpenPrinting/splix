@@ -61,14 +61,14 @@ static bool _compressBandedPage(const Request& request, Page* page)
     hardMarginY = ceill(page->convertToYResolution(request.printer()->
         hardMarginY()));
     hardMarginXInB = hardMarginX / 8;
-    pageWidth = page->width() - hardMarginX;
+    pageWidth = page->width();
     pageHeight = page->height() - hardMarginY;
     page->setWidth(pageWidth);
     page->setHeight(pageHeight);
     lineWidthInB = (pageWidth + 7) / 8;
     bandHeight = request.printer()->bandHeight();
     bandSize = lineWidthInB * bandHeight;
-    index = hardMarginY * (lineWidthInB + hardMarginXInB);
+    index = hardMarginY * lineWidthInB;
     band = new unsigned char[bandSize];
     for (unsigned int i=0; i < colors; i++)
         planes[i] = page->planeBuffer(i);
@@ -101,25 +101,27 @@ static bool _compressBandedPage(const Request& request, Page* page)
             // Copy the data into the band depending on the algorithm options
             if (algo.reverseLineColumn()) {
                 for (unsigned int y=0; y < localHeight; y++) {
-                    for (unsigned int x=0; x < lineWidthInB; x++) {
-                            band[x * bandHeight + y] = planes[i][index + x +
-                                hardMarginXInB + y * (lineWidthInB + 
-                                hardMarginXInB)];
+                    for (unsigned int x=0; x < lineWidthInB - hardMarginXInB; x++) {
+                        band[x * bandHeight + y] = planes[i][index + x +
+                            hardMarginXInB + y * lineWidthInB];
                     }
+                    for (unsigned int x=lineWidthInB - hardMarginXInB; x < lineWidthInB; x++)
+                        band[x * bandHeight + y] = 0;
                 }
             } else {
                 for (unsigned int y=0; y < localHeight; y++) {
-                    for (unsigned int x=0; x < lineWidthInB; x++) {
-                            band[x + y * lineWidthInB] = planes[i][index + x +
-                                hardMarginXInB + y * (lineWidthInB + 
-                                hardMarginXInB)];
+                    for (unsigned int x=0; x < lineWidthInB - hardMarginXInB; x++) {
+                        band[x + y * (lineWidthInB - hardMarginXInB)] = planes[i][index + x +
+                            hardMarginXInB + y * lineWidthInB];
                     }
+                    for (unsigned int x=lineWidthInB - hardMarginXInB; x < lineWidthInB; x++)
+                        band[x + y * (lineWidthInB - hardMarginXInB)]  = 0;
                 }
             }
 
             // Does the band is empty?
-             if (_isEmptyBand(band, bandSize))
-                 continue;
+            if (_isEmptyBand(band, bandSize))
+                continue;
 
             // Check if bytes have to be reversed
             if (algo.inverseByte())
@@ -138,7 +140,7 @@ static bool _compressBandedPage(const Request& request, Page* page)
         if (current)
             page->registerBand(current);
         bandNumber++;
-        index += bandSize + localHeight * hardMarginXInB;
+        index += bandSize;
         pageHeight = theEnd ? 0 : pageHeight - bandHeight;
     }
     page->flushPlanes();
@@ -161,7 +163,6 @@ static bool _compressWholePage(const Request& request, Page* page)
         printer()->hardMarginX())) + 7) & ~7;
     hardMarginY = ceill(page->convertToYResolution(request.printer()->
         hardMarginY()));
-//    hardMarginX = hardMarginY = 0;
     hardMarginXInB = hardMarginX / 8;
     pageWidth = page->width() - hardMarginX * 2;
     pageHeight = page->height() - hardMarginY * 2;
