@@ -112,6 +112,9 @@ Manufacturer "Samsung"
                 ModelName "ML-1630"
                 PCFileName "ml1630.ppd"
             } {
+                ModelName "ML-1640"
+                PCFileName "ml1640.ppd"
+            } {
                 ModelName "ML-2010"
                 PCFileName "ml2010.ppd"
             } {

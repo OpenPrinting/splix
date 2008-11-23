@@ -424,3 +424,6 @@ msgstr "TRANSLATE CLP-550"
 msgid "Phaser 3160"
 msgstr "TRANSLATE Phaser 3160"
 
+msgid "ML-1640"
+msgstr "TRANSLATE ML-1640"
+
