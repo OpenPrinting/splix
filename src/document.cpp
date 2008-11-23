@@ -129,6 +129,7 @@ Page* Document::getNextRawPage(const Request& request)
         index = pageWidthInB * ((pageHeight - documentHeight)/2);
     }
     documentHeight -= clippingY;
+    pageHeight -= 2*marginHeight;
     clippingY *= colors;
     line = new unsigned char[header.cupsBytesPerLine];
 
