@@ -43,6 +43,7 @@ class BandPlane
         unsigned char*          _data;
         unsigned long           _checksum;
         Endian                  _endian;
+        unsigned char           _compression;
 
     public:
         /**
@@ -73,6 +74,12 @@ class BandPlane
           * @param endian the endian to use.
           */
         void                    setEndian(Endian endian) {_endian = endian;}
+        /**
+         * Set the compression algorithm used.
+         * @param compression the compression algorithm used.
+         */
+        void                    setCompression(unsigned char compression)
+                                    {_compression = compression;}
 
         /**
           * @return the color number.
@@ -94,6 +101,9 @@ class BandPlane
           * @return the checksum.
           */
         unsigned long           checksum() const {return _checksum;}
+        /**
+         * @return the compression algorithm used.
+         */
 
     public:
         /**
