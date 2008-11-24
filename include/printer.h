@@ -43,6 +43,9 @@ class Printer
 
         unsigned char           _paperType;
         unsigned char           _paperSource;
+
+        float                   _paperWidth;
+        float                   _paperHeight;
         
         unsigned char           _unknownByte1;
         unsigned char           _unknownByte2;

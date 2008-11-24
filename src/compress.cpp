@@ -27,6 +27,7 @@
 #include "request.h"
 #include "bandplane.h"
 
+#include "algo0x0d.h"
 #include "algo0x11.h"
 #include "algo0x13.h"
 
@@ -95,11 +96,23 @@ static bool _compressBandedPage(const Request& request, Page* page)
         }
 
         for (unsigned int i=0; i < colors; i++) {
+            Algorithm *algo = NULL;
             BandPlane *plane;
-            Algo0x11 algo;
+
+            switch (page->compression()) {
+                case 0x0D:
+                    algo = new Algo0x0D;
+                    break;
+                case 0x11:
+                    algo = new Algo0x11;
+                    break;
+                default:
+                    ERRORMSG(_("Unknown compression algorithm. Aborted"));
+                    return false;
+            }
 
             // Copy the data into the band depending on the algorithm options
-            if (algo.reverseLineColumn()) {
+            if (algo->reverseLineColumn()) {
                 for (unsigned int y=0; y < localHeight; y++) {
                     for (unsigned int x=0; x < lineWidthInB - hardMarginXInB; x++) {
                         band[x * bandHeight + y] = planes[i][index + x +
@@ -124,18 +137,20 @@ static bool _compressBandedPage(const Request& request, Page* page)
                 continue;
 
             // Check if bytes have to be reversed
-            if (algo.inverseByte())
+            if (algo->inverseByte())
                 for (unsigned int j=0; j < bandSize; j++)
                     band[j] = ~band[j];
 
             // Call the compression method
-            plane = algo.compress(request, band, pageWidth, bandHeight);
+            plane = algo->compress(request, band, pageWidth, bandHeight);
             if (plane) {
                 plane->setColorNr(i + 1);
                 if (!current)
                     current = new Band(bandNumber, pageWidth, bandHeight);
                 current->registerPlane(plane);
             }
+
+            delete algo;
         }
         if (current)
             page->registerBand(current);
@@ -215,6 +230,7 @@ static bool _compressWholePage(const Request& request, Page* page)
 bool compressPage(const Request& request, Page* page)
 {
     switch(page->compression()) {
+        case 0x0D:
         case 0x11:
             return _compressBandedPage(request, page);
         case 0x13:
