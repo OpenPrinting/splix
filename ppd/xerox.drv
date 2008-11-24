@@ -16,89 +16,105 @@ Manufacturer "Xerox"
 // Specific black & white printer definition
 //
 {
-    #import "monochrome.defs"
     #import "powersave.defs"
     #import "tonerdensity.defs"
     #import "tonersave.defs"
     #import "jamrecovery.defs"
 
-    // QPDL Version 1
+    // Monochrome printers V. 1 (old algorithms)
     {
+        #import "monochrome-v1.defs"
         Attribute QPDL QPDLVersion "1"
-        Attribute General DocHeaderValues "<0><0><0>"
+        Attribute General DocHeaderValues "<0><2><1>"
+        
+        #import "manualduplex.defs"
+        Resolution k 1 0 0 0 "300dpi/300 DPI"
 
+        ModelName "WorkCentre 3119"
+        PCFileName "wc3119.ppd"
+
+    // Monochrome printers V. 2 (new algorithms)
+    } {
+        #import "monochrome-v2.defs"
+
+        // QPDL Version 1
         {
-            Resolution k 1 0 0 0 "300dpi/300 DPI"
+            Attribute QPDL QPDLVersion "1"
+            Attribute General DocHeaderValues "<0><0><0>"
+
             {
-                #import "manualduplex.defs"
-                ModelName "Phaser 3115"
-                PCFileName "ph3115.ppd"
-            } {
-                #import "manualduplex.defs"
-                ModelName "Phaser 3116"
-                PCFileName "ph3116.ppd"
-            } {
-                #import "manualduplex.defs"
-                ModelName "Phaser 3120"
-                PCFileName "ph3120.ppd"
-            } {
-                #import "manualduplex.defs"
-                ModelName "Phaser 3121"
-                PCFileName "ph3121.ppd"
-            } {
-                #import "manualduplex.defs"
-                ModelName "Phaser 3130"
-                PCFileName "ph3130.ppd"
+                Resolution k 1 0 0 0 "300dpi/300 DPI"
+                {
+                    #import "manualduplex.defs"
+                    ModelName "Phaser 3115"
+                    PCFileName "ph3115.ppd"
+                } {
+                    #import "manualduplex.defs"
+                    ModelName "Phaser 3116"
+                    PCFileName "ph3116.ppd"
+                } {
+                    #import "manualduplex.defs"
+                    ModelName "Phaser 3120"
+                    PCFileName "ph3120.ppd"
+                } {
+                    #import "manualduplex.defs"
+                    ModelName "Phaser 3121"
+                    PCFileName "ph3121.ppd"
+                } {
+                    #import "manualduplex.defs"
+                    ModelName "Phaser 3130"
+                    PCFileName "ph3130.ppd"
+                } {
+                    // Multi-tray
+                    InputSlot 3 "Multi/Multi-Purpose Tray"
+                    InputSlot 4 "Upper/Tray 1"
+                    InputSlot 5 "Lower/Tray 2"
+
+                    Duplex normal
+                    {
+                        ModelName "Phaser 3420"
+                        PCFileName "ph3420.ppd"
+                    } {
+                        ModelName "Phaser 3425"
+                        PCFileName "ph3425.ppd"
+                    } {
+                        ModelName "Phaser 5500"
+                        PCFileName "ph5500.ppd"
+                    }
+                }
             } {
                 // Multi-tray
                 InputSlot 3 "Multi/Multi-Purpose Tray"
                 InputSlot 4 "Upper/Tray 1"
                 InputSlot 5 "Lower/Tray 2"
-
-                Duplex normal
+                #import "manualduplex.defs"
+                
                 {
-                    ModelName "Phaser 3420"
-                    PCFileName "ph3420.ppd"
+                   ModelName "Phaser 3150"
+                   PCFileName "ph3150.ppd"
                 } {
-                    ModelName "Phaser 3425"
-                    PCFileName "ph3425.ppd"
-                } {
-                    ModelName "Phaser 5500"
-                    PCFileName "ph5500.ppd"
+                   ModelName "Phaser 3160"
+                   PCFileName "ph3160.ppd"
                 }
             }
-        } {
-            // Multi-tray
-            InputSlot 3 "Multi/Multi-Purpose Tray"
-            InputSlot 4 "Upper/Tray 1"
-            InputSlot 5 "Lower/Tray 2"
-            #import "manualduplex.defs"
-            
-            {
-               ModelName "Phaser 3150"
-               PCFileName "ph3150.ppd"
-            } {
-               ModelName "Phaser 3160"
-               PCFileName "ph3160.ppd"
-            }
         }
-    }
 
-    // QPDL Version 2
-    {
-        #import "manualduplex.defs"
-        Attribute QPDL QPDLVersion "2"
-        Attribute General DocHeaderValues "<0><0><1>"
-
+        // QPDL Version 2
         {
-            ModelName "Phaser 3117"
-            PCFileName "ph3117.ppd"
-        } {
-            Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+            #import "manualduplex.defs"
+            Attribute QPDL QPDLVersion "2"
+            Attribute General DocHeaderValues "<0><0><1>"
 
             {
-                ModelName "Phaser 3122"
-                PCFileName "ph3122.ppd"
+                ModelName "Phaser 3117"
+                PCFileName "ph3117.ppd"
+            } {
+                Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
+                {
+                    ModelName "Phaser 3122"
+                    PCFileName "ph3122.ppd"
+                }
             }
         }
     }

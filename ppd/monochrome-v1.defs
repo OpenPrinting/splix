@@ -1,0 +1,18 @@
+/*
+ *      monochrome-v1.defs             (C) 2007-2008, Aurélien Croc (AP²C)
+ * 
+ * Monochrome printers V. 1
+ *
+ * $Id$
+ */
+
+// Black & White support
+ColorDevice false
+*ColorModel Gray/Grayscale k chunky 13
+
+// Supported resolutions
+*Resolution k 1 0 0 0 "600dpi/600 DPI"
+
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+
