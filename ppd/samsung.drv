@@ -17,119 +17,136 @@ Manufacturer "Samsung"
 //
 {
     #import "filter.defs"
-    #import "monochrome-v1.defs"
     #import "powersave.defs"
     #import "tonerdensity.defs"
     #import "tonersave.defs"
     #import "jamrecovery.defs"
 
-    // QPDL Version 1
+
+    // Monochrome printers V. 1 (old algorithms)
     {
+        #import "monochrome-v1.defs"
         Attribute QPDL QPDLVersion "1"
-        Attribute General DocHeaderValues "<0><0><0>"
+        Attribute General DocHeaderValues "<0><2><1>"
+        
+        #import "manualduplex.defs"
+        Resolution k 1 0 0 0 "300dpi/300 DPI"
 
+        ModelName "SCX-4200"
+        PCFileName "scx4200.ppd"
+
+    // Monochrome printers V. 2 (new algorithms)
+    } {
+        #import "monochrome-v2.defs"
+
+        // QPDL Version 1
         {
-            Resolution k 1 0 0 0 "300dpi/300 DPI"
-            #import "manualduplex.defs"
+            Attribute QPDL QPDLVersion "1"
+            Attribute General DocHeaderValues "<0><0><0>"
+    
             {
-                ModelName "ML-1510"
-                PCFileName "ml1510.ppd"
-            } {
-                ModelName "ML-1520"
-                PCFileName "ml1520.ppd"
-            } {
-                ModelName "ML-1610"
-                PCFileName "ml1610.ppd"
-            } {
-                ModelName "ML-1710"
-                PCFileName "ml1710.ppd"
-            } {
-                ModelName "ML-1740"
-                PCFileName "ml1740.ppd"
-            } {
-                #import "srtmode.defs"
-                ModelName "ML-1750"
-                PCFileName "ml1750.ppd"
-            }
-        } {
-            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-
-            // Multi-tray
-            InputSlot 3 "Multi/Multi-Purpose Tray"
-            InputSlot 4 "Upper/Tray 1"
-            InputSlot 5 "Lower/Tray 2"
-            InputSlot 6 "Envelope/Envelope Tray"
-            InputSlot 7 "Tray3/Tray 3"
-            // But tray 2, Envelope and Tray3 are options...
-            Installable "OptionTray2/Tray 2 Installed"
-            UIConstraints "*OptionTray2 False *InputSlot Lower"
-            Installable "OptionTrayEnv/Envelope Tray Installed"
-            UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
-            Installable "OptionTray3/Tray 3 Installed"
-            UIConstraints "*OptionTray3 False *InputSlot Tray3"
-
-            #import "srtmode.defs"
-            {
+                Resolution k 1 0 0 0 "300dpi/300 DPI"
                 #import "manualduplex.defs"
-                Throughput 22
-		{
-                	ModelName "ML-2250"
-	                PCFileName "ml2250.ppd"
-		} {
-                	ModelName "ML-2251"
-	                PCFileName "ml2251.ppd"
-		}
-            } {
-                Duplex normal
-
                 {
-                        ModelName "ML-3560"
-                        PCFileName "ml3560.ppd"
+                    ModelName "ML-1510"
+                    PCFileName "ml1510.ppd"
                 } {
-                    Resolution k 1 0 0 0 "300dpi/300 DPI"
+                    ModelName "ML-1520"
+                    PCFileName "ml1520.ppd"
+                } {
+                    ModelName "ML-1610"
+                    PCFileName "ml1610.ppd"
+                } {
+                    ModelName "ML-1710"
+                    PCFileName "ml1710.ppd"
+                } {
+                    ModelName "ML-1740"
+                    PCFileName "ml1740.ppd"
+                } {
+                    #import "srtmode.defs"
+                    ModelName "ML-1750"
+                    PCFileName "ml1750.ppd"
+                }
+            } {
+                Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+    
+                // Multi-tray
+                InputSlot 3 "Multi/Multi-Purpose Tray"
+                InputSlot 4 "Upper/Tray 1"
+                InputSlot 5 "Lower/Tray 2"
+                InputSlot 6 "Envelope/Envelope Tray"
+                InputSlot 7 "Tray3/Tray 3"
+                // But tray 2, Envelope and Tray3 are options...
+                Installable "OptionTray2/Tray 2 Installed"
+                UIConstraints "*OptionTray2 False *InputSlot Lower"
+                Installable "OptionTrayEnv/Envelope Tray Installed"
+                UIConstraints "*OptionTrayEnv False *InputSlot Envelope"
+                Installable "OptionTray3/Tray 3 Installed"
+                UIConstraints "*OptionTray3 False *InputSlot Tray3"
+    
+                #import "srtmode.defs"
+                {
+                    #import "manualduplex.defs"
+                    Throughput 22
+    		{
+                    	ModelName "ML-2250"
+    	                PCFileName "ml2250.ppd"
+    		} {
+                    	ModelName "ML-2251"
+    	                PCFileName "ml2251.ppd"
+    		}
+                } {
+                    Duplex normal
+    
                     {
-                        ModelName "ML-2150"
-                        PCFileName "ml2150.ppd"
+                            ModelName "ML-3560"
+                            PCFileName "ml3560.ppd"
                     } {
-                        ModelName "ML-2550"
-                        PCFileName "ml2550.ppd"
+                        Resolution k 1 0 0 0 "300dpi/300 DPI"
+                        {
+                            ModelName "ML-2150"
+                            PCFileName "ml2150.ppd"
+                        } {
+                            ModelName "ML-2550"
+                            PCFileName "ml2550.ppd"
+                        }
                     }
                 }
             }
         }
-    }
-
-    // QPDL Version 2
-    {
-        Attribute QPDL QPDLVersion "2"
-        Attribute General DocHeaderValues "<0><0><1>"
-
+    
+        // QPDL Version 2
         {
-            Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
-            #import "manualduplex.defs"
-
+            Attribute QPDL QPDLVersion "2"
+            Attribute General DocHeaderValues "<0><0><1>"
+    
             {
-                ModelName "ML-1630"
-                PCFileName "ml1630.ppd"
+                Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+                #import "manualduplex.defs"
+    
+                {
+                    ModelName "ML-1630"
+                    PCFileName "ml1630.ppd"
+                } {
+                    ModelName "ML-1640"
+                    PCFileName "ml1640.ppd"
+                } {
+                    ModelName "ML-2010"
+                    PCFileName "ml2010.ppd"
+                } {
+                    #import "srtmode.defs"
+    
+                    ModelName "ML-2510"
+                    PCFileName "ml2510.ppd"
+                }
             } {
-                ModelName "ML-1640"
-                PCFileName "ml1640.ppd"
-            } {
-                ModelName "ML-2010"
-                PCFileName "ml2010.ppd"
-            } {
-                #import "srtmode.defs"
-
-                ModelName "ML-2510"
-                PCFileName "ml2510.ppd"
+                Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+    
+                Duplex normal
+    
+                ModelName "ML-3050"
+                PCFileName "ml3050.ppd"
             }
-        } {
-            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-
-            Duplex normal
-
-            ModelName "ML-3050"
-            PCFileName "ml3050.ppd"
         }
     }
 }
