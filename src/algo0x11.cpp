@@ -233,6 +233,7 @@ BandPlane* Algo0x11::compress(const Request& request, unsigned char *data,
     plane = new BandPlane();
     plane->setData(output, outputSize);
     plane->setEndian(BandPlane::Dependant);
+    plane->setCompression(0x11);
 
     return plane;
 }

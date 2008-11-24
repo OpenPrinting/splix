@@ -28,6 +28,7 @@
 #include "bandplane.h"
 
 #include "algo0x0d.h"
+#include "algo0x0e.h"
 #include "algo0x11.h"
 #include "algo0x13.h"
 
@@ -68,6 +69,8 @@ static bool _compressBandedPage(const Request& request, Page* page)
     page->setHeight(pageHeight);
     lineWidthInB = (pageWidth + 7) / 8;
     bandHeight = request.printer()->bandHeight();
+    if (page->xResolution() == 300 && page->yResolution() == 300)
+        bandHeight /= 2;
     bandSize = lineWidthInB * bandHeight;
     index = hardMarginY * lineWidthInB;
     band = new unsigned char[bandSize];
@@ -102,6 +105,9 @@ static bool _compressBandedPage(const Request& request, Page* page)
             switch (page->compression()) {
                 case 0x0D:
                     algo = new Algo0x0D;
+                    break;
+                case 0x0E:
+                    algo = new Algo0x0E;
                     break;
                 case 0x11:
                     algo = new Algo0x11;
@@ -143,6 +149,20 @@ static bool _compressBandedPage(const Request& request, Page* page)
 
             // Call the compression method
             plane = algo->compress(request, band, pageWidth, bandHeight);
+            /*
+             * If algorithm 0xd did not create a plane, it means that the 
+             * complementary algorithm 0xE need to be used
+             */
+            if (!plane && page->compression() == 0x0D) {
+                delete algo;
+                algo = new Algo0x0E;
+                /* Bytes has to be reversed first, as algo0xd didn't do that. */
+                for (unsigned int j = 0; j < bandSize; j++)
+                    band[j] = ~band[j];
+                /* Do the encoding with algo0xe. */
+                plane = algo->compress(request, band, pageWidth, bandHeight);
+            }
+
             if (plane) {
                 plane->setColorNr(i + 1);
                 if (!current)
@@ -231,6 +251,7 @@ bool compressPage(const Request& request, Page* page)
 {
     switch(page->compression()) {
         case 0x0D:
+        case 0x0E:
         case 0x11:
             return _compressBandedPage(request, page);
         case 0x13:

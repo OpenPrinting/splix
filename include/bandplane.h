@@ -104,6 +104,7 @@ class BandPlane
         /**
          * @return the compression algorithm used.
          */
+        unsigned char           compression() const {return _compression;}
 
     public:
         /**

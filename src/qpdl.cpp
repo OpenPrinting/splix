@@ -31,17 +31,17 @@
 
 static bool _renderBand(const Request& request, const Band* band, bool mono)
 {
-    unsigned long version, subVersion, compression, size, dataSize, checkSum;
+    unsigned long version, subVersion, size, dataSize, checkSum;
     bool color, headerSent=false;
     unsigned char header[0x20];
     const BandPlane *plane;
 
-    compression = band->parent()->compression();
     version = request.printer()->qpdlVersion();
     color = request.printer()->color();
-    subVersion = compression == 0x13 ? 3 : 0;
+    subVersion = band->parent()->compression() == 0x13 ? 3 : 0;
 
     for (unsigned int i=0; i < band->planesNr(); i++) {
+        unsigned long compression;
         bool nextBand = false;
 
         // Get the plane
@@ -50,6 +50,7 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
             ERRORMSG(_("Inconsistent data. Operation aborted"));
             return false;
         }
+        compression = plane->compression();
         checkSum = plane->checksum();
 
         // Check if there is a next band for that color
@@ -71,7 +72,7 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
 
         // Calculate the data size
         dataSize = plane->dataSize();
-        if (compression != 0x0D)
+        if (compression != 0x0D && compression != 0x0E)
             dataSize += 4;              // Data signature
         if (version > 0) {
             dataSize += 4;              // Checksum
@@ -91,12 +92,12 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
             size = 0x6;
         } else
             size = 0x0;
-            // Add color information if it's a color printer
+        // Add color information if it's a color printer
         if (color) {
             header[size] = mono ? 4 : plane->colorNr(); // Color number
             size++;
         }
-            // Append the last information and send the header
+        // Append the last information and send the header
         header[size+0] = compression;               // Compression algorithm
         header[size+1] = dataSize >> 24;            // Data size 24 - 31
         header[size+2] = dataSize >> 16;            // Data size 16 - 23
@@ -108,7 +109,7 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
         }
 
         // Send the sub-header
-        if (compression != 0x0D) {
+        if (compression != 0x0D && compression != 0x0E) {
             switch (plane->endian()) {
                 case BandPlane::Dependant:
                     *(uint32_t *)&header = (uint32_t)(0x09ABCDEF + 

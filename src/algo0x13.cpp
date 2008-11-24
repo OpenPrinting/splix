@@ -49,6 +49,7 @@ void Algo0x13::_callback(unsigned char *data, size_t len, void *arg)
         bandList->band = new BandPlane();
         bandList->band->setData(tmp, len);
         bandList->band->setEndian(BandPlane::BigEndian);
+        bandList->band->setCompression(0x13);
         bandList->next = NULL;
         *(info->list) = bandList;
         info->last = bandList;
@@ -71,6 +72,7 @@ void Algo0x13::_callback(unsigned char *data, size_t len, void *arg)
                 bandList->band = new BandPlane();
                 bandList->band->setData(info->data, info->size);
                 bandList->band->setEndian(BandPlane::BigEndian);
+                bandList->band->setCompression(0x13);
                 bandList->next = NULL;
                 info->last->next = bandList;
                 info->last = bandList;
@@ -148,6 +150,7 @@ BandPlane* Algo0x13::compress(const Request& request, unsigned char *data,
             bandList->band = new BandPlane();
             bandList->band->setData(info.data, info.size);
             bandList->band->setEndian(BandPlane::BigEndian);
+            bandList->band->setCompression(0x13);
             bandList->next = NULL;
             info.last->next = bandList;
         }
