@@ -6,8 +6,9 @@ rastertoqpdl_SRC	+= src/rastertoqpdl.cpp src/request.cpp \
 			   src/printer.cpp src/qpdl.cpp src/document.cpp \
 			   src/core.cpp src/compress.cpp src/algorithm.cpp \
 			   src/ppdfile.cpp src/page.cpp src/colors.cpp \
-			   src/band.cpp src/bandplane.cpp src/algo0x11.cpp \
-			   src/cache.cpp src/rendering.cpp src/semaphore.cpp \
-			   src/algo0x13.cpp src/algo0x0d.cpp
+			   src/band.cpp src/bandplane.cpp src/cache.cpp \
+			   src/rendering.cpp src/semaphore.cpp \
+			   src/algo0x0d.cpp src/algo0x0e.cpp src/algo0x11.cpp \
+			   src/algo0x13.cpp
 
 pstoqpdl_SRC		+= src/pstoqpdl.cpp src/ppdfile.cpp
