@@ -3,6 +3,9 @@ Mon Nov 24 01:15:01 2008 Aurélien Croc <programmation AT ap2c DOT org>
 		Lots of bug corrected since Feb 10th
 	* Add:
 		- Support for printer which use the algorithm 0x0D
+		- Support for printer which use the algorithm 0x0E
+		- Localization of the PPD in brazilian portuguese
+
 Sun Feb 10 18:25:47 2008 Aurélien Croc <programmation AT ap2c DOT org>
 	* Driver rewritten from scratch
 	* Improvment:
