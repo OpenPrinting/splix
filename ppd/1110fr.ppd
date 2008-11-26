@@ -171,7 +171,7 @@
 *OpenUI *ColorModel/Mode couleur: PickOne
 *OrderDependency: 10.0 AnySetup *ColorModel
 *DefaultColorModel: Gray
-*ColorModel Gray/Niveau de gris: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 17>>setpagedevice"
+*ColorModel Gray/Niveau de gris: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 13>>setpagedevice"
 *CloseUI: *ColorModel
 *OpenUI *Resolution: PickOne
 *OrderDependency: 10.0 AnySetup *Resolution

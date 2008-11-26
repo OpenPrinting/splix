@@ -427,3 +427,9 @@ msgstr "TRANSLATE Phaser 3160"
 msgid "ML-1640"
 msgstr "TRANSLATE ML-1640"
 
+msgid "SCX-4200"
+msgstr "TRANSLATE SCX-4200"
+
+msgid "WorkCentre 3119"
+msgstr "TRANSLATE WorkCentre 3119"
+

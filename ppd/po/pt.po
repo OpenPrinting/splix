@@ -433,3 +433,6 @@ msgstr "SCX-4200"
 msgid "Air pressure"
 msgstr "Pressão Atmosférica"
 
+msgid "ML-1640"
+msgstr "TRANSLATE ML-1640"
+
