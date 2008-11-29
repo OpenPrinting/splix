@@ -130,11 +130,11 @@ static bool _compressBandedPage(const Request& request, Page* page)
             } else {
                 for (unsigned int y=0; y < localHeight; y++) {
                     for (unsigned int x=0; x < lineWidthInB - hardMarginXInB; x++) {
-                        band[x + y * (lineWidthInB - hardMarginXInB)] = planes[i][index + x +
+                        band[x + y * lineWidthInB] = planes[i][index + x +
                             hardMarginXInB + y * lineWidthInB];
                     }
                     for (unsigned int x=lineWidthInB - hardMarginXInB; x < lineWidthInB; x++)
-                        band[x + y * (lineWidthInB - hardMarginXInB)]  = 0;
+                        band[x + y * lineWidthInB]  = 0;
                 }
             }
 
