@@ -139,8 +139,10 @@ static bool _compressBandedPage(const Request& request, Page* page)
             }
 
             // Does the band is empty?
-            if (_isEmptyBand(band, bandSize))
+            if (_isEmptyBand(band, bandSize)) {
+                delete algo;
                 continue;
+            }
 
             // Check if bytes have to be reversed
             if (algo->inverseByte())
