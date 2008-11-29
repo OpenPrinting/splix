@@ -272,6 +272,7 @@ bool Printer::sendPJLHeader(const Request& request) const
 bool Printer::sendPJLFooter(const Request& request) const
 {
     printf("%s", _endPJL);
+    fflush(stdout);
 
     return true;
 }
