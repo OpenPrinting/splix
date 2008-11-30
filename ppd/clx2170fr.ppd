@@ -2,7 +2,7 @@
 *% PPD file for CLX-2170 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.3.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "SpliX V. 2.0.0"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "clx2170.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung CLX-2170"
 *ShortNickName: "Samsung CLX-2170"
-*NickName: "Samsung CLX-2170, 2.0.0"
+*NickName: "Samsung CLX-2170, SpliX V. 2.0.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -235,4 +235,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clx2170.ppd, 13165 bytes.
+*% End of clx2170.ppd, 13183 bytes.

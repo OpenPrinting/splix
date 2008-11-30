@@ -82,7 +82,7 @@ bool PPDFile::open(const char *file, const char *version, const char *useropts)
         return false;
     }
     if (strcmp(fileVersion, version)) {
-        ERRORMSG(_("Invalid PPD file version: Splix V. %s but the PPD file "
+        ERRORMSG(_("Invalid PPD file version: %s but the PPD file "
             "is designed for SpliX V. %s"), version, fileVersion);
         ppdClose(_ppd);
         _ppd = NULL;

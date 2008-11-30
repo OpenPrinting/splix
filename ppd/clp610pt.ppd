@@ -2,7 +2,7 @@
 *% PPD file for CLP-610 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.3.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "SpliX V. 2.0.0"
 *LanguageVersion: Portuguese_Brazil
 *LanguageEncoding: ISOLatin1
 *PCFileName: "clp610.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung CLP-610"
 *ShortNickName: "Samsung CLP-610"
-*NickName: "Samsung CLP-610, 2.0.0"
+*NickName: "Samsung CLP-610, SpliX V. 2.0.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -260,4 +260,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp610.ppd, 14548 bytes.
+*% End of clp610.ppd, 14566 bytes.

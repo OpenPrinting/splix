@@ -2,7 +2,7 @@
 *% PPD file for 1110 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.3.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "SpliX V. 2.0.0"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "1110.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "Dell"
 *ModelName: "Dell 1110"
 *ShortNickName: "Dell 1110"
-*NickName: "Dell 1110, 2.0.0"
+*NickName: "Dell 1110, SpliX V. 2.0.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -253,4 +253,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of 1110.ppd, 13568 bytes.
+*% End of 1110.ppd, 13586 bytes.

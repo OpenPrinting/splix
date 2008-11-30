@@ -416,20 +416,20 @@ msgid "High"
 msgstr "Forte"
 
 msgid "ML-2251"
-msgstr "TRANSLATE ML-2251"
+msgstr "ML-2251"
 
 msgid "CLP-550"
-msgstr "TRANSLATE CLP-550"
+msgstr "CLP-550"
 
 msgid "Phaser 3160"
-msgstr "TRANSLATE Phaser 3160"
+msgstr "Phaser 3160"
 
 msgid "ML-1640"
-msgstr "TRANSLATE ML-1640"
+msgstr "ML-1640"
 
 msgid "SCX-4200"
-msgstr "TRANSLATE SCX-4200"
+msgstr "SCX-4200"
 
 msgid "WorkCentre 3119"
-msgstr "TRANSLATE WorkCentre 3119"
+msgstr "WorkCentre 3119"
 

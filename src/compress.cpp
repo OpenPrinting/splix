@@ -58,9 +58,9 @@ static bool _compressBandedPage(const Request& request, Page* page)
     unsigned char colors;
 
     colors = page->colorsNr();
-    hardMarginX = ((unsigned long)ceill(page->convertToXResolution(request.
+    hardMarginX = ((unsigned long)ceil(page->convertToXResolution(request.
         printer()->hardMarginX())) + 7) & ~7;
-    hardMarginY = ceill(page->convertToYResolution(request.printer()->
+    hardMarginY = ceil(page->convertToYResolution(request.printer()->
         hardMarginY()));
     hardMarginXInB = hardMarginX / 8;
     pageWidth = page->width();
@@ -196,9 +196,9 @@ static bool _compressWholePage(const Request& request, Page* page)
     Band *current = NULL;
     Algo0x13 algo[4];
 
-    hardMarginX = ((unsigned long)ceill(page->convertToXResolution(request.
+    hardMarginX = ((unsigned long)ceil(page->convertToXResolution(request.
         printer()->hardMarginX())) + 7) & ~7;
-    hardMarginY = ceill(page->convertToYResolution(request.printer()->
+    hardMarginY = ceil(page->convertToYResolution(request.printer()->
         hardMarginY()));
     hardMarginXInB = hardMarginX / 8;
     pageWidth = page->width() - hardMarginX * 2;

@@ -2,7 +2,7 @@
 *% PPD file for CLP-200 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.3.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "SpliX V. 2.0.0"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "clp200.ppd"
@@ -12,7 +12,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung CLP-200"
 *ShortNickName: "Samsung CLP-200"
-*NickName: "Samsung CLP-200, 2.0.0"
+*NickName: "Samsung CLP-200, SpliX V. 2.0.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -235,4 +235,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp200.ppd, 13158 bytes.
+*% End of clp200.ppd, 13176 bytes.

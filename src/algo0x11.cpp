@@ -144,7 +144,7 @@ bool Algo0x11::_compress(const unsigned char *data, unsigned long size,
                 r += bestCompCounter;
                 bestCompCounter -= 3;
                 out[w] = COMPRESSION_FLAG | (bestCompCounter & 0x7F);
-                out[w+1] = ((bestCompCounter >> 1) & 0xC0) | bestPtr & 0x3F;
+                out[w+1] = ((bestCompCounter >> 1) & 0xC0) | (bestPtr & 0x3F);
                 w += 2;
                 if (rawDataCounter) {
                     out[rawDataCounterPtr] = rawDataCounter - 1;

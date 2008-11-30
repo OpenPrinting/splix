@@ -2,7 +2,7 @@
 *% PPD file for ML-1640 with CUPS.
 *% Created by the CUPS PPD Compiler v1.2.3.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "SpliX V. 2.0.0"
 *LanguageVersion: Portuguese_Brazil
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml1640.ppd"
@@ -10,9 +10,9 @@
 *Product: "(GPL Ghostscript)"
 *Product: "(GNU Ghostscript)"
 *Manufacturer: "Samsung"
-*ModelName: "Samsung TRANSLATE ML-1640"
-*ShortNickName: "Samsung TRANSLATE ML-1640"
-*NickName: "Samsung TRANSLATE ML-1640, 2.0.0"
+*ModelName: "Samsung ML-1640"
+*ShortNickName: "Samsung ML-1640"
+*NickName: "Samsung ML-1640, SpliX V. 2.0.0"
 *PSVersion: "(3010.000) 705"
 *PSVersion: "(3010.000) 707"
 *PSVersion: "(3010.000) 815"
@@ -253,4 +253,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1640.ppd, 14013 bytes.
+*% End of ml1640.ppd, 14001 bytes.

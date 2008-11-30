@@ -96,12 +96,12 @@ Page* Document::getNextRawPage(const Request& request)
     documentWidth = (header.cupsWidth + 7) & ~7;
     documentHeight = header.cupsHeight;
     lineSize = header.cupsBytesPerLine / colors;
-    pageWidth = ((unsigned long)ceill(page->convertToXResolution(request.
+    pageWidth = ((unsigned long)ceil(page->convertToXResolution(request.
         printer()->pageWidth())) + 7) & ~7;
-    pageHeight = ceill(page->convertToYResolution(request.printer()->
+    pageHeight = ceil(page->convertToYResolution(request.printer()->
         pageHeight()));
-    marginWidthInB =(ceill(page->convertToXResolution(header.Margins[0]))+7)/8; 
-    marginHeight = ceill(page->convertToYResolution(header.Margins[1]));
+    marginWidthInB =(ceil(page->convertToXResolution(header.Margins[0]))+7)/8; 
+    marginHeight = ceil(page->convertToYResolution(header.Margins[1]));
     pageWidthInB = (pageWidth + 7) / 8;
     planeSize = pageWidthInB * pageHeight;
     page->setWidth(pageWidth);
