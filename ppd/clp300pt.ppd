@@ -1,0 +1,240 @@
+*PPD-Adobe: "4.3"
+*% PPD file for CLP-300 with CUPS.
+*% Created by the CUPS PPD Compiler v1.2.3.
+*FormatVersion: "4.3"
+*FileVersion: "2.0.0"
+*LanguageVersion: Portuguese_Brazil
+*LanguageEncoding: ISOLatin1
+*PCFileName: "clp300.ppd"
+*Product: "(ESP Ghostscript)"
+*Product: "(GPL Ghostscript)"
+*Product: "(GNU Ghostscript)"
+*Manufacturer: "Samsung"
+*ModelName: "Samsung CLP-300"
+*ShortNickName: "Samsung CLP-300"
+*NickName: "Samsung CLP-300, 2.0.0"
+*PSVersion: "(3010.000) 705"
+*PSVersion: "(3010.000) 707"
+*PSVersion: "(3010.000) 815"
+*PSVersion: "(3010.000) 853"
+*LanguageLevel: "3"
+*ColorDevice: True
+*DefaultColorSpace: RGB
+*FileSystem: False
+*Throughput: "4"
+*LandscapeOrientation: Plus90
+*TTRasterizer: Type42
+*% Driver-defined attributes...
+*QPDL BandSize: "128"
+*PJL BeginPJL: "<1B>%-12345X"
+*PJL EndPJL: "<09><1B>%-12345X"
+*QPDL PacketSize: "512"
+*QPDL ManualDuplex: "On"
+*QPDL QPDLVersion: "2"
+*General DocHeaderValues: "<0><0><1>"
+*General CMSFile: "CLP-300"
+*cupsVersion: 1.3
+*cupsModelNumber: 0
+*cupsManualCopies: False
+*cupsFilter: "application/vnd.cups-postscript 0 pstoqpdl"
+*OpenUI *PageSize/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageSize
+*DefaultPageSize: Letter
+*PageSize Letter/Carta - 8.5x11in: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageSize Legal/Legal - 8.5x14in: "<</PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageSize A4/A4 - 210x297mm: "<</PageSize[595 842]/ImagingBBox null>>setpagedevice"
+*PageSize Executive/Executivo - 7.25x10.5in: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
+*PageSize Ledger/Ledger - 17x11in: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
+*PageSize A3/A3 - 297x420mm: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
+*PageSize Env10/Envelope Número 10 - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageSize Monarch/Monarca - 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
+*PageSize C5/C5 - 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
+*PageSize DL/DL - 110x220mm: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
+*PageSize B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
+*PageSize B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
+*PageSize EnvISOB5/Envelope ISOB5 - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageSize Postcard/Cartão Postal - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
+*PageSize DoublePostcardRotated/Cartão Postal Duplo (Rotacionado) - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
+*PageSize A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
+*PageSize A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
+*PageSize B6/B6 - 128x182mm: "<</PageSize[363 516]/ImagingBBox null>>setpagedevice"
+*PageSize C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
+*PageSize Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
+*PageSize EnvPersonal/Envelope Pessoal - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
+*PageSize Env9/Envelope Número 9 - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
+*PageSize Oficio/Ofício - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageSize
+*OpenUI *PageRegion/Media Size: PickOne
+*OrderDependency: 10 AnySetup *PageRegion
+*DefaultPageRegion: Letter
+*PageRegion Letter/Carta - 8.5x11in: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion Legal/Legal - 8.5x14in: "<</PageSize[612 1008]/ImagingBBox null>>setpagedevice"
+*PageRegion A4/A4 - 210x297mm: "<</PageSize[595 842]/ImagingBBox null>>setpagedevice"
+*PageRegion Executive/Executivo - 7.25x10.5in: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
+*PageRegion Ledger/Ledger - 17x11in: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
+*PageRegion A3/A3 - 297x420mm: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
+*PageRegion Env10/Envelope Número 10 - 4.13x9.5in: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageRegion Monarch/Monarca - 3.875x7.5in: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
+*PageRegion C5/C5 - 162x229mm: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
+*PageRegion DL/DL - 110x220mm: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
+*PageRegion B4/B4 - 257x364mm: "<</PageSize[729 1032]/ImagingBBox null>>setpagedevice"
+*PageRegion B5/B5 - 182x257mm: "<</PageSize[516 729]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvISOB5/Envelope ISOB5 - 176x250mm: "<</PageSize[499 709]/ImagingBBox null>>setpagedevice"
+*PageRegion Postcard/Cartão Postal - 100x148mm: "<</PageSize[284 419]/ImagingBBox null>>setpagedevice"
+*PageRegion DoublePostcardRotated/Cartão Postal Duplo (Rotacionado) - 148x200mm: "<</PageSize[420 567]/ImagingBBox null>>setpagedevice"
+*PageRegion A5/A5 - 148x210mm: "<</PageSize[420 595]/ImagingBBox null>>setpagedevice"
+*PageRegion A6/A6 - 105x148mm: "<</PageSize[297 420]/ImagingBBox null>>setpagedevice"
+*PageRegion B6/B6 - 128x182mm: "<</PageSize[363 516]/ImagingBBox null>>setpagedevice"
+*PageRegion C6/C6 - 114x162mm: "<</PageSize[323 459]/ImagingBBox null>>setpagedevice"
+*PageRegion Folio/Folio - 210x330mm: "<</PageSize[595 935]/ImagingBBox null>>setpagedevice"
+*PageRegion EnvPersonal/Envelope Pessoal - 3.625x6.5in: "<</PageSize[261 468]/ImagingBBox null>>setpagedevice"
+*PageRegion Env9/Envelope Número 9 - 3.875x8.875in: "<</PageSize[279 639]/ImagingBBox null>>setpagedevice"
+*PageRegion Oficio/Ofício - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageRegion
+*DefaultImageableArea: Letter
+*ImageableArea Letter/Carta - 8.5x11in: "10.75 15.00 601.25 777.00"
+*ImageableArea Legal/Legal - 8.5x14in: "10.75 15.00 601.25 993.00"
+*ImageableArea A4/A4 - 210x297mm: "10.75 15.00 584.25 827.00"
+*ImageableArea Executive/Executivo - 7.25x10.5in: "10.75 15.00 511.25 741.00"
+*ImageableArea Ledger/Ledger - 17x11in: "10.75 15.00 1213.25 777.00"
+*ImageableArea A3/A3 - 297x420mm: "10.75 15.00 831.25 1176.00"
+*ImageableArea Env10/Envelope Número 10 - 4.13x9.5in: "10.75 15.00 286.25 669.00"
+*ImageableArea Monarch/Monarca - 3.875x7.5in: "10.75 15.00 268.25 525.00"
+*ImageableArea C5/C5 - 162x229mm: "10.75 15.00 448.25 634.00"
+*ImageableArea DL/DL - 110x220mm: "10.75 15.00 301.25 609.00"
+*ImageableArea B4/B4 - 257x364mm: "10.75 15.00 718.25 1017.00"
+*ImageableArea B5/B5 - 182x257mm: "10.75 15.00 505.25 714.00"
+*ImageableArea EnvISOB5/Envelope ISOB5 - 176x250mm: "10.75 15.00 488.25 694.00"
+*ImageableArea Postcard/Cartão Postal - 100x148mm: "10.75 15.00 273.25 404.00"
+*ImageableArea DoublePostcardRotated/Cartão Postal Duplo (Rotacionado) - 148x200mm: "10.75 15.00 409.25 552.00"
+*ImageableArea A5/A5 - 148x210mm: "10.75 15.00 409.25 580.00"
+*ImageableArea A6/A6 - 105x148mm: "10.75 15.00 286.25 405.00"
+*ImageableArea B6/B6 - 128x182mm: "10.75 15.00 352.25 501.00"
+*ImageableArea C6/C6 - 114x162mm: "10.75 15.00 312.25 444.00"
+*ImageableArea Folio/Folio - 210x330mm: "10.75 15.00 584.25 920.00"
+*ImageableArea EnvPersonal/Envelope Pessoal - 3.625x6.5in: "10.75 15.00 250.25 453.00"
+*ImageableArea Env9/Envelope Número 9 - 3.875x8.875in: "10.75 15.00 268.25 624.00"
+*ImageableArea Oficio/Ofício - 216x340mm: "10.75 15.00 601.25 957.00"
+*DefaultPaperDimension: Letter
+*PaperDimension Letter/Carta - 8.5x11in: "612.00 792.00"
+*PaperDimension Legal/Legal - 8.5x14in: "612.00 1008.00"
+*PaperDimension A4/A4 - 210x297mm: "595.00 842.00"
+*PaperDimension Executive/Executivo - 7.25x10.5in: "522.00 756.00"
+*PaperDimension Ledger/Ledger - 17x11in: "1224.00 792.00"
+*PaperDimension A3/A3 - 297x420mm: "842.00 1191.00"
+*PaperDimension Env10/Envelope Número 10 - 4.13x9.5in: "297.00 684.00"
+*PaperDimension Monarch/Monarca - 3.875x7.5in: "279.00 540.00"
+*PaperDimension C5/C5 - 162x229mm: "459.00 649.00"
+*PaperDimension DL/DL - 110x220mm: "312.00 624.00"
+*PaperDimension B4/B4 - 257x364mm: "729.00 1032.00"
+*PaperDimension B5/B5 - 182x257mm: "516.00 729.00"
+*PaperDimension EnvISOB5/Envelope ISOB5 - 176x250mm: "499.00 709.00"
+*PaperDimension Postcard/Cartão Postal - 100x148mm: "284.00 419.00"
+*PaperDimension DoublePostcardRotated/Cartão Postal Duplo (Rotacionado) - 148x200mm: "420.00 567.00"
+*PaperDimension A5/A5 - 148x210mm: "420.00 595.00"
+*PaperDimension A6/A6 - 105x148mm: "297.00 420.00"
+*PaperDimension B6/B6 - 128x182mm: "363.00 516.00"
+*PaperDimension C6/C6 - 114x162mm: "323.00 459.00"
+*PaperDimension Folio/Folio - 210x330mm: "595.00 935.00"
+*PaperDimension EnvPersonal/Envelope Pessoal - 3.625x6.5in: "261.00 468.00"
+*PaperDimension Env9/Envelope Número 9 - 3.875x8.875in: "279.00 639.00"
+*PaperDimension Oficio/Ofício - 216x340mm: "612.00 972.00"
+*RequiresPageRegion All: True
+*OpenUI *InputSlot/Media Source: PickOne
+*OrderDependency: 10.0 AnySetup *InputSlot
+*DefaultInputSlot: Auto
+*InputSlot Auto/Seleção Automática: "<</MediaPosition 1>>setpagedevice"
+*InputSlot Manual/Alimentação Manual: "<</MediaPosition 2>>setpagedevice"
+*CloseUI: *InputSlot
+*OpenUI *MediaType/Tipo de Papel: PickOne
+*OrderDependency: 10.0 AnySetup *MediaType
+*DefaultMediaType: OFF
+*MediaType OFF/Usar a Definição da Impressora: ""
+*MediaType NORMAL/Papel normal: ""
+*MediaType THICK/Papel grosso: ""
+*MediaType THIN/Papel Delgado (Fino): ""
+*MediaType BOND/Papel Bond: ""
+*MediaType OHP/Transparência: ""
+*MediaType CARD/Cartolina: ""
+*MediaType LABEL/Etiqueta: ""
+*MediaType USED/Papel Pré-Impresso: ""
+*MediaType COLOR/Cor: ""
+*MediaType ENV/Envelope: ""
+*MediaType COTTON/Algodão: ""
+*MediaType RECYCLED/Papel Reciclado: ""
+*MediaType ARCHIVE/Arquivamento: ""
+*CloseUI: *MediaType
+*OpenUI *Altitude/Pressão Atmosférica: PickOne
+*OrderDependency: 10.0 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/Pressão Elevada (Baixa Altitude): ""
+*Altitude HIGH/Pressão Reduzida (Grande Altitude): ""
+*CloseUI: *Altitude
+*OpenUI *PowerSave/Economia de Energia: PickOne
+*OrderDependency: 10.0 AnySetup *PowerSave
+*DefaultPowerSave: 5
+*PowerSave False/Desligado: ""
+*PowerSave 5/5 Minutos: ""
+*PowerSave 10/10 Minutos: ""
+*PowerSave 15/15 Minutos: ""
+*PowerSave 30/30 Minutos: ""
+*PowerSave 45/45 Minutos: ""
+*PowerSave 60/1 Hora: ""
+*CloseUI: *PowerSave
+*OpenUI *Resolution: PickOne
+*OrderDependency: 10.0 AnySetup *Resolution
+*DefaultResolution: 600dpi
+*Resolution 600dpi/600 PPP: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 1200dpi/1200 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*Resolution 300dpi/300 PPP: "<</HWResolution[300 300]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+*CloseUI: *Resolution
+*OpenUI *ColorModel/Modo Cor: PickOne
+*OrderDependency: 10.0 AnySetup *ColorModel
+*DefaultColorModel: CMYK
+*ColorModel Gray/Tons de Cinza: "<</cupsColorSpace 3/cupsColorOrder 0/cupsCompression 19>>setpagedevice"
+*ColorModel CMYK/Inativo: "<</cupsColorSpace 6/cupsColorOrder 1/cupsCompression 19>>setpagedevice"
+*CloseUI: *ColorModel
+*OpenUI *Duplex/Impressão em Frente e Verso: PickOne
+*OrderDependency: 10.0 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex None/Frente (Simples): "<</Duplex false>>setpagedevice"
+*Duplex DuplexNoTumble/Borda Longa (Retrato): "<</Duplex true/Tumble false>>setpagedevice"
+*Duplex DuplexTumble/Borda Curta (Paisagem): "<</Duplex true/Tumble true>>setpagedevice"
+*CloseUI: *Duplex
+*DefaultFont: Courier
+*Font AvantGarde-Book: Standard "(1.05)" Standard ROM
+*Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
+*Font AvantGarde-Demi: Standard "(1.05)" Standard ROM
+*Font AvantGarde-DemiOblique: Standard "(1.05)" Standard ROM
+*Font Bookman-Demi: Standard "(1.05)" Standard ROM
+*Font Bookman-DemiItalic: Standard "(1.05)" Standard ROM
+*Font Bookman-Light: Standard "(1.05)" Standard ROM
+*Font Bookman-LightItalic: Standard "(1.05)" Standard ROM
+*Font Courier: Standard "(1.05)" Standard ROM
+*Font Courier-Bold: Standard "(1.05)" Standard ROM
+*Font Courier-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Courier-Oblique: Standard "(1.05)" Standard ROM
+*Font Helvetica: Standard "(1.05)" Standard ROM
+*Font Helvetica-Bold: Standard "(1.05)" Standard ROM
+*Font Helvetica-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-Bold: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Narrow-Oblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Oblique: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Bold: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-BoldItalic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Italic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Roman: Standard "(1.05)" Standard ROM
+*Font Palatino-Bold: Standard "(1.05)" Standard ROM
+*Font Palatino-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Palatino-Italic: Standard "(1.05)" Standard ROM
+*Font Palatino-Roman: Standard "(1.05)" Standard ROM
+*Font Symbol: Special "(001.005)" Special ROM
+*Font Times-Bold: Standard "(1.05)" Standard ROM
+*Font Times-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Times-Italic: Standard "(1.05)" Standard ROM
+*Font Times-Roman: Standard "(1.05)" Standard ROM
+*Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
+*Font ZapfDingbats: Special "(001.005)" Special ROM
+*% End of clp300.ppd, 13527 bytes.
