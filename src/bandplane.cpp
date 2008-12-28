@@ -70,6 +70,7 @@ bool BandPlane::swapToDisk(int fd)
     write(fd, _data, _size);
     write(fd, &_checksum, sizeof(_checksum));
     write(fd, &_endian, sizeof(_endian));
+    write(fd, &_compression, sizeof(_compression));
     return true;
 }
 
@@ -86,6 +87,7 @@ BandPlane* BandPlane::restoreIntoMemory(int fd)
     plane->_data = data;
     read(fd, &plane->_checksum, sizeof(plane->_checksum));
     read(fd, &plane->_endian, sizeof(plane->_endian));
+    read(fd, &plane->_compression, sizeof(plane->_compression));
 
     return plane;
 }
