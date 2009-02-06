@@ -30,7 +30,6 @@ Manufacturer "Samsung"
         Attribute General DocHeaderValues "<0><2><1>"
         
         #import "manualduplex.defs"
-        Resolution k 1 0 0 0 "300dpi/300 DPI"
         {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
  
