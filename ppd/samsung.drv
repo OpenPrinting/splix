@@ -31,9 +31,15 @@ Manufacturer "Samsung"
         
         #import "manualduplex.defs"
         Resolution k 1 0 0 0 "300dpi/300 DPI"
-
-        ModelName "SCX-4200"
-        PCFileName "scx4200.ppd"
+        {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+ 
+            ModelName "SCX-4200"
+            PCFileName "scx4200.ppd"
+        } {
+            ModelName "SCX-4500"
+            PCFileName "scx4500.ppd"
+        }
 
     // Monochrome printers V. 2 (new algorithms)
     } {

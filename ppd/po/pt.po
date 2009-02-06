@@ -436,3 +436,6 @@ msgstr "Pressão Atmosférica"
 msgid "ML-1640"
 msgstr "ML-1640"
 
+msgid "SCX-4500"
+msgstr "SCX-4500"
+
