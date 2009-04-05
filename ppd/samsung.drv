@@ -71,6 +71,9 @@ Manufacturer "Samsung"
                     #import "srtmode.defs"
                     ModelName "ML-1750"
                     PCFileName "ml1750.ppd"
+                } {
+                    ModelName "ML-2571"
+                    PCFileName "ml2571.ppd"
                 }
             } {
                 Resolution k 1 0 0 0 "1200dpi/1200 DPI"

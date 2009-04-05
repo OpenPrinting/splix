@@ -433,6 +433,8 @@ msgstr "SCX-4200"
 msgid "WorkCentre 3119"
 msgstr "WorkCentre 3119"
 
+msgid "ML-2571"
+msgstr "ML-2571"
+
 msgid "SCX-4500"
 msgstr "SCX-4500"
-
