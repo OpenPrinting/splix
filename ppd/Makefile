@@ -11,7 +11,7 @@ SAMSUNG		:= clp500 clp550 clp510 clp610 clp610nd ml1510 ml1520 ml1610 \
 		   ml1630 ml1640 ml1710 ml1740 ml1750 ml2010 ml2015 ml2150 \
 		   ml2240 ml2250 ml2251 ml2510 ml2550 ml2571 ml3050 ml3051 \
 		   ml3051nd ml3560 scx4100 scx4200 scx4300 scx4500 sf565p
-XEROX		:= ph3115 ph3116 ph3117 ph3120 ph3121 ph3122 ph3124 ph3130
+XEROX		:= ph3115 ph3116 ph3117 ph3120 ph3121 ph3122 ph3124 ph3130 \
 		   ph3150 ph3160 ph3420 ph3425 ph5500 ph6100 wc3119
 DRIVERSEXT	:= ppd
 POEXT		:= po
