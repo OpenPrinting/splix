@@ -50,16 +50,17 @@ Algo0x0D::~Algo0x0D()
 inline void Algo0x0D::writeTwoBytesPacket( unsigned char * output,
                             unsigned long & outputSize,
                             long int accumulatedHorizontalOffsetValue,
-                            long int displacement,
+                            long int accumulatedVerticalOffsetValue,
                             unsigned long accumulatedRunCount )
 {
     /* Encodes the run count and vertical displacement in the first byte. */
     output[ outputSize++ ] =
-        ( unsigned char )( ( displacement << 6 ) | accumulatedRunCount );
+        ( unsigned char )( ( accumulatedVerticalOffsetValue << 6 ) |
+	                     accumulatedRunCount );
 
     /* Encodes the offset value in the second byte. This is signed. */
     output[ outputSize++ ] =
-                ( unsigned char )( 0xFF & accumulatedHorizontalOffsetValue );
+        ( unsigned char )( 0xFF & accumulatedHorizontalOffsetValue );
 }
 
 
@@ -71,7 +72,7 @@ inline void Algo0x0D::writeTwoBytesPacket( unsigned char * output,
 inline void Algo0x0D::writeFourBytesPacket( unsigned char * output,
                             unsigned long & outputSize,
                             long int accumulatedHorizontalOffsetValue,
-                            long int displacement,
+                            long int accumulatedVerticalOffsetValue,
                             unsigned long accumulatedRunCount )
 {
     /* Encodes the upper 6-bit value of the offset value. */
@@ -84,8 +85,8 @@ inline void Algo0x0D::writeFourBytesPacket( unsigned char * output,
 
     /* Encode the run count as a unsigned 12-bit value in the third byte. */
     output[ outputSize++ ] = 0x80 |
-            ( unsigned char )( ( displacement << 4 ) |
-                                                ( accumulatedRunCount >> 8 ) );
+            ( unsigned char )( ( accumulatedVerticalOffsetValue << 4 ) |
+                               ( accumulatedRunCount >> 8 ) );
     /* Encode the last byte of run count. */
     output[ outputSize++ ] =
             ( unsigned char )( 0x000000FF & accumulatedRunCount );
@@ -100,7 +101,7 @@ inline void Algo0x0D::writeFourBytesPacket( unsigned char * output,
  */
 inline void Algo0x0D::writeSixBytesPacket( unsigned char * output,
                             unsigned long & outputSize,
-                            long int displacement,
+                            long int accumulatedCombinedOffsetValue,
                             unsigned long accumulatedRunCount )
 {
     /* Write the packet header constant in the first byte. */
@@ -108,18 +109,21 @@ inline void Algo0x0D::writeSixBytesPacket( unsigned char * output,
 
     /* Encodes the upper 8-bit value of the 24-bit offset value. */
     output[ outputSize++ ] =
-                ( unsigned char )( ( 0x00FF0000 & displacement ) >> 16 );
+                ( unsigned char )( ( 0x00FF0000 & 
+                                     accumulatedCombinedOffsetValue ) >> 16 );
 
     /* Encodes the middle 8-bit value of the 24-bit offset value. */
     output[ outputSize++ ] =
-                ( unsigned char )( ( 0x0000FF00 & displacement ) >> 8 );
+                ( unsigned char )( ( 0x0000FF00 &
+                                     accumulatedCombinedOffsetValue ) >> 8 );
 
     /* Encodes the remaining 8-bit value of the 24-bit offset value. */
     output[ outputSize++ ] =
-                ( unsigned char )( 0x000000FF & displacement );
+                ( unsigned char )( 0x000000FF &
+                                   accumulatedCombinedOffsetValue );
 
     /* Encodes the run counts as unsigned 14-bit value in the fifth and
-    sixth byte. */
+       sixth byte. */
 
     /* Encodes the run counts in upper 6-bits. */
     output[ outputSize++ ] = 0xC0 |
@@ -133,7 +137,7 @@ inline void Algo0x0D::writeSixBytesPacket( unsigned char * output,
 
 
 /*
- *  Modifications: 29/06/2008, 08/07/2008.
+ *  Modifications: Jun-29-2008, Jul-08-2008, Oct-03-2009, Oct-04-2009.
  */
 inline void Algo0x0D::selectPacketSize(
                             unsigned char * output,
@@ -141,96 +145,82 @@ inline void Algo0x0D::selectPacketSize(
                             unsigned long preAccumulatedHorizontalOffsetValue,
                             unsigned long accumulatedHorizontalOffsetValue,
                             unsigned long currentHorizontalPenPosition,
-                            unsigned long pixelsLeftInScanline,
                             unsigned long accumulatedRunCount,
                             unsigned long consecutiveBlankScanLines,
                             unsigned long currentVerticalPenPosition,
                             const unsigned long wrapWidth )
 {
-    /* Verify that this is the first offset value on the scanline, but not the
-    first scanline. */
+    /* Set the initial vertical offset value. */
+    long int verticalOffsetValue = consecutiveBlankScanLines;
 
-    /* On every new scanline start, the pre-accumulated offset value is zero. */
+    /* Set the initial horizontal offset value. */
+    long int horizontalOffsetValue = accumulatedHorizontalOffsetValue;
+
+    /* Verify if this is the first formed packet of the scan-line
+       and that it is not the first top-most scan-line of the given band.
+       Can be verified because on every beginning of a scan-line work, the 
+       pre-accumulated horizontal offset value is zero. */
     if ( ( 0 == preAccumulatedHorizontalOffsetValue ) &&
-                                        ( 0 < currentVerticalPenPosition ) ) {
-        /* Evaluate distance between previous and current pen position
-        to output correct packet format. */
-        long int delta =
-            currentHorizontalPenPosition - accumulatedHorizontalOffsetValue;
+                                ( 0 < currentVerticalPenPosition ) ) {
+        /* Evaluate pixel distance between previous and current pen position
+           to find the relative horizontal offset value. */
+        horizontalOffsetValue -= currentHorizontalPenPosition;
 
-        /* Calculate necessary displacement position in correct place. */
-        long int displacement = 0;
-
-        if ( 0 >= delta ) {
-
-            /* Turn the displacement value into a positive integer value. */
-            delta = - delta;
-
-            if ( ( 127 >= delta ) && ( 63 >= accumulatedRunCount )
-                                    && ( 0 == consecutiveBlankScanLines ) ) {
-                displacement = 1;
-                writeTwoBytesPacket( output, outputSize, delta,
-                                    displacement, accumulatedRunCount );
-            } else if ( ( 8191 >= delta )
-                                    && ( 4095 >= accumulatedRunCount )
-                                    && ( 2 >= consecutiveBlankScanLines ) ) {
-                displacement = 1 + consecutiveBlankScanLines;
-                writeFourBytesPacket( output, outputSize, delta,
-                                    displacement, accumulatedRunCount );
-            } else {
-                displacement = wrapWidth *
-                        ( 1 + consecutiveBlankScanLines ) + delta;
-                writeSixBytesPacket( output, outputSize, displacement,
-                                                        accumulatedRunCount );
-            }
-
-        } else {
-
-            if ( ( 128 >= delta ) && ( 63 >= accumulatedRunCount )
-                                    && ( 0 == consecutiveBlankScanLines ) ) {
-                displacement = 1;
-                writeTwoBytesPacket( output, outputSize,
-                                    -delta,
-                                    displacement, accumulatedRunCount );
-
-            } else if ( ( 8192 >= delta )
-                                    && ( 4095 >= accumulatedRunCount )
-                                    && ( 2 >= consecutiveBlankScanLines ) ) {
-                displacement = 1 + consecutiveBlankScanLines;
-                writeFourBytesPacket( output, outputSize, -delta,
-                                    displacement, accumulatedRunCount );
-
-            } else {
-                displacement = wrapWidth *
-                    ( 1 + consecutiveBlankScanLines ) - delta;
-                writeSixBytesPacket( output, outputSize, displacement,
-                                                        accumulatedRunCount );
-
-            }
+        /* Adjust by +1, when any of the previous scan-lines is not blank.
+           Must account for three cases:
+             A - When the band begins with any number of blank scan-lines.
+             B - When the current non-blank scan-line follow a blank scan-line,
+                 but there are non-blank scan-lines previously.
+	     C - When the previous scan-line was not blank.
+           Notice that when any of the previous scan-lines is non-blank,
+           the blank scan-line counter is always less than and not equal to
+           the value of the vertical pen position. */
+        if ( consecutiveBlankScanLines < currentVerticalPenPosition ) {
+            verticalOffsetValue++;
         }
 
     } else {
 
-        /* Add the pre-accumulated offset value. */
-        unsigned long recalculatedOffset = accumulatedHorizontalOffsetValue +
-                                            preAccumulatedHorizontalOffsetValue;
-
-        /* Process the rest of packets in the scanline. */
-        if ( ( 127 >= recalculatedOffset ) && ( 63 >= accumulatedRunCount ) ) {
-            writeTwoBytesPacket( output, outputSize, recalculatedOffset, 0,
-                                                        accumulatedRunCount );
-
-        } else if ( ( 8191 >= recalculatedOffset ) &&
-                                            ( 4095 >= accumulatedRunCount ) ) {
-            writeFourBytesPacket( output, outputSize, recalculatedOffset, 0,
-                                                        accumulatedRunCount );
-
-        } else {
-            writeSixBytesPacket( output, outputSize, recalculatedOffset,
-                                                        accumulatedRunCount );
-        }
+        /* Process a sequential packet for current scan-line.
+           The pre-accumulated offset value must be added, this was the 
+           previous packet's run count value. */
+        horizontalOffsetValue += preAccumulatedHorizontalOffsetValue;
 
     }
+
+    /* Choosing the packet size. */
+    if ( ( 127 >= horizontalOffsetValue )
+                                && ( -128 <= horizontalOffsetValue ) 
+                                && ( 63 >= accumulatedRunCount )
+                                && ( 1 >= verticalOffsetValue ) ) {
+
+	/* Issue an encoded 2-byte packet. */
+        writeTwoBytesPacket( output, outputSize,
+                                horizontalOffsetValue,
+                                verticalOffsetValue,
+                                accumulatedRunCount );
+
+    } else if ( ( 8191 >= horizontalOffsetValue )
+                                && ( -8192 <= horizontalOffsetValue )
+                                && ( 4095 >= accumulatedRunCount )
+                                && ( 3 >= verticalOffsetValue ) ) {
+
+	/* Issue an encoded 4-byte packet. */
+        writeFourBytesPacket( output, outputSize,
+                                horizontalOffsetValue,
+                                verticalOffsetValue,
+                                accumulatedRunCount );
+
+    } else {
+
+        /* Issue an encoded 6-byte packet. */ 
+        writeSixBytesPacket( output, outputSize, 
+			        wrapWidth * verticalOffsetValue
+                                + horizontalOffsetValue,
+                                accumulatedRunCount );
+
+    }
+
     /* Finished one packet encoding. */
 }
 
@@ -397,7 +387,7 @@ BandPlane * Algo0x0D::compress(const Request & request, unsigned char *data,
                 selectPacketSize( output, outputSize,
                         preAccumulatedHorizontalOffsetValue,
                         accumulatedHorizontalOffsetValue,
-                        currentHorizontalPenPosition, pixelsLeftInScanline,
+                        currentHorizontalPenPosition,
                         accumulatedRunCount, consecutiveBlankScanLines,
                         currentVerticalPenPosition, wrapWidth );
             } else {

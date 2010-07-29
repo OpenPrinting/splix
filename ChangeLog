@@ -1,5 +1,22 @@
 Thu Jul 29 11:56:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Applied patch from SourceForge (ID: 2880411):
+		Reorganized code and handle of white scanlines issue.
+
+		A printable page is divided in a number of horizontal bands
+		that is 128 pixels height in 600dpi or 64 pixels height at
+		300dpi mode.
+		There was a case error in the encoder when the band begins
+		with blank scan-lines, this made the encoded band as if there
+		was exactly 129 pixels in height (or 65 pixels at 300 dpi).
+		When this 129th scan-line was decoded on the printer, this
+		scan-line appeared at some location on the page near the
+		affected band, in studied case of the dump file sent, just
+		over it.
+		These mysterious marks were in fact the last scan-line of
+		the band but it was offset by one scan-line down out of the
+		band area and the printer put it on other location.
+
 	* Applied patch from SourceForge (ID: 2823497):
 		After upgrading to CUPS 1.3.11, SpliX stopped working due to
 		changes in the Postscript produced - it does not start with

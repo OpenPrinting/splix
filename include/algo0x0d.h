@@ -37,20 +37,20 @@ class Algo0x0D : public Algorithm
                     unsigned char       * output,
                     unsigned long       & outputSize, 
                     long int            accumulatedHorizontalOffsetValue,
-                    long int            displacementValue,
+                    long int            accumulatedVerticalOffsetValue,
                     unsigned long       accumulatedRunCount );
     
         inline void writeFourBytesPacket(
                     unsigned char       * output,
                     unsigned long       & outputSize, 
                     long int            accumulatedHorizontalOffsetValue,
-                    long int            displacementValue,
+                    long int            accumulatedVerticalOffsetValue,
                     unsigned long       accumulatedRunCount );
     
         inline void writeSixBytesPacket(
                     unsigned char       * output,
                     unsigned long       & outputSize,
-                    long int            displacementValue,
+                    long int            accumulatedCombinedOffsetValue,
                     unsigned long       accumulatedRunCount );
     
         inline void selectPacketSize(
@@ -59,7 +59,6 @@ class Algo0x0D : public Algorithm
                     unsigned long       preAccumulatedHorizontalOffsetValue,
                     unsigned long       accumulatedHorizontalOffsetValue,
                     unsigned long       currentHorizontalPenPosition,
-                    unsigned long       pixelsLeftInScanline,
                     unsigned long       accumulatedRunCount,
                     unsigned long       consecutiveBlankScanLines,
                     unsigned long       currentVerticalPenPosition,
