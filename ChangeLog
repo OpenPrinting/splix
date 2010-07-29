@@ -1,5 +1,13 @@
 Thu Jul 29 11:56:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Added support for new printers according to user reports at 
+	  SourceForge (bug tracker) and Ubuntu (Launchpad):
+		- Samsung SCX-4100 (SF: #2980269)
+		- Samsung ML-2015 (SF: #2975570)
+		- Samsung ML-3051(ND) (SF: #2927884)
+		- Samsung CLP-610ND (Ubuntu LP: #505423, LP: #510832)
+		- Xerox Phaser 3124 (SF: #2802175)
+
 	* Applied patch from SourceForge (ID: 2880411):
 		Reorganized code and handle of white scanlines issue.
 

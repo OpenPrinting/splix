@@ -115,6 +115,13 @@ Manufacturer "Xerox"
                     ModelName "Phaser 3122"
                     PCFileName "ph3122.ppd"
                 }
+            } {
+                Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+
+                {
+                    ModelName "Phaser 3124"
+                    PCFileName "ph3124.ppd"
+                }
             }
         }
     }

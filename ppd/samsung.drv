@@ -33,6 +33,11 @@ Manufacturer "Samsung"
         {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
  
+            ModelName "SCX-4100"
+            PCFileName "scx4100.ppd"
+        } {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+ 
             ModelName "SCX-4200"
             PCFileName "scx4200.ppd"
         } {
@@ -142,6 +147,9 @@ Manufacturer "Samsung"
                     ModelName "ML-2010"
                     PCFileName "ml2010.ppd"
                 } {
+                    ModelName "ML-2015"
+                    PCFileName "ml2015.ppd"
+                } {
                     #import "srtmode.defs"
     
                     ModelName "ML-2510"
@@ -154,6 +162,20 @@ Manufacturer "Samsung"
     
                 ModelName "ML-3050"
                 PCFileName "ml3050.ppd"
+            } {
+                Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+    
+                Duplex normal
+    
+                ModelName "ML-3051"
+                PCFileName "ml3051.ppd"
+            } {
+                Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+    
+                Duplex normal
+    
+                ModelName "ML-3051ND"
+                PCFileName "ml3051nd.ppd"
             }
         }
     }
@@ -217,6 +239,14 @@ Manufacturer "Samsung"
 
             ModelName "CLP-610"
             PCFileName "clp610.ppd"
+        }
+        {
+            Attribute QPDL QPDLVersion "5"
+            Attribute General CMSFile "CLP-610"
+            #import "reverseduplex.defs"
+
+            ModelName "CLP-610ND"
+            PCFileName "clp610nd.ppd"
         }
     }
 
