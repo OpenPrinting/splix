@@ -167,7 +167,7 @@ msgid "Grayscale"
 msgstr "Tons de Cinza"
 
 msgid "High"
-msgstr "Pressão Reduzida (Grande Altitude)"
+msgstr "Pressão Elevada (Baixa Altitude)"
 
 msgid "ISOB5 Envelope - 176x250mm"
 msgstr "Envelope ISOB5 - 176x250mm"
@@ -212,7 +212,7 @@ msgid "Long-Edge Binding"
 msgstr "Encadernação pela Borda Longa"
 
 msgid "Low"
-msgstr "Pressão Elevada (Baixa Altitude)"
+msgstr "Pressão Reduzida (Grande Altitude)"
 
 msgid "ML-1510"
 msgstr "ML-1510"

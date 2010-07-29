@@ -7,8 +7,8 @@
  */
 
 Option "Altitude/Air pressure" PickOne AnySetup 10
-	*Choice "LOW/Low" ""
-	Choice "HIGH/High" ""
+	*Choice "LOW/High" ""
+	Choice "HIGH/Low" ""
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
 

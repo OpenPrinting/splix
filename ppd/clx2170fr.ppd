@@ -167,8 +167,8 @@
 *OpenUI *Altitude/Pression de l'air: PickOne
 *OrderDependency: 10.0 AnySetup *Altitude
 *DefaultAltitude: LOW
-*Altitude LOW/Faible: ""
-*Altitude HIGH/Forte: ""
+*Altitude LOW/Forte: ""
+*Altitude HIGH/Faible: ""
 *CloseUI: *Altitude
 *OpenUI *PowerSave/Économie d'énergie: PickOne
 *OrderDependency: 10.0 AnySetup *PowerSave
