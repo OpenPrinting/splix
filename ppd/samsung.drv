@@ -48,6 +48,11 @@ Manufacturer "Samsung"
         } {
             ModelName "SCX-4500"
             PCFileName "scx4500.ppd"
+        } {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+ 
+            ModelName "SF-565P"
+            PCFileName "sf565p.ppd"
         }
 
     // Monochrome printers V. 2 (new algorithms)
