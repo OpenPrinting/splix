@@ -1,5 +1,8 @@
 Thu Jul 29 11:56:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Fixed gcc 4.5 incompatibility in src/ppdfile.cpp (Debian bug
+	  #565097).
+
 	* Fixed UI strings for the Altitude/Air Pressure options. In the UI
 	  strings the settings "High" and "Low" were the wrong way around
 	  (Ubuntu LP: #605539).

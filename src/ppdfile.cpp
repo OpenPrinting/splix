@@ -282,7 +282,7 @@ bool PPDFile::Value::operator != (const char* val) const
  * Opérateur d'assignation
  * Assignment operator
  */
-void PPDFile::Value::operator = (const PPDFile::Value::Value &val)
+void PPDFile::Value::operator = (const PPDFile::Value &val)
 {
     if (_preformatted)
         delete[] _preformatted;
