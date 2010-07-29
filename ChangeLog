@@ -1,3 +1,12 @@
+Thu Jul 29 11:56:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Applied patch from SourceForge (ID: 2823497):
+		After upgrading to CUPS 1.3.11, SpliX stopped working due to
+		changes in the Postscript produced - it does not start with
+		%%Creator, but with %%LanguageLevel tag. The attached patch
+		adds %%LanguageLevel check to the respective if condition so
+		the end of header is recognized.
+
 Fri Feb 6 03:02:01 2009 Aurélien Croc <programmation AT ap2c DOT org>
 	* Add:
 		- Support for SCX 4500 (by Pablo Mazzini)

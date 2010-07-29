@@ -238,7 +238,8 @@ int main(int argc, char **argv)
                 break;
 
             // End of the PS header ?
-            if (!(memcmp("%%Creator", (char *)&buffer, 9))) {
+            if (!(memcmp("%%Creator", (char *)&buffer, 9)) ||
+                !(memcmp("%%LanguageLevel:", (char *)&buffer, 16))) {
                 if (paperType)
                     fprintf(stdout, "/MediaChoice (%s) def\n", paperType);
                 fprintf(stdout, "%s", crd);
