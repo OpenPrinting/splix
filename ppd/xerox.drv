@@ -36,7 +36,7 @@ Manufacturer "Xerox"
 	} {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
  
-            ModelName "WorkCentre PE16""
+            ModelName "WorkCentre PE16"
             PCFileName "wcpe16.ppd"
         }
 
