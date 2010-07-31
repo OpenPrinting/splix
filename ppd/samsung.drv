@@ -43,6 +43,11 @@ Manufacturer "Samsung"
         } {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
  
+            ModelName "SCX-4216F"
+            PCFileName "scx4216f.ppd"
+        } {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+ 
             ModelName "SCX-4300"
             PCFileName "scx4300.ppd"
         } {

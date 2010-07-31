@@ -28,10 +28,17 @@ Manufacturer "Xerox"
         Attribute General DocHeaderValues "<0><2><1>"
         
         #import "manualduplex.defs"
-        Resolution k 1 0 0 0 "300dpi/300 DPI"
+        {
+	    Resolution k 1 0 0 0 "300dpi/300 DPI"
 
-        ModelName "WorkCentre 3119"
-        PCFileName "wc3119.ppd"
+            ModelName "WorkCentre 3119"
+            PCFileName "wc3119.ppd"
+	} {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+ 
+            ModelName "WorkCentre PE16""
+            PCFileName "wcpe16.ppd"
+        }
 
     // Monochrome printers V. 2 (new algorithms)
     } {

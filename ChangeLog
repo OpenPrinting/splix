@@ -1,3 +1,11 @@
+Thu Jul 31 18:41:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Added support for new printers according to user reports at
+	  SourceForge (Open Discussion forum):
+		- Samsung SCX-4216F
+		- Xerox WorkCentre PE16
+		- Lexmark X215 MFP
+
 Thu Jul 29 11:56:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Fixed gcc 4.5 incompatibility in src/ppdfile.cpp (Debian bug

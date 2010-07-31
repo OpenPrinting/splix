@@ -1,0 +1,43 @@
+/*
+ *      lexmark.drv                    (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Contains the Lexmark printers drivers
+ *
+ * $Id: lexmark.drv 272 2010-07-29 15:08:16Z tillkamppeter $
+ */
+
+Manufacturer "Lexmark"
+
+#import "version.defs"
+#import "spl2.defs"
+#import "altitude.defs"
+
+//
+// Specific black & white printer definition
+//
+{
+    #import "filter.defs"
+    #import "powersave.defs"
+    #import "tonerdensity.defs"
+    #import "tonersave.defs"
+    #import "jamrecovery.defs"
+
+
+    // Monochrome printers V. 1 (old algorithms)
+    {
+        #import "monochrome-v1.defs"
+        Attribute QPDL QPDLVersion "1"
+        Attribute General DocHeaderValues "<0><2><1>"
+        
+        #import "manualduplex.defs"
+        {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+ 
+            ModelName "X215 MFP"
+            PCFileName "x215mfp.ppd"
+        }
+    }
+}
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+
