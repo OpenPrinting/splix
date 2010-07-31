@@ -1,5 +1,7 @@
 Thu Jul 31 18:41:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Set "*FileVersion:" of the PPDs to 2.0.0, to satisfy cupstestppd.
+
 	* Fixed bashisms in compile.sh.
 
 	* Added support for new printers according to user reports at
