@@ -28,7 +28,7 @@ parseFile() {
 #
 # Main script
 #
-if [ $2 == "debug" ]; then
+if [ "$2" = "debug" ]; then
     TMPFILE="output.drv"
     DRIVER=$1
     shift 1
@@ -37,7 +37,7 @@ if [ $2 == "debug" ]; then
     parseFile $DRIVER $TMPFILE
 
 
-elif [ $2 == "lang" ]; then
+elif [ "$2" = "lang" ]; then
     if [ -z $TMP ]; then
         TMP="/tmp"
     fi;
