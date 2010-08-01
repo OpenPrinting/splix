@@ -54,6 +54,9 @@ Manufacturer "Samsung"
             ModelName "SCX-4500"
             PCFileName "scx4500.ppd"
         } {
+            ModelName "SCX-4521F"
+            PCFileName "scx4521f.ppd"
+        } {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
  
             ModelName "SF-565P"
