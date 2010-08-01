@@ -1,5 +1,8 @@
 Thu Jul 31 18:41:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Fixed "*Product:" lines in the PPDs. They should contain the model
+	  name and not "XXX Ghostscript".
+
 	* Set "*FileVersion:" of the PPDs to 2.0.0, to satisfy cupstestppd.
 
 	* Fixed bashisms in compile.sh.
