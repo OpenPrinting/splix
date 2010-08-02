@@ -1,3 +1,10 @@
+Mon Aug  2 13:39:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Corrected PPD version number in include/version.h. We have removed
+	  the "SpliX V. " from it in the PPDs to fulfill the PPD specs and so
+	  we have to remove the "SpliX V. " also here so that the PPD version
+	  checking of the driver works again.
+
 Sun Aug  1 12:24:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Added support for new printer according to user reports at
