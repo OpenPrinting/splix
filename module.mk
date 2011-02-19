@@ -44,7 +44,7 @@ endif
 ifneq ($(DISABLE_JBIG),0)
 CXXFLAGS		+= -DDISABLE_JBIG
 else
-rastertoqpdl_LIBS	+= -ljbig
+rastertoqpdl_LIBS	+= -ljbig85
 endif
 ifneq ($(DISABLE_BLACKOPTIM),0)
 CXXFLAGS		+= -DDISABLE_BLACKOPTIM

@@ -120,6 +120,8 @@ Algo0x13::~Algo0x13()
 BandPlane* Algo0x13::compress(const Request& request, unsigned char *data, 
         unsigned long width, unsigned long height)
 {
+    jbg85_enc_state state;
+    unsigned long i, wbytes;
     info_t info = {&_list, NULL, NULL, 0, 0};
     BandPlane *plane;
     bandList_t* tmp;
@@ -136,11 +138,15 @@ BandPlane* Algo0x13::compress(const Request& request, unsigned char *data,
             ERRORMSG(_("PacketSize is set to 0!"));
             info.maxSize = 512*1024;
         }
-        jbg_enc_init(&_state, width, height, 1, &data, _callback, &info);
-        jbg_enc_options(&_state, 0, JBG_DELAY_AT | JBG_LRLTWO | JBG_TPBON, 
-            height, 0, 0);
-        jbg_enc_out(&_state);
-        jbg_enc_free(&_state);
+        wbytes = (width + 7) / 8;
+        jbg85_enc_init(&state, width, height, _callback, &info);
+        jbg85_enc_options(&state, JBG_LRLTWO | JBG_TPBON, height, 0);
+        for (i = 0; i < height; i++) {
+            jbg85_enc_lineout(&state,
+                              data + i * wbytes,
+                              data + (i - 1) * wbytes,
+                              data + (i - 2) * wbytes);
+        }
 
         // Register the last band
         if (info.size) {

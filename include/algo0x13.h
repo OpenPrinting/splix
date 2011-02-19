@@ -25,7 +25,7 @@
 
 #include "algorithm.h"
 extern "C" {
-#   include "jbig.h"
+#   include "jbig85.h"
 }
 
 /**
@@ -49,7 +49,6 @@ class Algo0x13 : public Algorithm
 
     protected:
         bool                    _compressed;
-        jbg_enc_state           _state;
         bandList_t*             _list;
 
 
