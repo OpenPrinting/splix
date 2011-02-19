@@ -225,6 +225,8 @@ static bool _compressWholePage(const Request& request, Page* page)
                     buffer[x + y * lineWidthInB] = curPlane[index];
                 }
             }
+            memset(buffer + pageHeight * lineWidthInB, 0,
+                   (planeHeight - pageHeight) * lineWidthInB);
 
             // Call the compression method
             plane = algo[i].compress(request, buffer, page->width(), 
