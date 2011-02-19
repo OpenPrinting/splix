@@ -39,15 +39,17 @@ int Algo0x11::__compare(const void *n1, const void *n2)
 
 bool Algo0x11::_lookupBestOccurs(const unsigned char* data, unsigned long size)
 {
-    uint32_t occurs[COMPRESS_SAMPLE_RATE * 2];
+    uint32_t occurs[COMPRESS_SAMPLE_RATE][2];
     bool oneIsPresent = false;
     unsigned char b;
     unsigned long i;
 
     // Initialize the table
+    // occurs[i][0] = number of occurences of the offset
+    // occurs[i][1] = offset
     for (i=0; i < COMPRESS_SAMPLE_RATE; i++) {
-        occurs[i*2] = 0;
-        occurs[i*2 + 1] = i;
+        occurs[i][0] = 0;
+        occurs[i][1] = i;
     }
 
     // Calculate the byte occurrence
@@ -55,7 +57,7 @@ bool Algo0x11::_lookupBestOccurs(const unsigned char* data, unsigned long size)
         b = data[i];
         for (unsigned long j=1; j < COMPRESS_SAMPLE_RATE; j++)
             if (data[i - j] == b)
-                occurs[(j - 1) * 2]++;
+                occurs[(j - 1)][0]++;
     }
 
     // Order the array
@@ -63,7 +65,7 @@ bool Algo0x11::_lookupBestOccurs(const unsigned char* data, unsigned long size)
 
     // Set the pointer table to use for compression
     for (i=0; i < TABLE_PTR_SIZE; i++) {
-        _ptrArray[i] = occurs[i*2 + 1] + 1;
+        _ptrArray[i] = occurs[i][1] + 1;
         if (_ptrArray[i] == 1)
             oneIsPresent = true;
     }

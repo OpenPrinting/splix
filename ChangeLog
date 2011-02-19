@@ -1,9 +1,16 @@
+Sat Feb 19 19:23:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Use an array of two integers, instead of an array of single
+	integers which is twice as big, for the offset selection code in
+	algo0x11.cpp.  The resulting binary code should be the same, but
+	this change makes more clear what is happening.
+
 Mon Aug  2 13:39:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
-	* Corrected PPD version number in include/version.h. We have removed
-	  the "SpliX V. " from it in the PPDs to fulfill the PPD specs and so
-	  we have to remove the "SpliX V. " also here so that the PPD version
-	  checking of the driver works again.
+	* Corrected PPD version number in include/version.h. We have
+	removed the "SpliX V. " from it in the PPDs to fulfill the PPD
+	specs and so we have to remove the "SpliX V. " also here so that
+	the PPD version checking of the driver works again.
 
 Sun Aug  1 12:24:01 2010 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
