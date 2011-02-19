@@ -168,32 +168,82 @@ Manufacturer "Samsung"
                     ModelName "ML-2015"
                     PCFileName "ml2015.ppd"
                 } {
+                    ModelName "ML-2240"
+                    PCFileName "ml2240.ppd"
+                } {
                     #import "srtmode.defs"
     
                     ModelName "ML-2510"
                     PCFileName "ml2510.ppd"
                 }
+            }
+        }
+
+        // QPDL Version 3
+        {
+            Attribute QPDL QPDLVersion "3"
+            Attribute General DocHeaderValues "<0><0><1>"
+    
+            {
+                Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+                #import "manualduplex.defs"
+    
+                {
+                    ModelName "ML-1660"
+                    PCFileName "ml1660.ppd"
+                } {
+                    ModelName "ML-1910"
+                    PCFileName "ml1910.ppd"
+                } {
+                    ModelName "ML-1915"
+                    PCFileName "ml1915.ppd"
+                } {
+                    ModelName "ML-2525"
+                    PCFileName "ml2525.ppd"
+                } {
+                    ModelName "ML-2525W"
+                    PCFileName "ml2525w.ppd"
+                }
+            } {
+                Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+    
+                {
+                    ModelName "ML-2580"
+                    PCFileName "ml2580.ppd"
+		} {
+                    ModelName "ML-2580N"
+                    PCFileName "ml2580n.ppd"
+		} {
+                    ModelName "ML-3050"
+                    PCFileName "ml3050.ppd"
+		} {
+                    ModelName "ML-3051"
+                    PCFileName "ml3051.ppd"
+		} {
+                    ModelName "SCX-4600"
+                    PCFileName "scx4600.ppd"
+		} {
+                    ModelName "SCX-4623f"
+                    PCFileName "scx4623f.ppd"
+		} {
+                    ModelName "SCX-4623fw"
+                    PCFileName "scx4623fw.ppd"
+		}
             } {
                 Resolution k 1 0 0 0 "1200dpi/1200 DPI"
     
                 Duplex normal
     
-                ModelName "ML-3050"
-                PCFileName "ml3050.ppd"
-            } {
-                Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-    
-                Duplex normal
-    
-                ModelName "ML-3051"
-                PCFileName "ml3051.ppd"
-            } {
-                Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-    
-                Duplex normal
-    
-                ModelName "ML-3051ND"
-                PCFileName "ml3051nd.ppd"
+		{
+                    ModelName "ML-3051ND"
+                    PCFileName "ml3051nd.ppd"
+		} {
+		    ModelName "SCX-5330N"
+                    PCFileName "scx5330n.ppd"
+		} {
+		    ModelName "SCX-5530FN"
+                    PCFileName "scx5530fn.ppd"
+		}
             }
         }
     }

@@ -1,6 +1,32 @@
 Sat Feb 19 19:23:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
-	* Allow QPDL Version 3 in the PPD files.
+	* Updated translation files po/fr.po and po/pt.po.
+
+	* Corrected typo in ppd/Makefile which prevented from building the
+	translated PPDs.
+
+	* Added missing build information fro the Samsung ML-2240 to
+	ppd/samsung.drv and ppd/Makefile.
+
+	* Rebuilt all PPDs with ppdc of CUPS 1.4.5.
+
+	* Added support for the following QPDL-3 printers (SF: #3046271):
+		- Samsung ML-1660
+		- Samsung ML-1910
+		- Samsung ML-1915
+		- Samsung ML-2525
+		- Samsung ML-2525W
+		- Samsung ML-2580
+		- Samsung ML-2580N
+		- Samsung SCX-4600
+		- Samsung SCX-4623F
+		- Samsung SCX-4623FW
+		- Samsung SCX-5330N
+		- Samsung SCX-5530FN
+
+	* Samsung ML-3050, ML-3051, and ML-3051ND are also QPDL 3, corrected.
+
+	* Allow QPDL Version 3 in the PPD files (SF: #3046271).
 
 	* Switched to the more lightweight JBIG85 library instead of to
 	the standard JBIG library. Thanks to Jindrich Makovicka for the

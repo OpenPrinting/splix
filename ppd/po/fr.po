@@ -438,3 +438,148 @@ msgstr "ML-2571"
 
 msgid "SCX-4500"
 msgstr "SCX-4500"
+
+msgid "SCX-4100"
+msgstr "SCX-4100"
+
+msgid "US Letter"
+msgstr "US Letter"
+
+msgid "US Legal"
+msgstr "US Legal"
+
+msgid "A4"
+msgstr "A4"
+
+msgid "US Executive"
+msgstr "US Executive"
+
+msgid "US Ledger"
+msgstr "US Ledger"
+
+msgid "A3"
+msgstr "A3"
+
+msgid "#10 Envelope"
+msgstr "#10 Envelope"
+
+msgid "Monarch"
+msgstr "Monarch"
+
+msgid "C5"
+msgstr "C5"
+
+msgid "DL"
+msgstr "DL"
+
+msgid "B4"
+msgstr "B4"
+
+msgid "B5"
+msgstr "B5"
+
+msgid "ISO B5 Envelope"
+msgstr "ISO B5 Envelope"
+
+msgid "Postcard"
+msgstr "Postcard"
+
+msgid "Double Postcard"
+msgstr "Double Postcard"
+
+msgid "A5"
+msgstr "A5"
+
+msgid "A6"
+msgstr "A6"
+
+msgid "B6"
+msgstr "B6"
+
+msgid "C6"
+msgstr "C6"
+
+msgid "Folio"
+msgstr "Folio"
+
+msgid "Personal Envelope"
+msgstr "Personal Envelope"
+
+msgid "#9 Envelope"
+msgstr "#9 Envelope"
+
+msgid "SCX-4216F"
+msgstr "SCX-4216F"
+
+msgid "SCX-4300"
+msgstr "SCX-4300"
+
+msgid "SCX-4521F"
+msgstr "SCX-4521F"
+
+msgid "SF-565P"
+msgstr "SF-565P"
+
+msgid "ML-2015"
+msgstr "ML-2015"
+
+msgid "ML-1660"
+msgstr "ML-1660"
+
+msgid "ML-1910"
+msgstr "ML-1910"
+
+msgid "ML-1915"
+msgstr "ML-1915"
+
+msgid "ML-2525"
+msgstr "ML-2525"
+
+msgid "ML-2580"
+msgstr "ML-2580"
+
+msgid "ML-2580N"
+msgstr "ML-2580N"
+
+msgid "ML-3051"
+msgstr "ML-3051"
+
+msgid "SCX-4600"
+msgstr "SCX-4600"
+
+msgid "SCX-4623f"
+msgstr "SCX-4623f"
+
+msgid "SCX-4623fw"
+msgstr "SCX-4623fw"
+
+msgid "ML-3051ND"
+msgstr "ML-3051ND"
+
+msgid "SCX-5330N"
+msgstr "SCX-5330N"
+
+msgid "SCX-5530FN"
+msgstr "SCX-5530FN"
+
+msgid "CLP-610ND"
+msgstr "CLP-610ND"
+
+msgid "WorkCentre PE16"
+msgstr "WorkCentre PE16"
+
+msgid "Phaser 3124"
+msgstr "Phaser 3124"
+
+msgid "Lexmark"
+msgstr "Lexmark"
+
+msgid "X215 MFP"
+msgstr "X215 MFP"
+
+msgid "ML-2240"
+msgstr "ML-2240"
+
+msgid "ML-2525W"
+msgstr "ML-2525W"
+
