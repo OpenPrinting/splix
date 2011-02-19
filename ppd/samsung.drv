@@ -130,6 +130,9 @@ Manufacturer "Samsung"
                     Duplex normal
     
                     {
+                            ModelName "ML-3471ND"
+                            PCFileName "ml3471nd.ppd"
+                    } {
                             ModelName "ML-3560"
                             PCFileName "ml3560.ppd"
                     } {
@@ -363,8 +366,13 @@ Manufacturer "Samsung"
                     Attribute General CMSFile "CLP-300"
                     Throughput 4
 
-                    ModelName "CLP-300"
-                    PCFileName "clp300.ppd"
+		    {
+                        ModelName "CLP-300"
+                        PCFileName "clp300.ppd"
+		    } {
+                        ModelName "CLP-310N"
+                        PCFileName "clp310n.ppd"
+		    }
                 } {
                     Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
 

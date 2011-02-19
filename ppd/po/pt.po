@@ -595,3 +595,9 @@ msgstr "Toshiba"
 msgid "eSTUDIO180S"
 msgstr "eSTUDIO180S"
 
+msgid "ML-3471ND"
+msgstr "ML-3471ND"
+
+msgid "CLP-310N"
+msgstr "CLP-310N"
+
