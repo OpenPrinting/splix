@@ -40,6 +40,8 @@ ifneq ($(DISABLE_THREADS),0)
 CXXFLAGS		+= -DDISABLE_THREADS
 else
 CXXFLAGS		+= -DTHREADS=$(THREADS) -DCACHESIZE=$(CACHESIZE)
+rastertoqpdl_LIBS	+= -lpthread
+pstoqpdl_LIBS		+= -lpthread
 endif
 ifneq ($(DISABLE_JBIG),0)
 CXXFLAGS		+= -DDISABLE_JBIG
