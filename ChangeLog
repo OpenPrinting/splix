@@ -11,7 +11,7 @@ Sat Feb 19 19:23:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 	* Corrected typo in ppd/Makefile which prevented from building the
 	translated PPDs.
 
-	* Added missing build information fro the Samsung ML-2240 to
+	* Added missing build information from the Samsung ML-2240 to
 	ppd/samsung.drv and ppd/Makefile.
 
 	* Rebuilt all PPDs with ppdc of CUPS 1.4.5.
