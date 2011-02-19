@@ -1,5 +1,8 @@
 Sat Feb 19 19:23:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Fixed memory leak in the pstoqpdl filter. Thanks to Jindrich
+	Makovicka for the patch.
+
 	* On the CLP-300, SpliX sometimes produces random pixels at the
 	bottom of the page. The reason is that the page image is copied to
 	a buffer rounded to a band height, which is then compressed and

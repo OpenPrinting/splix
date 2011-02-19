@@ -294,6 +294,8 @@ int main(int argc, char **argv)
         delete[] crd;
     if (csa)
         delete[] csa;
+    if (manufacturer)
+        delete[] manufacturer;
     return WEXITSTATUS(err);
 }
 
