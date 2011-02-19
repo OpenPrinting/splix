@@ -586,3 +586,12 @@ msgstr "ML-2240"
 msgid "ML-2525W"
 msgstr "ML-2525W"
 
+msgid "WorkCentre PE114e"
+msgstr "WorkCentre PE114e"
+
+msgid "Toshiba"
+msgstr "Toshiba"
+
+msgid "eSTUDIO180S"
+msgstr "eSTUDIO180S"
+

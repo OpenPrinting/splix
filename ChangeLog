@@ -1,5 +1,9 @@
 Sat Feb 19 19:23:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Added new printers (SF: #2853726):
+		- Xerox WorkCentre PE114e
+		- Toshiba eSTUDIO180S
+
 	* Updated translation files po/fr.po and po/pt.po.
 
 	* Corrected typo in ppd/Makefile which prevented from building the

@@ -38,6 +38,11 @@ Manufacturer "Xerox"
  
             ModelName "WorkCentre PE16"
             PCFileName "wcpe16.ppd"
+	} {
+            Resolution k 1 0 0 0 "300dpi/300 DPI"
+ 
+            ModelName "WorkCentre PE114e"
+            PCFileName "wcpe114e.ppd"
         }
 
     // Monochrome printers V. 2 (new algorithms)
