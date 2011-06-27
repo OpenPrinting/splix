@@ -153,6 +153,7 @@ static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
     if (!fread(res, 1, fi.st_size, handle)) {
         ERRORMSG(_("Cannot read CMS file %s (%i)"), tmp, errno);
         delete[] tmp;
+        delete[] res;
         fclose(handle);
         return NULL;
     }
@@ -215,6 +216,7 @@ int main(int argc, char **argv)
     // Call the other filters
     if (!(pid = _linkFilters(argv[1], argv[2], argv[3], argv[4], argv[5]))) {
         ERRORMSG(_("Filter error.. Cannot continue"));
+        delete[] manufacturer;
         return 1;
     }
 

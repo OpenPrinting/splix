@@ -1,5 +1,7 @@
 Mon Jun 27 12:52:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Add missing delete[] in two error paths (SF patch #3302528).
+
 	* Fixed double free in pstoqpdl filter, which happens when the
 	  color profile collection is missing files. Thanks to Leonardo Hamada
 	  for thr patch (Ubuntu bug #714259, SF: #3124844).
