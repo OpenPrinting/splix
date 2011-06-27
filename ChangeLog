@@ -1,5 +1,8 @@
 Mon Jun 27 12:52:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Make SpliX query DefaultInputSlot from the PPD for the input slot
+	  name, when InputSlot is NULL (SF: #3319051).
+
 	* Moved the cms profiles from cups/model/MFR/cms to cups/profiles/MFR
 	  to stop making cups-driverd issuing error messages (SF: #3319110)
 

@@ -153,8 +153,11 @@ bool Printer::loadInformation(const Request& request)
 
     paperSource = request.ppd()->get("InputSlot");
     if (!paperSource) {
-        paperSource = "Auto";
-        ERRORMSG(_("Cannot get input slot information."));
+        paperSource = request.ppd()->get("DefaultInputSlot");
+        if (!paperSource) {
+            paperSource = "Auto";
+            ERRORMSG(_("Cannot get input slot information."));
+        }
     }
     if (!(strcasecmp(paperSource, "Auto"))) _paperSource = 1;
     else if (!(strcasecmp(paperSource, "Manual"))) _paperSource = 2;
