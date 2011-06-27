@@ -223,10 +223,14 @@ int main(int argc, char **argv)
     csa = _readCMSFile(ppd, manufacturer, true);
     if (!crd || !csa) {
         WARNMSG(_("CMS data are missing. Color correction aborted"));
-        if (crd)
+        if (crd) {
             delete[] crd;
-        if (csa)
+            crd = NULL;
+        }
+        if (csa) {
             delete[] csa;
+            csa = NULL;
+        }
         while (!(feof(stdin))) {
             fgets((char *)&buffer, sizeof(buffer), stdin);
             fprintf(stdout, "%s", (char *)&buffer); 
