@@ -128,13 +128,13 @@ static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
         xResolution = yResolution = 300;
 
     // Get the real filename
-    size = strlen(CUPSPPD) + strlen(manufacturer) + strlen(file) + 64;
+    size = strlen(CUPSPROFILE) + strlen(manufacturer) + strlen(file) + 64;
     tmp = new char[size];
     if (xResolution)
-        snprintf(tmp, size, CUPSPPD "/%s/cms/%s-%lux%lucms%s", manufacturer, 
+        snprintf(tmp, size, CUPSPROFILE "/%s/%s-%lux%lucms%s", manufacturer,
             file, xResolution, yResolution, csa ? "2" : "");
     if (!xResolution || access(tmp, R_OK))
-        snprintf(tmp, size, CUPSPPD "/%s/cms/%scms%s", manufacturer, 
+        snprintf(tmp, size, CUPSPROFILE "/%s/%scms%s", manufacturer,
             file, csa ? "2" : "");
 
     // Check if it exists, open it and read it

@@ -61,6 +61,7 @@ PSTORASTER		:= pstocupsraster
 else
 PSTORASTER		:= pstoraster
 endif
+CUPSPROFILE			:= `cups-config --datadir`/profiles
 export CUPSFILTER CUPSPPD
 
 
@@ -69,4 +70,5 @@ src_pstoqpdl_cpp_FLAGS	:= -DRASTERDIR=\"$(CUPSFILTER)\"
 src_pstoqpdl_cpp_FLAGS	+= -DRASTERTOQPDL=\"rastertoqpdl\"
 src_pstoqpdl_cpp_FLAGS	+= -DPSTORASTER=\"$(PSTORASTER)\"
 src_pstoqpdl_cpp_FLAGS	+= -DCUPSPPD=\"$(CUPSPPD)\"
+src_pstoqpdl_cpp_FLAGS	+= -DCUPSPROFILE=\"$(CUPSPROFILE)\"
 
