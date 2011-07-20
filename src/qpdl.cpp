@@ -23,11 +23,110 @@
 #include <unistd.h>
 #include <inttypes.h>
 #include <string.h>
+#include <math.h>
 #include "page.h"
 #include "band.h"
 #include "errlog.h"
 #include "request.h"
 #include "bandplane.h"
+
+/* Support function for algorithm of type 0x15 printers. */
+static bool _outputAuxRecords(const Page* page)
+{
+    // Get the first plane containg plane data.
+    const Band *band = page->firstBand();
+    unsigned char header[16] = { 0x13, 0, 0, 0, 0x23, 0x15, 0, 0,
+                                    0, 0, 0, 0, 0, 0, 0, 0x14 };
+    if (!band)
+        return true;
+    // Output record type 0x13 and marker for record 0x14 .
+    if (write(STDOUT_FILENO, (unsigned char*)&header, 16) == -1) {
+        ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
+        return false;
+    }
+    // Output BIH of JBIG data.
+    if (page->getBIH()) {
+        if (write(STDOUT_FILENO, page->getBIH(), 20) == -1) {
+            ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
+            return false;
+        }
+    } else {
+        ERRORMSG(_("Error getting BIH data for page (%u)"), errno);
+        return false;
+    }
+    header[0] = 0; header[1] = 0; header[2] = 1;
+    header[3] = (band->width() >> 8) + 65;
+    if (write(STDOUT_FILENO, (unsigned char*)&header, 4) == -1) {
+        ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
+        return false;
+    }
+    return true;
+}
+
+static bool _renderJBIGBand(const Request& request, const Band* band, bool mono)
+{
+    unsigned char header[0xc];
+    // Black=4, Cyan=1, Magenta=2, Yellow=3
+    int color_order[ 4 ] = { 4, 1, 2, 3 };
+    int colorsNr = mono ? 1:4;
+    unsigned long dataSize, checkSum, lineBytes;
+    const BandPlane *plane = NULL;
+    // Cycle through each color planes 
+    for ( int j = 0; j < colorsNr; j++ ) {
+        int current_color = color_order[ j ];
+        // Search in the current band, a plane of current color.
+        plane = NULL;
+        for (unsigned int i = 0; i < band->planesNr(); i++) {
+            const BandPlane * search_plane = band->plane(i);
+            if (!search_plane)
+                continue;
+            if (current_color == search_plane->colorNr()) {
+                plane = search_plane;
+                break;
+            }
+        }
+        // Continue to the next color if no data are present.
+        if (!plane) 
+            continue;
+        // Output record of type 0xC.
+        header[0x0] = 0xC;                      // Signature
+        header[0x1] = band->bandNr();           // Band number
+        // Compute the bytes per line of the pixel data.
+        lineBytes = (band->width() + 7) / 8;
+        header[0x2] = lineBytes >> 8;           // Band width 8-15
+        header[0x3] = lineBytes;                // Band width 0-7
+        header[0x4] = band->height() >> 8;      // Band height 8-15
+        header[0x5] = band->height();           // Band height 0-7
+        header[0x6] = current_color;            // Color number
+        header[0x7] = plane->compression();     // Compression algorithm 0x15
+        dataSize = plane->dataSize() + 4;
+        // Append the last information and send the header
+        header[0x8] = dataSize >> 24;            // Data size 24 - 31
+        header[0x9] = dataSize >> 16;            // Data size 16 - 23
+        header[0xa] = dataSize >> 8;             // Data size 8 - 15
+        header[0xb] = dataSize;                  // Data size 0 - 7
+        if (write(STDOUT_FILENO, (unsigned char*)&header, 0xc) == -1) {
+            ERRORMSG(_("Error while sending data (%u)"), errno);
+            return false;
+        }
+        // Send the data
+        if (write(STDOUT_FILENO, plane->data(), plane->dataSize()) == -1) {
+            ERRORMSG(_("Error while sending data (%u)"), errno);
+            return false;
+        }
+        // Calculate and send the checksum
+        checkSum  = plane->checksum();
+        header[0] = checkSum >> 24;              // Checksum 24 - 31
+        header[1] = checkSum >> 16;              // Checksum 16 - 23
+        header[2] = checkSum >> 8;               // Checksum 8 - 15
+        header[3] = checkSum;                    // Checksum 0 - 7
+        if (write(STDOUT_FILENO, (unsigned char*)&header, 4) == -1) {
+            ERRORMSG(_("Error while sending data (%u)"), errno);
+            return false;
+        }
+    }
+    return true;
+}
 
 static bool _renderBand(const Request& request, const Band* band, bool mono)
 {
@@ -231,10 +330,12 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
 
 bool renderPage(const Request& request, Page* page, bool lastPage)
 {
-    unsigned char duplex=0, tumble=0, paperSource;
+    unsigned char duplex=0, tumble=0, paperSource=1;
     unsigned long width, height;
     unsigned char header[0x11];
     const Band* band;
+    bool (*selectedRenderBand)(const Request&, const Band*, bool);
+    
 
     if (!page) {
         ERRORMSG(_("Try to render a NULL page"));
@@ -245,7 +346,8 @@ bool renderPage(const Request& request, Page* page, bool lastPage)
     paperSource = request.printer()->paperSource();
     switch (request.duplex()) {
         case Request::Simplex:
-            duplex = 1;
+            /* Observed a value of 0 for 0x15 printers. */
+            duplex = (0x15 == page->compression())? 0 : 1;
             tumble = 0;
             break;
         case Request::LongEdge:
@@ -270,10 +372,17 @@ bool renderPage(const Request& request, Page* page, bool lastPage)
             /** @todo what about the Short edge? The page isn't rotated?  */
             break;
     }
-
-    width = page->width();
-    height = page->height();
-
+    // For CLP-310/315 printers, multiply page dimensions in inches by 300.
+    // Also selects the appropriate band render function.
+    if (0x15 == page->compression()) {
+        width = ceil(300 * (request.printer()->pageWidth() / 72.0));
+        height = ceil(300 * (request.printer()->pageHeight() / 72.0));
+        selectedRenderBand = &_renderJBIGBand;
+    } else {
+        width = page->width();
+        height = page->height();
+        selectedRenderBand = &_renderBand;
+    }
     // Send the page header
     header[0x0] = 0;                                // Signature
     header[0x1] = page->yResolution() / 100;        // Y Resolution
@@ -297,10 +406,15 @@ bool renderPage(const Request& request, Page* page, bool lastPage)
         return false;
     }
 
+    // Send auxiliary records for clp-315 printers.
+    if (0x15 == page->compression())
+        if (!_outputAuxRecords(page))
+            return false;
+
     // Send the page bands
     band = page->firstBand();
     while (band) {
-        if (!_renderBand(request, band, page->colorsNr() == 1))
+        if (!selectedRenderBand(request, band, page->colorsNr() == 1))
             return false;
         band = band->sibling();
     }

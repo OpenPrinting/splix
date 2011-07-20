@@ -50,6 +50,7 @@ class Page
         unsigned char*          _planes[4];
         bool                    _empty;
         unsigned long           _bandsNr;
+        unsigned char*          _bih;
         Band*                   _firstBand;
         Band*                   _lastBand;
 
@@ -180,6 +181,10 @@ class Page
           */
         unsigned char           colorsNr() const {return _colors;}
         /**
+          * @return the number of registered bands.
+          */
+        unsigned char           bandsNr() const {return _bandsNr;}
+        /**
           * @return this page number.
           */
         unsigned long           pageNr() const {return _pageNr;}
@@ -225,6 +230,15 @@ class Page
           *         Otherwise it returns NULL.
           */
         static Page*            restoreIntoMemory(int fd);
+        /**
+          * Register an independent copy of the BIH data. 
+          * @param bih_data the BIH for JBIG data.
+          */
+        void                    setBIH(const unsigned char *bih_data);
+        /**
+          * Returns the BIH data belonging to the Page object. 
+          */
+        const unsigned char*    getBIH() const { return _bih; }
 };
 #endif /* _PAGE_H_ */
 

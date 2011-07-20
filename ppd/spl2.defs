@@ -5,7 +5,6 @@
  *
  * $Id$
  */
-#include <font.defs>
 #include <media.defs>
 
 #media "Oficio/Oficio - 216x340mm" 612 972
@@ -44,8 +43,6 @@ MediaSize Oficio
 *InputSlot 1 "Auto/Automatic Selection"
 InputSlot 2 "Manual/Manual Feed"
 
-// Font included in the printer ROM
-Font *
 
 
 

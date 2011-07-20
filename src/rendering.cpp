@@ -130,7 +130,11 @@ bool render(Request& request)
         checkLastPage = true;
 
     // Send the PJL Header
-    request.printer()->sendPJLHeader(request);
+    if (page)
+        request.printer()->sendPJLHeader(request, page->compression(),
+                             page->xResolution(), page->yResolution() );
+    else
+        request.printer()->sendPJLHeader(request, 0, 0, 0);
 
     // Render the whole document
     while (page) {
@@ -177,11 +181,17 @@ bool render(Request& request)
         return false;
     }
 
+    // Get first Page
+    page = document.getNextRawPage(request);
+
     // Send the PJL Header
-    request.printer()->sendPJLHeader(request);
+    if (page)
+        request.printer()->sendPJLHeader(request, page->compression(),
+                             page->xResolution(), page->yResolution() );
+    else
+        request.printer()->sendPJLHeader(request, 0, 0, 0);
 
     // Send each page
-    page = document.getNextRawPage(request);
     while (page) {
 #ifndef DISABLE_BLACKOPTIM
         applyBlackOptimization(page);

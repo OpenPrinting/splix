@@ -1,0 +1,16 @@
+/*
+ *      color-v3.defs                  (C) 2007, Aurélien Croc (AP²C)
+ * 
+ * Color printers v. 3
+ *
+ * $Id: color-v3.defs 105 2007-11-16 02:20:18Z ap2c $
+ */
+#import "color.defs"
+
+// Color definition
+ColorDevice true
+ColorModel Gray/Grayscale k chunky 21
+*ColorModel CMYK/Color cmyk banded 21
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+

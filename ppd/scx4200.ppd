@@ -1,6 +1,6 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for SCX-4200 with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.4.5.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.4.7.
 *FormatVersion: "4.3"
 *FileVersion: "2.0.0"
 *LanguageVersion: English
@@ -25,8 +25,6 @@
 *PJL EndPJL: "<09><1B>%-12345X"
 *QPDL QPDLVersion: "1"
 *General DocHeaderValues: "<0><2><1>"
-*cupsBackSide: "Normal"
-*QPDL ManualDuplex: "On"
 *cupsVersion: 1.4
 *cupsModelNumber: 0
 *cupsManualCopies: False
@@ -134,6 +132,12 @@
 *PaperDimension EnvPersonal/Personal Envelope: "261 468"
 *PaperDimension Env9/#9 Envelope: "279 639"
 *PaperDimension Oficio/Oficio - 216x340mm: "612 972"
+*OpenUI *Altitude/Air pressure: PickOne
+*OrderDependency: 10 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/High: ""
+*Altitude HIGH/Low: ""
+*CloseUI: *Altitude
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10 AnySetup *InputSlot
 *DefaultInputSlot: Auto
@@ -158,12 +162,6 @@
 *MediaType RECYCLED/Recycled: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
-*OpenUI *Altitude/Air pressure: PickOne
-*OrderDependency: 10 AnySetup *Altitude
-*DefaultAltitude: LOW
-*Altitude LOW/High: ""
-*Altitude HIGH/Low: ""
-*CloseUI: *Altitude
 *OpenUI *PowerSave/Power Save: PickOne
 *OrderDependency: 10 AnySetup *PowerSave
 *DefaultPowerSave: 5
@@ -206,13 +204,6 @@
 *Resolution 600dpi/600 DPI: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
 *Resolution 300dpi/300 DPI: "<</HWResolution[300 300]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
 *CloseUI: *Resolution
-*OpenUI *Duplex/2-Sided Printing: PickOne
-*OrderDependency: 10 AnySetup *Duplex
-*DefaultDuplex: None
-*Duplex None/Off (1-Sided): "<</Duplex false>>setpagedevice"
-*Duplex DuplexNoTumble/Long-Edge (Portrait): "<</Duplex true/Tumble false>>setpagedevice"
-*Duplex DuplexTumble/Short-Edge (Landscape): "<</Duplex true/Tumble true>>setpagedevice"
-*CloseUI: *Duplex
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -249,4 +240,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of scx4200.ppd, 12131 bytes.
+*% End of scx4200.ppd, 11723 bytes.

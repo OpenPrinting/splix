@@ -27,7 +27,6 @@ Manufacturer "Xerox"
         Attribute QPDL QPDLVersion "1"
         Attribute General DocHeaderValues "<0><2><1>"
         
-        #import "manualduplex.defs"
         {
 	    Resolution k 1 0 0 0 "300dpi/300 DPI"
 
@@ -136,6 +135,22 @@ Manufacturer "Xerox"
                 }
             }
         }
+
+        // QPDL Version 3
+        {
+            Attribute QPDL QPDLVersion "3"
+            Attribute General DocHeaderValues "<0><0><1>"
+    
+            {
+                Resolution k 1 0 0 0 "1200x600dpi/1200x600 DPI"
+                #import "manualduplex.defs"
+    
+                {
+                    ModelName "Phaser 3140"
+                    PCFileName "ph3140.ppd"
+                }
+	    }
+	}
     }
 }
 

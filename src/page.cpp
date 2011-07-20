@@ -20,6 +20,7 @@
  */
 #include "page.h"
 #include <unistd.h>
+#include <string.h>
 #include "band.h"
 #include "errlog.h"
 
@@ -45,6 +46,7 @@ Page::Page()
     _firstBand = NULL;
     _lastBand = NULL;
     _bandsNr = 0;
+    _bih = NULL;
 }
 
 Page::~Page()
@@ -52,6 +54,8 @@ Page::~Page()
     flushPlanes();
     if (_firstBand)
         delete _firstBand;
+    if (_bih)
+        delete[] _bih;
 }
 
 
@@ -137,6 +141,10 @@ bool Page::swapToDisk(int fd)
     write(fd, &_compression, sizeof(_compression));
     write(fd, &_empty, sizeof(_empty));
     write(fd, &_bandsNr, sizeof(_bandsNr));
+    /* Carefully check if there is BIH data and compression type is 0x15,
+       before saving BIH data to file. */
+    if (( 0x15 == _compression ) && ( _bandsNr > 0 ) && ( NULL != _bih ))
+        write(fd, _bih, 20);
     for (i=0, band = _firstBand; i < _bandsNr; i++) {
         if (!band->swapToDisk(fd))
             return false;
@@ -162,6 +170,13 @@ Page* Page::restoreIntoMemory(int fd)
     read(fd, &page->_compression, sizeof(page->_compression));
     read(fd, &page->_empty, sizeof(page->_empty));
     read(fd, &nr, sizeof(nr));
+    /* Check if compression type is 0x15 and that there is at least one
+       image band before reading BIH data. */
+    if (( 0x15 == page->_compression ) && ( nr > 0 )) {
+        unsigned char bih[20];
+        read(fd, bih, 20);
+        page->setBIH(bih);
+    }
     for (unsigned int i=0; i < nr; i++) {
         Band *band = Band::restoreIntoMemory(fd);
         if (!band) {
@@ -174,6 +189,11 @@ Page* Page::restoreIntoMemory(int fd)
     return page;
 }
 
+void Page::setBIH(const unsigned char *bih_data) {
+    if (NULL == _bih)
+        _bih = new unsigned char[20];
+    memcpy(_bih, bih_data, 20);
+}
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

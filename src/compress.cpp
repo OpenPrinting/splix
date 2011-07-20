@@ -31,6 +31,7 @@
 #include "algo0x0e.h"
 #include "algo0x11.h"
 #include "algo0x13.h"
+#include "algo0x15.h"
 
 static bool _isEmptyBand(unsigned char* band, unsigned long size)
 {
@@ -187,6 +188,114 @@ static bool _compressBandedPage(const Request& request, Page* page)
 }
 
 #ifndef DISABLE_JBIG
+static bool _compressBandedJBIGPage(const Request& request, Page* page)
+{
+    unsigned long index=0, pageHeight, lineWidthInB, bandHeight = 128;
+    unsigned long bufferWidth, bandSize, hardMarginXInB=13, hardMarginY=100;
+    unsigned char *planes[4], *band[4];
+    unsigned long bandNumber=0, xLimitInB, bufferWidthInB;
+    Algo0x15 *algo = new Algo0x15;
+    /* Image trimming are done from hardware margins defined in the ppd. */
+    hardMarginXInB = ((unsigned long)ceil(page->convertToXResolution(request.
+        printer()->hardMarginX())) + 7) / 8;
+    hardMarginY = ceil(page->convertToYResolution(request.printer()->
+        hardMarginY()));
+    bandHeight = request.printer()->bandHeight();
+    lineWidthInB = ((page->width()) + 7) / 8;
+    // Compute an updated page height, clipped on top.
+    pageHeight = page->height() - hardMarginY; 
+    // Compute the buffer width that is nearest multiple of 256 to the original. 
+    bufferWidth = page->width() & ~255;
+    if ((bufferWidth + 128) < page->width())
+      bufferWidth += 256;
+    // Update the page heigth.
+    page->setHeight(pageHeight);
+    // Update the page width.
+    page->setWidth(bufferWidth);
+    bufferWidthInB = (bufferWidth + 7) / 8;
+    bandSize = bufferWidthInB * bandHeight;
+    index = hardMarginY * lineWidthInB;
+    for (unsigned int i=0; i < page->colorsNr(); i++) {
+        band[i] = new unsigned char[bandSize];
+        planes[i] = page->planeBuffer(i);
+    }
+    /*
+       Here, limit the width of the copied image to the buffer, as the buffer
+       width varies and can lead to 6 practical cases, the following is a
+       condensed code.
+    */
+    if (hardMarginXInB + bufferWidthInB < lineWidthInB - hardMarginXInB)
+        xLimitInB = hardMarginXInB + bufferWidthInB;
+    else
+        xLimitInB = lineWidthInB - hardMarginXInB;
+    bool theEnd = false;
+    unsigned long indexSizeIncrement = bandHeight * lineWidthInB;
+    unsigned long localHeight = bandHeight;
+    while (pageHeight) {
+        Band *current = NULL;
+        bool cmyPlanesHasData = false;
+        // Special things to do for the last band
+        if (pageHeight < bandHeight) {
+            theEnd = true;
+            localHeight = pageHeight;
+            for (unsigned int i=0; i < page->colorsNr(); i++)
+                memset(band[i], 0, bandSize);
+        }
+        for (unsigned int i=0; i < page->colorsNr(); i++) {
+            for (unsigned int y=0; y < localHeight; y++) {
+                for (unsigned int x=hardMarginXInB; x < xLimitInB; x++)
+                    band[i][x - hardMarginXInB + y * bufferWidthInB] =
+                             planes[i][index + x + y * lineWidthInB];
+                for (unsigned int x=lineWidthInB - 2 * hardMarginXInB;
+                                  x < bufferWidthInB; x++)
+                    band[i][x + y * bufferWidthInB] = 0;
+            }
+        }
+        // Are the CMY planes completely empty in the band?
+        for (unsigned int i=0; i < page->colorsNr() - 1; i++)
+            if (!_isEmptyBand(band[i], bandSize)) { 
+                cmyPlanesHasData = true;
+                break;
+            };
+        // Compress the entire band.
+        if (cmyPlanesHasData) {
+            for (unsigned int i=0; i < page->colorsNr(); i++) {
+                BandPlane *plane = algo->compress(request, band[i],
+                                                  bufferWidth, bandHeight);
+                if (plane) {
+                    plane->setColorNr((1 == page->colorsNr()) ? 4:i + 1);
+                    if (!current)
+                        current = new Band(bandNumber, bufferWidth, bandHeight);
+                    current->registerPlane(plane);
+                }
+            }
+        } else if (!_isEmptyBand(band[page->colorsNr() - 1], bandSize)) { 
+            // Compress only the K band.
+            BandPlane *plane = algo->compress(request,
+                                              band[page->colorsNr() - 1],
+                                              bufferWidth, bandHeight);
+            if (plane) {
+                plane->setColorNr(4);
+                if (!current)
+                    current = new Band(bandNumber, bufferWidth, bandHeight);
+                current->registerPlane(plane);
+            }
+        }
+        if (current)
+            page->registerBand(current);
+        bandNumber++;
+        index += indexSizeIncrement;
+        pageHeight = theEnd ? 0 : pageHeight - bandHeight;
+    }
+    if (page->bandsNr() > 0)
+        page->setBIH(algo->getBIHdata());
+    page->flushPlanes();
+    for (unsigned int i=0; i < page->colorsNr(); i++)
+        delete[] band[i];
+    delete algo;
+    return true;
+}
+
 static bool _compressWholePage(const Request& request, Page* page)
 {
     unsigned long hardMarginX, hardMarginXInB, hardMarginY, lineWidthInB;
@@ -261,6 +370,15 @@ bool compressPage(const Request& request, Page* page)
         case 0x13:
 #ifndef DISABLE_JBIG
             return _compressWholePage(request, page);
+#else
+            ERRORMSG(_("J-BIG compression algorithm has been disabled during "
+                "the compilation. Please recompile SpliX and enable the "
+                "J-BIG compression algorithm."));
+            break;
+#endif /* DISABLE_JBIG */
+        case 0x15:
+#ifndef DISABLE_JBIG
+            return _compressBandedJBIGPage(request, page);
 #else
             ERRORMSG(_("J-BIG compression algorithm has been disabled during "
                 "the compilation. Please recompile SpliX and enable the "

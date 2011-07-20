@@ -1,3 +1,12 @@
+Wed Jul 20 17:44:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Added new printers:
+		- Samsung CLP-310 (SF: #3196609)
+		- Samsung CLP-315 (SF: #3196609)
+		- Xerox Phaser 3140 (SF Open Discussion forum)
+
+	* Updated translation files po/fr.po and po/pt.po.
+
 Mon Jun 27 12:52:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Make SpliX query DefaultInputSlot from the PPD for the input slot

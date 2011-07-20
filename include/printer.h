@@ -82,7 +82,10 @@ class Printer
           * somewhere else, use the freopen function to redirect STDOUT.
           * @return TRUE if it succeed. Otherwise it returns FALSE.
           */
-        bool                    sendPJLHeader(const Request& request) const;
+        bool                    sendPJLHeader(const Request& request,
+                                          unsigned long    compression,
+                                          unsigned long    xResolution,
+                                          unsigned long    yResolution ) const;
         /**
           * Send the PJL footer.
           * The PJL footer will be sent to STDOUT.

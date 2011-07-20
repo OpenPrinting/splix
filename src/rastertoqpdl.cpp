@@ -82,7 +82,11 @@ int main(int argc, char **argv)
 
     // Render the request
     if (!render(request)) {
+        // Omit thread handling functions or it will not compile
+        // when threads are disabled.
+#ifndef DISABLE_THREADS
         uninitializeCache();
+#endif /* DISABLE_THREADS */
         return 4;
     }
 

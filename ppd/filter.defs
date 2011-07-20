@@ -5,7 +5,8 @@
  *
  * $Id$
  */
-
+/* Define a custom filter type. */
+DriverType custom
 Filter application/vnd.cups-raster 0 rastertoqpdl
 /* Filter application/vnd.cups-postscript 50 pstoqpdl */
 

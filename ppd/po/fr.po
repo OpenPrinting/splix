@@ -262,9 +262,6 @@ msgstr "Couleur"
 msgid "CLP-510"
 msgstr "CLP-510"
 
-msgid "CLP-60"
-msgstr "CLP-60"
-
 msgid "CLP-500"
 msgstr "CLP-500"
 
@@ -597,4 +594,16 @@ msgstr "ML-3471ND"
 
 msgid "CLP-310N"
 msgstr "CLP-310N"
+
+msgid "CLP-310"
+msgstr "CLP-310"
+
+msgid "CLP-315"
+msgstr "CLP-315"
+
+msgid "CustomPageSize"
+msgstr "Personalisé"
+
+msgid "Phaser 3140"
+msgstr "Phaser 3140"
 

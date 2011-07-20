@@ -83,9 +83,17 @@ static int _linkFilters(const char *arg1, const char *arg2, const char *arg3,
         dup2(rasterOutput[1], STDOUT_FILENO);
         close(rasterInput[0]);
         close(rasterOutput[1]);
-        execl(RASTERDIR "/" PSTORASTER, RASTERDIR "/" PSTORASTER, arg1, arg2, 
-            arg3, arg4, arg5,(char *)NULL);
-        ERRORMSG(_("Cannot execute pstoraster (%i)"), errno);
+        if (access(RASTERDIR "/" GSTORASTER, F_OK) != -1) {
+            // gstoraster filter exists
+            execl(RASTERDIR "/" GSTORASTER, RASTERDIR "/" GSTORASTER, arg1, arg2, 
+                arg3, arg4, arg5,(char *)NULL);
+            ERRORMSG(_("Cannot execute gstoraster (%i)"), errno);
+        } else {
+            // use pstoraster if gstoraster doesn't exist
+            execl(RASTERDIR "/" PSTORASTER, RASTERDIR "/" PSTORASTER, arg1, arg2, 
+                arg3, arg4, arg5,(char *)NULL);
+            ERRORMSG(_("Cannot execute %s (%i)"), PSTORASTER, errno);
+        }
         exit(0);
     }
     DEBUGMSG(_("raster launched with PID=%u"), raster);

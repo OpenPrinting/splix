@@ -130,6 +130,7 @@ bool Printer::loadInformation(const Request& request)
     else if (!(strcasecmp(paperType, "A5"))) _paperType = 16;
     else if (!(strcasecmp(paperType, "A6"))) _paperType = 17;
     else if (!(strcasecmp(paperType, "B6"))) _paperType = 18;
+    else if (!(strcasecmp(paperType, "Custom"))) _paperType = 21;
     else if (!(strcasecmp(paperType, "C6"))) _paperType = 23;
     else if (!(strcasecmp(paperType, "Folio"))) _paperType = 24;
     else if (!(strcasecmp(paperType, "EnvPersonal"))) _paperType = 25;
@@ -178,7 +179,10 @@ bool Printer::loadInformation(const Request& request)
     return true;
 }
 
-bool Printer::sendPJLHeader(const Request& request) const
+bool Printer::sendPJLHeader(const Request& request,
+                         unsigned long    compression,
+                         unsigned long    xResolution,
+                         unsigned long    yResolution ) const
 {
     const char *reverse;
     struct tm *timeinfo;
@@ -189,11 +193,20 @@ bool Printer::sendPJLHeader(const Request& request) const
 
     printf("%s", _beginPJL);
 
+    if (0x15 == compression) {
+        printf("@PJL COMMENT USERNAME=\"Username: %s\"\n", request.userName());
+        printf("@PJL COMMENT DOCNAME=\"%s\"\n", request.jobTitle());
+        printf("@PJL JOB NAME=\"%s\"\n", request.jobTitle());
+    }
+
     // Information about the job
     printf("@PJL DEFAULT SERVICEDATE=%04u%02u%02u\n", 1900+timeinfo->tm_year,
         timeinfo->tm_mon+1, timeinfo->tm_mday);
     printf("@PJL SET USERNAME=\"%s\"\n", request.userName());
     printf("@PJL SET JOBNAME=\"%s\"\n", request.jobTitle());
+
+    if (0x15 == compression)
+        printf("@PJL SET MULTIBINMODE=%s\n", "PRINTERDEFAULT");
 
    // Set some printer options
     if (!request.ppd()->get("EconoMode").isNull() && 
@@ -218,6 +231,15 @@ bool Printer::sendPJLHeader(const Request& request) const
             printf("@PJL SET COLORMODE=COLOR\n");
         else
             printf("@PJL SET COLORMODE=MONO\n");
+    }
+
+    if (0x15 == compression) {
+        printf("@PJL SET RESOLUTION=%lu\n", yResolution);
+        if ((600 == xResolution) && (600 == yResolution))
+            printf("@PJL SET IMAGEQUALITY=0\n");
+        if ((1200 == xResolution) && (600 == yResolution))
+            printf("@PJL SET IMAGEQUALITY=1\n");
+        printf("@PJL SET RGBCOLOR=%s\n", "STANDARD");
     }
 
     // Information about the duplex
@@ -265,6 +287,11 @@ bool Printer::sendPJLHeader(const Request& request) const
     else
         printf("@PJL SET RET=%s\n", (const char *)request.ppd()->
                 get("SRTMode"));
+
+    if (0x15 == compression) {
+        printf("@PJL SET BANNERSHEET=%s\n", "OFF");
+        printf("@PJL SET TIMESTAMP=%s\n", "OFF");
+    }
 
     printf("@PJL ENTER LANGUAGE = QPDL\n");
     fflush(stdout);

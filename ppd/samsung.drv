@@ -9,13 +9,14 @@
 Manufacturer "Samsung"
 
 #import "version.defs"
-#import "spl2.defs"
 #import "altitude.defs"
+
 
 //
 // Specific black & white printer definition
 //
 {
+    #import "spl2.defs"
     #import "filter.defs"
     #import "powersave.defs"
     #import "tonerdensity.defs"
@@ -29,7 +30,6 @@ Manufacturer "Samsung"
         Attribute QPDL QPDLVersion "1"
         Attribute General DocHeaderValues "<0><2><1>"
         
-        #import "manualduplex.defs"
         {
             Resolution k 1 0 0 0 "300dpi/300 DPI"
  
@@ -259,6 +259,7 @@ Manufacturer "Samsung"
 // Specific color printer definition
 //
 {
+    #import "spl2.defs"
     #import "filterColor.defs"
     #import "powersave.defs"
 
@@ -392,6 +393,34 @@ Manufacturer "Samsung"
         }
     }
 }
+
+// Color printers V. 3 (Banded JBIG algorithm)
+{
+    #import "spl2bandedjbig.defs"
+    #import "filterColor.defs"
+    #import "powersave.defs"
+    #import "color-v3.defs"
+    #import "manualduplex.defs"
+    Attribute QPDL QPDLVersion "5"
+    Attribute QPDL PacketSize  "512"
+    Attribute General DocHeaderValues "<0><0><1>"
+    Resolution - 1 0 0 0 "1200x600dpi/1200x600 DPI"
+    Resolution - 1 0 0 0 "1200dpi/1200 DPI"
+    Throughput 4
+    {
+        Attribute General CMSFile "CLP-310"
+
+        ModelName "CLP-310"
+        PCFileName "clp310.ppd"
+    }{
+        Attribute General CMSFile "CLP-315"
+
+        ModelName "CLP-315"
+        PCFileName "clp315.ppd"
+    }
+}
+
+
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
 

@@ -397,3 +397,204 @@ msgstr "TRANSLATE Archive"
 msgid "Reverse duplex"
 msgstr "TRANSLATE Reverse duplex"
 
+msgid "SCX-4100"
+msgstr "TRANSLATE SCX-4100"
+
+msgid "US Letter"
+msgstr "TRANSLATE US Letter"
+
+msgid "US Legal"
+msgstr "TRANSLATE US Legal"
+
+msgid "A4"
+msgstr "TRANSLATE A4"
+
+msgid "US Executive"
+msgstr "TRANSLATE US Executive"
+
+msgid "US Ledger"
+msgstr "TRANSLATE US Ledger"
+
+msgid "A3"
+msgstr "TRANSLATE A3"
+
+msgid "#10 Envelope"
+msgstr "TRANSLATE #10 Envelope"
+
+msgid "Monarch"
+msgstr "TRANSLATE Monarch"
+
+msgid "C5"
+msgstr "TRANSLATE C5"
+
+msgid "DL"
+msgstr "TRANSLATE DL"
+
+msgid "B4"
+msgstr "TRANSLATE B4"
+
+msgid "B5"
+msgstr "TRANSLATE B5"
+
+msgid "ISO B5 Envelope"
+msgstr "TRANSLATE ISO B5 Envelope"
+
+msgid "Postcard"
+msgstr "TRANSLATE Postcard"
+
+msgid "Double Postcard"
+msgstr "TRANSLATE Double Postcard"
+
+msgid "A5"
+msgstr "TRANSLATE A5"
+
+msgid "A6"
+msgstr "TRANSLATE A6"
+
+msgid "B6"
+msgstr "TRANSLATE B6"
+
+msgid "C6"
+msgstr "TRANSLATE C6"
+
+msgid "Folio"
+msgstr "TRANSLATE Folio"
+
+msgid "Personal Envelope"
+msgstr "TRANSLATE Personal Envelope"
+
+msgid "#9 Envelope"
+msgstr "TRANSLATE #9 Envelope"
+
+msgid "Air pressure"
+msgstr "TRANSLATE Air pressure"
+
+msgid "High"
+msgstr "TRANSLATE High"
+
+msgid "Low"
+msgstr "TRANSLATE Low"
+
+msgid "SCX-4200"
+msgstr "TRANSLATE SCX-4200"
+
+msgid "SCX-4216F"
+msgstr "TRANSLATE SCX-4216F"
+
+msgid "SCX-4300"
+msgstr "TRANSLATE SCX-4300"
+
+msgid "SCX-4500"
+msgstr "TRANSLATE SCX-4500"
+
+msgid "SCX-4521F"
+msgstr "TRANSLATE SCX-4521F"
+
+msgid "SF-565P"
+msgstr "TRANSLATE SF-565P"
+
+msgid "ML-2571"
+msgstr "TRANSLATE ML-2571"
+
+msgid "ML-2251"
+msgstr "TRANSLATE ML-2251"
+
+msgid "ML-3471ND"
+msgstr "TRANSLATE ML-3471ND"
+
+msgid "ML-1640"
+msgstr "TRANSLATE ML-1640"
+
+msgid "ML-2015"
+msgstr "TRANSLATE ML-2015"
+
+msgid "ML-2240"
+msgstr "TRANSLATE ML-2240"
+
+msgid "ML-1660"
+msgstr "TRANSLATE ML-1660"
+
+msgid "ML-1910"
+msgstr "TRANSLATE ML-1910"
+
+msgid "ML-1915"
+msgstr "TRANSLATE ML-1915"
+
+msgid "ML-2525"
+msgstr "TRANSLATE ML-2525"
+
+msgid "ML-2525W"
+msgstr "TRANSLATE ML-2525W"
+
+msgid "ML-2580"
+msgstr "TRANSLATE ML-2580"
+
+msgid "ML-2580N"
+msgstr "TRANSLATE ML-2580N"
+
+msgid "ML-3051"
+msgstr "TRANSLATE ML-3051"
+
+msgid "SCX-4600"
+msgstr "TRANSLATE SCX-4600"
+
+msgid "SCX-4623f"
+msgstr "TRANSLATE SCX-4623f"
+
+msgid "SCX-4623fw"
+msgstr "TRANSLATE SCX-4623fw"
+
+msgid "ML-3051ND"
+msgstr "TRANSLATE ML-3051ND"
+
+msgid "SCX-5330N"
+msgstr "TRANSLATE SCX-5330N"
+
+msgid "SCX-5530FN"
+msgstr "TRANSLATE SCX-5530FN"
+
+msgid "CLP-550"
+msgstr "TRANSLATE CLP-550"
+
+msgid "CLP-610ND"
+msgstr "TRANSLATE CLP-610ND"
+
+msgid "CLP-310N"
+msgstr "TRANSLATE CLP-310N"
+
+msgid "CLP-310"
+msgstr "TRANSLATE CLP-310"
+
+msgid "CLP-315"
+msgstr "TRANSLATE CLP-315"
+
+msgid "WorkCentre 3119"
+msgstr "TRANSLATE WorkCentre 3119"
+
+msgid "WorkCentre PE16"
+msgstr "TRANSLATE WorkCentre PE16"
+
+msgid "WorkCentre PE114e"
+msgstr "TRANSLATE WorkCentre PE114e"
+
+msgid "Phaser 3160"
+msgstr "TRANSLATE Phaser 3160"
+
+msgid "Phaser 3124"
+msgstr "TRANSLATE Phaser 3124"
+
+msgid "Phaser 3140"
+msgstr "TRANSLATE Phaser 3140"
+
+msgid "Lexmark"
+msgstr "TRANSLATE Lexmark"
+
+msgid "X215 MFP"
+msgstr "TRANSLATE X215 MFP"
+
+msgid "Toshiba"
+msgstr "TRANSLATE Toshiba"
+
+msgid "eSTUDIO180S"
+msgstr "TRANSLATE eSTUDIO180S"
+

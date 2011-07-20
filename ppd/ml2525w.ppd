@@ -1,6 +1,6 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for ML-2525W with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.4.5.
+*%%%% Created by the CUPS PPD Compiler CUPS v1.4.7.
 *FormatVersion: "4.3"
 *FileVersion: "2.0.0"
 *LanguageVersion: English
@@ -134,6 +134,12 @@
 *PaperDimension EnvPersonal/Personal Envelope: "261 468"
 *PaperDimension Env9/#9 Envelope: "279 639"
 *PaperDimension Oficio/Oficio - 216x340mm: "612 972"
+*OpenUI *Altitude/Air pressure: PickOne
+*OrderDependency: 10 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/High: ""
+*Altitude HIGH/Low: ""
+*CloseUI: *Altitude
 *OpenUI *InputSlot/Media Source: PickOne
 *OrderDependency: 10 AnySetup *InputSlot
 *DefaultInputSlot: Auto
@@ -158,12 +164,6 @@
 *MediaType RECYCLED/Recycled: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
-*OpenUI *Altitude/Air pressure: PickOne
-*OrderDependency: 10 AnySetup *Altitude
-*DefaultAltitude: LOW
-*Altitude LOW/High: ""
-*Altitude HIGH/Low: ""
-*CloseUI: *Altitude
 *OpenUI *PowerSave/Power Save: PickOne
 *OrderDependency: 10 AnySetup *PowerSave
 *DefaultPowerSave: 5
