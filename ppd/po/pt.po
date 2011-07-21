@@ -610,3 +610,6 @@ msgstr "Personalizado"
 msgid "Phaser 3140"
 msgstr "Phaser 3140"
 
+msgid "Phaser 3155"
+msgstr "Phaser 3155"
+

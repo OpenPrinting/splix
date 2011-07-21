@@ -598,3 +598,6 @@ msgstr "TRANSLATE Toshiba"
 msgid "eSTUDIO180S"
 msgstr "TRANSLATE eSTUDIO180S"
 
+msgid "Phaser 3155"
+msgstr "TRANSLATE Phaser 3155"
+

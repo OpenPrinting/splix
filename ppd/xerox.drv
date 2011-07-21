@@ -148,6 +148,9 @@ Manufacturer "Xerox"
                 {
                     ModelName "Phaser 3140"
                     PCFileName "ph3140.ppd"
+                } {
+                    ModelName "Phaser 3155"
+                    PCFileName "ph3155.ppd"
                 }
 	    }
 	}
