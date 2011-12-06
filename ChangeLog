@@ -1,3 +1,13 @@
+Wed Dec 06 22:46:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Added new printer:
+		- Samsung SCX-3200 (Ubuntu bug #898385)
+
+	* Updated translation files po/fr.po and po/pt.po for changed page
+	  size names in CUPS 1.5.x.
+
+	* Rebuilt all PPDs with ppdc of CUPS 1.5.0.
+
 Wed Jul 21 17:11:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Added new printer:

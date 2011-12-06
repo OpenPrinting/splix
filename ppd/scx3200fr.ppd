@@ -1,16 +1,16 @@
 *PPD-Adobe: "4.3"
-*%%%% PPD file for Phaser 3122 with CUPS.
+*%%%% PPD file for SCX-3200 with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
 *FileVersion: "2.0.0"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
-*PCFileName: "ph3122.ppd"
-*Product: "(Phaser 3122)"
-*Manufacturer: "Xerox"
-*ModelName: "Xerox Phaser 3122"
-*ShortNickName: "Xerox Phaser 3122"
-*NickName: "Xerox Phaser 3122, 2.0.0"
+*PCFileName: "scx3200.ppd"
+*Product: "(SCX-3200)"
+*Manufacturer: "Samsung"
+*ModelName: "Samsung SCX-3200"
+*ShortNickName: "Samsung SCX-3200"
+*NickName: "Samsung SCX-3200, 2.0.0"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False
@@ -23,9 +23,7 @@
 *QPDL BandSize: "128"
 *PJL BeginPJL: "<1B>%-12345X"
 *PJL EndPJL: "<09><1B>%-12345X"
-*cupsBackSide: "Normal"
-*QPDL ManualDuplex: "On"
-*QPDL QPDLVersion: "2"
+*QPDL QPDLVersion: "3"
 *General DocHeaderValues: "<0><0><1>"
 *cupsVersion: 1.5
 *cupsModelNumber: 0
@@ -133,6 +131,12 @@
 *PaperDimension EnvPersonal/Enveloppe personnelle - 3.625x6.5in: "261 468"
 *PaperDimension Env9/Enveloppe n°9 - 3.875x8.875in: "279 639"
 *PaperDimension Oficio/Oficio - 216x340mm: "612 972"
+*OpenUI *Altitude/Pression de l'air: PickOne
+*OrderDependency: 10 AnySetup *Altitude
+*DefaultAltitude: LOW
+*Altitude LOW/Forte: ""
+*Altitude HIGH/Faible: ""
+*CloseUI: *Altitude
 *OpenUI *InputSlot/Source du papier: PickOne
 *OrderDependency: 10 AnySetup *InputSlot
 *DefaultInputSlot: Auto
@@ -157,12 +161,6 @@
 *MediaType RECYCLED/Papier recyclé: ""
 *MediaType ARCHIVE/Archive: ""
 *CloseUI: *MediaType
-*OpenUI *Altitude/Pression de l'air: PickOne
-*OrderDependency: 10 AnySetup *Altitude
-*DefaultAltitude: LOW
-*Altitude LOW/Forte: ""
-*Altitude HIGH/Faible: ""
-*CloseUI: *Altitude
 *OpenUI *PowerSave/Économie d'énergie: PickOne
 *OrderDependency: 10 AnySetup *PowerSave
 *DefaultPowerSave: 5
@@ -203,15 +201,8 @@
 *OrderDependency: 10 AnySetup *Resolution
 *DefaultResolution: 600dpi
 *Resolution 600dpi/600 PPP: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*Resolution 1200x600dpi/1200x600 PPP: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*Resolution 1200dpi/1200 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
 *CloseUI: *Resolution
-*OpenUI *Duplex/Recto-verso: PickOne
-*OrderDependency: 10 AnySetup *Duplex
-*DefaultDuplex: None
-*Duplex None/Simple (recto): "<</Duplex false>>setpagedevice"
-*Duplex DuplexNoTumble/Côté long (Portrait): "<</Duplex true/Tumble false>>setpagedevice"
-*Duplex DuplexTumble/Côté court (Paysage): "<</Duplex true/Tumble true>>setpagedevice"
-*CloseUI: *Duplex
 *DefaultFont: Courier
 *Font AvantGarde-Book: Standard "(1.05)" Standard ROM
 *Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
@@ -248,4 +239,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ph3122.ppd, 12965 bytes.
+*% End of scx3200.ppd, 12547 bytes.

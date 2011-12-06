@@ -613,3 +613,44 @@ msgstr "Phaser 3140"
 msgid "Phaser 3155"
 msgstr "Phaser 3155"
 
+msgid "Executive"
+msgstr "Executivo - 7.25x10.5in"
+
+msgid "Envelope #10 "
+msgstr "Envelope Número 10 - 4.13x9.5in"
+
+msgid "Envelope Monarch"
+msgstr "Monarca - 3.875x7.5in"
+
+msgid "Envelope C5"
+msgstr "C5 - 162x229mm"
+
+msgid "Envelope DL"
+msgstr "DL - 110x220mm"
+
+msgid "JIS B4"
+msgstr "B4 JIS"
+
+msgid "JIS B5"
+msgstr "B5 JIS"
+
+msgid "Envelope B5"
+msgstr "B5 - 182x257mm"
+
+msgid "Postcard Double Long Edge"
+msgstr "Cartão Postal Duplo (Rotacionado) - 148x200mm"
+
+msgid "JIS B6"
+msgstr "B6 JIS"
+
+msgid "Envelope C6"
+msgstr "C6 - 114x162mm"
+
+msgid "Envelope Personal"
+msgstr "Envelope Pessoal - 3.625x6.5in"
+
+msgid "Envelope #9"
+msgstr "Envelope Número 9 - 3.875x8.875in"
+
+msgid "SCX-3200"
+msgstr "SCX-3200"
