@@ -1,3 +1,8 @@
+Wed Feb 29 15:07:01 2012 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Corrected address of the FSF (SF: #3444266, thanks to Jiri Popelka
+	  from Red Hat for the patch)
+
 Wed Dec 06 22:46:01 2011 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Added new printer:
