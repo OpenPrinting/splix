@@ -1,5 +1,9 @@
 Wed Feb 29 15:07:01 2012 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Allow installing only the CUPS .drv file instead of ready-made PPD
+	  files (SF: #3446934, thanks to Jiri Popelka from Red Hat for the
+	  patch).
+
 	* Allow installing PPD files into a custom directory (SF: #3446190,
 	  thanks to Jiri Popelka from Red Hat for the patch).
 

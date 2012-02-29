@@ -75,6 +75,11 @@ BLACKOPTIMSTATE := disabled
 else
 BLACKOPTIMSTATE := enabled
 endif
+ifeq ($(DRV_ONLY),0)
+DRVSTATE := disabled
+else
+DRVSTATE := enabled
+endif
 
 
 MSG	:=    +---------------------------------------------+\n
@@ -85,8 +90,9 @@ MSG	+=    |      THREADS Nr  = %8i                 |\n
 MSG	+=    |      CACHESIZE   = %8i                 |\n
 MSG	+=    |      JBIG        = %8s                 |\n
 MSG	+=    |      BLACK OPTIM = %8s                 |\n
+MSG	+=    |      DRV ONLY    = %8s                 |\n
 MSG	+=    +---------------------------------------------+\n
 MSG	+=   (Do a \"make clean\" before updating these values)\n\n
 optionList:
 	@printf " $(MSG)" $(THREADSSTATE) $(THREADS) $(CACHESIZE) $(JBIGSTATE) \
-		$(BLACKOPTIMSTATE)
+		$(BLACKOPTIMSTATE) $(DRVSTATE)

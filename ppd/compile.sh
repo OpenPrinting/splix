@@ -28,13 +28,13 @@ parseFile() {
 #
 # Main script
 #
-if [ "$2" = "debug" ]; then
-    TMPFILE="output.drv"
+if [ "$2" = "drv" ]; then
     DRIVER=$1
+    OUTFILE=${DRIVER%.in}
     shift 1
 
-    echo "" > $TMPFILE
-    parseFile $DRIVER $TMPFILE
+    echo "" > $OUTFILE
+    parseFile $DRIVER $OUTFILE
 
 
 elif [ "$2" = "lang" ]; then

@@ -114,6 +114,9 @@ options are:
 			memory will use an average of 9Mo of RAM. Other pages
 			are swapped into the disk. A little CACHESIZE value will
 			increase disk access and increase the job rendering time.
+		* DRV_ONLY=1 [0 by default]:
+			Don't install PPD files at all, only DRV
+			(driver information file) files.
 
 	Example:
 

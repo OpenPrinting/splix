@@ -9,6 +9,7 @@
 # Compilation option:
 # 	   V=1          Verbose mode
 # 	   DESTDIR=xxx  Change the destination directory prefix
+# 	   DRV_ONLY     Don't install PPD files at all, only DRV files.
 
 MODE			:= optimized
 
@@ -23,6 +24,7 @@ CACHESIZE		?= 30
 DISABLE_JBIG		?= 0
 DISABLE_THREADS		?= 0
 DISABLE_BLACKOPTIM	?= 0
+DRV_ONLY		?= 0
 
 
 # Flags
@@ -56,6 +58,7 @@ endif
 # Get some information
 CUPSFILTER		:= `cups-config --serverbin`/filter
 CUPSPPD			?= `cups-config --datadir`/model
+CUPSDRV			?= `cups-config --datadir`/drv
 ifeq ($(ARCHI),Darwin)
 PSTORASTER		:= pstocupsraster
 else
@@ -63,7 +66,7 @@ PSTORASTER		:= pstoraster
 endif
 GSTORASTER		:= gstoraster
 CUPSPROFILE			:= `cups-config --datadir`/profiles
-export CUPSFILTER CUPSPPD
+export CUPSFILTER CUPSPPD CUPSDRV
 
 
 # Specific information needed by pstoqpdl
