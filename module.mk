@@ -55,7 +55,7 @@ endif
 
 # Get some information
 CUPSFILTER		:= `cups-config --serverbin`/filter
-CUPSPPD			:= `cups-config --datadir`/model
+CUPSPPD			?= `cups-config --datadir`/model
 ifeq ($(ARCHI),Darwin)
 PSTORASTER		:= pstocupsraster
 else

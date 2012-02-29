@@ -1,5 +1,8 @@
 Wed Feb 29 15:07:01 2012 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Allow installing PPD files into a custom directory (SF: #3446190,
+	  thanks to Jiri Popelka from Red Hat for the patch).
+
 	* Do not strip the compiled executable when installing via "make
 	  install" to preserve the symbols when the compilation was done
 	  in debug mode (SF: #3444332, thanks to Jiri Popelka from Red Hat for
