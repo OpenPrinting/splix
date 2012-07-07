@@ -1,3 +1,10 @@
+Fri Jul  7 22:33:01 2012 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* Commented out the entries for the Samsung CLP-610 and CLP-610ND
+	  in ppd/smasung.drv and ppd/Makefile as these two printers are
+	  reported to not work with SpliX. Removed also the pre-built PPD
+	  files for these printers (Ubuntu bug #898986).
+
 Wed Feb 29 15:07:01 2012 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Allow installing only the CUPS .drv file instead of ready-made PPD

@@ -307,22 +307,22 @@ Manufacturer "Samsung"
                 PCFileName "clp510.ppd"
             }
         }
-        {
-            Attribute QPDL QPDLVersion "5"
-            Attribute General CMSFile "CLP-610"
-            #import "reverseduplex.defs"
+        //{
+        //    Attribute QPDL QPDLVersion "5"
+        //    Attribute General CMSFile "CLP-610"
+        //    #import "reverseduplex.defs"
 
-            ModelName "CLP-610"
-            PCFileName "clp610.ppd"
-        }
-        {
-            Attribute QPDL QPDLVersion "5"
-            Attribute General CMSFile "CLP-610"
-            #import "reverseduplex.defs"
+        //    ModelName "CLP-610"
+        //    PCFileName "clp610.ppd"
+        //}
+        //{
+        //    Attribute QPDL QPDLVersion "5"
+        //    Attribute General CMSFile "CLP-610"
+        //    #import "reverseduplex.defs"
 
-            ModelName "CLP-610ND"
-            PCFileName "clp610nd.ppd"
-        }
+        //    ModelName "CLP-610ND"
+        //    PCFileName "clp610nd.ppd"
+        //}
     }
 
     // Color printers V. 2 (JBIG algorithm)
