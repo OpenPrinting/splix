@@ -246,31 +246,87 @@ int main(int argc, char **argv)
             fprintf(stdout, "%s", (char *)&buffer); 
         }
     } else {
-        // Check for the header
+
+        // Insert the MediaChoice and colour correction information into
+        // the postscript header.
+        //
+        // Look for a "%%Creator" line in the postscript header, and
+        // insert the information before it.
+        //
+        // Postscript that is created by pdftops from content from Apple 
+        // iOS devices (iPad etc) seems not to have a "%%Creator" line in
+        // the header, so we insert a dummy one. Without this, pstoqpdl
+        // seems to crash ghostscript.
+        //
+        // NB: according to the PostScript Document Structuring Conventions
+        // (DSC) specification the end of the postscript header should be
+        // the "%%EndComments" line - see:
+        // http://partners.adobe.com/public/developer/en/ps/5001.DSC_Spec.pdf
+
+
+        // search each line in the postscript header
         while (!(feof(stdin))) {
+
+            // read a line of the input file
             if (!fgets((char *)&buffer, sizeof(buffer), stdin))
                 break;
 
-            // End of the PS header ?
             if (!(memcmp("%%Creator", (char *)&buffer, 9)) ||
                 !(memcmp("%%LanguageLevel:", (char *)&buffer, 16))) {
+                // found a "%%Creator" line
+
+                // emit the MediaChoice and colour correction information
                 if (paperType)
                     fprintf(stdout, "/MediaChoice (%s) def\n", paperType);
                 fprintf(stdout, "%s", crd);
                 fprintf(stdout, "%s", csa);
-                fprintf(stdout, "%s", (char *)&buffer); 
-                break;
 
-            // End of the header not found?
-            } else if (!(memcmp("%%%%BeginPro", (char *)&buffer, 10)) ||
-                !(memcmp("%%BeginRes", (char *)&buffer, 10)) ||
-                !(memcmp("%%EndComments", (char *)&buffer, 13))) {
-                ERRORMSG(_("End of PostScript header not found"));
+                // emit the original "%%Creator" line
                 fprintf(stdout, "%s", (char *)&buffer); 
+
+                // stop scanning the header
                 break;
             }
+
+
+            if (!(memcmp("%%EndComments", (char *)&buffer, 13))) {
+                // reached end of header without finding a "%%Creator" line
+
+                // emit the MediaChoice and colour correction information
+                if (paperType)
+                    fprintf(stdout, "/MediaChoice (%s) def\n", paperType);
+                fprintf(stdout, "%s", crd);
+                fprintf(stdout, "%s", csa);
+
+                // emit a dummy "%%Creator" line
+                DEBUGMSG(_("inserting dummy \"Creator\" entry in postscript header"));
+                fprintf(stdout, "%s", "%%Creator: SpliX pstoqpdl filter");
+
+                // emit the original "%%EndComments" line
+                fprintf(stdout, "%s", (char *)&buffer);
+
+                // stop scanning the header
+                break;
+            }
+
+
+            if (!(memcmp("%%BeginPro", (char *)&buffer, 10)) ||
+                !(memcmp("%%BeginRes", (char *)&buffer, 10))) {
+                // we shouldn't find either of these lines in the header
+
+                ERRORMSG(_("End of PostScript header not found"));
+
+                // emit the line that was found
+                fprintf(stdout, "%s", (char *)&buffer); 
+
+                // stop scanning the header
+                break;
+            }
+
+            // encountered some other kind of header line - just emit it
             fprintf(stdout, "%s", (char *)&buffer); 
         }
+
 
         // Check for each page
         while (!(feof(stdin))) {

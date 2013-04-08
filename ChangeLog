@@ -1,3 +1,15 @@
+Mon Apr  8 00:08:01 2013 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* When a print job sent to CUPS 1.6.2 from iOS is converted to
+	  PostScript with the pdftops filter of cups-filters, the resulting
+	  PostScript does not contain a "%%Creator" line in its header, which
+	  is used by pstoqpdl as marker for where to insert MediaChoice amd
+	  color correction info. This change inserts the missing "%%Creator"
+	  when it reaches "%%EndComments". It also corrects a minor error in
+	  the existing code which was trying to match an incorrect string.
+	  Thanks to Martin Crossley (martin at crossleys dot biz) for the
+	  patch (SF: #3610240).
+
 Fri Jul  7 22:33:01 2012 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Commented out the entries for the Samsung CLP-610 and CLP-610ND
