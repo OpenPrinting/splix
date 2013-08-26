@@ -152,7 +152,7 @@ else
 	$(call printCmd, $(cmd_install_drv))
 	$(Q)install -d -m 755 ${DESTDIR}${CUPSDRV}
 	$(Q)for filename in ${DRVS}; do \
-		install -m 644 $$filename ${DESTDIR}${CUPSDRV};\
+		install -m 644 $$filename ${DESTDIR}${CUPSDRV}/splix-$$filename;\
 		done;
 endif
 

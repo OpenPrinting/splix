@@ -1,3 +1,8 @@
+Mon Aug 26 16:51:01 2013 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	* When installing the *.drv files, install them as
+	  "splix-<manufacturer>.drv", to avoid name clashes (SF patch #16).
+
 Mon Apr  8 00:08:01 2013 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* When a print job sent to CUPS 1.6.2 from iOS is converted to
