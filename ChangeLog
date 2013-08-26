@@ -1,5 +1,7 @@
 Mon Aug 26 16:51:01 2013 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Added new printer:
+		- Samsung ML-2160 (SF patch #19)
 	* Added "drv" target to the top level Makefile (SF patch #18).
 	* Renamed the ppd/*.drv files to ppd/*.drv.in to fix the build process
 	  (SF patch #17).

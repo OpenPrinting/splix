@@ -234,7 +234,15 @@ Manufacturer "Samsung"
 		} {
                     ModelName "SCX-4623fw"
                     PCFileName "scx4623fw.ppd"
-		}
+		}{
+                #import "manualduplex.defs"
+                Attribute QPDL PacketSize "512"
+                {
+                    ModelName "ML-2160"
+                    PCFileName "ml2160.ppd"
+	        	}
+            }
+
             } {
                 Resolution k 1 0 0 0 "1200dpi/1200 DPI"
     
