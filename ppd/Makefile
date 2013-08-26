@@ -9,12 +9,12 @@ SOURCE		:= samsung.drv.in dell.drv.in xerox.drv.in lexmark.drv.in toshiba.drv.in
 DRVS		:= samsung.drv dell.drv xerox.drv lexmark.drv toshiba.drv
 DELL		:= 1100 1110
 SAMSUNG		:= clp500 clp550 clp510 ml1510 ml1520 ml1610 \
-		   ml1630 ml1640 ml1660 ml1710 ml1740 ml1750 ml1910 ml1915 \
-                   ml2010 ml2015 ml2150 ml2240 ml2250 ml2251 ml2510 ml2525 \
-                   ml2525w ml2550 ml2571 ml2580 ml2580n ml3050 ml3051 \
-		   ml3051nd ml3471nd ml3560 scx3200 scx4100 scx4200 scx4216f \
-		   scx4300 scx4500 scx4521f scx4600 scx4623f scx4623fw \
-		   scx5330n scx5530fn sf565p
+                   ml1630 ml1640 ml1660 ml1710 ml1740 ml1750 ml1910 ml1915 \
+                   ml2010 ml2015 ml2150 ml2160 ml2165 ml2240 ml2250 ml2251 \
+                   ml2510 ml2525 ml2525w ml2550 ml2571 ml2580 ml2580n ml3050 \
+                   ml3051 ml3051nd ml3310 ml3310nd ml3471nd ml3560 scx3200 \
+                   scx4100 scx4200 scx4216f scx4300 scx4500 scx4521f scx4600 \
+                   scx4623f scx4623fw scx5330n scx5530fn sf565p
 #SAMSUNG		+= clp610 clp610nd
 XEROX		:= ph3115 ph3116 ph3117 ph3120 ph3121 ph3122 ph3124 ph3130 \
 		   ph3140 ph3150 ph3155 ph3160 ph3420 ph3425 ph5500 ph6100 \

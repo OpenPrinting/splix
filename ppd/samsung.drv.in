@@ -223,6 +223,9 @@ Manufacturer "Samsung"
                     ModelName "ML-3051"
                     PCFileName "ml3051.ppd"
 		} {
+                    ModelName "ML-3310"
+                    PCFileName "ml3310.ppd"
+		} {
                     ModelName "SCX-3200"
                     PCFileName "scx3200.ppd"
 		} {
@@ -240,7 +243,7 @@ Manufacturer "Samsung"
                 {
                     ModelName "ML-2160"
                     PCFileName "ml2160.ppd"
-	        	}
+	        }
             }
 
             } {
@@ -251,6 +254,9 @@ Manufacturer "Samsung"
 		{
                     ModelName "ML-3051ND"
                     PCFileName "ml3051nd.ppd"
+		} {
+                    ModelName "ML-3310ND"
+                    PCFileName "ml3310nd.ppd"
 		} {
 		    ModelName "SCX-5330N"
                     PCFileName "scx5330n.ppd"
