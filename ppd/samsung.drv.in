@@ -263,6 +263,35 @@ Manufacturer "Samsung"
     }
 }
 
+//
+// ML-2165 printer (different margins than the other monochrome printers)
+//
+{
+    HWMargins 12.5 12.5 12.5 12.5
+    #import "spl2basic.defs"
+    #import "filter.defs"
+    #import "powersave.defs"
+    #import "tonerdensity.defs"
+    #import "tonersave.defs"
+    #import "jamrecovery.defs"
+    #import "monochrome-v2.defs"
+
+    {
+        Attribute QPDL QPDLVersion "3"
+        Attribute General DocHeaderValues "<0><0><1>"
+        {
+            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+            #import "manualduplex.defs"
+            {
+		Throughput "21"
+		MediaSize A4
+
+                ModelName "ML-2165"
+                PCFileName "ml2165.ppd"
+	    }
+	}
+    }
+}
 
 
 
