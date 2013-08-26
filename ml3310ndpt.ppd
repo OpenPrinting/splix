@@ -1,22 +1,22 @@
 *PPD-Adobe: "4.3"
-*%%%% PPD file for ML-1915 with CUPS.
+*%%%% PPD file for ML-3310ND with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.7rc1.
 *FormatVersion: "4.3"
 *FileVersion: "2.0.0"
 *LanguageVersion: Portuguese_Brazil
 *LanguageEncoding: ISOLatin1
-*PCFileName: "ml1915.ppd"
-*Product: "(ML-1915)"
+*PCFileName: "ml3310nd.ppd"
+*Product: "(ML-3310ND)"
 *Manufacturer: "Samsung"
-*ModelName: "Samsung ML-1915"
-*ShortNickName: "Samsung ML-1915"
-*NickName: "Samsung ML-1915, 2.0.0"
+*ModelName: "Samsung TRANSLATE ML-3310ND"
+*ShortNickName: "Samsung TRANSLATE ML-3310ND"
+*NickName: "Samsung TRANSLATE ML-3310ND, 2.0.0"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False
 *DefaultColorSpace: Gray
 *FileSystem: False
-*Throughput: "21"
+*Throughput: "1"
 *LandscapeOrientation: Plus90
 *TTRasterizer: Type42
 *% Driver-defined attributes...
@@ -26,7 +26,6 @@
 *QPDL QPDLVersion: "3"
 *General DocHeaderValues: "<0><0><1>"
 *cupsBackSide: "Normal"
-*QPDL ManualDuplex: "On"
 *cupsVersion: 1.7
 *cupsModelNumber: 0
 *cupsManualCopies: False
@@ -86,29 +85,29 @@
 *PageRegion Oficio/Ofício - 216x340mm: "<</PageSize[612 972]/ImagingBBox null>>setpagedevice"
 *CloseUI: *PageRegion
 *DefaultImageableArea: Letter
-*ImageableArea Letter/US Letter: "12.5 12.5 599.5 779.5"
-*ImageableArea Legal/US Legal: "12.5 12.5 599.5 995.5"
-*ImageableArea A4/A4: "12.5 12.5 582.5 829.5"
-*ImageableArea Executive/Executivo - 7.25x10.5in: "12.5 12.5 509.5 743.5"
-*ImageableArea Ledger/US Ledger: "12.5 12.5 1211.5 779.5"
-*ImageableArea A3/A3: "12.5 12.5 829.5 1178.5"
-*ImageableArea Env10/Envelope Número 10 - 4.13x9.5in: "12.5 12.5 284.5 671.5"
-*ImageableArea Monarch/Monarca - 3.875x7.5in: "12.5 12.5 266.5 527.5"
-*ImageableArea C5/C5 - 162x229mm: "12.5 12.5 446.5 636.5"
-*ImageableArea DL/DL - 110x220mm: "12.5 12.5 299.5 611.5"
-*ImageableArea B4/B4 JIS: "12.5 12.5 716.5 1019.5"
-*ImageableArea B5/B5 JIS: "12.5 12.5 503.5 716.5"
-*ImageableArea EnvISOB5/B5 - 182x257mm: "12.5 12.5 486.5 696.5"
-*ImageableArea Postcard/Postcard: "12.5 12.5 271.5 406.5"
-*ImageableArea DoublePostcardRotated/Cartão Postal Duplo (Rotacionado) - 148x200mm: "12.5 12.5 407.5 554.5"
-*ImageableArea A5/A5: "12.5 12.5 407.5 582.5"
-*ImageableArea A6/A6: "12.5 12.5 284.5 407.5"
-*ImageableArea B6/B6 JIS: "12.5 12.5 350.5 503.5"
-*ImageableArea C6/C6 - 114x162mm: "12.5 12.5 310.5 446.5"
-*ImageableArea Folio/Folio: "12.5 12.5 582.5 922.5"
-*ImageableArea EnvPersonal/Envelope Pessoal - 3.625x6.5in: "12.5 12.5 248.5 455.5"
-*ImageableArea Env9/Envelope Número 9 - 3.875x8.875in: "12.5 12.5 266.5 626.5"
-*ImageableArea Oficio/Ofício - 216x340mm: "12.5 12.5 599.5 959.5"
+*ImageableArea Letter/US Letter: "10.75 15 601.25 777"
+*ImageableArea Legal/US Legal: "10.75 15 601.25 993"
+*ImageableArea A4/A4: "10.75 15 584.25 827"
+*ImageableArea Executive/Executivo - 7.25x10.5in: "10.75 15 511.25 741"
+*ImageableArea Ledger/US Ledger: "10.75 15 1213.25 777"
+*ImageableArea A3/A3: "10.75 15 831.25 1176"
+*ImageableArea Env10/Envelope Número 10 - 4.13x9.5in: "10.75 15 286.25 669"
+*ImageableArea Monarch/Monarca - 3.875x7.5in: "10.75 15 268.25 525"
+*ImageableArea C5/C5 - 162x229mm: "10.75 15 448.25 634"
+*ImageableArea DL/DL - 110x220mm: "10.75 15 301.25 609"
+*ImageableArea B4/B4 JIS: "10.75 15 718.25 1017"
+*ImageableArea B5/B5 JIS: "10.75 15 505.25 714"
+*ImageableArea EnvISOB5/B5 - 182x257mm: "10.75 15 488.25 694"
+*ImageableArea Postcard/Postcard: "10.75 15 273.25 404"
+*ImageableArea DoublePostcardRotated/Cartão Postal Duplo (Rotacionado) - 148x200mm: "10.75 15 409.25 552"
+*ImageableArea A5/A5: "10.75 15 409.25 580"
+*ImageableArea A6/A6: "10.75 15 286.25 405"
+*ImageableArea B6/B6 JIS: "10.75 15 352.25 501"
+*ImageableArea C6/C6 - 114x162mm: "10.75 15 312.25 444"
+*ImageableArea Folio/Folio: "10.75 15 584.25 920"
+*ImageableArea EnvPersonal/Envelope Pessoal - 3.625x6.5in: "10.75 15 250.25 453"
+*ImageableArea Env9/Envelope Número 9 - 3.875x8.875in: "10.75 15 268.25 624"
+*ImageableArea Oficio/Ofício - 216x340mm: "10.75 15 601.25 957"
 *DefaultPaperDimension: Letter
 *PaperDimension Letter/US Letter: "612 792"
 *PaperDimension Legal/US Legal: "612 1008"
@@ -203,7 +202,7 @@
 *OrderDependency: 10 AnySetup *Resolution
 *DefaultResolution: 600dpi
 *Resolution 600dpi/600 PPP: "<</HWResolution[600 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
-*Resolution 1200x600dpi/1200x600 PPP: "<</HWResolution[1200 600]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
+*Resolution 1200dpi/1200 PPP: "<</HWResolution[1200 1200]/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0/cupsColorSpace 3>>setpagedevice"
 *CloseUI: *Resolution
 *OpenUI *Duplex/Frente e Verso: PickOne
 *OrderDependency: 10 AnySetup *Duplex
@@ -248,4 +247,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1915.ppd, 13058 bytes.
+*% End of ml3310nd.ppd, 13023 bytes.

@@ -1,0 +1,75 @@
+/*
+ *      spl2.defs                      (C) 2007, Aurélien Croc (AP²C)
+ * 
+ *
+ *
+ * $Id$
+ */
+#include <media.defs>
+
+#media "Oficio/Oficio - 216x340mm" 612 972
+
+// Supported paper format
+*MediaSize Letter
+MediaSize Legal
+MediaSize A4
+MediaSize Executive
+MediaSize Ledger
+MediaSize A3
+MediaSize Env10
+MediaSize Monarch
+MediaSize C5
+MediaSize DL
+MediaSize B4
+MediaSize B5
+MediaSize EnvISOB5
+// Not listed
+MediaSize Postcard
+MediaSize DoublePostcardRotated
+MediaSize A5
+MediaSize A6
+MediaSize B6
+// Custom
+MediaSize C6
+MediaSize Folio
+MediaSize EnvPersonal
+MediaSize Env9
+MediaSize Oficio
+
+// VariablePaperSize yes
+
+// Supported input slots
+*InputSlot 1 "Auto/Automatic Selection"
+InputSlot 2 "Manual/Manual Feed"
+
+
+
+
+//
+// Defining PJL variables
+//
+
+// Supported paper type
+Option "MediaType/Paper Type" PickOne AnySetup 10
+   *Choice "OFF/Use Printer Default" ""
+   Choice "NORMAL/Plain Paper" ""
+   Choice "THICK/Thick Paper" ""
+   Choice "THIN/Thin Paper" ""
+   Choice "BOND/Bond" ""
+   Choice "OHP/Transparency" ""
+   Choice "CARD/Card Stock" ""
+   Choice "LABEL/Label" ""
+   Choice "USED/Preprinted" ""
+   Choice "COLOR/Colored Paper" ""
+   Choice "ENV/Envelope" ""
+   Choice "COTTON/Cotton" ""
+   Choice "RECYCLED/Recycled" ""
+   Choice "ARCHIVE/Archive" ""
+
+Attribute QPDL BandSize "128"
+Attribute PJL BeginPJL "<1B>%-12345X"
+Attribute PJL EndPJL "<09><1B>%-12345X"
+
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+

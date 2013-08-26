@@ -1,12 +1,14 @@
 Mon Aug 26 16:51:01 2013 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
+	* Fixed margins for Samsung ML-1915 (SF bug #84)
+	* Generated pre-made PPDs for the newly supported printers.
 	* Added new printer:
 		- Samsung ML-2160 (SF patch #20)
 		- Samsung ML-2165 (SF patch #15)
 		- Samsung ML-3310(ND) (SF bug #86)
 	* Added "drv" target to the top level Makefile (SF patch #18).
 	* Renamed the ppd/*.drv files to ppd/*.drv.in to fix the build process
-	  (SF patch #17).
+	  (SF patch #17, SF bug #79).
 	* When installing the *.drv files, install them as
 	  "splix-<manufacturer>.drv", to avoid name clashes (SF patch #16).
 
