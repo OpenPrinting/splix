@@ -49,11 +49,13 @@ installcms:
 
 # Specific rules used for development and information
 
-.PHONY: tags optionList ppd cleanppd
+.PHONY: tags optionList drv ppd cleanppd
 tags:
 	ctags --recurse --language-force=c++ --extra=+q --fields=+i \
 	      --exclude=doc --exclude=.svn * 
 
+drv:
+	@$(MAKE) --no-print-directory -C ppd/ drv DISABLE_JBIG=$(DISABLE_JBIG)
 ppd:
 	@$(MAKE) --no-print-directory -C ppd/ ppd DISABLE_JBIG=$(DISABLE_JBIG)
 cleanppd:
