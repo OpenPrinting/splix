@@ -1,0 +1,12 @@
+*~
+*/*~
+.#*
+*.o
+*.pdf
+.vscode/
+.gdb_history
+gmon.out
+.defs.mk
+optimized
+ppd/*.drv
+tmp
