@@ -14,7 +14,7 @@
 # Function parseFile
 #
 parseFile() {
-    while read LINE; do
+    while IFS= read LINE; do
         if [ -n "`echo "$LINE" | grep '^[ \t]*#import[ \t]*"[a-zA-Z0-9\.\-]*"'`" ]; then
             FILE=`echo "$LINE" | sed -re 's/[ \t]*#import[ \t]"([a-zA-Z0-9\.\-]*)"/\1/'`
             parseFile $FILE $2
