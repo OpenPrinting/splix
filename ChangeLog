@@ -1,3 +1,17 @@
+Wed Apr  3 01:06:00 2024 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
+
+	--- RELEASE OF THE VERSION V. 2.0.1 ---
+
+	* Let CXX argument of "make" actually be used (Upstreamized
+	  Ubuntu/debian patch).
+	* Make build of *.drv files reproducible (Upstreamized
+	  Ubuntu/debian patch).
+	* Fix alignment for SpliX to work correctly on ARM (Upstreamized
+	  Ubuntu/debian patch).
+	* Updated AUTHORS file.
+	* Added README.md file, removed near-empty README.
+	* Added .gitignore
+
 Mon Aug 26 16:51:01 2013 Till Kamppeter <till DOT kamppeter AT gmail DOT com>
 
 	* Fixed margins for Samsung ML-1915 (SF bug #84)
