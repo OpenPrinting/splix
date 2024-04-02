@@ -569,7 +569,7 @@ bool CacheEntry::restoreIntoMemory()
 
     if (!_tempFile) {
         ERRORMSG(_("Trying to restore a page instance into memory which is "
-            "aready into memory"));
+            "already into memory"));
         return false;
     }
 

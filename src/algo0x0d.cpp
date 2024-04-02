@@ -448,7 +448,7 @@ BandPlane * Algo0x0D::compress(const Request & request, unsigned char *data,
     /* Zero value byte padding for data size alignment to 4-byte boundary. */
     unsigned long zerosPad = 4 - ( outputSize % 4 );
 
-    /* Pad anyway even if aready aligned. */
+    /* Pad anyway even if already aligned. */
     if ( outputSize + zerosPad <= maximumBufferSize ) {
         while ( zerosPad-- ) {
             output[ outputSize++ ] = 0;
