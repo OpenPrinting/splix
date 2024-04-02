@@ -132,7 +132,7 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
 {
     unsigned long version, subVersion, size, dataSize, checkSum;
     bool color, headerSent=false;
-    unsigned char header[0x20];
+    unsigned char header[0x20] __attribute__((aligned(4)));
     const BandPlane *plane;
 
     version = request.printer()->qpdlVersion();
