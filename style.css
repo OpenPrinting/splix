@@ -89,8 +89,8 @@ body {
  */
 #menu {
     margin: 0px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     padding: 0px;
     text-align: center;
 }
@@ -109,10 +109,10 @@ body {
 }
 
 #menu li {
-    padding: 5px 0px 5px 0px;
+    padding: 3px 0px 3px 0px;
     margin: 0px;
-    margin-right: 13px;
-    width: 122px;
+    margin-right: 5px;
+    width: 110px;
     background: #127C99;
     float: left;
 }
@@ -122,7 +122,7 @@ body {
 }
 
 #menu li.last {
-    width: 125px;
+    width: 110px;
     margin: 0px;
 }
 
