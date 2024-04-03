@@ -1,0 +1,228 @@
+msgid "English"
+msgstr "TRANSLATE English"
+
+msgid "ISOLatin1"
+msgstr "TRANSLATE ISOLatin1"
+
+msgid "Samsung"
+msgstr "TRANSLATE Samsung"
+
+msgid "ML-1610"
+msgstr "TRANSLATE ML-1610"
+
+msgid "Letter - 8.5x11in"
+msgstr "TRANSLATE Letter - 8.5x11in"
+
+msgid "Legal - 8.5x14in"
+msgstr "TRANSLATE Legal - 8.5x14in"
+
+msgid "A4 - 210x297mm"
+msgstr "TRANSLATE A4 - 210x297mm"
+
+msgid "Executive - 7.25x10.5in"
+msgstr "TRANSLATE Executive - 7.25x10.5in"
+
+msgid "Ledger - 17x11in"
+msgstr "TRANSLATE Ledger - 17x11in"
+
+msgid "A3 - 297x420mm"
+msgstr "TRANSLATE A3 - 297x420mm"
+
+msgid "#10 Envelope - 4.13x9.5in"
+msgstr "TRANSLATE #10 Envelope - 4.13x9.5in"
+
+msgid "Monarch - 3.875x7.5in"
+msgstr "TRANSLATE Monarch - 3.875x7.5in"
+
+msgid "C5 - 162x229mm"
+msgstr "TRANSLATE C5 - 162x229mm"
+
+msgid "DL - 110x220mm"
+msgstr "TRANSLATE DL - 110x220mm"
+
+msgid "B4 - 257x364mm"
+msgstr "TRANSLATE B4 - 257x364mm"
+
+msgid "B5 - 182x257mm"
+msgstr "TRANSLATE B5 - 182x257mm"
+
+msgid "ISOB5 Envelope - 176x250mm"
+msgstr "TRANSLATE ISOB5 Envelope - 176x250mm"
+
+msgid "A5 - 148x210mm"
+msgstr "TRANSLATE A5 - 148x210mm"
+
+msgid "A6 - 105x148mm"
+msgstr "TRANSLATE A6 - 105x148mm"
+
+msgid "ISOB6 Envelope - 176x125mm"
+msgstr "TRANSLATE ISOB6 Envelope - 176x125mm"
+
+msgid "C6 - 114x162mm"
+msgstr "TRANSLATE C6 - 114x162mm"
+
+msgid "Folio - 210x330mm"
+msgstr "TRANSLATE Folio - 210x330mm"
+
+msgid "Resolution"
+msgstr "TRANSLATE Resolution"
+
+msgid "600 DPI"
+msgstr "TRANSLATE 600 DPI"
+
+msgid "300 DPI"
+msgstr "TRANSLATE 300 DPI"
+
+msgid "InputSlot"
+msgstr "TRANSLATE InputSlot"
+
+msgid "Automatic Selection"
+msgstr "TRANSLATE Automatic Selection"
+
+msgid "Manual Feed"
+msgstr "TRANSLATE Manual Feed"
+
+msgid "Paper Type"
+msgstr "TRANSLATE Paper Type"
+
+msgid "Use Printer Default"
+msgstr "TRANSLATE Use Printer Default"
+
+msgid "Plain Paper"
+msgstr "TRANSLATE Plain Paper"
+
+msgid "Thick Paper"
+msgstr "TRANSLATE Thick Paper"
+
+msgid "Thin Paper"
+msgstr "TRANSLATE Thin Paper"
+
+msgid "Bond"
+msgstr "TRANSLATE Bond"
+
+msgid "Transparency"
+msgstr "TRANSLATE Transparency"
+
+msgid "Card Stock"
+msgstr "TRANSLATE Card Stock"
+
+msgid "Label"
+msgstr "TRANSLATE Label"
+
+msgid "Preprinted"
+msgstr "TRANSLATE Preprinted"
+
+msgid "Colored Paper"
+msgstr "TRANSLATE Colored Paper"
+
+msgid "Envelope"
+msgstr "TRANSLATE Envelope"
+
+msgid "Power Save"
+msgstr "TRANSLATE Power Save"
+
+msgid "Off"
+msgstr "TRANSLATE Off"
+
+msgid "5 Minutes"
+msgstr "TRANSLATE 5 Minutes"
+
+msgid "10 Minutes"
+msgstr "TRANSLATE 10 Minutes"
+
+msgid "15 Minutes"
+msgstr "TRANSLATE 15 Minutes"
+
+msgid "30 Minutes"
+msgstr "TRANSLATE 30 Minutes"
+
+msgid "45 Minutes"
+msgstr "TRANSLATE 45 Minutes"
+
+msgid "1 Hour"
+msgstr "TRANSLATE 1 Hour"
+
+msgid "Toner Density"
+msgstr "TRANSLATE Toner Density"
+
+msgid "Light"
+msgstr "TRANSLATE Light"
+
+msgid "Medium"
+msgstr "TRANSLATE Medium"
+
+msgid "Dark"
+msgstr "TRANSLATE Dark"
+
+msgid "Toner Save"
+msgstr "TRANSLATE Toner Save"
+
+msgid "Save"
+msgstr "TRANSLATE Save"
+
+msgid "Standard"
+msgstr "TRANSLATE Standard"
+
+msgid "Reprint When Jam"
+msgstr "TRANSLATE Reprint When Jam"
+
+msgid "On"
+msgstr "TRANSLATE On"
+
+msgid "ML-1710"
+msgstr "TRANSLATE ML-1710"
+
+msgid "ML-2010"
+msgstr "TRANSLATE ML-2010"
+
+msgid "1200 DPI"
+msgstr "TRANSLATE 1200 DPI"
+
+msgid "ML-2250"
+msgstr "TRANSLATE ML-2250"
+
+msgid "Multi-Purpose Tray"
+msgstr "TRANSLATE Multi-Purpose Tray"
+
+msgid "Tray 1"
+msgstr "TRANSLATE Tray 1"
+
+msgid "Tray 2"
+msgstr "TRANSLATE Tray 2"
+
+msgid "Envelope Tray"
+msgstr "TRANSLATE Envelope Tray"
+
+msgid "Tray 3"
+msgstr "TRANSLATE Tray 3"
+
+msgid "SRT Mode"
+msgstr "TRANSLATE SRT Mode"
+
+msgid "Normal"
+msgstr "TRANSLATE Normal"
+
+msgid "Text enhance"
+msgstr "TRANSLATE Text enhance"
+
+msgid "Image enhance"
+msgstr "TRANSLATE Image enhance"
+
+msgid "Installable Options"
+msgstr "TRANSLATE Installable Options"
+
+msgid "Tray 2 Installed"
+msgstr "TRANSLATE Tray 2 Installed"
+
+msgid "Not Installed"
+msgstr "TRANSLATE Not Installed"
+
+msgid "Installed"
+msgstr "TRANSLATE Installed"
+
+msgid "Envelope Tray Installed"
+msgstr "TRANSLATE Envelope Tray Installed"
+
+msgid "Tray 3 Installed"
+msgstr "TRANSLATE Tray 3 Installed"
+

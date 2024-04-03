@@ -1,0 +1,265 @@
+/*
+ * Stylesheet designed for SPLIX by AP²C
+ * (C) Copyright, Aurélien Croc, 2006
+ * 
+ * Main colours: 
+ *      - 1BBBE6 ?
+ *      - 127C99 titles
+ *      - E68B1C links
+ *      - 994612 active links
+ *      - 1A1A1A borders and text ?
+ *      - E5E5E5 background
+ *
+ */
+* {
+    font-family: "Trebuchet MS", "Verdana", sans-serif;
+    font-size: 11pt;
+}
+
+p {
+    text-indent: 50px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Georgia", serif;
+}
+img {
+    border: 0px;
+}
+
+div.imgCenter {
+    text-align: center;
+}
+
+a, a:link, a:visited, a:hover {
+    text-decoration: none;
+    font-weight: bold;
+    color: #E68B1C;
+}
+
+
+
+a:hover {
+    color: #994612;
+}
+
+html {
+    background-color: #FFFFFF;
+}
+
+body {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*
+ * Header
+ */
+#header {
+    background-color: #E5E5E5;
+    margin: 0px;
+    padding: 10px;
+}
+
+#header h1 {
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    font-size: 400%;
+    color: #1BBBE6;
+    font-weight: bold;
+    padding-left: 170px;
+}
+
+#header h2 {
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+    font-size: 200%;
+    color: #127C99;
+    padding-right: 170px;
+}
+
+
+
+/*
+ * Menu
+ */
+#menu {
+    margin: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0px;
+    text-align: center;
+}
+
+#menu a, #menu a:link, #menu a:visited {
+    font-size: 110%;
+    display: block;
+    color: #FFAB3C;
+}
+
+#menu ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    display: inline;
+}
+
+#menu li {
+    padding: 5px 0px 5px 0px;
+    margin: 0px;
+    margin-right: 13px;
+    width: 122px;
+    background: #127C99;
+    float: left;
+}
+
+#menu li:hover {
+    background: #005C79;
+}
+
+#menu li.last {
+    width: 125px;
+    margin: 0px;
+}
+
+
+
+
+/*
+ * Main frame
+ */
+#main {
+    margin-top: 10px;
+    border: 1px solid #1A1A1A;
+    padding: 20px;
+    background-color: #F8F8F8;
+}
+
+#main h1 {
+    color: #1BBBE6;
+    text-align: right;
+    font-size: 250%;
+    font-weight: bold;
+}
+
+#main h2 {
+    color: #127C99;
+    text-align: left;
+    font-size: 230%;
+    font-weight: bold;
+}
+
+#main h3 {
+    color: #127C99;
+    text-align: left;
+    font-size: 200%;
+    font-weight: bold;
+}
+
+#main h4 {
+    color: #127C99;
+    text-align: left;
+    font-size: 170%;
+    font-weight: bold;
+}
+
+#main h5 {
+    color: #127C99;
+    text-align: left;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+#main h6 {
+    color: #127C99;
+    text-align: left;
+    font-size: 130%;
+    font-weight: bold;
+}
+
+#main table {
+    border: 3px outset;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#main td {
+    width: 150px;
+}
+
+#main tr {
+    background-color: #FFFFFF;
+}
+
+#main td.untested {
+    font-weight: bold;
+    background-color: #E07000;
+    color: #FFFFFF;
+}
+
+#main td.works {
+    font-weight: bold;
+    background-color: #108810;
+    color: #FFFFFF;
+}
+#main td.nonworking {
+    font-weight: bold;
+    background-color: #881010;
+    color: #FFFFFF;
+}
+
+/*
+ * Footer
+ */
+#footer {
+    margin-top: 20px;
+    margin: 0px;
+    padding: 5px;
+}
+
+#footer p {
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    font-size: 80%;
+}
+
+#logo ul.left {
+    width: 400px;
+    margin: 0px;
+    padding: 0px;
+    float: left;
+    list-style: none;
+}
+
+#logo ul.left > li {
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+}
+
+#logo ul.right {
+    width: 400px;
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
+    list-style: none;
+    float: right;
+}
+
+#logo ul.right > li {
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+}
+
+#main li {
+    margin-bottom: 15px;
+}
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80: */
+

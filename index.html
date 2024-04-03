@@ -1,0 +1,316 @@
+<!--#include file="header.html"-->
+
+<h1>Welcome</h1>
+
+<p>
+    SpliX is a set of <a href="http://www.cups.org">CUPS</a> printer drivers 
+for SPL (Samsung Printer Language) printers. If you have such a printer, 
+you need to download and use SpliX. Moreover you will find documentation about
+this proprietary language.
+</p>
+
+<p>
+    Many Linux distributions ship SpliX already so that you do not
+need to compile and install it by yourself. The the SpliX driver will
+usually get assigned automatically to the supported printers. You get
+also pre-built ditribution-independent LSB-based packages of SpliX on
+<a href="http://www.openprinting.org/driver/splix/">OpenPrinting</a>.
+With these you can get SpliX onto any Linux machine without needing to
+compile.
+</p>
+
+<p>
+    Don't hesitate to <a href="contact.html">leave us a message</a> if 
+necessary.
+</p>
+
+<h2>Important notice</h2>
+<p>
+    We are <strong>*NOT*</strong> affiliated to Samsung. These
+    drivers have been produced without the approvement of this manufacturer
+    either the Xerox one. These companies only distribute 
+    <strong>proprietary</strong> and <strong>old</strong> drivers. 
+</p>
+
+<h2>News</h2>
+
+<ul>
+    <li>
+        <strong>Tuesday May, 15 2012: </strong>No the SpliX project isn't dead.
+        Thanks to the great job of Till Kamppeter, SpliX evolved during the last
+        three years. It is time to do a new release which will be available very
+        soon. Thank you for all of you who support this project and make it
+        better and better.
+    </li>
+    <li>
+        <strong>Friday February, 6 2009: </strong>The version 2.0.0 of splix
+        has been released. This version adds the support for newer printers,
+        manual duplex, improve the quality of the color prints etc. You should
+        download it now and use it.
+    </li>
+    <!--<li>
+        <strong>Sunday June, 15: </strong>The release candidate 2 of SpliX
+        2.0.0 is out and wait for your bug reports. A lot of new features are
+        now supported like the color correction, the manual duplex etc.
+    </li>
+    <li>
+        <strong>Friday November, 16: </strong>The version 1.1.0 of splix
+        has been released. This version adds the support for newer printers
+        like the CLP-300, CLP-600, and add lots of new supported printers.
+    </li>
+    <li>
+        <strong>Friday October, 19: </strong>An important bug, related to
+        larger documents has bee fixed. This patch has been applied to the
+        version 1.0.2.
+    </li>-->
+<!--    <li>
+        <strong>Sunday October, 14: </strong>A new compression algorithm
+        used by new printers (Samsung, Xerox, Dell and Ricoh) has been
+        implemented and is available for tests on the subversion repository.
+        If you have a such printer (for instance, CLP-300 or CLP-600), 
+        it would be great to return your experience.
+    </li>
+    <li>
+        <strong>Saturday February, 10: </strong>An important bug, related to
+        the ML-2010 printers has been fixed (it seems to be a printer firmware
+        bug which has been solved by a workaround). This patch has been applied
+        to the version 1.0.1-1.
+    <li>
+        <strong>Sunday February, 4: </strong>The version 1.0.1 of splix
+        has been released. This version supports color printers excepted
+        the CLP-300 and CLP-600 (these printers are too recent).
+        The next release will contain support for them. If someone want
+        to help us to understand and develop their new compression algorithm, 
+        please send to us a message in the mailing-list.
+    </li><li>
+        <strong>Wednesday November, 22: </strong>Thanks to <em>Keith White</em>
+        the english version of the specification is now available.
+    </li>
+    <li>
+        <strong>Saturday November, 11: </strong> The support of SPLc (the
+        Samsung printer language for color printers) has been added into the
+        current branch of SpliX. Moreover a beta package (splix-1.0.1-beta)
+        has been released to check if color printers are working. <strong>
+        Please <a href="contact.html">leave us a message</a> if your color 
+        laser printer is working!!!</strong>
+    </li>-->
+</ul>
+
+<h2>List of supported printers</h2>
+<p>
+    Below you will find a <strong>non-exhaustive</strong> list of currently 
+supported printers. Please <a href="contact.html">leave us a message</a> if 
+your printer works with SpliX and is not listed below (or listed as untested).
+</p>
+
+<table>
+    <thead><tr>
+        <th>Manufacturer</th><th>Model</th><th>State</th>
+    </tr></thead>
+    <tbody>
+        <tr>
+            <td>Dell</td><td>1100</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Dell</td><td>1110</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Lexmark</td><td>X215 MPF</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-200</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-300</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-310</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-315</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-500</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-510</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-550</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-600</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-610</td><td class="nonworking">Does not work</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLP-610ND</td><td class="nonworking">Does not work</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLX-216X</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLX-2170</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>CLX-3160</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1510</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1520</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1610</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1630</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1640</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1660</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1710</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1740</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1750</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1910</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-1915</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2010</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2015</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2150</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2240</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2250</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2251</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2510</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2525</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2550</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2570</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2571</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-2580</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-3050</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-3051</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-3471</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>ML-3560</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-3200</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4100</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4200</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4216</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4300</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4500</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4521</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4600</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-4623</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SCX-5330</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Samsung</td><td>SF-565</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Toshiba</td><td>eSTUDIO180S</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3115</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3116</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3117</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3120</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3121</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3122</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3124</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3130</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3140</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3150</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3155</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3160</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3420</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 3425</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 5500</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 6100</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Xerox</td><td>Phaser 6110</td><td class="works">Works</td>
+        </tr><tr>
+            <td>Xerox</td><td>WorkCentre 3119</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>WorkCentre PE16</td><td class="untested">Untested</td>
+        </tr><tr>
+            <td>Xerox</td><td>WorkCentre PE114e</td><td class="untested">Untested</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    Many of the printers which work with SpliX also work with drivers
+of the <a href="http://foo2zjs.rkkda.com/">foo2zjs</a> package,
+especially <a href="http://foo2qpdl.rkkda.com/">foo2qpdl</a>. Printers
+supported by SpliX and generally laser printers made by Samsung, Dell,
+Lexmark, Toshiba, and Xerox may perhaps also work with the foo2zjs drivers, <a
+href="http://www.openprinting.org/driver/hpijs-pcl5e/">PCL 5e
+(monochrome printers only)</a>, <a
+href="http://www.openprinting.org/driver/hpijs-pcl5c/">PCL 5c (color
+printers only)</a>, PCL XL (<a
+href="http://www.openprinting.org/driver/pxlmono/">monochrome</a>, <a
+href="http://www.openprinting.org/driver/pxlcolor/">color</a>), and <a
+href="http://www.openprinting.org/driver/Postscript/">PostScript</a>
+drivers and also with proprietary drivers supplied by the
+manufacturers.
+</p>
+
+<p>
+    Use these alternative drivers if your printer is listed as "Does not
+work", listed as "Untested" and does not work for you (please tell
+us), or not listed at all.
+</p>
+
+<h2>Support this project</h2>
+<p>
+    If this project helped you and made you save time and money, thank you to
+<a href="http://sourceforge.net/donate/index.php?group_id=175815">support us</a>
+so that we can continue our work.
+</p>
+
+<h2>About SPL(1) printers</h2>
+<p>
+    The SPL1 printers use a specific language internally called 
+    <em>Smart GDI</em>. However, SpliX attemps to bring a support for the
+    internally called QPDL language. Moreover, the smart GDI language is 
+    already supported by Ghostscript under the name
+    "<a href="http://www.openprinting.org/driver/gdi">gdi</a>".<br />
+    For all these reasons, Splix won't support old SPL(1) printers.
+</p>
+<p>
+    Please refer to the <a
+    href="http://www.openprinting.org/driver/gdi">
+    Smart GDI driver on OpenPrinting</a> for more information.
+</p>
+<p>
+    Non-exhaustive list of SPL1 printers : ML-1210, ML-1430, ML-1440, ML-1450
+</p>
+
+<!--#include file="footer.html"-->
+
+<!-- vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80: -->
+
