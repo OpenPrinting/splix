@@ -5,20 +5,23 @@
 <h1>Welcome</h1>
 
 <p>
-    SpliX is a set of <a href="http://www.cups.org">CUPS</a> printer drivers 
+SpliX is a set of <a href="http://www.cups.org">CUPS</a> printer drivers
 for SPL (Samsung Printer Language) printers. If you have such a printer, 
-you need to download and use SpliX. Moreover you will find documentation about
-this proprietary language.
+you need to use SpliX. Moreover you will find documentation about
+this proprietary language here.
 </p>
 
 <p>
-    Many Linux distributions ship SpliX already so that you do not
-need to compile and install it by yourself. The the SpliX driver will
-usually get assigned automatically to the supported printers. You get
-also pre-built ditribution-independent LSB-based packages of SpliX on
-<a href="http://www.openprinting.org/driver/splix/">OpenPrinting</a>.
-With these you can get SpliX onto any Linux machine without needing to
-compile.
+Many Linux distributions ship SpliX already so that you do not need to
+compile and install it by yourself. The SpliX driver will usually get
+assigned automatically to the supported printers. You get also
+the <a href="https://snapcraft.io/ghostscript-printer-app">Ghostscript
+Printer Application</a> in the Snap Store which also contains
+SpliX. Wrapped in trhis Printer Application SpliX can still be used
+iwth CUPS 3.x and later, which does not support classic drivers any
+more. Even Windows users can make use of SpliX
+by <a href="https://openprinting.github.io/wsl-printer-app/">installing
+it under WSL</a>.
 </p>
 
 <p>
@@ -26,19 +29,31 @@ compile.
 necessary.
 </p>
 
+<p>
+<strong>We have moved to OpenPrinting's GitHub site now!</strong>
+</p>
+
 <h2>Important notice</h2>
 <p>
-    We are <strong>*NOT*</strong> affiliated to Samsung. These
-    drivers have been produced without the approvement of this manufacturer
-    either the Xerox one. These companies only distribute 
-    <strong>proprietary</strong> and <strong>old</strong> drivers. 
+    We are <strong>*NOT*</strong> affiliated any of the manufacturers of
+    the printers which SpilX supports. These drivers have been produced
+    without the approval by the manufacturers. These companies only distribute 
+    <strong>proprietary</strong> and <strong>old</strong> drivers.
 </p>
 
 <h2>News</h2>
 
 <ul>
     <li>
-        <strong>Tuesday May, 15 2012: </strong>No the SpliX project isn't dead.
+        <strong>Wednesday April,  3 2024: </strong>Now, 15 years after the 2.0.0
+	release, it is time for 2.0.1, which we have released today. It catches
+	up with all the commits (mainly bug fixes and device additions) after
+	2.0.0 and has the patches of the Debian/Ubuntu package included. And
+	the code has moved to OpenPrinting's GitHub site, to ease future fixes
+	and releases, and also the distribution packaging.
+    </li>
+    <li>
+        <strong>Tuesday May, 15 2012: </strong>No, the SpliX project isn't dead.
         Thanks to the great job of Till Kamppeter, SpliX evolved during the last
         three years. It is time to do a new release which will be available very
         soon. Thank you for all of you who support this project and make it
@@ -265,18 +280,20 @@ your printer works with SpliX and is not listed below (or listed as untested).
 </table>
 
 <p>
-    Many of the printers which work with SpliX also work with drivers
-of the <a href="http://foo2zjs.rkkda.com/">foo2zjs</a> package,
-especially <a href="http://foo2qpdl.rkkda.com/">foo2qpdl</a>. Printers
-supported by SpliX and generally laser printers made by Samsung, Dell,
-Lexmark, Toshiba, and Xerox may perhaps also work with the foo2zjs drivers, <a
-href="http://www.openprinting.org/driver/hpijs-pcl5e/">PCL 5e
-(monochrome printers only)</a>, <a
-href="http://www.openprinting.org/driver/hpijs-pcl5c/">PCL 5c (color
-printers only)</a>, PCL XL (<a
-href="http://www.openprinting.org/driver/pxlmono/">monochrome</a>, <a
-href="http://www.openprinting.org/driver/pxlcolor/">color</a>), and <a
-href="http://www.openprinting.org/driver/Postscript/">PostScript</a>
+Many of the printers which work with SpliX also work with drivers of
+the <a href="http://www.openprinting.org/driver/foo2zjs/">foo2zjs</a>
+package,
+especially <a href="http://www.openprinting.org/driver/foo2qpdl/">foo2qpdl</a>.
+Printers supported by SpliX and generally laser printers made by
+Samsung, Dell, Lexmark, Toshiba, and Xerox may perhaps also work with
+the foo2zjs
+drivers, <a href="http://www.openprinting.org/driver/hpijs-pcl5e/">PCL
+5e (monochrome printers
+only)</a>, <a href="http://www.openprinting.org/driver/hpijs-pcl5c/">PCL
+5c (color printers only)</a>, PCL XL
+(<a href="http://www.openprinting.org/driver/pxlmono/">monochrome</a>,
+<a href="http://www.openprinting.org/driver/pxlcolor/">color</a>),
+and <a href="http://www.openprinting.org/driver/Postscript/">PostScript</a>
 drivers and also with proprietary drivers supplied by the
 manufacturers.
 </p>
@@ -315,4 +332,3 @@ so that we can continue our work.
 {% include footer.html %}
 
 <!-- vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80: -->
-
