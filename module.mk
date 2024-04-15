@@ -31,9 +31,9 @@ DRV_ONLY		?= 0
 CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall -I/opt/local/include
 DEBUG_CXXFLAGS		+= -DDEBUG  -DDUMP_CACHE
 OPTIM_CXXFLAGS 		+= -g
-rastertoqpdl_LDFLAGS	:= `cups-config --ldflags` -L/opt/local/lib
+rastertoqpdl_LDFLAGS	:= $(LDFLAGS) `cups-config --ldflags` -L/opt/local/lib
 rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
-pstoqpdl_LDFLAGS	:= `cups-config --ldflags`
+pstoqpdl_LDFLAGS	:= $(LDFLAGS) `cups-config --ldflags`
 pstoqpdl_LIBS		:= `cups-config --libs` -lcupsimage
 
 
