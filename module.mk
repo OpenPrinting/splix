@@ -28,13 +28,13 @@ DRV_ONLY		?= 0
 
 
 # Flags
-CXXFLAGS		+= `cups-config --cflags` -Iinclude -Wall -I/opt/local/include
+CXXFLAGS		+= `pkg-config --cflags cups` -Iinclude -Wall -I/opt/local/include
 DEBUG_CXXFLAGS		+= -DDEBUG  -DDUMP_CACHE
 OPTIM_CXXFLAGS 		+= -g
-rastertoqpdl_LDFLAGS	:= $(LDFLAGS) `cups-config --ldflags` -L/opt/local/lib
-rastertoqpdl_LIBS	:= `cups-config --libs` -lcupsimage
-pstoqpdl_LDFLAGS	:= $(LDFLAGS) `cups-config --ldflags`
-pstoqpdl_LIBS		:= `cups-config --libs` -lcupsimage
+rastertoqpdl_LDFLAGS	:= $(LDFLAGS) -L/opt/local/lib
+rastertoqpdl_LIBS	:= `pkg-config --libs cups` -lcupsimage
+pstoqpdl_LDFLAGS	:= $(LDFLAGS)
+pstoqpdl_LIBS		:= `pkg-config --libs cups` -lcupsimage
 
 
 # Update compilation flags with defined options
@@ -56,16 +56,16 @@ endif
 
 
 # Get some information
-CUPSFILTER		:= `cups-config --serverbin`/filter
-CUPSPPD			?= `cups-config --datadir`/model
-CUPSDRV			?= `cups-config --datadir`/drv
+CUPSFILTER		:= `pkg-config --variable=cups_serverbin cups`/filter
+CUPSPPD			?= `pkg-config --variable=cups_datadir cups`/model
+CUPSDRV			?= `pkg-config --variable=cups_datadir cups`/drv
 ifeq ($(ARCHI),Darwin)
 PSTORASTER		:= pstocupsraster
 else
 PSTORASTER		:= pstoraster
 endif
 GSTORASTER		:= gstoraster
-CUPSPROFILE			:= `cups-config --datadir`/profiles
+CUPSPROFILE			:= `pkg-config --variable=cups_datadir`/profiles
 export CUPSFILTER CUPSPPD CUPSDRV
 
 
