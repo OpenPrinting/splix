@@ -27,6 +27,7 @@ Manufacturer "Samsung"
     // Monochrome printers V. 1 (old algorithms)
     {
         #import "monochrome-v1.defs"
+        #import "manualduplex.defs"
         Attribute QPDL QPDLVersion "1"
         Attribute General DocHeaderValues "<0><2><1>"
         
