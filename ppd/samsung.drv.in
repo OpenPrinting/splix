@@ -312,7 +312,14 @@ Manufacturer "Samsung"
 
                     ModelName "ML-2165"
                     PCFileName "ml2165.ppd"
-	        }
+                } {
+                    Throughput "21"
+                    Attribute QPDL PacketSize "512"
+                    Attribute QPDL SpecialBandWidth "True"
+
+                    ModelName "M2020 Series"
+                    PCFileName "m2020.ppd"
+                }
             }
 	}
     }
