@@ -113,7 +113,7 @@ static bool _compressBandedPage(const Request& request, Page* page)
         bandHeight /= 2;
 
     //Patch for Samsung M2026
-    if (!(strcasecmp(request.printer()->model(), "Samsung M2020 Series"))) {
+    if (request.printer()->specialBandWidth()) {
         bandWidthInB = _get2020BandWidthInB(request.printer()->paperType(), page->xResolution());
         if (!bandWidthInB) bandWidthInB = lineWidthInB;
     }

@@ -39,6 +39,7 @@ class Printer
         bool                    _color;
         unsigned long           _qpdlVersion;
         unsigned long           _bandHeight;
+        bool                    _specialBandWidth;
         unsigned long           _packetSize;
 
         unsigned char           _paperType;
@@ -106,6 +107,11 @@ class Printer
           * @return the height of a band.
           */ 
         unsigned long           bandHeight() const {return _bandHeight;}
+        /**
+         * @return TRUE if the printer requires special BandWidth selection
+         *         code (Samsung M2020 Series). Otherwise it returns FALSE.
+         */
+        bool                    specialBandWidth() const {return _specialBandWidth;}
         /**
           * @return the maximum size of a packet.
           */ 
