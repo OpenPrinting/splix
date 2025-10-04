@@ -31,10 +31,10 @@ HWMargins 12.5 12.5 12.5 12.5
             Attribute QPDL SpecialBandWidth "True"
             #import "manualduplex.defs"
             {
-                ModelName "Laser 103/107/108"
+                ModelName "HP Laser 10x Series"
                 PCFileName "laser107.ppd"
             } {
-                ModelName "Laser MFP 135/137"
+                ModelName "HP Laser MFP 13x Series"
                 PCFileName "laser135.ppd"
             }
 
