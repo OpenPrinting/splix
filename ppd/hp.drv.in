@@ -32,10 +32,14 @@ HWMargins 12.5 12.5 12.5 12.5
             #import "manualduplex.defs"
             {
                 ModelName "HP Laser 10x Series"
-                PCFileName "laser107.ppd"
+                Attribute Product "" "(LaserPrinter)"
+                Attribute ShortNickName "" "10x"
+                PCFileName "laser10x.ppd"
             } {
                 ModelName "HP Laser MFP 13x Series"
-                PCFileName "laser135.ppd"
+                Attribute Product "" "(LaserMFP)"
+                Attribute ShortNickName "" "13x"
+                PCFileName "laser13x.ppd"
             }
 
         }
