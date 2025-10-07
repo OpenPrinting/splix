@@ -68,6 +68,7 @@ bool Printer::loadInformation(const Request& request)
         return false;
     }
     _bandHeight = request.ppd()->get("BandSize", "QPDL");
+    _specialBandWidth = request.ppd()->get("SpecialBandWidth", "QPDL");
     _packetSize = request.ppd()->get("PacketSize", "QPDL");
     _packetSize *= 1024;
     _manufacturer = request.ppd()->get("Manufacturer").deepCopy();

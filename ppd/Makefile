@@ -5,10 +5,11 @@
 #
 #
 
-SOURCE		:= samsung.drv.in dell.drv.in xerox.drv.in lexmark.drv.in toshiba.drv.in
-DRVS		:= samsung.drv dell.drv xerox.drv lexmark.drv toshiba.drv
+SOURCE		:= samsung.drv.in dell.drv.in xerox.drv.in lexmark.drv.in toshiba.drv.in hp.drv.in
+DRVS		:= samsung.drv dell.drv xerox.drv lexmark.drv toshiba.drv hp.drv
+HP		:= laser10x laser13x
 DELL		:= 1100 1110
-SAMSUNG		:= clp500 clp550 clp510 ml1510 ml1520 ml1610 \
+SAMSUNG		:= clp500 clp550 clp510 m2020 ml1510 ml1520 ml1610 \
                    ml1630 ml1640 ml1660 ml1710 ml1740 ml1750 ml1910 ml1915 \
                    ml2010 ml2015 ml2150 ml2160 ml2165 ml2240 ml2250 ml2251 \
                    ml2510 ml2525 ml2525w ml2550 ml2571 ml2580 ml2580n ml3050 \
@@ -31,7 +32,7 @@ SAMSUNG 	+= clp200 clp300 clp310 clp315 clp310n clp600 clx216x clx2170 \
                    clx3160
 XEROX		+= ph6110
 endif
-DRIVERS		:= $(DELL) $(SAMSUNG) $(XEROX) $(LEXMARK) $(TOSHIBA)
+DRIVERS		:= $(DELL) $(SAMSUNG) $(XEROX) $(LEXMARK) $(TOSHIBA) $(HP)
 
 # === DON'T CHANGE ANYTHING AFTER THIS MESSAGE ====
 
@@ -51,6 +52,7 @@ drv: $(SOURCE)
 	./compile.sh xerox.drv.in drv
 	./compile.sh lexmark.drv.in drv
 	./compile.sh toshiba.drv.in drv
+	./compile.sh hp.drv.in drv
 
 .PHONY: ppd
 ppd: $(DRIVER) $(LANGDRIVERSEXT)
@@ -61,6 +63,7 @@ $(DRIVER): $(SOURCE)
 	./compile.sh xerox.drv.in -I . -d ./
 	./compile.sh lexmark.drv.in -I . -d ./
 	./compile.sh toshiba.drv.in -I . -d ./
+	./compile.sh hp.drv.in -I . -d ./
 
 $(LANGDRIVERSEXT): $(SOURCE) $(patsubst %, $(PODIR)/%.$(POEXT), $(LANGUAGES))
 	lang=$(patsubst $(MASTERDRIVER)%.$(DRIVERSEXT),%, $@); \
@@ -88,6 +91,11 @@ $(LANGDRIVERSEXT): $(SOURCE) $(patsubst %, $(PODIR)/%.$(POEXT), $(LANGUAGES))
 	for filename in ${TOSHIBA}; do \
 		recode utf8..latin1 ${PODIR}/$$lang/$$filename.${DRIVERSEXT}; \
 		mv ${PODIR}/$$lang/$$filename.${DRIVERSEXT} $$filename$$lang.${DRIVERSEXT}; \
+	done; \
+	./compile.sh hp.drv.in -l $$lang -c ${PODIR}/$$lang.${POEXT} -d ${PODIR}/$$lang; \
+	for filename in ${HP}; do \
+		recode utf8..latin1 ${PODIR}/$$lang/$$filename.${DRIVERSEXT}; \
+		mv ${PODIR}/$$lang/$$filename.${DRIVERSEXT} $$filename$$lang.${DRIVERSEXT}; \
 	done;
 
 .PHONY: update
@@ -98,12 +106,14 @@ update: $(patsubst %, $(PODIR)/%.$(POEXT), $(LANGUAGES))
 	./compile.sh xerox.drv.in lang $@
 	./compile.sh lexmark.drv.in lang $@
 	./compile.sh toshiba.drv.in lang $@
+	./compile.sh hp.drv.in lang $@
 
 cmd_install_samsung	= INSTALL           Samsung PPD files
 cmd_install_xerox	= INSTALL           Xerox PPD files
 cmd_install_dell	= INSTALL           Dell PPD files
 cmd_install_lexmark	= INSTALL           Lexmark PPD files
 cmd_install_toshiba	= INSTALL           Toshiba PPD files
+cmd_install_hp		= INSTALL           HP PPD files
 cmd_install_drv		= INSTALL           DRV files
 .PHONY: install
 install:
@@ -146,6 +156,14 @@ ifneq  ($(DRV_ONLY),1)
 		install -m 644 $$filename.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/toshiba;\
 		for lang in ${LANGUAGES}; do \
 			install -m 644 $$filename$$lang.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/toshiba;\
+		done; \
+	done;
+	$(call printCmd, $(cmd_install_hp))
+	$(Q)install -d -m 755 ${DESTDIR}${CUPSPPD}/hp
+	$(Q)for filename in ${HP}; do \
+		install -m 644 $$filename.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/hp;\
+		for lang in ${LANGUAGES}; do \
+			install -m 644 $$filename$$lang.${DRIVERSEXT} ${DESTDIR}${CUPSPPD}/hp;\
 		done; \
 	done;
 else

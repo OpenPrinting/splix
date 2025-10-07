@@ -1,0 +1,50 @@
+/*
+ *      hp.drv                       (C) 2025, ValdikSS
+ * 
+ * Contains the hp laser printers drivers
+ *
+ * $Id$
+ */
+
+Manufacturer "HP"
+
+#import "version.defs"
+#import "altitude.defs"
+
+HWMargins 12.5 12.5 12.5 12.5
+#import "spl2basic.defs"
+#import "filter.defs"
+#import "powersave.defs"
+#import "tonerdensity.defs"
+#import "tonersave.defs"
+#import "jamrecovery.defs"
+#import "monochrome-v2.defs"
+
+{
+    Attribute QPDL QPDLVersion "3"
+    Attribute General DocHeaderValues "<0><0><1>"
+    {
+        {
+            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+            Throughput "21"
+            Attribute QPDL PacketSize "512"
+            Attribute QPDL SpecialBandWidth "True"
+            #import "manualduplex.defs"
+            {
+                ModelName "HP Laser 10x Series"
+                Attribute Product "" "(LaserPrinter)"
+                Attribute ShortNickName "" "10x"
+                PCFileName "laser10x.ppd"
+            } {
+                ModelName "HP Laser MFP 13x Series"
+                Attribute Product "" "(LaserMFP)"
+                Attribute ShortNickName "" "13x"
+                PCFileName "laser13x.ppd"
+            }
+
+        }
+    }
+}
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 enc=utf8: */
+
