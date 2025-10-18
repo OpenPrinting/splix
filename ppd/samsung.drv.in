@@ -319,6 +319,14 @@ Manufacturer "Samsung"
 
                     ModelName "M2020 Series"
                     PCFileName "m2020.ppd"
+                } {
+                    Throughput "21"
+                    Attribute QPDL PacketSize "512"
+                    Attribute QPDL SpecialBandWidth "True"
+                    Attribute "1284DeviceID" "" "MFG:Samsung;CMD:SPL,URF,FWV,PIC,EXT,DCU;MDL:M2070 Series;CLS:PRINTER;CID:SA_SPLV3_BW;MODE:SCN,SPL3,R000105;STATUS:IDLE;"
+
+                    ModelName "M2070 Series"
+                    PCFileName "m2070.ppd"
                 }
             }
 	}
