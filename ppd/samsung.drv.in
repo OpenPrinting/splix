@@ -274,6 +274,18 @@ Manufacturer "Samsung"
 		}
             }
         }
+    // Monochrome printers V. 3 (not fully supported, new algorithms)
+    } {
+        #import "monochrome-v3.defs"
+        {
+            {
+            #import "manualduplex.defs"
+                {
+                    ModelName "ML-1860"
+                    PCFileName "ml1860.ppd"
+                }
+            }
+        }
     }
 }
 
