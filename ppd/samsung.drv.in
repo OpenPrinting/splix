@@ -274,6 +274,25 @@ Manufacturer "Samsung"
 		}
             }
         }
+    // Monochrome printers V. 3 (not fully supported, new algorithms)
+    } {
+        #import "monochrome-v3.defs"
+        {
+            Attribute QPDL QPDLVersion "5"
+            Attribute QPDL PacketSize "512"
+            Attribute General DocHeaderValues "<0><0><1>"
+            Attribute "1284DeviceID" "" "MFG:Samsung;CMD:GDI,FWV,EXT;MDL:ML-1860 Series;CLS:PRINTER;"
+            {
+            #import "manualduplex.defs"
+                {
+                    ModelName "ML-1860"
+                    PCFileName "ml1860.ppd"
+                } {
+                    ModelName "ML-1865"
+                    PCFileName "ml1865.ppd"
+                }
+            }
+        }
     }
 }
 
@@ -319,6 +338,13 @@ Manufacturer "Samsung"
 
                     ModelName "M2020 Series"
                     PCFileName "m2020.ppd"
+                } {
+                    Throughput "21"
+                    Attribute QPDL PacketSize "512"
+                    Attribute QPDL SpecialBandWidth "True"
+
+                    ModelName "ML-1865W Series"
+                    PCFileName "ml1865w.ppd"
                 } {
                     Throughput "21"
                     Attribute QPDL PacketSize "512"
