@@ -286,6 +286,9 @@ Manufacturer "Samsung"
                 {
                     ModelName "ML-1860"
                     PCFileName "ml1860.ppd"
+                } {
+                    ModelName "ML-1865"
+                    PCFileName "ml1865.ppd"
                 }
             }
         }
