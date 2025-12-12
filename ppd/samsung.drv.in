@@ -281,6 +281,7 @@ Manufacturer "Samsung"
             Attribute QPDL QPDLVersion "5"
             Attribute QPDL PacketSize "512"
             Attribute General DocHeaderValues "<0><0><1>"
+            Attribute "1284DeviceID" "" "MFG:Samsung;CMD:GDI,FWV,EXT;MDL:ML-1860 Series;CLS:PRINTER;"
             {
             #import "manualduplex.defs"
                 {
