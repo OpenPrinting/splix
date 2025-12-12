@@ -278,6 +278,9 @@ Manufacturer "Samsung"
     } {
         #import "monochrome-v3.defs"
         {
+            Attribute QPDL QPDLVersion "5"
+            Attribute QPDL PacketSize "512"
+            Attribute General DocHeaderValues "<0><0><1>"
             {
             #import "manualduplex.defs"
                 {
