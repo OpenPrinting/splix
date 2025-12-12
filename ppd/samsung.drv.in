@@ -341,6 +341,13 @@ Manufacturer "Samsung"
                     Throughput "21"
                     Attribute QPDL PacketSize "512"
                     Attribute QPDL SpecialBandWidth "True"
+
+                    ModelName "ML-1865W Series"
+                    PCFileName "ml1865w.ppd"
+                } {
+                    Throughput "21"
+                    Attribute QPDL PacketSize "512"
+                    Attribute QPDL SpecialBandWidth "True"
                     Attribute "1284DeviceID" "" "MFG:Samsung;CMD:SPL,URF,FWV,PIC,EXT,DCU;MDL:M2070 Series;CLS:PRINTER;CID:SA_SPLV3_BW;MODE:SCN,SPL3,R000105;STATUS:IDLE;"
 
                     ModelName "M2070 Series"
