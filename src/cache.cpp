@@ -513,6 +513,7 @@ CacheEntry::CacheEntry(Page* page)
 {
     _tempFile = NULL;
     _next = NULL;
+    _previous = NULL;
     _page = page;
 }
 
