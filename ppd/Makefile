@@ -17,7 +17,7 @@ SAMSUNG		:= clp500 clp550 clp510 m2020 m2070 ml1510 ml1520 ml1610 \
                    scx4100 scx4200 scx4216f scx4300 scx4500 scx4521f scx4600 \
                    scx4623f scx4623fw scx5330n scx5530fn sf565p
 #SAMSUNG		+= clp610 clp610nd
-XEROX		:= ph3115 ph3116 ph3117 ph3120 ph3121 ph3122 ph3124 ph3130 \
+XEROX		:= ph3020 ph3115 ph3116 ph3117 ph3120 ph3121 ph3122 ph3124 ph3130 \
 		   ph3140 ph3150 ph3155 ph3160 ph3420 ph3425 ph5500 ph6100 \
 		   wc3119 wcpe16 wcpe114e
 LEXMARK		:= x215mfp
