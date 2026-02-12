@@ -8,14 +8,14 @@
 Manufacturer "Xerox"
 
 #import "version.defs"
-#import "spl2.defs"
-#import "filter.defs"
 #import "altitude.defs"
 
 //
 // Specific black & white printer definition
 //
 {
+    #import "spl2.defs"
+    #import "filter.defs"
     #import "powersave.defs"
     #import "tonerdensity.defs"
     #import "tonersave.defs"
@@ -162,11 +162,47 @@ Manufacturer "Xerox"
     }
 }
 
+//
+// Special Xerox Phaser models as Samsung M2020, HP Laser 10x
+//
+{
+    HWMargins 12.5 12.5 12.5 12.5
+    #import "spl2basic.defs"
+    #import "filter.defs"
+    #import "powersave.defs"
+    #import "tonerdensity.defs"
+    #import "tonersave.defs"
+    #import "jamrecovery.defs"
+    #import "monochrome-v2.defs"
+
+    // QPDL Version 3
+    {
+        Attribute QPDL QPDLVersion "3"
+        Attribute General DocHeaderValues "<0><0><1>"
+
+        {
+            Resolution k 1 0 0 0 "1200dpi/1200 DPI"
+            #import "manualduplex.defs"
+            {
+                Throughput "21"
+                Attribute QPDL PacketSize "512"
+                Attribute QPDL SpecialBandWidth "True"
+
+                ModelName "Phaser 3020"
+                PCFileName "ph3020.ppd"
+            }
+        }
+    }
+}
+
+
 
 //
 // Specific color printer definition
 //
 {
+    #import "spl2.defs"
+    #import "filter.defs"
     #import "powersave.defs"
 
     // Color printers V. 1 (old algorithms)
