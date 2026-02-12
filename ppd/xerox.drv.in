@@ -190,6 +190,13 @@ Manufacturer "Xerox"
 
                 ModelName "Phaser 3020"
                 PCFileName "ph3020.ppd"
+            } {
+                Throughput "21"
+                Attribute QPDL PacketSize "512"
+                Attribute QPDL SpecialBandWidth "True"
+
+                ModelName "WorkCentre 3025"
+                PCFileName "wc3025.ppd"
             }
         }
     }
