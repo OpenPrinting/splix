@@ -25,7 +25,7 @@ TOSHIBA		:= es180s
 DRIVERSEXT	:= ppd
 POEXT		:= po
 PODIR		:= po
-LANGUAGES 	:= fr pt
+LANGUAGES 	:= fr pt_BR
 # === MAKE ALL PPD BY DEFAULT ====
 ifneq ($(DISABLE_JBIG),1)
 SAMSUNG 	+= clp200 clp300 clp310 clp315 clp310n clp600 clx216x clx2170 \
