@@ -274,7 +274,7 @@ static bool _compressBandedPage(const Request& request, Page* page)
 static bool _compressBandedJBIGPage(const Request& request, Page* page)
 {
     unsigned long index=0, pageHeight, lineWidthInB, bandHeight = 128;
-    unsigned long bufferWidth, bandSize, hardMarginXInB=13, hardMarginY=100;
+    unsigned long bufferWidth, specialBufferWidthInB, bandSize, hardMarginXInB=13, hardMarginY=100;
     unsigned char *planes[4], *band[4];
     unsigned long bandNumber=0, xLimitInB, bufferWidthInB;
     Algo0x15 *algo = new Algo0x15;
@@ -291,6 +291,13 @@ static bool _compressBandedJBIGPage(const Request& request, Page* page)
     bufferWidth = page->width() & ~255;
     if ((bufferWidth + 128) < page->width())
       bufferWidth += 256;
+
+    if (request.printer()->specialBandWidth()) {
+        specialBufferWidthInB = _get2020BandWidthInB(request.printer()->paperType(),
+                                                page->xResolution(),
+                                                page->width());
+        if (specialBufferWidthInB) bufferWidth = specialBufferWidthInB * 8;
+    }
     // Update the page heigth.
     page->setHeight(pageHeight);
     // Update the page width.
