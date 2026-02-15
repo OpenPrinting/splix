@@ -136,7 +136,11 @@ bool Printer::loadInformation(const Request& request)
     else if (!(strcasecmp(paperType, "Folio"))) _paperType = 24;
     else if (!(strcasecmp(paperType, "EnvPersonal"))) _paperType = 25;
     else if (!(strcasecmp(paperType, "Env9"))) _paperType = 26;
+    else if (!(strcasecmp(paperType, "3x5"))) _paperType = 27;
     else if (!(strcasecmp(paperType, "Oficio"))) _paperType = 28;
+    else if (!(strcasecmp(paperType, "Statement"))) _paperType = 30;
+    else if (!(strcasecmp(paperType, "roc8k"))) _paperType = 34;
+    else if (!(strcasecmp(paperType, "roc16k"))) _paperType = 35;
     else {
         ERRORMSG(_("Invalid paper size \"%s\". Operation aborted."), paperType);
         return false;
