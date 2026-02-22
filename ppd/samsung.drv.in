@@ -236,6 +236,9 @@ Manufacturer "Samsung"
                     ModelName "SCX-3200"
                     PCFileName "scx3200.ppd"
 		} {
+                    ModelName "SCX-3400"
+                    PCFileName "scx3400.ppd"
+		} {
                     ModelName "SCX-4600"
                     PCFileName "scx4600.ppd"
 		} {
@@ -289,6 +292,10 @@ Manufacturer "Samsung"
                     Attribute QPDL SpecialBandWidth "True"
                     ModelName "ML-1860"
                     PCFileName "ml1860.ppd"
+                } {
+                    Attribute QPDL SpecialBandWidth "True"
+                    ModelName "ML-1670"
+                    PCFileName "ml1670.ppd"
                 } {
                     Attribute QPDL SpecialBandWidth "True"
                     ModelName "ML-1865"
