@@ -335,13 +335,14 @@ Manufacturer "Samsung"
 	        }
             } {
                 Resolution k 1 0 0 0 "1200dpi/1200 DPI"
-                #import "manualduplex.defs"
                 {
+                    #import "manualduplex.defs"
 		    Throughput "21"
 
                     ModelName "ML-2165"
                     PCFileName "ml2165.ppd"
                 } {
+                    #import "manualduplex.defs"
                     Throughput "21"
                     Attribute QPDL PacketSize "512"
                     Attribute QPDL SpecialBandWidth "True"
@@ -349,6 +350,7 @@ Manufacturer "Samsung"
                     ModelName "M2020 Series"
                     PCFileName "m2020.ppd"
                 } {
+                    #import "manualduplex.defs"
                     Throughput "21"
                     Attribute QPDL PacketSize "512"
                     Attribute QPDL SpecialBandWidth "True"
@@ -356,6 +358,7 @@ Manufacturer "Samsung"
                     ModelName "ML-1865W Series"
                     PCFileName "ml1865w.ppd"
                 } {
+                    #import "manualduplex.defs"
                     Throughput "21"
                     Attribute QPDL PacketSize "512"
                     Attribute QPDL SpecialBandWidth "True"
@@ -363,6 +366,24 @@ Manufacturer "Samsung"
 
                     ModelName "M2070 Series"
                     PCFileName "m2070.ppd"
+                } {
+                    Duplex normal
+                    Throughput "21"
+                    Attribute QPDL PacketSize "512"
+                    Attribute QPDL SpecialBandWidth "True"
+                    {
+                        ModelName "M262x 282x Series"
+                        PCFileName "m262x.ppd"
+                        Attribute "1284DeviceID" "" "MFG:Samsung;CMD:SPL;MDL:M262x 282x Series"
+                    } {
+                        ModelName "M267x 287x Series"
+                        PCFileName "m267x.ppd"
+                        Attribute "1284DeviceID" "" "MFG:Samsung;CMD:SPL;MDL:M267x 287x Series"
+                    } {
+                        ModelName "M283x Series"
+                        PCFileName "m283x.ppd"
+                        Attribute "1284DeviceID" "" "MFG:Samsung;CMD:SPL;MDL:M283x Series"
+                    }
                 }
             }
 	}
