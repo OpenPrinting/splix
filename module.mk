@@ -65,7 +65,7 @@ else
 PSTORASTER		:= pstoraster
 endif
 GSTORASTER		:= gstoraster
-CUPSPROFILE			:= `pkg-config --variable=cups_datadir`/profiles
+CUPSPROFILE			:= `pkg-config --variable=cups_datadir cups`/profiles
 export CUPSFILTER CUPSPPD CUPSDRV
 
 
