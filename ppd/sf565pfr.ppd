@@ -2,7 +2,7 @@
 *%%%% PPD file for SF-565P with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "sf565p.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung SF-565P"
 *ShortNickName: "Samsung SF-565P"
-*NickName: "Samsung SF-565P, 2.0.0"
+*NickName: "Samsung SF-565P, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False

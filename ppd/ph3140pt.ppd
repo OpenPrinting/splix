@@ -2,7 +2,7 @@
 *%%%% PPD file for Phaser 3140 with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: Portuguese_Brazil
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ph3140.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Xerox"
 *ModelName: "Xerox Phaser 3140"
 *ShortNickName: "Xerox Phaser 3140"
-*NickName: "Xerox Phaser 3140, 2.0.0"
+*NickName: "Xerox Phaser 3140, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False

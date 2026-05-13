@@ -24,7 +24,9 @@
 class Page;
 class Request;
 
-extern bool compressPage(const Request& request, Page* page);
+#include "sp_result.h"
+
+extern SP::Result<> compressPage(const Request& request, Page* page);
 
 #endif /* _COMPRESS_H_ */
 

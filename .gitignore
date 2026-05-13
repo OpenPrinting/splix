@@ -10,3 +10,16 @@ gmon.out
 optimized
 ppd/*.drv
 tmp
+
+# CMake build directories
+build/
+build-*/
+
+# CI artifacts
+artifacts/
+
+# Compiler cache
+.ccache/
+
+# CMake user presets (local overrides, not committed)
+CMakeUserPresets.json

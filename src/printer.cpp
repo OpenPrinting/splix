@@ -19,11 +19,24 @@
  * 
  */
 #include "printer.h"
-#include <time.h>
-#include <string.h>
+#include <ctime>
+#include <cstring>
+#include <cstdio>
 #include "errlog.h"
 #include "request.h"
 #include "ppdfile.h"
+#include "sp_portable.h"
+
+namespace {
+    /** Case-insensitive string_view comparison (ASCII only). */
+    bool compare(std::string_view a, std::string_view b) {
+        if (a.length() != b.length()) return false;
+        for (size_t i = 0; i < a.length(); ++i)
+            if (std::tolower(static_cast<unsigned char>(a[i])) !=
+                std::tolower(static_cast<unsigned char>(b[i]))) return false;
+        return true;
+    }
+} // anonymous namespace
 
 
 
@@ -31,25 +44,9 @@
  * Constructeur - Destructeur
  * Init - Uninit
  */
-Printer::Printer()
-{
-    _manufacturer = NULL;
-    _model = NULL;
-    _beginPJL = NULL;
-    _endPJL = NULL;
-}
+Printer::Printer() = default;
 
-Printer::~Printer()
-{
-    if (_manufacturer)
-        delete[] _manufacturer;
-    if (_model)
-        delete [] _model;
-    if (_beginPJL)
-        delete [] _beginPJL;
-    if (_endPJL)
-        delete [] _endPJL;
-}
+Printer::~Printer() = default;
 
 
 
@@ -72,8 +69,8 @@ bool Printer::loadInformation(const Request& request)
     _fixedBandWidth = request.ppd()->get("FixedBandWidth", "QPDL");
     _packetSize = request.ppd()->get("PacketSize", "QPDL");
     _packetSize *= 1024;
-    _manufacturer = request.ppd()->get("Manufacturer").deepCopy();
-    _model = request.ppd()->get("ModelName").deepCopy();
+    _manufacturer = std::string(request.ppd()->get("Manufacturer"));
+    _model = std::string(request.ppd()->get("ModelName"));
     _color = request.ppd()->get("ColorDevice");
     _qpdlVersion = request.ppd()->get("QPDLVersion", "QPDL");
     if (!_qpdlVersion || (_qpdlVersion > 3 && _qpdlVersion != 5)) {
@@ -82,13 +79,14 @@ bool Printer::loadInformation(const Request& request)
     }
     value = request.ppd()->get("DocHeaderValues", "General");
     value.setPreformatted();
-    if (value.isNull()) {
+    if (value.isNull() || value.deepCopy().length() < 3) {
         ERRORMSG(_("Unknown header values. Operation aborted."));
         return false;
     }
-    _unknownByte1 = ((const char *)value)[0];
-    _unknownByte2 = ((const char *)value)[1];
-    _unknownByte3 = ((const char *)value)[2];
+    std::string headerVals = value.deepCopy();
+    _unknownByte1 = headerVals[0];
+    _unknownByte2 = headerVals[1];
+    _unknownByte3 = headerVals[2];
 
     // Get PJL information
     value = request.ppd()->get("BeginPJL", "PJL");
@@ -107,50 +105,55 @@ bool Printer::loadInformation(const Request& request)
     _endPJL = value.deepCopy();
 
     // Get the paper information
-    paperType = request.ppd()->get("MediaSize");
-    if (!paperType)
-        paperType = request.ppd()->get("PageSize");
-    if (!paperType) {
+    auto mediaSizeValue = request.ppd()->get("MediaSize");
+    const char* rawPaperType = mediaSizeValue;
+    if (!rawPaperType) {
+        mediaSizeValue = request.ppd()->get("PageSize");
+        rawPaperType = mediaSizeValue;
+    }
+    if (!rawPaperType) {
         ERRORMSG(_("Cannot get paper size information. Operation aborted."));
         return false;
     }
-    if (!(strcasecmp(paperType, "Letter"))) _paperType = 0;
-    else if (!(strcasecmp(paperType, "Legal"))) _paperType = 1;
-    else if (!(strcasecmp(paperType, "A4"))) _paperType = 2;
-    else if (!(strcasecmp(paperType, "Executive"))) _paperType = 3;
-    else if (!(strcasecmp(paperType, "Ledger"))) _paperType = 4;
-    else if (!(strcasecmp(paperType, "A3"))) _paperType = 5;
-    else if (!(strcasecmp(paperType, "Env10"))) _paperType = 6;
-    else if (!(strcasecmp(paperType, "Monarch"))) _paperType = 7;
-    else if (!(strcasecmp(paperType, "C5"))) _paperType = 8;
-    else if (!(strcasecmp(paperType, "DL"))) _paperType = 9;
-    else if (!(strcasecmp(paperType, "B4"))) _paperType = 10;
-    else if (!(strcasecmp(paperType, "B5"))) _paperType = 11;
-    else if (!(strcasecmp(paperType, "EnvISOB5"))) _paperType = 12;
-    else if (!(strcasecmp(paperType, "Postcard"))) _paperType = 14;
-    else if (!(strcasecmp(paperType, "DoublePostcardRotated"))) _paperType = 15;
-    else if (!(strcasecmp(paperType, "A5"))) _paperType = 16;
-    else if (!(strcasecmp(paperType, "A6"))) _paperType = 17;
-    else if (!(strcasecmp(paperType, "B6"))) _paperType = 18;
-    else if (!(strcasecmp(paperType, "Custom"))) _paperType = 21;
-    else if (!(strcasecmp(paperType, "C6"))) _paperType = 23;
-    else if (!(strcasecmp(paperType, "Folio"))) _paperType = 24;
-    else if (!(strcasecmp(paperType, "EnvPersonal"))) _paperType = 25;
-    else if (!(strcasecmp(paperType, "Env9"))) _paperType = 26;
-    else if (!(strcasecmp(paperType, "3x5"))) _paperType = 27;
-    else if (!(strcasecmp(paperType, "Oficio"))) _paperType = 28;
-    else if (!(strcasecmp(paperType, "Statement"))) _paperType = 30;
-    else if (!(strcasecmp(paperType, "roc8k"))) _paperType = 34;
-    else if (!(strcasecmp(paperType, "roc16k"))) _paperType = 35;
+
+    std::string_view paperTypeView(rawPaperType);
+
+    if (compare(paperTypeView, "Letter")) _paperType = 0;
+    else if (compare(paperTypeView, "Legal")) _paperType = 1;
+    else if (compare(paperTypeView, "A4")) _paperType = 2;
+    else if (compare(paperTypeView, "Executive")) _paperType = 3;
+    else if (compare(paperTypeView, "Ledger")) _paperType = 4;
+    else if (compare(paperTypeView, "A3")) _paperType = 5;
+    else if (compare(paperTypeView, "Env10")) _paperType = 6;
+    else if (compare(paperTypeView, "Monarch")) _paperType = 7;
+    else if (compare(paperTypeView, "C5")) _paperType = 8;
+    else if (compare(paperTypeView, "DL")) _paperType = 9;
+    else if (compare(paperTypeView, "B4")) _paperType = 10;
+    else if (compare(paperTypeView, "B5")) _paperType = 11;
+    else if (compare(paperTypeView, "EnvISOB5")) _paperType = 12;
+    else if (compare(paperTypeView, "Postcard")) _paperType = 14;
+    else if (compare(paperTypeView, "DoublePostcardRotated")) _paperType = 15;
+    else if (compare(paperTypeView, "A5")) _paperType = 16;
+    else if (compare(paperTypeView, "A6")) _paperType = 17;
+    else if (compare(paperTypeView, "B6")) _paperType = 18;
+    else if (compare(paperTypeView, "Custom")) _paperType = 21;
+    else if (compare(paperTypeView, "C6")) _paperType = 23;
+    else if (compare(paperTypeView, "Folio")) _paperType = 24;
+    else if (compare(paperTypeView, "EnvPersonal")) _paperType = 25;
+    else if (compare(paperTypeView, "Env9")) _paperType = 26;
+    else if (compare(paperTypeView, "3x5")) _paperType = 27;
+    else if (compare(paperTypeView, "Oficio")) _paperType = 28;
+    else if (compare(paperTypeView, "Statement")) _paperType = 30;
+    else if (compare(paperTypeView, "roc8k")) _paperType = 34;
+    else if (compare(paperTypeView, "roc16k")) _paperType = 35;
     else {
-        ERRORMSG(_("Invalid paper size \"%s\". Operation aborted."), paperType);
+        ERRORMSG(_("Invalid paper size \"%s\". Operation aborted."), rawPaperType);
         return false;
     }
 
-    value = request.ppd()->getPageSize(paperType);
+    value = request.ppd()->getPageSize(rawPaperType);
     if (value.width() == 0. || value.height() == 0.) {
-        ERRORMSG(_("Null paper size \"%s\" found. Operation aborted."), 
-            paperType);
+        ERRORMSG(_("Null paper size \"%s\" found. Operation aborted."), rawPaperType);
         return false;
     }
     _pageWidth = value.width();
@@ -158,29 +161,32 @@ bool Printer::loadInformation(const Request& request)
     _hardMarginX = value.marginX();
     _hardMarginY = value.marginY();
 
-    paperSource = request.ppd()->get("InputSlot");
-    if (!paperSource) {
-        paperSource = request.ppd()->get("DefaultInputSlot");
-        if (!paperSource) {
-            paperSource = "Auto";
+    auto inputSlotValue = request.ppd()->get("InputSlot");
+    const char* rawPaperSource = inputSlotValue;
+    if (!rawPaperSource) {
+        inputSlotValue = request.ppd()->get("DefaultInputSlot");
+        rawPaperSource = inputSlotValue;
+        if (!rawPaperSource) {
+            rawPaperSource = "Auto";
             ERRORMSG(_("Cannot get input slot information."));
         }
     }
-    if (!(strcasecmp(paperSource, "Auto"))) _paperSource = 1;
-    else if (!(strcasecmp(paperSource, "Manual"))) _paperSource = 2;
-    else if (!(strcasecmp(paperSource, "Multi"))) _paperSource = 3;
-    else if (!(strcasecmp(paperSource, "Upper"))) _paperSource = 4;
-    else if (!(strcasecmp(paperSource, "Lower"))) _paperSource = 5;
-    else if (!(strcasecmp(paperSource, "Envelope"))) _paperSource = 6;
-    else if (!(strcasecmp(paperSource, "Tray3"))) _paperSource = 7;
+
+    std::string_view sourceView(rawPaperSource);
+    if (compare(sourceView, "Auto")) _paperSource = 1;
+    else if (compare(sourceView, "Manual")) _paperSource = 2;
+    else if (compare(sourceView, "Multi")) _paperSource = 3;
+    else if (compare(sourceView, "Upper")) _paperSource = 4;
+    else if (compare(sourceView, "Lower")) _paperSource = 5;
+    else if (compare(sourceView, "Envelope")) _paperSource = 6;
+    else if (compare(sourceView, "Tray3")) _paperSource = 7;
     else {
-        ERRORMSG(_("Invalid paper source \"%s\". Operation aborted."), 
-            paperSource);
+        ERRORMSG(_("Invalid paper source \"%s\". Operation aborted."), rawPaperSource);
         return false;
     }
 
     DEBUGMSG(_("%s printer %s with QPDL v. %lu"), _color ? "Color" : 
-        "Monochrome", _model, _qpdlVersion);
+        "Monochrome", _model.c_str(), _qpdlVersion);
 
     return true;
 }
@@ -191,13 +197,14 @@ bool Printer::sendPJLHeader(const Request& request,
                          unsigned long    yResolution ) const
 {
     const char *reverse;
+    struct tm timeinfo_buf;
     struct tm *timeinfo;
     time_t timestamp;
 
     time(&timestamp);
-    timeinfo = localtime(&timestamp);
+    timeinfo = SP::portable_localtime(&timestamp, &timeinfo_buf);
 
-    printf("%s", _beginPJL);
+    printf("%s", _beginPJL.c_str());
 
     if (0x15 == compression) {
         printf("@PJL COMMENT USERNAME=\"Username: %s\"\n", request.userName());
@@ -217,15 +224,11 @@ bool Printer::sendPJLHeader(const Request& request,
    // Set some printer options
     if (!request.ppd()->get("EconoMode").isNull() && 
         request.ppd()->get("EconoMode") != "0")
-        printf("@PJL SET ECONOMODE=%s\n", (const char *)request.ppd()->
-                get("EconoMode"));
-    if (!request.ppd()->get("PowerSave").isNull()) {
-        if (request.ppd()->get("PowerSave") != "False") {
-            printf("@PJL DEFAULT POWERSAVE=ON\n");
-            printf("@PJL DEFAULT POWERSAVETIME=%s\n",
-                (const char *)request.ppd()->get("PowerSave"));
-        } else
-            printf("@PJL DEFAULT POWERSAVE=OFF\n");
+        printf("@PJL SET ECONOMODE=%s\n", static_cast<const char*>(request.ppd()->
+                get("EconoMode")));
+    if (request.ppd()->get("PowerSave")) {
+        printf("@PJL SET POWERSAVE=%s\n", 
+                static_cast<const char*>(request.ppd()->get("PowerSave")));
     }
 
     if (request.ppd()->get("JamRecovery").isTrue())
@@ -233,7 +236,9 @@ bool Printer::sendPJLHeader(const Request& request,
     else
         printf("@PJL SET JAMRECOVERY=OFF\n");
     if (request.printer()->color()) {
-        if (!strcasecmp(request.ppd()->get("ColorModel"), "CMYK"))
+        auto colorModelValue = request.ppd()->get("ColorModel");
+        const char* colorModel = colorModelValue;
+        if (colorModel && compare(colorModel, "CMYK"))
             printf("@PJL SET COLORMODE=COLOR\n");
         else
             printf("@PJL SET COLORMODE=MONO\n");
@@ -276,23 +281,20 @@ bool Printer::sendPJLHeader(const Request& request,
     if (request.ppd()->get("MediaType").isNull())
         printf("@PJL SET PAPERTYPE=OFF\n");
     else
-        printf("@PJL SET PAPERTYPE=%s\n", (const char *)request.ppd()->
-                get("MediaType"));
-    if (request.ppd()->get("Altitude").isNull())
-        printf("@PJL SET ALTITUDE=LOW\n");
-    else
-        printf("@PJL SET ALTITUDE=%s\n", (const char *)request.ppd()->
-                get("Altitude"));
-    if (request.ppd()->get("TonerDensity").isNull())
-        printf("@PJL SET DENSITY=3\n");
-    else
-        printf("@PJL SET DENSITY=%s\n", (const char *)request.ppd()->
-                get("TonerDensity"));
-    if (request.ppd()->get("SRTMode").isNull())
-        printf("@PJL SET RET=NORMAL\n");
-    else
-        printf("@PJL SET RET=%s\n", (const char *)request.ppd()->
-                get("SRTMode"));
+        printf("@PJL SET PAPERTYPE=%s\n", static_cast<const char*>(request.ppd()->
+                get("MediaType")));
+    if (request.ppd()->get("Altitude")) {
+        printf("@PJL SET ALTITUDE=%s\n", static_cast<const char*>(request.ppd()->
+                get("Altitude")));
+    }
+    if (request.ppd()->get("TonerDensity")) {
+        printf("@PJL SET DENSITY=%s\n", static_cast<const char*>(request.ppd()->
+                get("TonerDensity")));
+    }
+    if (request.ppd()->get("SRTMode")) {
+        printf("@PJL SET RET=%s\n", static_cast<const char*>(request.ppd()->
+                get("SRTMode")));
+    }
 
     if (0x15 == compression) {
         printf("@PJL SET BANNERSHEET=%s\n", "OFF");
@@ -305,9 +307,9 @@ bool Printer::sendPJLHeader(const Request& request,
     return true;
 }
 
-bool Printer::sendPJLFooter(const Request& request) const
+bool Printer::sendPJLFooter([[maybe_unused]] const Request& request) const
 {
-    printf("%s", _endPJL);
+    printf("%s", _endPJL.c_str());
     fflush(stdout);
 
     return true;

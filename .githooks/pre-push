@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Pre-push hook: Runs the SpliX QA tests locally before allowing a push.
+# If the CMake configuration or binary syntax tests fail, the push is aborted.
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
+echo "=================================================="
+echo " Running Git pre-push hook for SpliX..."
+echo "=================================================="
+
+# Execute the local QA test script
+if ! "$ROOT_DIR/tests/test_build.sh"; then
+    echo
+    echo "❌ Pre-push checks failed! Push aborted."
+    echo "Please fix the build or syntax errors before pushing to the repository."
+    exit 1
+fi
+
+echo "✅ Pre-push checks passed! Proceeding with git push."
+exit 0

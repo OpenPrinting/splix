@@ -1,0 +1,21 @@
+STATE splix
+
+  CHECKS
+    cpp                          UNVERIFIED   # LANG
+    "libcups2-dev                UNVERIFIED   # DEPS.SYSTEM
+    libjbig-dev"                 UNVERIFIED   # DEPS.SYSTEM
+
+  ENTITY
+    printer                      OK
+    document                     OK
+    page                         OK
+    band                         OK
+    request                      OK
+    color_model                  OK
+    system                       OK
+
+  LAYERS
+    FILTER                       OK
+    ENGINE                       OK
+    PROTOCOL                     OK
+    CORE                         OK

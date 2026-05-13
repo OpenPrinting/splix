@@ -1,0 +1,65 @@
+VERSION 0.2.0
+
+PROJECT
+  NAME   "splix"
+  LANG   "cpp"
+  STACK  "cups, jbig, pthreads, cpp23"
+  ARCH   "layered"
+  DEPS
+    SYSTEM   "libcups2-dev, libjbig-dev"
+    DEV      "gtest, cmake"
+
+VOCABULARY
+  Band            # never: chunk, block, buffer
+  BandPlane       # never: color_plane, plane_buffer
+  Page            # never: surface, canvas
+  Request         # never: job_params, options
+  SafeWrite       # never: raw_write, write_all
+  Span            # never: raw_pointer, pointer_length
+
+ENTITY printer, document, page, band, request, color_model, system
+
+TRANSFORM
+  document  -> page           : extract_pages
+  page      -> band           : render_to_bands
+  band      -> band           : optimize_ink, compress, color_transform
+  request   -> printer        : send_pjl, initialize
+
+LAYERS
+  FILTER
+    BOUNDARY  external
+    OWNS      main, argument_parsing, cups_interface
+    OWNS      request
+    CALLS     ENGINE
+    NEVER     direct_raster_manipulation
+    NEVER     protocol_generation
+
+  ENGINE
+    OWNS      rendering_orchestration, thread_management
+    OWNS      document, page, system
+    CALLS     PROTOCOL, CORE
+    NEVER     cups_api
+
+  PROTOCOL
+    OWNS      qpdl_generation, compression_orchestration, pjl_headers
+    OWNS      printer
+    CALLS     CORE
+    NEVER     rendering_logic
+    NEVER     threading
+
+  CORE
+    OWNS      image_processing, colors, jbig_logic, portability
+    OWNS      band, color_model
+    NEVER     file_io
+    NEVER     cups_api
+
+CONTRACTS
+  band.processing                ALWAYS    std::span
+  system.comparison              ALWAYS    std::ranges::equal-case-insensitive
+  system.write                   ALWAYS    _safeWrite
+  system.allocation              NEVER     malloc, free
+  system.legacy_compare          NEVER     SP_STRCASECMP, strcasecmp
+
+CHANGELOG
+  0.1.0
+    ADDED formal specification for v2.0.2

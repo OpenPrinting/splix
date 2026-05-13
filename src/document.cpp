@@ -18,92 +18,97 @@
  *  $Id$
  * 
  */
-#include "document.h"
-#include <fcntl.h>
-#include <math.h>
+#include <cstring>
+#include <array>
+#include <algorithm>
+#include <cmath>
+#include "sp_portable.h"
 #include "page.h"
+#include "document.h"
+#include "band.h"
 #include "errlog.h"
 #include "request.h"
-
-/*
- * Constructeur - Destructeur
- * Init - Uninit
- */
-Document::Document()
-{
-    _raster = NULL;
-}
-
-Document::~Document()
-{
-    if (_raster)
-         cupsRasterClose(_raster);
-}
-
 
 
 /*
  * Ouverture du fichier contenant la requête
  * Open the file which contains the job
  */
-bool Document::load(const Request& request)
+SP::Result<> Document::load([[maybe_unused]] const Request& request)
 {
     _currentPage = 1;
     _lastPage = false;
-    _raster = cupsRasterOpen(STDIN_FILENO, CUPS_RASTER_READ);
+    _raster.reset(cupsRasterOpen(SP_STDIN_FILENO, CUPS_RASTER_READ));
     if (!_raster) {
         ERRORMSG(_("Cannot open job"));
-        return false;
+        return SP::Unexpected(SP::Error::RasterOpenError);
     }
-    return true;
+    return {};
 }
-
-
 
 /*
  * Extraction d'une nouvelle page de la requête
  * Exact a new job page
  */
-Page* Document::getNextRawPage(const Request& request)
+SP::Result<std::unique_ptr<Page>> Document::getNextRawPage([[maybe_unused]] const Request& request)
 {
-    cups_page_header_t header;
-    unsigned long pageWidth, pageWidthInB, pageHeight, clippingX=0, clippingY=0;
-    unsigned long documentWidth, documentHeight, lineSize, planeSize, index=0;
-    unsigned long bytesToCopy, marginWidthInB=0, marginHeight=0;
-    unsigned char *line, *planes[4];
-    unsigned char colors;
-    Page *page;
+    cups_page_header2_t header;
+    uint32_t pageWidth, pageWidthInB, pageHeight, clippingX = 0, clippingY = 0;
+    uint32_t documentWidth, documentHeight, lineSize, planeSize, index = 0;
+    uint32_t bytesToCopy, marginWidthInB = 0, marginHeight = 0;
+    uint8_t colors;
 
     // Read the header
     if (_lastPage)
-        return NULL;
+        return SP::Unexpected(SP::Error::EndOfJob);
     if (!_raster) {
         ERRORMSG(_("The raster hasn't been loaded"));
-        return NULL;
+        return SP::Unexpected(SP::Error::RasterOpenError);
     }
-    if (!cupsRasterReadHeader(_raster, &header) || !header.cupsBytesPerLine ||
+    if (!cupsRasterReadHeader2(_raster.get(), &header) || !header.cupsBytesPerLine ||
         !header.PageSize[1]) {
         DEBUGMSG(_("No more pages"));
         _lastPage = true;
-        return NULL;
+        return SP::Unexpected(SP::Error::EndOfJob);
+    }
+
+    // Input Sanitization: Validate header dimensions to prevent excessive resource allocation
+    if (header.cupsWidth > 20000 || header.cupsHeight > 30000) {
+        ERRORMSG(_("Invalid page dimensions in CUPS header: %ux%u"), 
+                 header.cupsWidth, header.cupsHeight);
+        return SP::Unexpected(SP::Error::InconsistentData);
     }
 
     // Make some calculations and store important data
-    page = new Page;
+    auto page = std::make_unique<Page>();
     page->setXResolution(header.HWResolution[0]);
     page->setYResolution(header.HWResolution[1]);
     colors = header.cupsColorSpace == CUPS_CSPACE_K ? 1 : 4;
     documentWidth = (header.cupsWidth + 7) & ~7;
     documentHeight = header.cupsHeight;
     lineSize = header.cupsBytesPerLine / colors;
-    pageWidth = ((unsigned long)ceil(page->convertToXResolution(request.
-        printer()->pageWidth())) + 7) & ~7;
-    pageHeight = ceil(page->convertToYResolution(request.printer()->
-        pageHeight()));
-    marginWidthInB =(ceil(page->convertToXResolution(header.Margins[0]))+7)/8; 
-    marginHeight = ceil(page->convertToYResolution(header.Margins[1]));
+    pageWidth = (static_cast<uint32_t>(std::ceil(page->convertToXResolution(request.
+        printer()->pageWidth()))) + 7) & ~7;
+    pageHeight = static_cast<uint32_t>(std::ceil(page->convertToYResolution(request.printer()->
+        pageHeight())));
+    
+    // Safety check for calculated dimensions
+    if (pageWidth == 0 || pageHeight == 0) {
+        ERRORMSG(_("Resolved page dimensions are zero"));
+        return SP::Unexpected(SP::Error::InconsistentData);
+    }
+
+    marginWidthInB = (static_cast<uint32_t>(std::ceil(page->convertToXResolution(header.Margins[0]))) + 7) / 8;
+    marginHeight = static_cast<uint32_t>(std::ceil(page->convertToYResolution(header.Margins[1])));
     pageWidthInB = (pageWidth + 7) / 8;
     planeSize = pageWidthInB * pageHeight;
+
+    // Last line components validation
+    if (planeSize > 1024 * 1024 * 512) { // 512MB safety cap per plane
+        ERRORMSG(_("Plane size is too large: %u"), planeSize);
+        return SP::Unexpected(SP::Error::MemoryError);
+    }
+
     page->setWidth(pageWidth);
     page->setHeight(pageHeight);
     page->setColorsNr(colors);
@@ -125,49 +130,49 @@ Page* Document::getNextRawPage(const Request& request)
         clippingY = (documentHeight - (pageHeight - 2 * marginHeight)) / 2;
         index = pageWidthInB * marginHeight;
     } else {
-        clippingY = 0;
-        index = pageWidthInB * ((pageHeight - documentHeight)/2);
+        clippingX = 0; // redundant but safe
+        index = pageWidthInB * ((pageHeight - documentHeight) / 2);
     }
     documentHeight -= clippingY;
-    pageHeight -= 2*marginHeight;
+    pageHeight -= 2 * marginHeight;
     clippingY *= colors;
-    line = new unsigned char[header.cupsBytesPerLine];
-    DEBUGMSG(_("Document width=%lu height=%lu"), documentWidth, documentHeight);
-    DEBUGMSG(_("Page width=%lu (%lu) height=%lu"), pageWidth, pageWidthInB, pageHeight);
-    DEBUGMSG(_("Margin width in bytes=%lu height=%lu"), marginWidthInB, marginHeight);
-    DEBUGMSG(_("Clipping X=%lu Y=%lu"), clippingX, clippingY);
-    DEBUGMSG(_("Line size=%lu, Plane size=%lu, bytes to copy=%lu"), lineSize, planeSize, bytesToCopy);
+    
+    std::vector<uint8_t> line(header.cupsBytesPerLine);
+    DEBUGMSG(_("Document width=%u height=%u"), documentWidth, documentHeight);
+    DEBUGMSG(_("Page width=%u (%u) height=%u"), pageWidth, pageWidthInB, pageHeight);
+    DEBUGMSG(_("Margin width in bytes=%u height=%u"), marginWidthInB, marginHeight);
+    DEBUGMSG(_("Clipping X=%u Y=%u"), clippingX, clippingY);
+    DEBUGMSG(_("Line size=%u, Plane size=%u, bytes to copy=%u"), lineSize, planeSize, bytesToCopy);
 
     // Prepare planes and clip vertically the document if needed
-    for (unsigned char i=0; i < colors; i++) {
-        planes[i] = new unsigned char[planeSize];
-        memset(planes[i], 0, planeSize);
+    std::array<std::vector<uint8_t>, 4> planes;
+    for (uint8_t i = 0; i < colors; i++) {
+        try {
+            planes[i].resize(planeSize, 0);
+        } catch (const std::bad_alloc&) {
+            ERRORMSG(_("Failed to allocate plane buffer"));
+            return SP::Unexpected(SP::Error::MemoryError);
+        }
     }
+
     while (clippingY) {
-        if (cupsRasterReadPixels(_raster, line, lineSize) < 1) {
-            ERRORMSG(_("Cannot read pixel line"));
-            for (unsigned int i=0; i < colors; i++)
-                delete[] planes[i];
-            delete[] line;
-            delete page;
-            return NULL;
+        if (cupsRasterReadPixels(_raster.get(), line.data(), lineSize) < 1) {
+            ERRORMSG(_("Cannot read pixel line during clipping"));
+            return SP::Unexpected(SP::Error::RasterReadError);
         }
         clippingY--;
     }
 
     // Load the bitmap
     while (pageHeight && documentHeight) {
-        for (unsigned int i=0; i < colors; i++) {
-            if (cupsRasterReadPixels(_raster, line, lineSize) < 1) {
-                ERRORMSG(_("Cannot read pixel line"));
-                for (unsigned int j=0; j < colors; j++)
-                    delete[] planes[j];
-                delete[] line;
-                delete page;
-                return NULL;
+        for (uint8_t i = 0; i < colors; i++) {
+            if (cupsRasterReadPixels(_raster.get(), line.data(), lineSize) < 1) {
+                ERRORMSG(_("Cannot read pixel line during data load"));
+                return SP::Unexpected(SP::Error::RasterReadError);
             }
-            memcpy(planes[i] + index + marginWidthInB, line + clippingX, 
-                bytesToCopy);
+            auto destSpan = std::span(planes[i]).subspan(index + marginWidthInB, bytesToCopy);
+            auto srcSpan = std::span(line).subspan(clippingX, bytesToCopy);
+            std::ranges::copy(srcSpan, destSpan.begin());
         }
         index += pageWidthInB;
         pageHeight--;
@@ -177,30 +182,23 @@ Page* Document::getNextRawPage(const Request& request)
     // Finish to clip vertically the document
     documentHeight *= colors;
     while (documentHeight) {
-        if (cupsRasterReadPixels(_raster, line, lineSize) < 1) {
-            ERRORMSG(_("Cannot read pixel line"));
-            for (unsigned int j=0; j < colors; j++)
-                delete[] planes[j];
-            delete[] line;
-            delete page;
-            return NULL;
+        if (cupsRasterReadPixels(_raster.get(), line.data(), lineSize) < 1) {
+            ERRORMSG(_("Cannot read pixel line during final clipping"));
+            return SP::Unexpected(SP::Error::RasterReadError);
         }
         documentHeight--;
     }
     _currentPage++;
 
-    for (unsigned int i=0; i < colors; i++)
-        page->setPlaneBuffer(i, planes[i]);
+    for (uint8_t i = 0; i < colors; i++)
+        page->setPlaneBuffer(i, std::move(planes[i]));
 
-    DEBUGMSG(_("Page %lu (%u×%u on %lu×%lu) has been successfully loaded into "
-        "memory"), page->pageNr(), header.cupsWidth, header.cupsHeight, 
+    DEBUGMSG(_("Page %u (%u×%u on %u×%u) has been successfully loaded into memory"), 
+        page->pageNr(), header.cupsWidth, header.cupsHeight, 
         page->width(), page->height());
 
-    delete[] line;
-    return page;
+    return std::move(page);
 }
-
-
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
 

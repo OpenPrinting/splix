@@ -2,7 +2,7 @@
 *%%%% PPD file for ML-3050 with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: Portuguese_Brazil
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml3050.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung ML-3050"
 *ShortNickName: "Samsung ML-3050"
-*NickName: "Samsung ML-3050, 2.0.0"
+*NickName: "Samsung ML-3050, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False

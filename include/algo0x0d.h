@@ -24,7 +24,8 @@
 #define _ALGO0x0D_H_
 
 #include "algorithm.h"
-#include <inttypes.h>
+#include <vector>
+#include <cstdint>
 
 
 /**
@@ -34,47 +35,43 @@ class Algo0x0D : public Algorithm
 {
     protected:
         inline void writeTwoBytesPacket(
-                    unsigned char       * output,
-                    unsigned long       & outputSize, 
-                    long int            accumulatedHorizontalOffsetValue,
-                    long int            accumulatedVerticalOffsetValue,
-                    unsigned long       accumulatedRunCount );
+                    std::vector<uint8_t> &output,
+                    int32_t             accumulatedHorizontalOffsetValue,
+                    int32_t             accumulatedVerticalOffsetValue,
+                    uint32_t            accumulatedRunCount );
     
         inline void writeFourBytesPacket(
-                    unsigned char       * output,
-                    unsigned long       & outputSize, 
-                    long int            accumulatedHorizontalOffsetValue,
-                    long int            accumulatedVerticalOffsetValue,
-                    unsigned long       accumulatedRunCount );
+                    std::vector<uint8_t> &output,
+                    int32_t             accumulatedHorizontalOffsetValue,
+                    int32_t             accumulatedVerticalOffsetValue,
+                    uint32_t            accumulatedRunCount );
     
         inline void writeSixBytesPacket(
-                    unsigned char       * output,
-                    unsigned long       & outputSize,
-                    long int            accumulatedCombinedOffsetValue,
-                    unsigned long       accumulatedRunCount );
+                    std::vector<uint8_t> &output,
+                    uint32_t            accumulatedCombinedOffsetValue,
+                    uint32_t            accumulatedRunCount );
     
         inline void selectPacketSize(
-                    unsigned char       * output,
-                    unsigned long       & outputSize,
-                    unsigned long       preAccumulatedHorizontalOffsetValue,
-                    unsigned long       accumulatedHorizontalOffsetValue,
-                    unsigned long       currentHorizontalPenPosition,
-                    unsigned long       accumulatedRunCount,
-                    unsigned long       consecutiveBlankScanLines,
-                    unsigned long       currentVerticalPenPosition,
-                    const unsigned long wrapWidth );
+                    std::vector<uint8_t> &output,
+                    uint32_t            preAccumulatedHorizontalOffsetValue,
+                    uint32_t            accumulatedHorizontalOffsetValue,
+                    uint32_t            currentHorizontalPenPosition,
+                    uint32_t            accumulatedRunCount,
+                    uint32_t            consecutiveBlankScanLines,
+                    uint32_t            currentVerticalPenPosition,
+                    const uint32_t      wrapWidth );
 
     public:
-        Algo0x0D();
-        virtual ~Algo0x0D();
+        Algo0x0D() = default;
+        virtual ~Algo0x0D() = default;
 
     public:
-        virtual BandPlane*      compress(const Request& request, 
-                                    unsigned char *data, unsigned long width,
-                                    unsigned long height);
-        virtual bool            reverseLineColumn() {return false;}
-        virtual bool            inverseByte() {return false;}
-        virtual bool            splitIntoBands() {return true;}
+        virtual SP::Result<std::unique_ptr<BandPlane>> compress(const Request& request, 
+                                    std::span<const uint8_t> data, uint32_t width,
+                                    uint32_t height) override;
+        virtual bool            reverseLineColumn() const override {return false;}
+        virtual bool            inverseByte() const override {return false;}
+        virtual bool            splitIntoBands() const override {return true;}
 };
 
 #endif /* _ALGO0x0D_H_ */

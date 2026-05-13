@@ -21,7 +21,11 @@
 #ifndef _BAND_H_
 #define _BAND_H_
 
-#include <stddef.h>
+#include <vector>
+#include <memory>
+#include <ranges>
+#include <cstdint>
+#include "sp_result.h"
 
 class Page;
 class BandPlane;
@@ -33,13 +37,12 @@ class BandPlane;
 class Band
 {
     protected:
-        unsigned long           _bandNr;
-        const Page*             _parent;
-        unsigned char           _colors;
-        BandPlane*              _planes[4];
-        unsigned long           _width;
-        unsigned long           _height;
-        Band*                   _sibling;
+        uint32_t                                _bandNr = 0;
+        const Page*                             _parent = nullptr;
+        std::vector<std::unique_ptr<BandPlane>> _planes;
+        uint32_t                                _width = 0;
+        uint32_t                                _height = 0;
+        std::unique_ptr<Band>                   _sibling = nullptr;
 
     public:
         /**
@@ -52,7 +55,7 @@ class Band
           * @param width the band width
           * @param height the band height
           */
-        Band (unsigned long nr, unsigned long width, unsigned long height);
+        Band (uint32_t nr, uint32_t width, uint32_t height);
         /**
           * Destroy the instance
           */
@@ -63,7 +66,7 @@ class Band
           * Set the band number.
           * @param nr the band number
           */
-        void                    setBandNr(unsigned long nr) {_bandNr = nr;}
+        void                    setBandNr(uint32_t nr) {_bandNr = nr;}
         /**
           * Register the parent @ref Page instance.
           * @param parent the parent page instance
@@ -74,36 +77,34 @@ class Band
           * Register a new plane.
           * @param plane the band plane
           */
-        void                    registerPlane(BandPlane* plane)
-                                {if (_colors < 4) {_planes[_colors] = plane;
-                                        _colors++;}}
+        void                    registerPlane(std::unique_ptr<BandPlane> plane);
         /**
           * Set the band width.
           * @param width the band width
           */
-        void                    setWidth(unsigned long width)
+        void                    setWidth(uint32_t width)
                                     {_width = width;}
         /**
           * Set the band height.
           * @param height the band height
           */
-        void                    setHeight(unsigned long height)
+        void                    setHeight(uint32_t height)
                                     {_height = height;}
         /**
           * Register sibling.
           * @param sibling the sibling.
           */
-        void                    registerSibling(Band* sibling) 
-                                    {_sibling = sibling;}
+        void                    registerSibling(std::unique_ptr<Band> sibling) 
+                                    {_sibling = std::move(sibling);}
 
         /**
           * @return the band number.
           */
-        unsigned long           bandNr() const {return _bandNr;}
+        uint32_t                bandNr() const {return _bandNr;}
         /**
           * @return the number of registered planes.
           */
-        unsigned long           planesNr() const {return _colors;}
+        size_t                  planesNr() const {return _planes.size();}
         /**
           * @return the parent @ref Page instance.
           */
@@ -114,39 +115,42 @@ class Band
           * @return the @ref BandPlane instance if it exists. Otherwise it
           *         returns NULL.
           */
-        const BandPlane*        plane(unsigned char nr) const 
-                                    {return nr < _colors ? _planes[nr] : NULL;}
+        const BandPlane*        plane(size_t nr) const 
+                                    {return nr < _planes.size() ? _planes[nr].get() : nullptr;}
+        /**
+          * @return a view of the planes.
+          */
+        auto                    planes() const {
+             return _planes | std::views::transform([](const auto& p) { return p.get(); });
+        }
         /**
           * @return the band width.
           */
-        unsigned long           width() const {return _width;}
+        uint32_t                width() const {return _width;}
         /**
           * @return the band height.
           */
-        unsigned long           height() const {return _height;}
+        uint32_t                height() const {return _height;}
         /**
           * @return the next sibling or NULL if there is no sibling.
           */
-        Band*                   sibling() const {return _sibling;}
+        Band*                   sibling() const {return _sibling.get();}
 
     public:
         /**
           * Swap this instance on the disk.
           * @param fd the file descriptor where the instance has to be swapped
-          * @return TRUE if the instance has been successfully swapped. 
-          *         Otherwise it returns FALSE.
+          * @return a Result indicating success or the specific error.
           */
-        bool                    swapToDisk(int fd);
+        SP::Result<>            swapToDisk(int fd);
         /**
           * Restore an instance from the disk into memory.
           * @param fd the file descriptor where the instance has been swapped
-          * @return a band instance if it has been successfully restored. 
-          *         Otherwise it returns NULL.
+          * @return a Result containing the band instance or an error.
           */
-        static Band*            restoreIntoMemory(int fd);
+        static SP::Result<std::unique_ptr<Band>> restoreIntoMemory(int fd);
 };
 
 #endif /* _BAND_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
-

@@ -24,69 +24,44 @@
 #ifndef DISABLE_BLACKOPTIM
 void applyBlackOptimization(Page* page)
 {
-    unsigned long size, sizeByUL, mod, mask;
-    unsigned char *planes[4], bmask;
-
-    // Only optimize colors if there are present
+    // Only optimize colors if there are 4 (CMYK)
     if (!page || page->colorsNr() != 4)
         return;
-    for (unsigned int i=0; i < 4; i++) {
-        if (!(planes[i] = page->planeBuffer(i)))
-            return;
+
+    std::array<std::span<uint8_t>, 4> planes;
+    for (uint8_t i = 0; i < 4; i++) {
+        uint8_t* ptr = page->planeBuffer(i);
+        if (!ptr) return;
+        planes[i] = std::span<uint8_t>(ptr, page->width() * page->height() / 8);
     }
 
-    size = page->width() * page->height() / 8;
-    sizeByUL = size / sizeof(unsigned long);
-    mod = size % sizeof(unsigned long);
+    const size_t size = planes[0].size();
+    
+    // Process in chunks of unsigned long for performance where possible, 
+    // but use a safer approach than raw reinterpret_cast if we were strictly 
+    // following C++23, however for high-performance bitwise ops on buffers 
+    // we'll use a clean loop that the compiler can optimize.
+    
+    for (size_t i = 0; i < size; ++i) {
+        uint8_t& cyan = planes[0][i];
+        uint8_t& magenta = planes[1][i];
+        uint8_t& yellow = planes[2][i];
+        uint8_t& black = planes[3][i];
 
-
-    /*
-     * To optimize this algorithm, data are first evaluated by unsigned long
-     * (32-Bits on 32-Bits architecture and 64-Bits on 64-Bits architecture).
-     * The last bytes are evaluated individually if the size is not a multiple
-     * of the size of the unsigned long
-     */
-    for (unsigned long i=0; i < sizeByUL; i++) {
-        // Clear cyan, magenta and yellow dots if a black dot is present
-        mask = ((unsigned long *)planes[3])[i];
-        if (mask) {
-            ((unsigned long *)planes[0])[i] &= ~mask;
-            ((unsigned long *)planes[1])[i] &= ~mask;
-            ((unsigned long *)planes[2])[i] &= ~mask;
+        // optimization 1: if black is present, clear CMY
+        if (black) {
+            cyan &= ~black;
+            magenta &= ~black;
+            yellow &= ~black;
         }
 
-        // Set a black dot if cyan, magenta and yellow dots are present and
-        // clear them
-        mask = ((unsigned long *)planes[0])[i];
-        mask &= ((unsigned long *)planes[1])[i];
-        mask &= ((unsigned long *)planes[2])[i];
-        if (mask) {
-            ((unsigned long *)planes[3])[i] |= mask;
-            ((unsigned long *)planes[0])[i] &= ~mask;
-            ((unsigned long *)planes[1])[i] &= ~mask;
-            ((unsigned long *)planes[2])[i] &= ~mask;
-        }
-    }
-
-    for (unsigned long i=1; i <= mod; i++) {
-        // Clear cyan, magenta and yellow dots if a black dot is present
-        bmask = planes[3][size - i];
-        if (bmask) {
-            planes[0][size - i] &= ~bmask;
-            planes[1][size - i] &= ~bmask;
-            planes[2][size - i] &= ~bmask;
-        }
-
-        // Set a black dot if cyan, magenta and yellow dots are present and
-        // clear them
-        bmask = planes[0][size - i];
-        bmask &= planes[1][size - i];
-        bmask &= planes[2][size - i];
-        if (bmask) {
-            planes[3][size - i] |= bmask;
-            planes[0][size - i] &= ~bmask;
-            planes[1][size - i] &= ~bmask;
-            planes[2][size - i] &= ~bmask;
+        // optimization 2: if all CMY present, convert to black and clear CMY
+        uint8_t common = cyan & magenta & yellow;
+        if (common) {
+            black |= common;
+            cyan &= ~common;
+            magenta &= ~common;
+            yellow &= ~common;
         }
     }
 }

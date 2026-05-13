@@ -19,8 +19,9 @@
  * 
  */
 #include "qpdl.h"
+#include "sp_result.h"
 #include <errno.h>
-#include <unistd.h>
+#include "sp_portable.h"
 #include <inttypes.h>
 #include <string.h>
 #include <math.h>
@@ -29,58 +30,68 @@
 #include "errlog.h"
 #include "request.h"
 #include "bandplane.h"
+#include <array>
+#include <span>
+#include <vector>
 
-/* Support function for algorithm of type 0x15 printers. */
-static bool _outputAuxRecords(const Page* page)
+/* Helper for safe writing to STDOUT with result propagation */
+static SP::Result<> _safeWrite(std::span<const unsigned char> data)
 {
-    // Get the first plane containg plane data.
-    const Band *band = page->firstBand();
-    unsigned char header[16] = { 0x13, 0, 0, 0, 0x23, 0x15, 0, 0,
-                                    0, 0, 0, 0, 0, 0, 0, 0x14 };
-    if (!band)
-        return true;
-    // Output record type 0x13 and marker for record 0x14 .
-    if (write(STDOUT_FILENO, (unsigned char*)&header, 16) == -1) {
-        ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-        return false;
-    }
-    // Output BIH of JBIG data.
-    if (page->getBIH()) {
-        if (write(STDOUT_FILENO, page->getBIH(), 20) == -1) {
-            ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-            return false;
+    while (!data.empty()) {
+        ssize_t written = write(SP_STDOUT_FILENO, data.data(), data.size());
+        if (written == -1) {
+            if (errno == EINTR) continue;
+            ERRORMSG(_("Error while sending data to the printer (%d)"), errno);
+            return SP::Unexpected(SP::Error::IOError);
         }
-    } else {
-        ERRORMSG(_("Error getting BIH data for page (%u)"), errno);
-        return false;
+        data = data.subspan(written);
     }
-    header[0] = 0; header[1] = 0; header[2] = 1;
-    header[3] = (band->width() >> 8) + 65;
-    if (write(STDOUT_FILENO, (unsigned char*)&header, 4) == -1) {
-        ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-        return false;
-    }
-    return true;
+    return {};
 }
 
-static bool _renderJBIGBand(const Request& request, const Band* band, bool mono)
+/* Support function for algorithm of type 0x15 printers. */
+static SP::Result<> _outputAuxRecords(const Page* page)
 {
-    unsigned char header[0xc];
+    // Get the first plane containing plane data.
+    const Band *band = page->firstBand();
+    const std::array<unsigned char, 16> header = { 
+        0x13, 0, 0, 0, 0x23, 0x15, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0x14 
+    };
+    if (!band)
+        return {};
+
+    // Output record type 0x13 and marker for record 0x14 .
+    if (auto res = _safeWrite(header); !res) return res;
+
+    // Output BIH of JBIG data.
+    if (page->getBIH()) {
+        if (auto res = _safeWrite(std::span(reinterpret_cast<const unsigned char*>(page->getBIH()), 20)); !res) return res;
+    } else {
+        ERRORMSG(_("Error getting BIH data for page"));
+        return SP::Unexpected(SP::Error::InconsistentData);
+    }
+    std::array<unsigned char, 4> trail;
+    trail[0] = 0; trail[1] = 0; trail[2] = 1;
+    trail[3] = static_cast<unsigned char>((band->width() >> 8) + 65);
+    return _safeWrite(trail);
+}
+
+static SP::Result<> _renderJBIGBand([[maybe_unused]] const Request& request, const Band* band, bool mono)
+{
+    std::array<unsigned char, 0xc> header;
     // Black=4, Cyan=1, Magenta=2, Yellow=3
     int color_order[ 4 ] = { 4, 1, 2, 3 };
     int colorsNr = mono ? 1:4;
     unsigned long dataSize, checkSum, lineBytes;
-    const BandPlane *plane = NULL;
+    const BandPlane *plane = nullptr;
     // Cycle through each color planes 
     for ( int j = 0; j < colorsNr; j++ ) {
         int current_color = color_order[ j ];
         // Search in the current band, a plane of current color.
-        plane = NULL;
-        for (unsigned int i = 0; i < band->planesNr(); i++) {
-            const BandPlane * search_plane = band->plane(i);
-            if (!search_plane)
-                continue;
-            if (current_color == search_plane->colorNr()) {
+        plane = nullptr;
+        for (const BandPlane* search_plane : band->planes()) {
+            if (search_plane && current_color == search_plane->colorNr()) {
                 plane = search_plane;
                 break;
             }
@@ -90,64 +101,59 @@ static bool _renderJBIGBand(const Request& request, const Band* band, bool mono)
             continue;
         // Output record of type 0xC.
         header[0x0] = 0xC;                      // Signature
-        header[0x1] = band->bandNr();           // Band number
+        header[0x1] = static_cast<unsigned char>(band->bandNr());           // Band number
         // Compute the bytes per line of the pixel data.
         lineBytes = (band->width() + 7) / 8;
-        header[0x2] = lineBytes >> 8;           // Band width 8-15
-        header[0x3] = lineBytes;                // Band width 0-7
-        header[0x4] = band->height() >> 8;      // Band height 8-15
-        header[0x5] = band->height();           // Band height 0-7
-        header[0x6] = current_color;            // Color number
-        header[0x7] = plane->compression();     // Compression algorithm 0x15
-        dataSize = plane->dataSize() + 4;
+        header[0x2] = static_cast<unsigned char>(lineBytes >> 8);           // Band width 8-15
+        header[0x3] = static_cast<unsigned char>(lineBytes);                // Band width 0-7
+        header[0x4] = static_cast<unsigned char>(band->height() >> 8);      // Band height 8-15
+        header[0x5] = static_cast<unsigned char>(band->height());           // Band height 0-7
+        header[0x6] = static_cast<unsigned char>(current_color);            // Color number
+        header[0x7] = static_cast<unsigned char>(plane->compression());     // Compression algorithm 0x15
+        dataSize = static_cast<uint32_t>(plane->dataSize() + 4);
         // Append the last information and send the header
-        header[0x8] = dataSize >> 24;            // Data size 24 - 31
-        header[0x9] = dataSize >> 16;            // Data size 16 - 23
-        header[0xa] = dataSize >> 8;             // Data size 8 - 15
-        header[0xb] = dataSize;                  // Data size 0 - 7
-        if (write(STDOUT_FILENO, (unsigned char*)&header, 0xc) == -1) {
-            ERRORMSG(_("Error while sending data (%u)"), errno);
-            return false;
-        }
+        header[0x8] = static_cast<unsigned char>(dataSize >> 24);            // Data size 24 - 31
+        header[0x9] = static_cast<unsigned char>(dataSize >> 16);            // Data size 16 - 23
+        header[0xa] = static_cast<unsigned char>(dataSize >> 8);             // Data size 8 - 15
+        header[0xb] = static_cast<unsigned char>(dataSize);                  // Data size 0 - 7
+
+        if (auto res = _safeWrite(std::span(header.data(), 0xC)); !res) return res;
+
         // Send the data
-        if (write(STDOUT_FILENO, plane->data(), plane->dataSize()) == -1) {
-            ERRORMSG(_("Error while sending data (%u)"), errno);
-            return false;
-        }
+        if (auto res = _safeWrite(plane->data_span()); !res) return res;
+
         // Calculate and send the checksum
         checkSum  = plane->checksum();
-        header[0] = checkSum >> 24;              // Checksum 24 - 31
-        header[1] = checkSum >> 16;              // Checksum 16 - 23
-        header[2] = checkSum >> 8;               // Checksum 8 - 15
-        header[3] = checkSum;                    // Checksum 0 - 7
-        if (write(STDOUT_FILENO, (unsigned char*)&header, 4) == -1) {
-            ERRORMSG(_("Error while sending data (%u)"), errno);
-            return false;
-        }
+        std::array<unsigned char, 4> cs;
+        cs[0] = static_cast<unsigned char>(checkSum >> 24);              // Checksum 24 - 31
+        cs[1] = static_cast<unsigned char>(checkSum >> 16);              // Checksum 16 - 23
+        cs[2] = static_cast<unsigned char>(checkSum >> 8);               // Checksum 8 - 15
+        cs[3] = static_cast<unsigned char>(checkSum);                    // Checksum 0 - 7
+
+        if (auto res = _safeWrite(cs); !res) return res;
     }
-    return true;
+    return {};
 }
 
-static bool _renderBand(const Request& request, const Band* band, bool mono)
+static SP::Result<> _renderBand(const Request& request, const Band* band, bool mono)
 {
     unsigned long version, subVersion, size, dataSize, checkSum;
     bool color, headerSent=false;
-    unsigned char header[0x20] __attribute__((aligned(4)));
+    std::array<unsigned char, 0x20> header;
     const BandPlane *plane;
 
     version = request.printer()->qpdlVersion();
     color = request.printer()->color();
     subVersion = band->parent()->compression() == 0x13 ? 3 : 0;
 
-    for (unsigned int i=0; i < band->planesNr(); i++) {
+    size_t planeIdx = 0;
+    for (const BandPlane* plane : band->planes()) {
         unsigned long compression;
         bool nextBand = false;
 
-        // Get the plane
-        plane = band->plane(i);
         if (!plane) {
             ERRORMSG(_("Inconsistent data. Operation aborted"));
-            return false;
+            return SP::Unexpected(SP::Error::InconsistentData);
         }
         compression = plane->compression();
         checkSum = plane->checksum();
@@ -170,7 +176,7 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
         }
 
         // Calculate the data size
-        dataSize = plane->dataSize();
+        dataSize = static_cast<unsigned long>(plane->data_span().size());
         if (compression != 0x0D && compression != 0x0E)
             dataSize += 4;              // Data signature
         if (version > 0) {
@@ -182,56 +188,57 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
         // Send the header
         if (!headerSent || version == 2) {
             header[0x0] = 0xC;                      // Signature
-            header[0x1] = band->bandNr();           // Band number
-            header[0x2] = band->width() >> 8;       // Band width 8-15
-            header[0x3] = band->width();            // Band width 0-7
-            header[0x4] = band->height() >> 8;      // Band height 8-15
-            header[0x5] = band->height();           // Band height 0-7
+            header[0x1] = static_cast<unsigned char>(band->bandNr());           // Band number
+            header[0x2] = static_cast<unsigned char>(band->width() >> 8);       // Band width 8-15
+            header[0x3] = static_cast<unsigned char>(band->width());            // Band width 0-7
+            header[0x4] = static_cast<unsigned char>(band->height() >> 8);      // Band height 8-15
+            header[0x5] = static_cast<unsigned char>(band->height());           // Band height 0-7
             headerSent = true;
             size = 0x6;
         } else
             size = 0x0;
         // Add color information if it's a color printer
         if (color) {
-            header[size] = mono ? 4 : plane->colorNr(); // Color number
+            header[size] = static_cast<unsigned char>(mono ? 4 : plane->colorNr()); // Color number
             size++;
         }
         // Append the last information and send the header
-        header[size+0] = compression;               // Compression algorithm
-        header[size+1] = dataSize >> 24;            // Data size 24 - 31
-        header[size+2] = dataSize >> 16;            // Data size 16 - 23
-        header[size+3] = dataSize >> 8;             // Data size 8 - 15
-        header[size+4] = dataSize;                  // Data size 0 - 7
-        if (write(STDOUT_FILENO, (unsigned char*)&header, size+5) == -1) {
-            ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-            return false;
-        }
+        header[size+0] = static_cast<unsigned char>(compression);               // Compression algorithm
+        header[size+1] = static_cast<unsigned char>(dataSize >> 24);            // Data size 24 - 31
+        header[size+2] = static_cast<unsigned char>(dataSize >> 16);            // Data size 16 - 23
+        header[size+3] = static_cast<unsigned char>(dataSize >> 8);             // Data size 8 - 15
+        header[size+4] = static_cast<unsigned char>(dataSize);                  // Data size 0 - 7
+        if (auto res = _safeWrite(std::span(header.data(), size+5)); !res) return res;
 
         // Send the sub-header
         if (compression != 0x0D && compression != 0x0E) {
             switch (plane->endian()) {
-                case BandPlane::Dependant:
-                    *(uint32_t *)&header = (uint32_t)(0x09ABCDEF + 
-                            (subVersion << 28));        // Sub-header signature
+                case BandPlane::Endian::Dependant: {
+                    // Machine-native byte order — must match original uint32_t* cast behavior
+                    uint32_t sig = static_cast<uint32_t>(0x09ABCDEF + (subVersion << 28));
+                    memcpy(&header[0x0], &sig, sizeof(sig));
                     break;
-                case BandPlane::BigEndian:
-                    header[0x0] = 0x9 + (subVersion << 0x4);
+                }
+                case BandPlane::Endian::BigEndian:
+                    header[0x0] = static_cast<unsigned char>(0x9 + (subVersion << 0x4));
                                                         // Sub-header signature1
                     header[0x1] = 0xAB;                 // Sub-header signature2
                     header[0x2] = 0xCD;                 // Sub-header signature3
                     header[0x3] = 0xEF;                 // Sub-header signature4
                     break;
-                case BandPlane::LittleEndian:
+                case BandPlane::Endian::LittleEndian:
                     header[0x0] = 0xEF;                 // Sub-header signature4
                     header[0x1] = 0xCD;                 // Sub-header signature3
                     header[0x2] = 0xAB;                 // Sub-header signature2
-                    header[0x3] = 0x9 + (subVersion << 0x4);
+                    header[0x3] = static_cast<unsigned char>(0x9 + (subVersion << 0x4));
                                                         // Sub-header signature1
                     break;
             };
             size = 4;
             if (subVersion == 3) {
                 uint32_t state;
+                auto pSpan = plane->data_span();
+                size_t dSize = pSpan.size();
 
                 checkSum += 0x39 + 0xAB + 0xCD + 0xEF;
                 if (!band->bandNr())
@@ -243,49 +250,51 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
                     state = 0x02000000;                 // Last band
                     checkSum += 0x02;
                 }
-                memset(header + size + 4, 0, 6*4);
+                memset(header.data() + size + 4, 0, 6 * 4);
 
                 switch (plane->endian()) {
-                    case BandPlane::Dependant:
-                        *(uint32_t*)(&header + size) = (uint32_t)plane->
-                            dataSize();
-                        *(uint32_t*)(&header + size + 4) = (uint32_t)state;
+                    case BandPlane::Endian::Dependant: {
+                        // Machine-native byte order — must match original uint32_t* cast behavior
+                        uint32_t udSize = static_cast<uint32_t>(dSize);
+                        memcpy(&header[size], &udSize, sizeof(udSize));
+                        memcpy(&header[size + 4], &state, sizeof(state));
                         break;
-                    case BandPlane::BigEndian:
+                    }
+                    case BandPlane::Endian::BigEndian:
                         // Data size 24 - 31
-                        header[size+0] = plane->dataSize() >> 24;
+                        header[size+0] = static_cast<unsigned char>(dSize >> 24);
                         // Data size 16 - 23
-                        header[size+1] = plane->dataSize() >> 16;
+                        header[size+1] = static_cast<unsigned char>(dSize >> 16);
                         // Data size 8 - 15
-                        header[size+2] = plane->dataSize() >> 8;
+                        header[size+2] = static_cast<unsigned char>(dSize >> 8);
                         // Data size 0 - 7
-                        header[size+3] = plane->dataSize();
+                        header[size+3] = static_cast<unsigned char>(dSize);
                         // State 24 - 31
-                        header[size+4] = state >> 24;
+                        header[size+4] = static_cast<unsigned char>(state >> 24);
                         // State 16 - 23
-                        header[size+5] = state >> 16;
+                        header[size+5] = static_cast<unsigned char>(state >> 16);
                         // State 8 - 15
-                        header[size+6] = state >> 8;
+                        header[size+6] = static_cast<unsigned char>(state >> 8);
                         // State 0 - 7
-                        header[size+7] = state;
+                        header[size+7] = static_cast<unsigned char>(state);
                         break;
-                    case BandPlane::LittleEndian:
+                    case BandPlane::Endian::LittleEndian:
                         // Data size 0 - 7
-                        header[size+0] = plane->dataSize();
+                        header[size+0] = static_cast<unsigned char>(dSize);
                         // Data size 8 - 15
-                        header[size+1] = plane->dataSize() >> 8;
+                        header[size+1] = static_cast<unsigned char>(dSize >> 8);
                         // Data size 16 - 23
-                        header[size+2] = plane->dataSize() >> 16;
+                        header[size+2] = static_cast<unsigned char>(dSize >> 16);
                         // Data size 24 - 31
-                        header[size+3] = plane->dataSize() >> 24;
+                        header[size+3] = static_cast<unsigned char>(dSize >> 24);
                         // State 0 - 7
-                        header[size+4] = state;
+                        header[size+4] = static_cast<unsigned char>(state);
                         // State 8 - 15
-                        header[size+5] = state >> 8;
+                        header[size+5] = static_cast<unsigned char>(state >> 8);
                         // State 16 - 23
-                        header[size+6] = state >> 16;
+                        header[size+6] = static_cast<unsigned char>(state >> 16);
                         // State 24 - 31
-                        header[size+7] = state >> 24;
+                        header[size+7] = static_cast<unsigned char>(state >> 24);
                         break;
                 }
                 for (unsigned int j=0; j < 4; j++)
@@ -294,52 +303,43 @@ static bool _renderBand(const Request& request, const Band* band, bool mono)
             } else
                 for (unsigned int j=0; j < 4; j++)
                     checkSum += header[size - j - 1];
-            if (write(STDOUT_FILENO, (unsigned char*)&header, size) == -1) {
-                ERRORMSG(_("Error while sending data to the printer (%u)"),
-                    errno);
-                return false;
-            }
+            if (auto res = _safeWrite(std::span(header.data(), size)); !res) return res;
         }
         
         // Send the data
-        if (write(STDOUT_FILENO, plane->data(), plane->dataSize()) == -1) {
-            ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-            return false;
-        }
+        if (auto res = _safeWrite(plane->data_span()); !res) return res;
 
         // Send the checksum
-        header[0] = checkSum >> 24;                 // Checksum 24 - 31
-        header[1] = checkSum >> 16;                 // Checksum 16 - 23
-        header[2] = checkSum >> 8;                  // Checksum 8 - 15
-        header[3] = checkSum;                       // Checksum 0 - 7
+        header[0] = static_cast<unsigned char>(checkSum >> 24);                 // Checksum 24 - 31
+        header[1] = static_cast<unsigned char>(checkSum >> 16);                 // Checksum 16 - 23
+        header[2] = static_cast<unsigned char>(checkSum >> 8);                  // Checksum 8 - 15
+        header[3] = static_cast<unsigned char>(checkSum);                       // Checksum 0 - 7
         size = 4;
             // Close the plane if needed
         if (color && (version == 1 || version == 5) && 
-            (i+1) == band->planesNr()) {
+            (planeIdx + 1) == band->planesNr()) {
             header[4] = 0;
             size++;
         }
-        if (write(STDOUT_FILENO, (unsigned char*)&header, size) == -1) {
-            ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-            return false;
-        }
+        if (auto res = _safeWrite(std::span(header.data(), size)); !res) return res;
+        planeIdx++;
     }
 
-    return true;
+    return {};
 }
 
-bool renderPage(const Request& request, Page* page, bool lastPage)
+SP::Result<> renderPage(const Request& request, Page* page, bool lastPage)
 {
     unsigned char duplex=0, tumble=0, paperSource=1;
     unsigned long width, height;
-    unsigned char header[0x11];
+    std::array<unsigned char, 0x11> header;
     const Band* band;
-    bool (*selectedRenderBand)(const Request&, const Band*, bool);
+    SP::Result<> (*selectedRenderBand)(const Request&, const Band*, bool);
     
 
     if (!page) {
         ERRORMSG(_("Try to render a NULL page"));
-        return false;
+        return SP::Unexpected(SP::Error::InconsistentData);
     }
 
     // Get the duplex values
@@ -385,56 +385,53 @@ bool renderPage(const Request& request, Page* page, bool lastPage)
     if (request.printer()->fixedBandWidth() || 0x15 == page->compression()) {
         // For CLP-310/315 and fixed bandwidth printers, multiply page
         // dimensions in inches by 300.
-        width = ceil(300 * (request.printer()->pageWidth() / 72.0));
-        height = ceil(300 * (request.printer()->pageHeight() / 72.0));
+        width = static_cast<unsigned long>(ceil(300 * (request.printer()->pageWidth() / 72.0)));
+        height = static_cast<unsigned long>(ceil(300 * (request.printer()->pageHeight() / 72.0)));
     }
 
     // Send the page header
     header[0x0] = 0;                                // Signature
-    header[0x1] = page->yResolution() / 100;        // Y Resolution
-    header[0x2] = page->copiesNr() >> 8;            // Number of copies 8-15
-    header[0x3] = page->copiesNr();                 // Number of copies 0-7
-    header[0x4] = request.printer()->paperType();   // Paper type
-    header[0x5] = width >> 8;                       // Printable area width
-    header[0x6] = width;                            // Printable area width
-    header[0x7] = height >> 8;                      // Printable area height
-    header[0x8] = height;                           // Printable area height
-    header[0x9] = paperSource;                      // Paper source
-    header[0xa] = request.printer()->unknownByte1();// Always 0 in ULD
+    header[0x1] = static_cast<unsigned char>(page->yResolution() / 100);        // Y Resolution
+    header[0x2] = static_cast<unsigned char>(page->copiesNr() >> 8);            // Number of copies 8-15
+    header[0x3] = static_cast<unsigned char>(page->copiesNr());                 // Number of copies 0-7
+    header[0x4] = static_cast<unsigned char>(request.printer()->paperType());   // Paper type
+    header[0x5] = static_cast<unsigned char>(width >> 8);                       // Printable area width
+    header[0x6] = static_cast<unsigned char>(width);                            // Printable area width
+    header[0x7] = static_cast<unsigned char>(height >> 8);                      // Printable area height
+    header[0x8] = static_cast<unsigned char>(height);                           // Printable area height
+    header[0x9] = static_cast<unsigned char>(paperSource);                      // Paper source
+    header[0xa] = static_cast<unsigned char>(request.printer()->unknownByte1());// Always 0 in ULD
     header[0xb] = duplex;                           // Duplex
     header[0xc] = tumble;                           // Tumble
-    header[0xd] = request.printer()->unknownByte2();// Always 0 in ULD
-    header[0xe] = request.printer()->qpdlVersion(); // QPDL Version
-    header[0xf] = request.printer()->unknownByte3();// Colorplanes
-    header[0x10] = page->xResolution() / 100;       // X Resolution
-    if (write(STDOUT_FILENO, (unsigned char*)&header, 0x11) == -1) {
-        ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-        return false;
-    }
+    header[0xd] = static_cast<unsigned char>(request.printer()->unknownByte2());// Always 0 in ULD
+    header[0xe] = static_cast<unsigned char>(request.printer()->qpdlVersion()); // QPDL Version
+    header[0xf] = static_cast<unsigned char>(request.printer()->unknownByte3());// Colorplanes
+    header[0x10] = static_cast<unsigned char>(page->xResolution() / 100);       // X Resolution
+    if (auto res = _safeWrite(std::span(header.data(), 0x11)); !res) return res;
 
     // Send auxiliary records for clp-315 printers.
-    if (0x15 == page->compression())
-        if (!_outputAuxRecords(page))
-            return false;
+    if (0x15 == page->compression()) {
+        auto auxRes = _outputAuxRecords(page);
+        if (!auxRes)
+            return auxRes;
+    }
 
     // Send the page bands
     band = page->firstBand();
     while (band) {
-        if (!selectedRenderBand(request, band, page->colorsNr() == 1))
-            return false;
+        auto res = selectedRenderBand(request, band, page->colorsNr() == 1);
+        if (!res)
+            return res;
         band = band->sibling();
     }
 
     // Send the page footer
     header[0x0] = 1;                                // Signature
-    header[0x1] = page->copiesNr() >> 8;            // Number of copies 8-15
-    header[0x2] = page->copiesNr();                 // Number of copies 0-7
-    if (write(STDOUT_FILENO, (unsigned char*)&header, 0x3) == -1) {
-        ERRORMSG(_("Error while sending data to the printer (%u)"), errno);
-        return false;
-    }
+    header[0x1] = static_cast<unsigned char>(page->copiesNr() >> 8);            // Number of copies 8-15
+    header[0x2] = static_cast<unsigned char>(page->copiesNr());                 // Number of copies 0-7
+    if (auto res = _safeWrite(std::span(header.data(), 0x3)); !res) return res;
 
-    return true;
+    return {};
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

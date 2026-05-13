@@ -2,7 +2,7 @@
 *%%%% PPD file for WorkCentre PE16 with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "wcpe16.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Xerox"
 *ModelName: "Xerox WorkCentre PE16"
 *ShortNickName: "Xerox WorkCentre PE16"
-*NickName: "Xerox WorkCentre PE16, 2.0.0"
+*NickName: "Xerox WorkCentre PE16, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False

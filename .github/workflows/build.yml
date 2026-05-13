@@ -1,77 +1,163 @@
-name: Build SpliX
+name: Build Splix .deb Packages (CMake)
 
 on:
   push:
-    paths:
-      - 'src/**'
+    branches: [master, main, modernized-2026]
+    tags: ['v*']
   pull_request:
-    paths:
-      - 'src/**'
+    branches: [master, main, modernized-2026]
   workflow_dispatch:
 
 jobs:
   build:
+    name: Build ${{ matrix.deb_arch }}
     runs-on: ubuntu-latest
-    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # ── AMD64 (native) ──────────────────────────────────────────────
+          - deb_arch: amd64
+            cmake_preset: ci-amd64
+
+          # ── ARM64 (cross-compiled) ─────────────────────────────────────
+          - deb_arch: arm64
+            cmake_preset: ci-arm64
+            
+          # ── ARMHF (cross-compiled) ─────────────────────────────────────
+          - deb_arch: armhf
+            cmake_preset: ci-armhf
+
+          # ── i386 (cross-compiled) ──────────────────────────────────────
+          - deb_arch: i386
+            cmake_preset: ci-i386
+
+          # ── RISCV64 (cross-compiled) ───────────────────────────────────
+          - deb_arch: riscv64
+            cmake_preset: ci-riscv64
+
     steps:
-      - name: Git checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Declare short commit variable
-        id: vars
-        run: |
-          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Create cache directory
-        run: mkdir ~/cache
-
-      - id: cache
-        name: Initialize cache
-        uses: actions/cache@v5
         with:
-          path: ~/cache
-          key: cache-${{ runner.os }}
+          fetch-depth: 0        # Fetch all history for all branches and tags
 
-      - name: APT install
-        run: |
-          sudo sed -i 's~Types: ~Types: deb-src ~' /etc/apt/sources.list.d/ubuntu.sources
-          sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt install -y build-essential libcups2-dev cups groff nano less ninja-build
-          sudo DEBIAN_FRONTEND=noninteractive apt build-dep -y cups
-
-      - if: steps.cache.outputs.cache-hit != 'true'
-        name: Build polyfill-glibc
-        run: |
-          git clone https://github.com/corsix/polyfill-glibc.git && cd polyfill-glibc && ninja
-          cp polyfill-glibc ~/cache/
-
-      - if: steps.cache.outputs.cache-hit != 'true'
-        name: Build libjbig
-        run: |
-          mkdir jbig && cd jbig && apt source jbigkit
-          cd jbigkit-* && make -j4
-          cp libjbig/libjbig85.a ~/cache/
-
-      - name: Build SpliX
-        run: |
-          JB=$(realpath ~/cache/libjbig85.a)
-          echo $JB
-          ls -la $JB
-          # use static libjbig
-          sed -i "s~-ljbig85~/${JB}~" module.mk
-          # force libcupsimage dynamic linking, as newer cups on newer ubuntu links it from libcups
-          sed -i 's~rastertoqpdl_LIBS.*:= ~rastertoqpdl_LIBS := -lcupsimage ~' module.mk
-          grep 'libjbig' module.mk
-          make DRV_ONLY=1 -j4
-          rm -rf optimized/src
-
-      - name: Patch for older glibc
-        run: |
-          ~/cache/polyfill-glibc --target-glibc=2.17 optimized/rastertoqpdl
-          ~/cache/polyfill-glibc --target-glibc=2.17 optimized/pstoqpdl
-
-      - name: Save build artifacts
-        uses: actions/upload-artifact@v7
+      - name: Restore ccache
+        uses: actions/cache@v4
         with:
-          name: splix_x86_64_${{ steps.vars.outputs.sha_short }}
-          path: optimized/
+          path: .ccache
+          key: ccache-cmake-${{ matrix.deb_arch }}-${{ github.sha }}
+          restore-keys: |
+            ccache-cmake-${{ matrix.deb_arch }}-
+
+      - name: Build and package inside Debian oldstable
+        run: |
+          mkdir -p "${PWD}/artifacts" "${PWD}/.ccache"
+
+          docker run --rm \
+            --platform linux/amd64 \
+            -v "${PWD}:/workspace" \
+            -v "${PWD}/.ccache:/root/.ccache" \
+            -w /workspace \
+            -e CCACHE_DIR=/root/.ccache \
+            -e DEB_ARCH="${{ matrix.deb_arch }}" \
+            -e CMAKE_PRESET="${{ matrix.cmake_preset }}" \
+            -e GITHUB_REF_NAME="${{ github.ref_name }}" \
+            debian:oldstable \
+            bash -c '
+              set -euo pipefail
+
+              # ── Base dependencies ──────────────────────────────────────────
+              apt-get update -y
+              apt-get install -y --fix-missing \
+                build-essential cmake \
+                cups libcups2-dev libcupsimage2-dev libjbig-dev \
+                pkg-config ccache git ca-certificates
+
+              # ── Cross-compilation dependencies ───────────────────────
+              if [ "${DEB_ARCH}" != "amd64" ]; then
+                dpkg --add-architecture "${DEB_ARCH}"
+                apt-get update -y
+                
+                case "${DEB_ARCH}" in
+                  arm64)   CROSS_PKG="gcc-aarch64-linux-gnu g++-aarch64-linux-gnu" ;;
+                  armhf)   CROSS_PKG="gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf" ;;
+                  i386)    CROSS_PKG="gcc-i686-linux-gnu g++-i686-linux-gnu" ;;
+                  riscv64) CROSS_PKG="gcc-riscv64-linux-gnu g++-riscv64-linux-gnu" ;;
+                esac
+
+                apt-get install -y --fix-missing ${CROSS_PKG} \
+                                   libcups2-dev:${DEB_ARCH} \
+                                   libcupsimage2-dev:${DEB_ARCH} \
+                                   libjbig-dev:${DEB_ARCH}
+              fi
+
+              # Put ccache wrappers first so they intercept gcc/g++ calls.
+              # For cross-compilation ccache transparently wraps the cross-compiler.
+              export PATH="/usr/lib/ccache:${PATH}"
+
+              # ── CMake configure + build ────────────────────────────────────
+              rm -rf /tmp/splix-build
+
+              cmake --preset "${CMAKE_PRESET}"
+              cmake --build --preset "${CMAKE_PRESET}"
+
+              # ── Package as .deb via CPack ──────────────────────────────────
+              cd /tmp/splix-build
+              cpack -G DEB
+
+              # Copy the generated .deb to the artifacts directory
+              cp -v /tmp/splix-build/*.deb /workspace/artifacts/
+
+              echo "── Packaged artifacts ──────────────────────────────"
+              ls -lh /workspace/artifacts/
+            '
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: splix-deb-${{ matrix.deb_arch }}
+          path: artifacts/*.deb
+          if-no-files-found: error
+
+      # On version tags (e.g. v2.0.2) attach both .deb files to the GitHub
+      # Release created for that tag.
+      - name: Attach to GitHub Release (version tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.deb
+
+  # ── Sanitizer Check ────────────────────────────────────────────────────────
+  # Runs the functional test suite under AddressSanitizer and
+  # UndefinedBehaviorSanitizer to catch memory bugs in PRs.
+  security-audit:
+    name: Sanitizer Check (ASan/UBSan)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build and Test with Sanitizers
+        run: |
+          docker run --rm \
+            -v "${PWD}:/workspace" \
+            -w /workspace \
+            debian:oldstable \
+            bash -c '
+              set -euo pipefail
+              apt-get update -y
+              apt-get install -y build-essential cmake cups libcups2-dev \
+                                 libcupsimage2-dev libjbig-dev pkg-config \
+                                 git ca-certificates xxd
+
+              # Configure with ASan preset
+              cmake --preset linux-asan
+              cmake --build --preset linux-asan
+
+              # Run tests (ctest will invoke functional_test.sh)
+              cd build-asan
+              ctest --output-on-failure
+            '

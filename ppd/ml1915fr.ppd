@@ -2,7 +2,7 @@
 *%%%% PPD file for ML-1915 with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.7rc1.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml1915.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung ML-1915"
 *ShortNickName: "Samsung ML-1915"
-*NickName: "Samsung ML-1915, 2.0.0"
+*NickName: "Samsung ML-1915, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False

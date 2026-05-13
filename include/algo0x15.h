@@ -26,35 +26,43 @@
 
 #ifndef DISABLE_JBIG
 
-#include <stddef.h>
 #include "algorithm.h"
+#include <vector>
+#include <memory>
+#include <array>
+#include <cstdint>
+#include <span>
+
 /**
   * @brief This class implements the compression algorithm 0x15.
   */
 class Algo0x15 : public Algorithm
 {
     protected:
-        bool                    _error;
-        bool                    _has_bih;
-        unsigned char           _bih[20];
-        unsigned char*          _data;
-        unsigned long           _size;
-        unsigned long           _maxSize;
+        bool                    _error = false;
+        SP::Error               _errorCode = SP::Error::None;
+        bool                    _has_bih = false;
+        std::array<uint8_t, 20> _bih = {};
+        std::vector<uint8_t>    _data;
+        uint32_t                _maxSize = 0;
 
     public:
         Algo0x15();
-        virtual ~Algo0x15();
+        virtual ~Algo0x15() = default;
 
     public:
         static void             _callback(unsigned char *data, size_t len, void *arg);
 
     public:
-        virtual BandPlane*      compress(const Request& request, 
-                                    unsigned char *data, unsigned long width,
-                                    unsigned long height);
+        virtual SP::Result<std::unique_ptr<BandPlane>> compress(const Request& request, 
+                                     std::span<const uint8_t> data, uint32_t width,
+                                     uint32_t height) override;
         /* Returns BIH for the compressed image band,
            after compress has been called. */
-        const unsigned char*    getBIHdata() const { return _bih; } 
+        const uint8_t*          getBIHdata() const { return _bih.data(); } 
+        virtual bool            reverseLineColumn() const override {return false;}
+        virtual bool            inverseByte() const override {return false;}
+        virtual bool            splitIntoBands() const override {return false;}
 };
 
 #endif /* DISABLE_JBIG */

@@ -24,7 +24,10 @@
 #define _ALGO0x0E_H_
 
 #include "algorithm.h"
-#include <inttypes.h>
+#include <vector>
+#include <span>
+#include <memory>
+#include <cstdint>
 
 /**
   * @brief This class implements the type 0xe encoding.
@@ -33,39 +36,33 @@ class Algo0x0E : public Algorithm
 {
     protected:    
         inline void addLiteralSequence(
-                                        unsigned char       * output,
-                                        unsigned long       & outputSize, 
-                                        unsigned char       * data,
-                                        unsigned long       position,
-                                        unsigned long       length,
-                                        unsigned long       blanks );
+                                        std::vector<uint8_t> &output,
+                                        std::span<const uint8_t> data,
+                                        uint32_t position,
+                                        uint32_t length,
+                                        uint32_t blanks );
         inline void addReplicativeRun(
-                                        unsigned char       * output,
-                                        unsigned long       & outputSize,
-                                        unsigned long       runs,
-                                        unsigned char       value );
-	unsigned long verifyGain(unsigned long e,
-                                 unsigned long L,
-                                 unsigned char * data);
-	unsigned long encodeReplications(unsigned long q,
-                                         unsigned long L,
-                                         unsigned char * data,
-                                         unsigned char * output,
-                                         unsigned long & outputSize);
-	unsigned long locateBackwardReplications(unsigned long L,
-                                                 unsigned char * data);
+                                        std::vector<uint8_t> &output,
+                                        uint32_t runs,
+                                        uint8_t value );
+        uint32_t verifyGain(std::span<const uint8_t> data);
+        uint32_t encodeReplications(uint32_t q,
+                                         uint32_t L,
+                                         std::span<const uint8_t> data,
+                                         std::vector<uint8_t> &output);
+        uint32_t locateBackwardReplications(std::span<const uint8_t> data);
 
     public:
-        Algo0x0E();
-        virtual ~Algo0x0E();
+        Algo0x0E() = default;
+        virtual ~Algo0x0E() = default;
 
     public:
-        virtual BandPlane*      compress(const Request& request, 
-                                    unsigned char *data, unsigned long width,
-                                    unsigned long height);
-        virtual bool            reverseLineColumn() {return false;}
-        virtual bool            inverseByte() {return true;}
-        virtual bool            splitIntoBands() {return true;}
+        virtual SP::Result<std::unique_ptr<BandPlane>> compress(const Request& request, 
+                                    std::span<const uint8_t> data, uint32_t width,
+                                    uint32_t height) override;
+        virtual bool            reverseLineColumn() const override {return false;}
+        virtual bool            inverseByte() const override {return true;}
+        virtual bool            splitIntoBands() const override {return true;}
 };
 
 #endif /* _ALGO0x0E_H_ */

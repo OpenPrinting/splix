@@ -19,13 +19,20 @@
  * 
  */
 #include "compress.h"
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <cstring>
+#include <vector>
+#include <memory>
+#include <array>
+#include <span>
+#include <cstdint>
+#include <algorithm>
 #include "page.h"
 #include "band.h"
 #include "errlog.h"
 #include "request.h"
 #include "bandplane.h"
+#include "printer.h"
 
 #include "algo0x0d.h"
 #include "algo0x0e.h"
@@ -118,52 +125,57 @@ unsigned long _get2020BandWidthInB(unsigned char papertype,
     return 0;
 }
 
-static bool _isEmptyBand(unsigned char* band, unsigned long size)
+static bool _isEmptyBand(std::span<const uint8_t> band)
 {
-    unsigned long max, mod;
-
-    max = size / sizeof(unsigned long);
-    mod = size % sizeof(unsigned long);
-
-    for (unsigned long i=0; i < max; i++) {
-        if (((unsigned long*)band)[i])
-            return false;
-    }
-    for (unsigned long i=0; i < mod; i++)
-        if (band[size-i-1])
-            return false;
-    return true;
+    // Use std::all_of for clarity; modern compilers often vectorize this
+    return std::all_of(band.begin(), band.end(), [](uint8_t b) { return b == 0; });
 }
 
-static bool _compressBandedPage(const Request& request, Page* page)
+static SP::Result<> _compressBandedPage(const Request& request, Page* page)
 {
-    unsigned long index=0, pageHeight, pageWidth, lineWidthInB, bandHeight;
-    unsigned long bandWidth, bandWidthInB;
-    unsigned long bandSize, hardMarginX, hardMarginXInB, hardMarginY;
-    unsigned char *planes[4], *band;
-    unsigned long bandNumber=0;
-    unsigned char colors;
+    uint32_t index=0, pageHeight, pageWidth, lineWidthInB, bandHeight;
+    uint32_t bandWidth, bandWidthInB, bandSize;
+    uint32_t hardMarginX, hardMarginXInB, hardMarginY;
+    const uint8_t *planes[4];
+    uint32_t bandNumber=0;
+    uint8_t colors;
+
+    if (!request.printer()) {
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
 
     colors = page->colorsNr();
-    hardMarginX = ((unsigned long)ceil(page->convertToXResolution(request.
-        printer()->hardMarginX())) + 7) & ~7;
-    hardMarginY = ceil(page->convertToYResolution(request.printer()->
-        hardMarginY()));
+    hardMarginX = (static_cast<uint32_t>(std::ceil(page->convertToXResolution(request.
+        printer()->hardMarginX()))) + 7) & ~7;
+    hardMarginY = static_cast<uint32_t>(std::ceil(page->convertToYResolution(request.printer()->
+        hardMarginY())));
     hardMarginXInB = hardMarginX / 8;
     pageWidth = page->width();
-    pageHeight = page->height() - hardMarginY;
+    pageHeight = page->height(); 
+    
+    if (pageHeight <= hardMarginY) {
+         ERRORMSG(_("Page height (%u) is smaller than hard margin (%u)"), pageHeight, hardMarginY);
+         return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+    pageHeight -= hardMarginY;
+
     page->setWidth(pageWidth);
     page->setHeight(pageHeight);
     lineWidthInB = (pageWidth + 7) / 8;
-    bandHeight = request.printer()->bandHeight();
+    bandHeight = static_cast<uint32_t>(request.printer()->bandHeight());
     if (page->xResolution() == 300 && page->yResolution() == 300)
         bandHeight /= 2;
 
+    if (!bandHeight) {
+        ERRORMSG(_("Invalid zero band height"));
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
     //Patch for Samsung M2026
     if (request.printer()->specialBandWidth()) {
-        bandWidthInB = _get2020BandWidthInB(request.printer()->paperType(),
+        bandWidthInB = static_cast<uint32_t>(_get2020BandWidthInB(request.printer()->paperType(),
                                             page->xResolution(),
-                                            pageWidth);
+                                            pageWidth));
         if (!bandWidthInB) bandWidthInB = lineWidthInB;
     } else if (request.printer()->fixedBandWidth()) {
         //Some of QPDL 1 and 2 models require full-width data
@@ -173,159 +185,205 @@ static bool _compressBandedPage(const Request& request, Page* page)
     }
     else bandWidthInB = lineWidthInB;  //original assumption before M2026 patch
     bandWidth = bandWidthInB * 8;
+    
+    // Safety check for bandSize
+    if (static_cast<uint64_t>(bandWidthInB) * bandHeight > 0x20000000) { // 512MB limit
+        ERRORMSG(_("Calculated band size is too large"));
+        return SP::Unexpected(SP::Error::MemoryError);
+    }
     bandSize = bandWidthInB * bandHeight;
 
     index = hardMarginY * lineWidthInB;
-    band = new unsigned char[bandSize];
-    for (unsigned int i=0; i < colors; i++)
-        planes[i] = page->planeBuffer(i);
+    
+    std::vector<uint8_t> band;
+    try {
+        band.resize(bandSize);
+    } catch (const std::bad_alloc&) {
+        return SP::Unexpected(SP::Error::MemoryError);
+    }
 
-    /*
-     * 1. On vérifier si la bande n'est pas blanche
-     *      |-> Si bande blanche, on passe
-     *      '-> Sinon, on compresse
-     * 2. On rajoute les informations de bande (numéro de bande et de
-     *    couleur).
-     * 3. On enregistre la bande dans la page.
-     * 4. On détruit les buffers de plans dans la page.
-     */
+    for (uint32_t i=0; i < colors; i++) {
+        planes[i] = page->planeBuffer(static_cast<uint8_t>(i));
+        if (!planes[i]) {
+            ERRORMSG(_("Plane %u has no data"), i);
+            return SP::Unexpected(SP::Error::LogicError);
+        }
+    }
+
     while (pageHeight) {
-        unsigned long localHeight = bandHeight;
-        Band *current = NULL;
+        uint32_t localHeight = bandHeight;
+        std::unique_ptr<Band> current = nullptr;
         bool theEnd = false;
 
         // Special things to do for the last band
         if (pageHeight < bandHeight) {
             theEnd = true;
             localHeight = pageHeight;
-            memset(band, 0, bandSize);
+            std::fill(band.begin(), band.end(), 0);
         }
 
-        for (unsigned int i=0; i < colors; i++) {
-            Algorithm *algo = NULL;
-            BandPlane *plane;
+        for (uint32_t i=0; i < colors; i++) {
+            std::unique_ptr<Algorithm> algo = nullptr;
+            SP::Result<std::unique_ptr<BandPlane>> planeRes = SP::Unexpected(SP::Error::None);
 
             switch (page->compression()) {
                 case 0x0D:
-                    algo = new Algo0x0D;
+                    algo = std::make_unique<Algo0x0D>();
                     break;
                 case 0x0E:
-                    algo = new Algo0x0E;
+                    algo = std::make_unique<Algo0x0E>();
                     break;
                 case 0x11:
-                    algo = new Algo0x11;
+                    algo = std::make_unique<Algo0x11>();
                     break;
                 default:
                     ERRORMSG(_("Unknown compression algorithm. Aborted"));
-                    return false;
+                    return SP::Unexpected(SP::Error::InvalidArgument);
             }
 
             // Copy the data into the band depending on the algorithm options
             if (algo->reverseLineColumn()) {
-                for (unsigned int y=0; y < localHeight; y++) {
-                    for (unsigned int x=0; (x < lineWidthInB - hardMarginXInB) && (x < bandWidthInB); x++) {
-                        band[x * bandHeight + y] = planes[i][index + x + hardMarginXInB + y * lineWidthInB]; // ERR?
+                // Special case where columns and lines are swapped (transposed)
+                for (uint32_t y = 0; y < localHeight; y++) {
+                    const uint32_t srcRowStart = index + hardMarginXInB + y * lineWidthInB;
+                    const size_t copyWidth = std::min(static_cast<size_t>(lineWidthInB - hardMarginXInB), 
+                                                   static_cast<size_t>(bandWidthInB));
+                    
+                    for (uint32_t x = 0; x < copyWidth; x++) {
+                        band[x * bandHeight + y] = planes[i][srcRowStart + x];
                     }
-                    for (unsigned int x=lineWidthInB - hardMarginXInB; x < bandWidthInB; x++)
+                    // Filling remaining with 0 if necessary
+                    for (uint32_t x = static_cast<uint32_t>(copyWidth); x < bandWidthInB; x++) {
                         band[x * bandHeight + y] = 0;
+                    }
                 }
             } else {
-                for (unsigned int y=0; y < localHeight; y++) {
-                    for (unsigned int x=0; (x < lineWidthInB - hardMarginXInB) && (x < bandWidthInB); x++) {
-                        band[x + y * bandWidthInB] = planes[i][index + x + hardMarginXInB + y * lineWidthInB];
+                // Standard row-wise copy
+                for (uint32_t y = 0; y < localHeight; y++) {
+                    const uint32_t dstRowStart = y * bandWidthInB;
+                    const uint32_t srcRowStart = index + hardMarginXInB + y * lineWidthInB;
+                    const size_t copyWidth = std::min(static_cast<size_t>(lineWidthInB - hardMarginXInB), 
+                                                   static_cast<size_t>(bandWidthInB));
+
+                    std::ranges::copy(std::span(planes[i] + srcRowStart, copyWidth), band.begin() + dstRowStart);
+                    if (bandWidthInB > copyWidth) {
+                        std::ranges::fill(std::span(band.data() + dstRowStart + copyWidth, bandWidthInB - copyWidth), 0);
                     }
-                    for (unsigned int x=lineWidthInB - hardMarginXInB; x < bandWidthInB; x++)
-                        band[x + y * lineWidthInB]  = 0;
                 }
             }
 
-            // Does the band is empty?
-            if (_isEmptyBand(band, bandSize)) {
-                delete algo;
+            // Is the band empty?
+            if (_isEmptyBand(band)) {
                 continue;
             }
 
             // Check if bytes have to be reversed
             if (algo->inverseByte())
-                for (unsigned int j=0; j < bandSize; j++)
+                for (uint32_t j=0; j < bandSize; j++)
                     band[j] = ~band[j];
 
             // Call the compression method
-            plane = algo->compress(request, band, bandWidth, bandHeight);
+            planeRes = algo->compress(request, band, bandWidth, bandHeight);
             /*
-             * If algorithm 0xd did not create a plane, it means that the 
-             * complementary algorithm 0xE need to be used
+             * If algorithm 0x0D did not create a plane, it means that the 
+             * complementary algorithm 0x0E needs to be used
              */
-            if (!plane && page->compression() == 0x0D) {
-                delete algo;
-                algo = new Algo0x0E;
-                /* Bytes has to be reversed first, as algo0xd didn't do that. */
-                for (unsigned int j = 0; j < bandSize; j++)
+            if (!planeRes && page->compression() == 0x0D) {
+                algo = std::make_unique<Algo0x0E>();
+                /* Bytes must be reversed first, as algo0x0D didn't do that. */
+                for (uint32_t j = 0; j < bandSize; j++)
                     band[j] = ~band[j];
-                /* Do the encoding with algo0xe. */
-                plane = algo->compress(request, band, bandWidth, bandHeight);
+                /* Do the encoding with algo0x0E. */
+                planeRes = algo->compress(request, band, bandWidth, bandHeight);
             }
 
-            if (plane) {
-                plane->setColorNr(i + 1);
+            if (planeRes) {
+                std::unique_ptr<BandPlane> plane = std::move(*planeRes);
+                plane->setColorNr(static_cast<uint8_t>(i + 1));
                 if (!current)
-                    current = new Band(bandNumber, bandWidth, bandHeight);
-                current->registerPlane(plane);
+                    current = std::make_unique<Band>(bandNumber, bandWidth, bandHeight);
+                current->registerPlane(std::move(plane));
+            } else if (planeRes.error() != SP::Error::None) {
+                 return SP::Unexpected(planeRes.error());
             }
-
-            delete algo;
         }
         if (current)
-            page->registerBand(current);
+            page->registerBand(std::move(current));
         bandNumber++;
         index += lineWidthInB * bandHeight;
         pageHeight = theEnd ? 0 : pageHeight - bandHeight;
     }
     page->flushPlanes();
-    delete[] band;
 
-    return true;
+    return {};
 }
 
 #ifndef DISABLE_JBIG
-static bool _compressBandedJBIGPage(const Request& request, Page* page)
+static SP::Result<> _compressBandedJBIGPage(const Request& request, Page* page)
 {
-    unsigned long index=0, pageHeight, lineWidthInB, bandHeight = 128;
-    unsigned long bufferWidth, specialBufferWidthInB, bandSize, hardMarginXInB=13, hardMarginY=100;
-    unsigned char *planes[4], *band[4];
-    unsigned long bandNumber=0, xLimitInB, bufferWidthInB;
-    Algo0x15 *algo = new Algo0x15;
+    uint32_t index=0, pageHeight, lineWidthInB, bandHeight = 128;
+    uint32_t bufferWidth, specialBufferWidthInB, bandSize, hardMarginXInB=13, hardMarginY=100;
+    const uint8_t *planes[4];
+    std::vector<uint8_t> band[4];
+    uint32_t bandNumber=0, xLimitInB, bufferWidthInB;
+    auto algo = std::make_unique<Algo0x15>();
+
+    if (!request.printer()) {
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
     /* Image trimming are done from hardware margins defined in the ppd. */
-    hardMarginXInB = ((unsigned long)ceil(page->convertToXResolution(request.
-        printer()->hardMarginX())) + 7) / 8;
-    hardMarginY = ceil(page->convertToYResolution(request.printer()->
-        hardMarginY()));
-    bandHeight = request.printer()->bandHeight();
-    lineWidthInB = ((page->width()) + 7) / 8;
-    // Compute an updated page height, clipped on top.
+    hardMarginXInB = (static_cast<uint32_t>(std::ceil(page->convertToXResolution(request.
+        printer()->hardMarginX()))) + 7) / 8;
+    hardMarginY = static_cast<uint32_t>(std::ceil(page->convertToYResolution(request.printer()->
+        hardMarginY())));
+    
+    if (page->height() <= hardMarginY) {
+         ERRORMSG(_("Page height (%u) is smaller than hard margin (%u)"), page->height(), hardMarginY);
+         return SP::Unexpected(SP::Error::InvalidArgument);
+    }
     pageHeight = page->height() - hardMarginY; 
+    
+    lineWidthInB = ((page->width()) + 7) / 8;
     // Compute the buffer width that is nearest multiple of 256 to the original. 
     bufferWidth = page->width() & ~255;
     if ((bufferWidth + 128) < page->width())
       bufferWidth += 256;
+    bandHeight = static_cast<uint32_t>(request.printer()->bandHeight());
 
     if (request.printer()->specialBandWidth()) {
-        specialBufferWidthInB = _get2020BandWidthInB(request.printer()->paperType(),
+        specialBufferWidthInB = static_cast<uint32_t>(_get2020BandWidthInB(request.printer()->paperType(),
                                                 page->xResolution(),
-                                                page->width());
+                                                page->width()));
         if (specialBufferWidthInB) bufferWidth = specialBufferWidthInB * 8;
     }
-    // Update the page heigth.
+    // Update the page height.
     page->setHeight(pageHeight);
     // Update the page width.
     page->setWidth(bufferWidth);
     bufferWidthInB = (bufferWidth + 7) / 8;
+    
+    // Safety check for bandSize
+    if (static_cast<uint64_t>(bufferWidthInB) * bandHeight > 0x20000000) {
+        ERRORMSG(_("Calculated jbig band size is too large"));
+        return SP::Unexpected(SP::Error::MemoryError);
+    }
     bandSize = bufferWidthInB * bandHeight;
     index = hardMarginY * lineWidthInB;
-    for (unsigned int i=0; i < page->colorsNr(); i++) {
-        band[i] = new unsigned char[bandSize];
-        planes[i] = page->planeBuffer(i);
+
+    try {
+        for (uint32_t i=0; i < page->colorsNr(); i++) {
+            band[i].resize(bandSize);
+            planes[i] = page->planeBuffer(static_cast<uint8_t>(i));
+            if (!planes[i]) {
+                ERRORMSG(_("JBIG Plane %u has no data"), i);
+                return SP::Unexpected(SP::Error::LogicError);
+            }
+        }
+    } catch (const std::bad_alloc&) {
+        return SP::Unexpected(SP::Error::MemoryError);
     }
+
     /*
        Here, limit the width of the copied image to the buffer, as the buffer
        width varies and can lead to 6 practical cases, the following is a
@@ -336,60 +394,73 @@ static bool _compressBandedJBIGPage(const Request& request, Page* page)
     else
         xLimitInB = lineWidthInB - hardMarginXInB;
     bool theEnd = false;
-    unsigned long indexSizeIncrement = bandHeight * lineWidthInB;
-    unsigned long localHeight = bandHeight;
+    uint32_t indexSizeIncrement = bandHeight * lineWidthInB;
+    uint32_t localHeight = bandHeight;
     while (pageHeight) {
-        Band *current = NULL;
+        std::unique_ptr<Band> current = nullptr;
         bool cmyPlanesHasData = false;
         // Special things to do for the last band
         if (pageHeight < bandHeight) {
             theEnd = true;
             localHeight = pageHeight;
-            for (unsigned int i=0; i < page->colorsNr(); i++)
-                memset(band[i], 0, bandSize);
+            for (uint32_t i=0; i < page->colorsNr(); i++)
+                std::fill(band[i].begin(), band[i].end(), 0);
         }
-        for (unsigned int i=0; i < page->colorsNr(); i++) {
-            for (unsigned int y=0; y < localHeight; y++) {
-                for (unsigned int x=hardMarginXInB; x < xLimitInB; x++)
-                    band[i][x - hardMarginXInB + y * bufferWidthInB] =
-                             planes[i][index + x + y * lineWidthInB];
-                for (unsigned int x=lineWidthInB - 2 * hardMarginXInB;
-                                  x < bufferWidthInB; x++)
-                    band[i][x + y * bufferWidthInB] = 0;
+        for (uint32_t i=0; i < page->colorsNr(); i++) {
+            for (uint32_t y=0; y < localHeight; y++) {
+                const uint32_t dstRowStart = y * bufferWidthInB;
+                const uint32_t srcRowStart = index + y * lineWidthInB;
+                const size_t copyWidth = xLimitInB - hardMarginXInB;
+
+                // Copy the actual pixel data
+                std::ranges::copy(std::span(planes[i] + srcRowStart + hardMarginXInB, copyWidth), 
+                                  band[i].begin() + dstRowStart);
+                
+                // Clear the rest of the buffer row
+                if (bufferWidthInB > copyWidth) {
+                    std::ranges::fill(std::span(band[i].data() + dstRowStart + copyWidth, 
+                                                bufferWidthInB - copyWidth), 0);
+                }
             }
         }
         // Are the CMY planes completely empty in the band?
-        for (unsigned int i=0; i < page->colorsNr() - 1; i++)
-            if (!_isEmptyBand(band[i], bandSize)) { 
+        for (uint32_t i=0; i < static_cast<uint32_t>(page->colorsNr() - 1); i++)
+            if (!_isEmptyBand(band[i])) { 
                 cmyPlanesHasData = true;
                 break;
             };
         // Compress the entire band.
         if (cmyPlanesHasData) {
-            for (unsigned int i=0; i < page->colorsNr(); i++) {
-                BandPlane *plane = algo->compress(request, band[i],
+            for (uint32_t i=0; i < page->colorsNr(); i++) {
+                auto planeRes = algo->compress(request, band[i],
                                                   bufferWidth, bandHeight);
-                if (plane) {
-                    plane->setColorNr((1 == page->colorsNr()) ? 4:i + 1);
+                if (planeRes) {
+                    std::unique_ptr<BandPlane> plane = std::move(*planeRes);
+                    plane->setColorNr(static_cast<uint8_t>((1 == page->colorsNr()) ? 4 : i + 1));
                     if (!current)
-                        current = new Band(bandNumber, bufferWidth, bandHeight);
-                    current->registerPlane(plane);
+                        current = std::make_unique<Band>(bandNumber, bufferWidth, bandHeight);
+                    current->registerPlane(std::move(plane));
+                } else if (planeRes.error() != SP::Error::None) {
+                     return SP::Unexpected(planeRes.error());
                 }
             }
-        } else if (!_isEmptyBand(band[page->colorsNr() - 1], bandSize)) { 
+        } else if (!_isEmptyBand(band[page->colorsNr() - 1])) { 
             // Compress only the K band.
-            BandPlane *plane = algo->compress(request,
+            auto planeRes = algo->compress(request,
                                               band[page->colorsNr() - 1],
                                               bufferWidth, bandHeight);
-            if (plane) {
+            if (planeRes) {
+                std::unique_ptr<BandPlane> plane = std::move(*planeRes);
                 plane->setColorNr(4);
                 if (!current)
-                    current = new Band(bandNumber, bufferWidth, bandHeight);
-                current->registerPlane(plane);
+                    current = std::make_unique<Band>(bandNumber, bufferWidth, bandHeight);
+                current->registerPlane(std::move(plane));
+            } else if (planeRes.error() != SP::Error::None) {
+                 return SP::Unexpected(planeRes.error());
             }
         }
         if (current)
-            page->registerBand(current);
+            page->registerBand(std::move(current));
         bandNumber++;
         index += indexSizeIncrement;
         pageHeight = theEnd ? 0 : pageHeight - bandHeight;
@@ -397,78 +468,106 @@ static bool _compressBandedJBIGPage(const Request& request, Page* page)
     if (page->bandsNr() > 0)
         page->setBIH(algo->getBIHdata());
     page->flushPlanes();
-    for (unsigned int i=0; i < page->colorsNr(); i++)
-        delete[] band[i];
-    delete algo;
-    return true;
+
+    return {};
 }
 
-static bool _compressWholePage(const Request& request, Page* page)
+static SP::Result<> _compressWholePage(const Request& request, Page* page)
 {
-    unsigned long hardMarginX, hardMarginXInB, hardMarginY, lineWidthInB;
-    unsigned long pageWidth, bandHeight, planeHeight, pageHeight, index;
-    unsigned long bandNumber=0;
-    unsigned char *buffer;
-    Band *current = NULL;
+    uint32_t hardMarginX, hardMarginXInB, hardMarginY, lineWidthInB;
+    uint32_t pageWidth, bandHeight, planeHeight, pageHeight, index;
+    uint32_t bandNumber=0;
+    std::vector<uint8_t> buffer;
+    Band *raw_current = nullptr;
     Algo0x13 algo[4];
 
-    hardMarginX = ((unsigned long)ceil(page->convertToXResolution(request.
-        printer()->hardMarginX())) + 7) & ~7;
-    hardMarginY = ceil(page->convertToYResolution(request.printer()->
-        hardMarginY()));
+    if (!request.printer()) {
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
+    hardMarginX = (static_cast<uint32_t>(std::ceil(page->convertToXResolution(request.
+        printer()->hardMarginX()))) + 7) & ~7;
+    hardMarginY = static_cast<uint32_t>(std::ceil(page->convertToYResolution(request.printer()->
+        hardMarginY())));
     hardMarginXInB = hardMarginX / 8;
+    
+    if (page->width() <= hardMarginX * 2 || page->height() <= hardMarginY * 2) {
+        ERRORMSG(_("Page dimensions too small for margins"));
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
     pageWidth = page->width() - hardMarginX * 2;
     pageHeight = page->height() - hardMarginY * 2;
     page->setWidth(pageWidth);
     page->setHeight(pageHeight);
     lineWidthInB = (pageWidth + 7) / 8;
-    bandHeight = request.printer()->bandHeight();
+    bandHeight = static_cast<uint32_t>(request.printer()->bandHeight());
+    if (!bandHeight) {
+        ERRORMSG(_("Invalid zero band height"));
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
     // Alignment of the page height on band height
     planeHeight = ((pageHeight + bandHeight - 1) / bandHeight) * bandHeight;
-    buffer = new unsigned char[lineWidthInB * planeHeight];
+    
+    try {
+        buffer.resize(lineWidthInB * planeHeight);
+    } catch (const std::bad_alloc&) {
+        return SP::Unexpected(SP::Error::MemoryError);
+    }
 
     do {
-        current = NULL;
-        for (unsigned int i=0; i < page->colorsNr(); i++) {
-            unsigned char *curPlane = page->planeBuffer(i);
-            BandPlane *plane;
+        std::unique_ptr<Band> current = nullptr;
+        for (uint32_t i=0; i < page->colorsNr(); i++) {
+            const uint8_t *curPlane = page->planeBuffer(static_cast<uint8_t>(i));
+            if (!curPlane) {
+                 ERRORMSG(_("Plane %u has no data"), i);
+                 return SP::Unexpected(SP::Error::LogicError);
+            }
+            SP::Result<std::unique_ptr<BandPlane>> planeRes = SP::Unexpected(SP::Error::None);
 
             index = hardMarginY * (lineWidthInB + 2 * hardMarginXInB) + 
                 hardMarginXInB;
-            for (unsigned int y=0; y < pageHeight; y++, 
-                    index += 2 * hardMarginXInB) {
-                for (unsigned int x=0; x < lineWidthInB; x++, index++) {
-                    buffer[x + y * lineWidthInB] = curPlane[index];
-                }
+            for (uint32_t y = 0; y < pageHeight; y++) {
+                const uint32_t dstRowStart = y * lineWidthInB;
+                const uint32_t srcRowStart = index + y * (lineWidthInB + 2 * hardMarginXInB);
+                
+                std::ranges::copy(std::span(curPlane + srcRowStart, lineWidthInB), 
+                                  buffer.begin() + dstRowStart);
             }
-            memset(buffer + pageHeight * lineWidthInB, 0,
-                   (planeHeight - pageHeight) * lineWidthInB);
+            std::fill(buffer.begin() + pageHeight * lineWidthInB, buffer.end(), 0);
 
             // Call the compression method
-            plane = algo[i].compress(request, buffer, page->width(), 
+            planeRes = algo[i].compress(request, buffer, page->width(), 
                 planeHeight);
-            if (plane) {
-                plane->setColorNr(i + 1);
+            if (planeRes) {
+                std::unique_ptr<BandPlane> plane = std::move(*planeRes);
+                plane->setColorNr(static_cast<uint8_t>(i + 1));
                 if (!current)
-                    current = new Band(bandNumber, page->width(), 
+                    current = std::make_unique<Band>(bandNumber, page->width(), 
                         request.printer()->bandHeight());
-                current->registerPlane(plane);
+                current->registerPlane(std::move(plane));
+            } else if (planeRes.error() != SP::Error::None) {
+                 return SP::Unexpected(planeRes.error());
             }
         }
+        raw_current = current.get();
         if (current)
-            page->registerBand(current);
+            page->registerBand(std::move(current));
         bandNumber++;
-    } while (current);
+    } while (raw_current);
 
     page->flushPlanes();
-    delete[] buffer;
 
-    return true;
+    return {};
 }
 #endif /* DISABLE_JBIG */
 
-bool compressPage(const Request& request, Page* page)
+SP::Result<> compressPage(const Request& request, Page* page)
 {
+    if (!page)
+        return SP::Unexpected(SP::Error::InvalidArgument);
+
     switch(page->compression()) {
         case 0x0D:
         case 0x0E:
@@ -481,7 +580,7 @@ bool compressPage(const Request& request, Page* page)
             ERRORMSG(_("J-BIG compression algorithm has been disabled during "
                 "the compilation. Please recompile SpliX and enable the "
                 "J-BIG compression algorithm."));
-            break;
+            return SP::Unexpected(SP::Error::InvalidArgument);
 #endif /* DISABLE_JBIG */
         case 0x15:
 #ifndef DISABLE_JBIG
@@ -490,13 +589,13 @@ bool compressPage(const Request& request, Page* page)
             ERRORMSG(_("J-BIG compression algorithm has been disabled during "
                 "the compilation. Please recompile SpliX and enable the "
                 "J-BIG compression algorithm."));
-            break;
+            return SP::Unexpected(SP::Error::InvalidArgument);
 #endif /* DISABLE_JBIG */
         default:
-            ERRORMSG(_("Compression algorithm 0x%lX does not exist"), 
-                page->compression());
+            ERRORMSG(_("Compression algorithm 0x%X does not exist"), 
+                static_cast<unsigned int>(page->compression()));
+            return SP::Unexpected(SP::Error::InvalidArgument);
     }
-    return false;
 }
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

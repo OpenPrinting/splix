@@ -17,18 +17,17 @@ Requested:
 ----------
 
 	To use this driver you need.... a QPDL printer! Last but not least you
-need CUPS. It has been tested with CUPS V. 1.1.23, 1.3.0  and works fine of 
-course..
+need CUPS. It has been tested with modern CUPS versions and works fine.
 
-	If you're using a distribution with a real package manager you need to
-install the cups developement package (libcups...-devel or something like that).
-To finish the libjbig is needed if the JBIG algorithm compilation isn't 
-disabled.
+	You need to install the cups development package (libcups2-dev,
+libcupsimage2-dev or equivalent). libjbig is needed unless disabled.
 
 Summary:
-	* CUPS
-	* libcups
-	* libjbig (If the JBIG algorithm compilation isn't disabled)
+	* CUPS (>= 1.1)
+	* libcups, libcupsimage
+	* libjbig (Optional, for JBIG-capable printers)
+	* CMake (>= 3.16)
+	* C++23 capable compiler (GCC 12+, Clang 15+, MSVC 19.33+)
 
 
 
@@ -44,20 +43,20 @@ Installation:
   |                this file is modified between versions.                |
   +=======================================================================+
 
-	Perform the compilation by doing (It is possible to customize some 
-compilation options. Please check at the end of this file):
+	Perform the compilation by following these steps:
 
-		$ make
+		$ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+		$ cmake --build build --parallel
 
-	If no errors appear you can install the filter and the drivers in the
-super user environment:
+	If no errors appear you can install the filter and the drivers:
 
-		$ su
-		Password: (Enter the root password and try again if it fails :)
-		# make install
+		$ sudo cmake --install build
 
 	To finish you have to visit http://localhost:631 with your favourite
-browser and add a new printer by selecting the correct printer in the list.
+	browser and add a new printer by selecting the correct printer in the list.
+
+	For advanced build options (cross-compilation, address sanitizer, presets),
+	see the BUILDING.md file.
 
 	and HAVE FUN ;-)
 
@@ -71,11 +70,10 @@ files are provided by your printer manufacturer and you have to install them
 manually. To do that, download the linux official drivers and locate the "cms"
 directory. Install them with the command:
 
-		# make installcms CMSDIR=/path/to/cms/directory \
-			MANUFACTURER=samsung or xerox or dell
+		$ cmake .. -DCMSDIR=/path/to/cms/directory -DMANUFACTURER=samsung
+		$ make install
 
 	Samsung color profile files are available at:
-		(Then use MANUFACTURER=samsung)
 
 		https://openprinting.github.io/splix/samsung_cms.tar.bz2
 
@@ -84,50 +82,26 @@ directory. Install them with the command:
 Compilation options:
 --------------------
 
-	SpliX code can be tuned by using specific make options. All these
-options are:
+	SpliX code can be tuned by using specific CMake options (-DOPTION=VALUE).
+	All these options are:
 
-		* DISABLE_JBIG=1 [0 by default]:
+		* DISABLE_JBIG=ON [OFF by default]:
 			Since some of the JBIG algorithm may patented, this
-			option disable the use of this algorithm. Unfortunatly
-			_JBIG printers_ (such as CLP-600) won't work with SpliX.
-		* DISABLE_THREADS=1 [0 by default]:
+			option disable the use of this algorithm.
+		* DISABLE_THREADS=ON [OFF by default]:
 			This option will disable the use of threads in the SpliX
 			code. If it is disabled, _manual duplex_ will no longer 
 			work.
-		* DISABLE_BLACKOPTIM=1 [0 by default]:
+		* DISABLE_BLACKOPTIM=ON [OFF by default]:
 			A black correction algorithm is used to optimize the use
-			of black and color toner on color printers. This option
-			will disable the use of this algorithm. Colors of a 
-			printed page will be different, more toner may be used
-			and black may not be dark.
+			of black and color toner on color printers.
 		* THREADS=XX [2 by default]:
-			Specify the number of _compression_ threads to use. Note
-			that compression is a full CPU time job. Specify more
-			than physical CPU core avaiable may be stupid.
-			For instance quad core owners should use THREADS=4.
+			Specify the number of _compression_ threads to use.
 		* CACHESIZE=XX [30 by default]:
-			Specify the number of _compressed_ kept into memory
-			waiting for the rendering. This option is important with
-			the use of manual duplex. Note that a standard
-			compressed A4 paper is about 300ko. So 30 pages into
-			memory will use an average of 9Mo of RAM. Other pages
-			are swapped into the disk. A little CACHESIZE value will
-			increase disk access and increase the job rendering time.
-		* DRV_ONLY=1 [0 by default]:
-			Don't install PPD files at all, only DRV
-			(driver information file) files.
+			Specify the number of _compressed_ pages kept into memory
+			waiting for the rendering (in Megabytes).
 
 	Example:
 
-		$ make DISABLE_JBIG=1 THREADS=4 CACHESIZE=100
-
-	This will disable the use of the JBIG algorithm. Threads and black
-optimization algorithm will be compiled. Then, manual duplex will be available.
-The number of compression threads will be 4 and the maximum number of compressed
-pages which will be kept into the memory will be 100 (with a maximum average of
-memory of 30Mo)
-
-
-	=== PLEASE GIVE THESE OPTIONS TO MAKE AND MAKE INSTALL RULES ===
-
+		$ cmake .. -DDISABLE_JBIG=ON -DTHREADS=4 -DCACHESIZE=100
+		$ make

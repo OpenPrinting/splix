@@ -1,0 +1,177 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": { "major": 3, "minor": 16, "patch": 0 },
+
+    "configurePresets": [
+        {
+            "name": "linux-amd64-release",
+            "displayName": "Linux AMD64 Release",
+            "description": "Native AMD64 build (Release)",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build-amd64",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "linux-arm64-release",
+            "displayName": "Linux ARM64 Release (cross-compiled)",
+            "description": "Cross-compiled ARM64 build using aarch64-linux-gnu-g++",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build-arm64",
+            "toolchainFile": "${sourceDir}/cmake/toolchain-arm64.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "linux-debug",
+            "displayName": "Linux Debug",
+            "description": "Native debug build for development",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "linux-asan",
+            "displayName": "Linux ASan (Memory Safety)",
+            "description": "Build with AddressSanitizer and UBsan to catch memory bugs",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build-asan",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_CXX_FLAGS": "-fsanitize=address,undefined -fno-omit-frame-pointer",
+                "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "ci-amd64",
+            "displayName": "CI AMD64",
+            "description": "Used by GitHub Actions for AMD64 builds",
+            "generator": "Unix Makefiles",
+            "binaryDir": "/tmp/splix-build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
+            }
+        },
+        {
+            "name": "ci-arm64",
+            "displayName": "CI ARM64",
+            "description": "Used by GitHub Actions for ARM64 cross-builds",
+            "generator": "Unix Makefiles",
+            "binaryDir": "/tmp/splix-build",
+            "toolchainFile": "${sourceDir}/cmake/toolchain-arm64.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
+            }
+        },
+        {
+            "name": "ci-armhf",
+            "displayName": "CI ARMHF",
+            "description": "Used by GitHub Actions for ARMHF cross-builds",
+            "generator": "Unix Makefiles",
+            "binaryDir": "/tmp/splix-build",
+            "toolchainFile": "${sourceDir}/cmake/toolchain-armhf.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
+            }
+        },
+        {
+            "name": "ci-i386",
+            "displayName": "CI i386",
+            "description": "Used by GitHub Actions for i386 cross-builds",
+            "generator": "Unix Makefiles",
+            "binaryDir": "/tmp/splix-build",
+            "toolchainFile": "${sourceDir}/cmake/toolchain-i386.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
+            }
+        },
+        {
+            "name": "ci-riscv64",
+            "displayName": "CI RISCV64",
+            "description": "Used by GitHub Actions for RISCV64 cross-builds",
+            "generator": "Unix Makefiles",
+            "binaryDir": "/tmp/splix-build",
+            "toolchainFile": "${sourceDir}/cmake/toolchain-riscv64.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER_LAUNCHER": "ccache",
+                "CMAKE_CXX_COMPILER_LAUNCHER": "ccache"
+            }
+        }
+    ],
+
+    "buildPresets": [
+        {
+            "name": "linux-amd64-release",
+            "configurePreset": "linux-amd64-release"
+        },
+        {
+            "name": "linux-arm64-release",
+            "configurePreset": "linux-arm64-release"
+        },
+        {
+            "name": "linux-debug",
+            "configurePreset": "linux-debug"
+        },
+        {
+            "name": "linux-asan",
+            "configurePreset": "linux-asan"
+        },
+        {
+            "name": "ci-amd64",
+            "configurePreset": "ci-amd64"
+        },
+        {
+            "name": "ci-arm64",
+            "configurePreset": "ci-arm64"
+        },
+        {
+            "name": "ci-armhf",
+            "configurePreset": "ci-armhf"
+        },
+        {
+            "name": "ci-i386",
+            "configurePreset": "ci-i386"
+        },
+        {
+            "name": "ci-riscv64",
+            "configurePreset": "ci-riscv64"
+        }
+    ]
+}

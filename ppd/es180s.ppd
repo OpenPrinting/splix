@@ -2,7 +2,7 @@
 *%%%% PPD file for eSTUDIO180S with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "es180s.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Toshiba"
 *ModelName: "Toshiba eSTUDIO180S"
 *ShortNickName: "Toshiba eSTUDIO180S"
-*NickName: "Toshiba eSTUDIO180S, 2.0.0"
+*NickName: "Toshiba eSTUDIO180S, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False

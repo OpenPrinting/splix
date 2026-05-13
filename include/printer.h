@@ -21,6 +21,9 @@
 #ifndef _PRINTER_H_
 #define _PRINTER_H_
 
+#include <string>
+#include <string_view>
+
 class Request;
 
 /**
@@ -31,33 +34,33 @@ class Request;
 class Printer 
 {
     protected:
-        char*                   _manufacturer;
-        char*                   _model;
-        char*                   _beginPJL;
-        char*                   _endPJL;
+        std::string             _manufacturer;
+        std::string             _model;
+        std::string             _beginPJL;
+        std::string             _endPJL;
 
-        bool                    _color;
-        unsigned long           _qpdlVersion;
-        unsigned long           _bandHeight;
-        bool                    _specialBandWidth;
-        bool                    _fixedBandWidth;
-        unsigned long           _packetSize;
+        bool                    _color = false;
+        unsigned long           _qpdlVersion = 0;
+        unsigned long           _bandHeight = 0;
+        bool                    _specialBandWidth = false;
+        bool                    _fixedBandWidth = false;
+        unsigned long           _packetSize = 0;
 
-        unsigned char           _paperType;
-        unsigned char           _paperSource;
+        unsigned char           _paperType = 0;
+        unsigned char           _paperSource = 0;
 
-        float                   _paperWidth;
-        float                   _paperHeight;
+        float                   _paperWidth = 0.0f;
+        float                   _paperHeight = 0.0f;
         
-        unsigned char           _unknownByte1;
-        unsigned char           _unknownByte2;
-        unsigned char           _unknownByte3;
+        unsigned char           _unknownByte1 = 0;
+        unsigned char           _unknownByte2 = 0;
+        unsigned char           _unknownByte3 = 0;
 
-        float                   _pageWidth;
-        float                   _pageHeight;
+        float                   _pageWidth = 0.0f;
+        float                   _pageHeight = 0.0f;
 
-        float                   _hardMarginX;
-        float                   _hardMarginY;
+        float                   _hardMarginX = 0.0f;
+        float                   _hardMarginY = 0.0f;
 
     public:
         /**
@@ -68,6 +71,12 @@ class Printer
           * Destroy the instance and free the internal memory used.
           */
         virtual ~Printer();
+
+        // Modern Move and Copy operations (Rule of Five)
+        Printer(const Printer&) = default;
+        Printer& operator=(const Printer&) = default;
+        Printer(Printer&&) noexcept = default;
+        Printer& operator=(Printer&&) noexcept = default;
 
     public:
         /**
@@ -99,11 +108,11 @@ class Printer
         /**
           * @return the manufacturer name.
           */
-        const char*             manufacturer() const {return _manufacturer;}
+        std::string_view        manufacturer() const {return _manufacturer;}
         /**
           * @return the model name.
           */
-        const char*             model() const {return _model;}
+        std::string_view        model() const {return _model;}
         /**
           * @return the height of a band.
           */ 

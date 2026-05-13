@@ -2,7 +2,7 @@
 *%%%% PPD file for SCX-5530FN with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: Portuguese_Brazil
 *LanguageEncoding: ISOLatin1
 *PCFileName: "scx5530fn.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung SCX-5530FN"
 *ShortNickName: "Samsung SCX-5530FN"
-*NickName: "Samsung SCX-5530FN, 2.0.0"
+*NickName: "Samsung SCX-5530FN, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False

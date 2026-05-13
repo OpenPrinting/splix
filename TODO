@@ -1,9 +1,19 @@
-08-25-2006 Aurélien Croc
-	* Add other compressin algorithms (0x12 for text!) ?
-	* Stop sending the job if a SIGTERM is received
-	* Catch for the cancel button pressed
+# SpliX Roadmap & Tasks
 
-11-25-2008 Aurélien Croc
-	* Rewrite in another way the compress.cpp for generalization of the
-	  runtime compression algorithm modification
-	* Check the qpdl.cpp for a better code 
+## Heritage TODOs (2006-2008)
+- Add other compression algorithms (0x12 for text!)?
+- Stop sending the job if a SIGTERM is received
+- Catch for the cancel button pressed
+- Rewrite `compress.cpp` for generalization of runtime compression algorithm modification
+- Check `qpdl.cpp` for a better code
+
+## Modernization Roadmap (2024-2026)
+- [x] Modernize core data structures (Page, Document, Band, Cache) to C++23
+- [x] Replace legacy synchronization with `std::semaphore` and `std::mutex`
+- [x] Implement Result-based error handling (Phase 9)
+- [x] Build robust unit testing infrastructure (Phase 12)
+- [x] Audit remaining algorithms (`Algo0x0D`, `Algo0x0E`) for `std::span` compatibility
+- [x] Establish SPEQ compliance framework for architectural integrity
+- [ ] Implement SIGTERM handling as noted in heritage TODOs
+- [ ] Optimize rasterization pipeline for high-core-count systems
+

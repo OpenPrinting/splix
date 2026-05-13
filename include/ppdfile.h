@@ -21,19 +21,22 @@
 #ifndef _PPDFILE_H_
 #define _PPDFILE_H_
 
+#include <cups/cups.h>
 #include <cups/ppd.h>
 #include <stdlib.h>
+#include <string>
+#include <string_view>
+#include <memory>
+#include <vector>
+#include <charconv>
+#include "sp_result.h"
 
 /**
   * @class PPDFile
-  * @brief This class provides an easy method to manage PPD files.
+  * @brief This class provides an easy method to manage printer capabilities.
   *
-  * This class provides methods to access in a easy way to data contained in PPD
-  * files. During the opening of the file, the PPD version can be compared with
-  * the current project version, default and user values are set as default.
-  * Next, data contained in the ppd file can be manipulated easily with two
-  * methods. The second one (@ref PPDValue::setPreformatted) allows the 
-  * use of special bytes in strings.
+  * This class provides methods to access printer capabilities and job options
+  * using the modern CUPS Destination Information API.
   */
 class PPDFile
 {
@@ -42,171 +45,68 @@ class PPDFile
           * @brief This class manages a PPD value.
           *
           * Use the defined type PPDValue to use this class.
-          *
-          * In a PPD a string can be preformatted to contain unprintable 
-          * characters. For that, insert the ASCII number between < and >.
-          * @code
-          * *QPDL beginPJL: "<1B>%-12345X"
-          * @endcode
-          *
-          * To decode these preformatted string, call the @ref setPreformatted
-          * method and read the string.
-          *
           */
         class Value {
             protected:
-                const char*         _value;
-                char*               _preformatted;
-                const char*         _out;
+                std::string         _raw;
+                std::string         _preformatted;
                 float               _width;
                 float               _height;
                 float               _marginX;
                 float               _marginY;
 
             public:
-                /**
-                 * Initialize a new instance.
-                 */
                 Value();
-                /**
-                 * Initialize a new instance with the specified string.
-                 * @param value the specified value.
-                 */
-                Value(const char *value);
-                /**
-                 * Destroy the instance.
-                 */
+                Value(std::string_view value);
                 virtual ~Value();
 
             public:
-                /**
-                 * Set a string.
-                 * @param value the string value.
-                 * @return itself.
-                 */
-                PPDFile::Value&     set(const char *value);
-                /**
-                 * Set width, height and X, Y margins
-                 * @param width the width.
-                 * @param height the height.
-                 * @param marginX the X margin.
-                 * @param marginY the Y margin.
-                 * @return itself.
-                 */
-                PPDFile::Value&     set(float width, float height, float
+                Value&              set(std::string_view value);
+                Value&              set(float width, float height, float
                                         marginX, float marginY);
-                /**
-                 * Specify the represented string is preformatted.
-                 * @return itself.
-                 */
-                PPDFile::Value&     setPreformatted();
+                Value&              setPreformatted();
 
             public:
-                /**
-                 * @return the width value.
-                 */
                 float               width() const {return _width;}
-                /**
-                 * @return the height value.
-                 */
                 float               height() const {return _height;}
-                /**
-                 * @return the X margin value.
-                 */
                 float               marginX() const {return _marginX;}
-                /**
-                 * @return the Y margin value.
-                 */
                 float               marginY() const {return _marginY;}
-                /**
-                  * @return TRUE if there is no associated string. Otherwise it
-                  *         returns FALSE.
-                  */
-                bool                isNull() const {return _out ? false : true;}
-
-                /**
-                  * Copy the string into an allocated buffer.
-                  * The user has to free the string at the end of its use.
-                  * @return a pointer to an allocated buffer containing the
-                  *         string. If there is no string, it returns NULL.
-                  */
-                char*               deepCopy() const;
-
-                /**
-                  * @return TRUE if the key is set to true, enable, enabled,
-                  *         yes, 1 or on. Otherwise it returns FALSE.
-                  */
+                bool                isNull() const {return _out.empty() && !_hasValue;}
+                std::string         deepCopy() const;
                 bool                isTrue() const;
-                /**
-                  * @return FALSE if the key is set to true, enable, enabled,
-                  *         yes, 1 or on. Otherwise it returns TRUE.
-                  */
                 bool                isFalse() const {return !isTrue();}
-
-		        /**
-                  * @return TRUE if the key is set to true, enable, enabled,
-                  *         yes, 1 or on. Otherwise it returns FALSE.
-		          */
-                operator bool() const {return isTrue();}
-                /**
-                 * @return the string pointer.
-                 */
-                operator const char*() const {return _out;}
-                /**
-                 * @return the unsigned long converted value.
-                 */
-                operator unsigned long() const 
-                        {return _out ? strtol(_out, (char**)NULL, 10) : 0;}
-                /**
-                 * @return the long converted value.
-                 */
-                operator long() const 
-                        {return _out ? strtol(_out, (char**)NULL, 10) : 0;}
-                /**
-                 * @return the float converted value.
-                 */
-                operator float() const 
-                        {return _out ? strtof(_out, (char**)NULL) : 0;}
-                /**
-                 * @return the double converted value.
-                 */
-                operator double() const 
-                        {return _out ? strtod(_out, (char**)NULL) : 0;}
-                /**
-                 * @return the long double converted value.
-                 */
-                operator long double() const 
-                        {return _out ? strtold(_out, (char**)NULL) : 0;}
-                /**
-                 * Compare the value with a string.
-                 * The comparison is case insensitive.
-                 * @param val the string to compare to
-                 * @return TRUE if the strings are equivalent. Otherwise it
-                 *         returns FALSE.
-                 */
-                bool    operator == (const char* val) const;
-                /**
-                 * Compare the value with a string.
-                 * The comparison is case insensitive.
-                 * @param val the string to compare to
-                 * @return TRUE if the strings are different. Otherwise it
-                 *         returns FALSE.
-                 */
-                bool    operator != (const char* val) const;
-                /**
-                 * Assignment operator.
-                 * @param val the specified value.
-                 */
-                void    operator = (const Value &val);
+                operator bool() const {return !isNull();}
+                operator const char*() const {return isNull() ? nullptr : _out.c_str();}
+                operator unsigned long() const;
+                operator long() const;
+                operator float() const;
+                operator double() const;
+                operator long double() const;
+                bool    operator == (std::string_view val) const;
+                bool    operator == (const char *val) const;
+                bool    operator != (std::string_view val) const;
+                bool    operator != (const char *val) const;
+            private:
+                std::string         _out;
+                bool                _hasValue = false;
+            public:
+                Value(const Value& other);
+                Value&  operator = (const Value &val);
         };
 
     protected:
-        ppd_file_t*             _ppd;
+        struct DestDeleter { void operator()(cups_dest_t *d) const { if (d) cupsFreeDests(1, d); } };
+        struct DInfoDeleter { void operator()(cups_dinfo_t *d) const { if (d) cupsFreeDestInfo(d); } };
+        struct PPDDeleter { void operator()(ppd_file_t *p) const { if (p) ppdClose(p); } };
+
+        std::unique_ptr<cups_dest_t, DestDeleter>   _dest;
+        std::unique_ptr<cups_dinfo_t, DInfoDeleter> _dinfo;
+        std::unique_ptr<ppd_file_t, PPDDeleter>     _ppd;
+        int              _num_options;
+        cups_option_t   *_options;
+        std::string      _ppdPath;
 
     public:
-        /**
-         * Initialize a new PPDFile instance.
-         */
         PPDFile();
         /**
          * Destroy the instance.
@@ -220,11 +120,10 @@ class PPDFile
           * @param file the file path and name
           * @param version the current SpliX version
           * @param useropts the user options
-          * @return TRUE if the PPD has been successfully opened. Otherwise it
-          *         returns false.
+          * @return SP::Result<> indicating success or error code.
           */
-        bool                    open(const char *file, const char *version, 
-                                    const char *useropts = "");
+        SP::Result<>            open(std::string_view file, std::string_view version, 
+                                    std::string_view useropts = "");
         /**
           * Close a previously opened PPD file.
           */
@@ -240,14 +139,23 @@ class PPDFile
           *         or the group/key doesn't exists or if there is no data 
           *         associated.
           */
-        Value                   get(const char *name, const char *opt=NULL);
+        /**
+          * Get the string associated to a key or a key and a group.
+          * @param name the key name
+          * @param opt the name of the group if the key is in the group.
+          *            Otherwise it must be set to NULL
+          * @return a PPDValue instance containing the string or NULL if the key
+          *         or the group/key doesn't exists or if there is no data 
+          *         associated.
+          */
+        Value                   get(std::string_view name, std::string_view opt = "");
         /**
           * Get the page size information.
           * @param name the page format name
           * @return a PPDValue instance containing the width and the height of
           *         the page format requested.
           */
-        Value                   getPageSize(const char *name);
+        Value                   getPageSize(std::string_view name);
 };
 
 /**

@@ -2,7 +2,7 @@
 *%%%% PPD file for CLP-300 with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "clp300.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung CLP-300"
 *ShortNickName: "Samsung CLP-300"
-*NickName: "Samsung CLP-300, 2.0.0"
+*NickName: "Samsung CLP-300, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

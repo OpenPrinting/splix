@@ -2,7 +2,7 @@
 *%%%% PPD file for CLX-216X with CUPS.
 *%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: French
 *LanguageEncoding: ISOLatin1
 *PCFileName: "clx216x.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung CLX-216X"
 *ShortNickName: "Samsung CLX-216X"
-*NickName: "Samsung CLX-216X, 2.0.0"
+*NickName: "Samsung CLX-216X, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True

@@ -1,8 +1,8 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for CLP-310 with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.5.0.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.4.10.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "clp310.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung CLP-310"
 *ShortNickName: "Samsung CLP-310"
-*NickName: "Samsung CLP-310, 2.0.0"
+*NickName: "Samsung CLP-310, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: True
@@ -29,7 +29,8 @@
 *QPDL PacketSize: "512"
 *General DocHeaderValues: "<0><0><1>"
 *General CMSFile: "CLP-310"
-*cupsVersion: 1.5
+*1284DeviceID: "MFG:Samsung;MDL:CLP-310 Series;CMD:SPLC,FWV;"
+*cupsVersion: 2.4
 *cupsModelNumber: 0
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-postscript 0 pstoqpdl"
@@ -43,7 +44,7 @@
 *PageSize Executive/Executive: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageSize Ledger/US Ledger: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageSize A3/A3: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageSize Env10/Envelope #10 : "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageSize Env10/Envelope #10: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageSize Monarch/Envelope Monarch: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageSize C5/Envelope C5: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageSize DL/Envelope DL: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
@@ -70,7 +71,7 @@
 *PageRegion Executive/Executive: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageRegion Ledger/US Ledger: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageRegion A3/A3: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageRegion Env10/Envelope #10 : "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageRegion Env10/Envelope #10: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageRegion Monarch/Envelope Monarch: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion C5/Envelope C5: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageRegion DL/Envelope DL: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
@@ -95,7 +96,7 @@
 *ImageableArea Executive/Executive: "12 12 510 744"
 *ImageableArea Ledger/US Ledger: "12 12 1212 780"
 *ImageableArea A3/A3: "12 12 830 1179"
-*ImageableArea Env10/Envelope #10 : "12 12 285 672"
+*ImageableArea Env10/Envelope #10: "12 12 285 672"
 *ImageableArea Monarch/Envelope Monarch: "12 12 267 528"
 *ImageableArea C5/Envelope C5: "12 12 447 637"
 *ImageableArea DL/Envelope DL: "12 12 300 612"
@@ -119,7 +120,7 @@
 *PaperDimension Executive/Executive: "522 756"
 *PaperDimension Ledger/US Ledger: "1224 792"
 *PaperDimension A3/A3: "842 1191"
-*PaperDimension Env10/Envelope #10 : "297 684"
+*PaperDimension Env10/Envelope #10: "297 684"
 *PaperDimension Monarch/Envelope Monarch: "279 540"
 *PaperDimension C5/Envelope C5: "459 649"
 *PaperDimension DL/Envelope DL: "312 624"
@@ -242,4 +243,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of clp310.ppd, 12242 bytes.
+*% End of clp310.ppd, 12301 bytes.

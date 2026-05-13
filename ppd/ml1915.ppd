@@ -1,8 +1,8 @@
 *PPD-Adobe: "4.3"
 *%%%% PPD file for ML-1915 with CUPS.
-*%%%% Created by the CUPS PPD Compiler CUPS v1.7rc1.
+*%%%% Created by the CUPS PPD Compiler CUPS v2.4.10.
 *FormatVersion: "4.3"
-*FileVersion: "2.0.0"
+*FileVersion: "2.0.2"
 *LanguageVersion: English
 *LanguageEncoding: ISOLatin1
 *PCFileName: "ml1915.ppd"
@@ -10,7 +10,7 @@
 *Manufacturer: "Samsung"
 *ModelName: "Samsung ML-1915"
 *ShortNickName: "Samsung ML-1915"
-*NickName: "Samsung ML-1915, 2.0.0"
+*NickName: "Samsung ML-1915, 2.0.2"
 *PSVersion: "(3010.000) 0"
 *LanguageLevel: "3"
 *ColorDevice: False
@@ -27,7 +27,7 @@
 *General DocHeaderValues: "<0><0><1>"
 *cupsBackSide: "Normal"
 *QPDL ManualDuplex: "On"
-*cupsVersion: 1.7
+*cupsVersion: 2.4
 *cupsModelNumber: 0
 *cupsManualCopies: False
 *cupsFilter: "application/vnd.cups-raster 0 rastertoqpdl"
@@ -41,7 +41,7 @@
 *PageSize Executive/Executive: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageSize Ledger/US Ledger: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageSize A3/A3: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageSize Env10/Envelope #10 : "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageSize Env10/Envelope #10: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageSize Monarch/Envelope Monarch: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageSize C5/Envelope C5: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageSize DL/Envelope DL: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
@@ -68,7 +68,7 @@
 *PageRegion Executive/Executive: "<</PageSize[522 756]/ImagingBBox null>>setpagedevice"
 *PageRegion Ledger/US Ledger: "<</PageSize[1224 792]/ImagingBBox null>>setpagedevice"
 *PageRegion A3/A3: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
-*PageRegion Env10/Envelope #10 : "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
+*PageRegion Env10/Envelope #10: "<</PageSize[297 684]/ImagingBBox null>>setpagedevice"
 *PageRegion Monarch/Envelope Monarch: "<</PageSize[279 540]/ImagingBBox null>>setpagedevice"
 *PageRegion C5/Envelope C5: "<</PageSize[459 649]/ImagingBBox null>>setpagedevice"
 *PageRegion DL/Envelope DL: "<</PageSize[312 624]/ImagingBBox null>>setpagedevice"
@@ -93,7 +93,7 @@
 *ImageableArea Executive/Executive: "12.5 12.5 509.5 743.5"
 *ImageableArea Ledger/US Ledger: "12.5 12.5 1211.5 779.5"
 *ImageableArea A3/A3: "12.5 12.5 829.5 1178.5"
-*ImageableArea Env10/Envelope #10 : "12.5 12.5 284.5 671.5"
+*ImageableArea Env10/Envelope #10: "12.5 12.5 284.5 671.5"
 *ImageableArea Monarch/Envelope Monarch: "12.5 12.5 266.5 527.5"
 *ImageableArea C5/Envelope C5: "12.5 12.5 446.5 636.5"
 *ImageableArea DL/Envelope DL: "12.5 12.5 299.5 611.5"
@@ -117,7 +117,7 @@
 *PaperDimension Executive/Executive: "522 756"
 *PaperDimension Ledger/US Ledger: "1224 792"
 *PaperDimension A3/A3: "842 1191"
-*PaperDimension Env10/Envelope #10 : "297 684"
+*PaperDimension Env10/Envelope #10: "297 684"
 *PaperDimension Monarch/Envelope Monarch: "279 540"
 *PaperDimension C5/Envelope C5: "459 649"
 *PaperDimension DL/Envelope DL: "312 624"
@@ -249,4 +249,4 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ml1915.ppd, 12391 bytes.
+*% End of ml1915.ppd, 12387 bytes.

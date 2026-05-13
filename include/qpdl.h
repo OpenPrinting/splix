@@ -21,6 +21,8 @@
 #ifndef _QPDL_H_
 #define _QPDL_H_
 
+#include "sp_result.h"
+
 class Request;
 class Page;
 
@@ -32,10 +34,9 @@ class Page;
   * @param page the page instance
   * @param lastPage set to TRUE if it's the last page (only used with manual
   *                 duplex)
-  * @return TRUE if the page has been rendered into QPDL. Otherwise it returns
-  *         FALSE.
+  * @return a Result indicating success or the specific error encountered.
   */
-extern bool renderPage(const Request& request, Page* page, bool lastPage=false);
+extern SP::Result<> renderPage(const Request& request, Page* page, bool lastPage=false);
 #endif /* _QPDL_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */

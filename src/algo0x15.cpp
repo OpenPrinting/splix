@@ -22,7 +22,11 @@
  * 
  */
 #include "algo0x15.h"
-#include <string.h>
+#include <cstring>
+#include <vector>
+#include <memory>
+#include <span>
+#include <cstdint>
 #include "errlog.h"
 #include "request.h"
 #include "printer.h"
@@ -40,28 +44,27 @@ extern "C" {
  */
 void Algo0x15::_callback(unsigned char *data, size_t data_len, void *arg)
 {
-    Algo0x15 *compressor = (Algo0x15 *)arg;
+    Algo0x15 *compressor = static_cast<Algo0x15 *>(arg);
     if (!data_len) {
         compressor->_error = true;
         return;
     }
-    if ((!compressor->_has_bih) && (0 == compressor->_size)) {
+    if ((!compressor->_has_bih) && compressor->_data.empty()) {
         if (20 != data_len) {
             ERRORMSG(_("Expected 20 bytes from BIH (0x15)"));
             compressor->_error = true;
             return;
         }
-        memcpy(compressor->_bih, data, 20);
+        std::ranges::copy(std::span(data, 20), compressor->_bih.begin());
         compressor->_has_bih = true;
     } else {  
-        unsigned long freeSpace = compressor->_maxSize - compressor->_size;
-        if (data_len > freeSpace) {
+        if (compressor->_data.size() + data_len > compressor->_maxSize) {
             ERRORMSG(_("Insufficient buffer space to store BIE (0x15)"));
             compressor->_error = true;
+            compressor->_errorCode = SP::Error::CompressionError;
             return;
         }
-        memcpy(compressor->_data + compressor->_size, data, data_len);
-        compressor->_size += data_len;
+        compressor->_data.insert(compressor->_data.end(), data, data + data_len);
     }
 }
 
@@ -71,18 +74,9 @@ void Algo0x15::_callback(unsigned char *data, size_t data_len, void *arg)
  */
 Algo0x15::Algo0x15()
 {
-    _has_bih = false;
-    _data = NULL;
-    _size = 0;
-    _maxSize = 0;
-    _error = false;
 }
 
-Algo0x15::~Algo0x15()
-{
-    if (_data)
-        delete [] _data;
-}
+// Destructor is defaulted in header
 
 /*
  * Routine de compression
@@ -93,56 +87,93 @@ Algo0x15::~Algo0x15()
  * Assumes compressed band data fits in the space specified
  * in the printer PPD file: QPDL PacketSize: "512", specifies 512 Kbytes limit.
  */
-BandPlane* Algo0x15::compress(const Request& request, unsigned char *data, 
-        unsigned long width, unsigned long height)
+SP::Result<std::unique_ptr<BandPlane>> Algo0x15::compress([[maybe_unused]] const Request& request, 
+                                     std::span<const uint8_t> data, uint32_t width,
+                                     uint32_t height)
 {
-    #define MAX_SIZE 512 * 1024
-    BandPlane *plane; 
+    const uint32_t MAX_SIZE_LIMIT = 512 * 1024;
     jbg85_enc_state state;
-    unsigned long wbytes;
-    if (!data || !width || !height) {
+    uint32_t wbytes;
+
+    // Input sanitization
+    if (width > 32768 || height > 32768 || width == 0 || height == 0) {
+        ERRORMSG(_("Invalid raster dimensions for Algo0x15: %ux%u"), width, height);
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
+    if (data.empty()) {
         ERRORMSG(_("Invalid given data for compression (0x15)"));
-        return NULL;
+        return SP::Unexpected(SP::Error::InvalidArgument);
     }
-    if (_has_bih)
-        _has_bih = false;
-    if (_size)
-        _size = 0;
-    if (_error)
-        _error = false;
-    if (0 == _maxSize)
-        _maxSize = request.printer()->packetSize();
-    if ((!_maxSize) || (_maxSize > MAX_SIZE)) {
-        ERRORMSG(_("PacketSize is set to %luBytes! Reset to %dBytes."),
-                                                   _maxSize, MAX_SIZE);
-        _maxSize = MAX_SIZE;
+
+    _has_bih = false;
+    _data.clear();
+    _error = false;
+    _errorCode = SP::Error::None;
+
+    if (0 == _maxSize) {
+        if (!request.printer()) {
+            return SP::Unexpected(SP::Error::InvalidArgument);
+        }
+        _maxSize = static_cast<uint32_t>(request.printer()->packetSize());
     }
-    if (NULL == _data)
-        _data = new unsigned char[_maxSize];
+    
+    if ((!_maxSize) || (_maxSize > MAX_SIZE_LIMIT)) {
+        ERRORMSG(_("PacketSize is set to %u Bytes! Reset to %u Bytes."),
+                                                     _maxSize, MAX_SIZE_LIMIT);
+        _maxSize = MAX_SIZE_LIMIT;
+    }
+    
+    try {
+        _data.reserve(_maxSize);
+    } catch (const std::bad_alloc&) {
+        return SP::Unexpected(SP::Error::MemoryError);
+    }
+
+    // Defensive check: prevent overflow in wbytes calculation
+    if (width > 0x1FFFFFFF) {
+         return SP::Unexpected(SP::Error::RasterDimensionTooLarge);
+    }
     wbytes = (width + 7) / 8;
+
+    // Ensure data span is large enough
+    if (data.size() < static_cast<size_t>(wbytes) * height) {
+        ERRORMSG(_("Data span too small for dimensions: %zu < %u*%u"), 
+                 data.size(), wbytes, height);
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
     jbg85_enc_init(&state, width, height, _callback, this);
     jbg85_enc_options(&state, JBG_LRLTWO, height, 0);
-    for (unsigned long i = 0; i < height; i++) {
+    for (uint32_t i = 0; i < height; i++) {
+        const uint8_t* curr = &data[i * wbytes];
+        const uint8_t* prev = (i > 0) ? &data[(i - 1) * wbytes] : nullptr;
+        const uint8_t* prev2 = (i > 1) ? &data[(i - 2) * wbytes] : nullptr;
+
+        /* JBIG85 C API requires non-const pointers; we cast here as we manage 
+           the buffer lifecycle during this call. */
         jbg85_enc_lineout(&state,
-                          data + i * wbytes,
-                          data + (i - 1) * wbytes,
-                          data + (i - 2) * wbytes);
+                          const_cast<unsigned char*>(curr),
+                          const_cast<unsigned char*>(prev),
+                          const_cast<unsigned char*>(prev2));
+        
+        if (_error) {
+             break;
+        }
     }
-    if (_error)
-        return NULL;
-    unsigned char *final_data = new unsigned char[_size];
-    memcpy(final_data, _data, _size);
-    plane = new BandPlane();
+
+    if (_error) {
+        return SP::Unexpected(_errorCode != SP::Error::None ? _errorCode : SP::Error::LogicError);
+    }
+
+    auto plane = std::make_unique<BandPlane>();
     plane->setCompression(0x15);
-    plane->setEndian(BandPlane::BigEndian);
-    plane->setData(final_data, _size);
+    plane->setEndian(BandPlane::Endian::BigEndian);
+    plane->setData(std::move(_data));
+
     /* Finished encoding of this band. */
-    DEBUGMSG(_("Band encoded with type=0x15, size=%lu"), _size);
-    /* Clean up. */
-    _has_bih = false;
-    _size = 0;
-    if (_error)
-        _error = false;
+    DEBUGMSG(_("Band encoded with type=0x15, size=%zu"), plane->dataSize());
+    
     return plane;
 }
 

@@ -21,28 +21,34 @@
 #include "ppdfile.h"
 #include "errlog.h"
 #include "version.h"
-#include <ctype.h>
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include "sp_portable.h"
+#include <cctype>
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
 #include <sys/stat.h>
-#include <sys/wait.h>
 #include <sys/types.h>
+
+#if defined(SP_PLATFORM_POSIX)
+    #include <sys/wait.h>
+#endif
+#include <string>
+#include <algorithm>
+#include <filesystem>
+#include <vector>
+
+namespace fs = std::filesystem;
 
 
 /*
  * Appel des filtres
  * Filter call
  */
-static char *_toLower(const char *data)
+static std::string _toLower(std::string_view data)
 {
-    char *tmp = new char[strlen(data) + 1];
-    unsigned int i;
-
-    for (i=0; data[i]; i++)
-        tmp[i] = (char) tolower(data[i]);
-    tmp[i] = 0;
+    std::string tmp(data);
+    std::transform(tmp.begin(), tmp.end(), tmp.begin(), 
+        [](unsigned char c){ return std::tolower(c); });
     return tmp;
 }
 
@@ -64,37 +70,37 @@ static int _linkFilters(const char *arg1, const char *arg2, const char *arg3,
         close(rasterInput[1]);
         close(rasterInput[0]);
         close(rasterOutput[1]);
-        dup2(rasterOutput[0], STDIN_FILENO);
+        dup2(rasterOutput[0], SP_STDIN_FILENO);
         close(rasterOutput[0]);
         execl(RASTERDIR "/" RASTERTOQPDL, RASTERDIR "/" RASTERTOQPDL, arg1, 
-            arg2, arg3, arg4, arg5, (char *)NULL);
+            arg2, arg3, arg4, arg5, static_cast<char*>(nullptr));
         ERRORMSG(_("Cannot execute rastertoqpdl (%i)"), errno);
-        exit(0);
+        _exit(EXIT_FAILURE);
     }
     DEBUGMSG(_("SpliX launched with PID=%u"), splix);
     
     // Launch the raster
-    dup2(rasterInput[1], STDOUT_FILENO);
+    dup2(rasterInput[1], SP_STDOUT_FILENO);
     close(rasterOutput[0]);
     close(rasterInput[1]);
     if (!(raster = fork())) {
         // Raster code
-        dup2(rasterInput[0], STDIN_FILENO);
-        dup2(rasterOutput[1], STDOUT_FILENO);
+        dup2(rasterInput[0], SP_STDIN_FILENO);
+        dup2(rasterOutput[1], SP_STDOUT_FILENO);
         close(rasterInput[0]);
         close(rasterOutput[1]);
         if (access(RASTERDIR "/" GSTORASTER, F_OK) != -1) {
             // gstoraster filter exists
             execl(RASTERDIR "/" GSTORASTER, RASTERDIR "/" GSTORASTER, arg1, arg2, 
-                arg3, arg4, arg5,(char *)NULL);
+                arg3, arg4, arg5, static_cast<char*>(nullptr));
             ERRORMSG(_("Cannot execute gstoraster (%i)"), errno);
         } else {
             // use pstoraster if gstoraster doesn't exist
             execl(RASTERDIR "/" PSTORASTER, RASTERDIR "/" PSTORASTER, arg1, arg2, 
-                arg3, arg4, arg5,(char *)NULL);
+                arg3, arg4, arg5, static_cast<char*>(nullptr));
             ERRORMSG(_("Cannot execute %s (%i)"), PSTORASTER, errno);
         }
-        exit(0);
+        _exit(EXIT_FAILURE);
     }
     DEBUGMSG(_("raster launched with PID=%u"), raster);
     close(rasterInput[0]);
@@ -109,19 +115,16 @@ static int _linkFilters(const char *arg1, const char *arg2, const char *arg3,
  * Lecture des fichiers CRD / CSA
  * CSA / CRD read
  */
-static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
+static std::string _readCMSFile(PPDFile& ppd, const std::string& manufacturer, bool csa)
 {
-    unsigned long xResolution=0, yResolution=0, size;
+    unsigned long xResolution=0, yResolution=0;
     PPDValue resolution;
-    const char *file;
-    char *tmp, *res;
-    struct stat fi;
-    FILE *handle;
+    std::string file;
 
     // Get the base filename
-    file = ppd.get("CMSFile", "General");
-    if (!file || !(*file))
-        return NULL;
+    file = static_cast<const char *>(ppd.get("CMSFile", "General"));
+    if (file.empty())
+        return "";
 
     // Get the resolution
     resolution = ppd.get("Resolution");
@@ -136,41 +139,43 @@ static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
         xResolution = yResolution = 300;
 
     // Get the real filename
-    size = strlen(CUPSPROFILE) + strlen(manufacturer) + strlen(file) + 64;
-    tmp = new char[size];
-    if (xResolution)
-        snprintf(tmp, size, CUPSPROFILE "/%s/%s-%lux%lucms%s", manufacturer,
-            file, xResolution, yResolution, csa ? "2" : "");
-    if (!xResolution || access(tmp, R_OK))
-        snprintf(tmp, size, CUPSPROFILE "/%s/%scms%s", manufacturer,
-            file, csa ? "2" : "");
+    fs::path cmsPath;
+    if (xResolution) {
+        char buf[256];
+        snprintf(buf, sizeof(buf), "%s-%lux%lucms%s", file.c_str(), 
+            xResolution, yResolution, csa ? "2" : "");
+        cmsPath = fs::path(CUPSPROFILE) / manufacturer / buf;
+    }
+    
+    if (cmsPath.empty() || !fs::exists(cmsPath) || !fs::is_regular_file(cmsPath)) {
+        cmsPath = fs::path(CUPSPROFILE) / manufacturer / (file + "cms" + (csa ? "2" : ""));
+    }
 
     // Check if it exists, open it and read it
-    if (stat(tmp, &fi) || !(handle = fopen(tmp, "r"))) {
-        ERRORMSG(_("Cannot open CMS file %s (%i)"), tmp, errno);
-        delete[] tmp;
-        return NULL;
+    if (!fs::exists(cmsPath) || !fs::is_regular_file(cmsPath)) {
+        ERRORMSG(_("Cannot open CMS file %s (%i)"), cmsPath.c_str(), errno);
+        return "";
     }
-    if (!fi.st_size) {
-        ERRORMSG(_("CMS file %s is empty"), tmp);
-        delete[] tmp;
+
+    FILE *handle = fopen(cmsPath.c_str(), "r");
+    if (!handle) {
+        ERRORMSG(_("Cannot open CMS file %s (%i)"), cmsPath.c_str(), errno);
+        return "";
+    }
+
+    size_t fileSize = fs::file_size(cmsPath);
+    std::string res;
+    res.resize(fileSize);
+    if (fread(res.data(), 1, fileSize, handle) != fileSize) {
+        ERRORMSG(_("Error while reading CMS file %s"), cmsPath.c_str());
         fclose(handle);
-        return NULL;
+        return "";
     }
-    res = new char[fi.st_size + 1];
-    if (!fread(res, 1, fi.st_size, handle)) {
-        ERRORMSG(_("Cannot read CMS file %s (%i)"), tmp, errno);
-        delete[] tmp;
-        delete[] res;
-        fclose(handle);
-        return NULL;
-    }
-    res[fi.st_size] = 0;
     fclose(handle);
-    delete[] tmp;
 
     return res;
 }
+
 
 
 
@@ -180,12 +185,18 @@ static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
  */
 int main(int argc, char **argv)
 {
-    const char *jobid, *user, *title, *options, *ppdFile, *file;
-    const char *paperType, *manufacturer;
-    unsigned long copies;
+    [[maybe_unused]] const char *jobid;
+    [[maybe_unused]] const char *user;
+    [[maybe_unused]] const char *title;
+    [[maybe_unused]] const char *options;
+    const char *ppdFile;
+    const char *file;
+    const char *paperType;
+    std::string manufacturer;
+    [[maybe_unused]] unsigned long copies;
     bool pageSetup=false;
     char buffer[1024];
-    char *crd, *csa;
+    std::string crd, csa;
     int pid, err;
     PPDFile ppd;
 
@@ -200,7 +211,7 @@ int main(int argc, char **argv)
     title = argv[3];
     options = argv[5];
     file = argc == 7 ? argv[6] : NULL;
-    copies = strtol(argv[4], (char **)NULL, 10);
+    copies = strtol(argv[4], nullptr, 10);
     ppdFile = getenv("PPD");
 
     // Get more information on the SpliX environment (for debugging)
@@ -214,36 +225,37 @@ int main(int argc, char **argv)
     }
 
     // Open the PPD file and get paper information
-    if (!ppd.open(ppdFile, PPDVERSION, options))
+    if (auto res = ppd.open(ppdFile ? ppdFile : "", PPDVERSION, options); !res) {
+        ERRORMSG(_("Failed to open PPD file: %s"), SP::to_string(res.error()).data());
         return 1;
-    manufacturer = _toLower(ppd.get("Manufacturer"));
+    }
+    manufacturer = _toLower(static_cast<const char *>(ppd.get("Manufacturer")));
     paperType = ppd.get("MediaType");
-    if (!(strcasecmp(paperType, "OFF")))
+    auto compare = [](std::string_view a, std::string_view b) {
+        return std::ranges::equal(a, b, [](char c1, char c2) {
+            return std::tolower(static_cast<unsigned char>(c1)) == 
+                   std::tolower(static_cast<unsigned char>(c2));
+        });
+    };
+
+    if (paperType && compare(paperType, "OFF"))
         paperType = "NORMAL";
 
     // Call the other filters
     if (!(pid = _linkFilters(argv[1], argv[2], argv[3], argv[4], argv[5]))) {
         ERRORMSG(_("Filter error.. Cannot continue"));
-        delete[] manufacturer;
         return 1;
     }
 
     // Get the CRD and CSA information and send the PostScript data
     crd = _readCMSFile(ppd, manufacturer, false);
     csa = _readCMSFile(ppd, manufacturer, true);
-    if (!crd || !csa) {
+    if (crd.empty() || csa.empty()) {
         WARNMSG(_("CMS data are missing. Color correction aborted"));
-        if (crd) {
-            delete[] crd;
-            crd = NULL;
-        }
-        if (csa) {
-            delete[] csa;
-            csa = NULL;
-        }
         while (!(feof(stdin))) {
-            fgets((char *)&buffer, sizeof(buffer), stdin);
-            fprintf(stdout, "%s", (char *)&buffer); 
+            if (!fgets(buffer, sizeof(buffer), stdin))
+                break;
+            fprintf(stdout, "%s", buffer); 
         }
     } else {
 
@@ -268,90 +280,90 @@ int main(int argc, char **argv)
         while (!(feof(stdin))) {
 
             // read a line of the input file
-            if (!fgets((char *)&buffer, sizeof(buffer), stdin))
+            if (!fgets(buffer, sizeof(buffer), stdin))
                 break;
 
-            if (!(memcmp("%%Creator", (char *)&buffer, 9)) ||
-                !(memcmp("%%LanguageLevel:", (char *)&buffer, 16))) {
+            if (!(memcmp("%%Creator", buffer, 9)) ||
+                !(memcmp("%%LanguageLevel:", buffer, 16))) {
                 // found a "%%Creator" line
 
                 // emit the MediaChoice and colour correction information
                 if (paperType)
                     fprintf(stdout, "/MediaChoice (%s) def\n", paperType);
-                fprintf(stdout, "%s", crd);
-                fprintf(stdout, "%s", csa);
+                fprintf(stdout, "%s", crd.c_str());
+                fprintf(stdout, "%s", csa.c_str());
 
                 // emit the original "%%Creator" line
-                fprintf(stdout, "%s", (char *)&buffer); 
+                fprintf(stdout, "%s", buffer); 
 
                 // stop scanning the header
                 break;
             }
 
 
-            if (!(memcmp("%%EndComments", (char *)&buffer, 13))) {
+            if (!(memcmp("%%EndComments", buffer, 13))) {
                 // reached end of header without finding a "%%Creator" line
 
                 // emit the MediaChoice and colour correction information
                 if (paperType)
                     fprintf(stdout, "/MediaChoice (%s) def\n", paperType);
-                fprintf(stdout, "%s", crd);
-                fprintf(stdout, "%s", csa);
+                fprintf(stdout, "%s", crd.c_str());
+                fprintf(stdout, "%s", csa.c_str());
 
                 // emit a dummy "%%Creator" line
                 DEBUGMSG(_("inserting dummy \"Creator\" entry in postscript header"));
                 fprintf(stdout, "%s", "%%Creator: SpliX pstoqpdl filter");
 
                 // emit the original "%%EndComments" line
-                fprintf(stdout, "%s", (char *)&buffer);
+                fprintf(stdout, "%s", buffer);
 
                 // stop scanning the header
                 break;
             }
 
 
-            if (!(memcmp("%%BeginPro", (char *)&buffer, 10)) ||
-                !(memcmp("%%BeginRes", (char *)&buffer, 10))) {
+            if (!(memcmp("%%BeginPro", buffer, 10)) ||
+                !(memcmp("%%BeginRes", buffer, 10))) {
                 // we shouldn't find either of these lines in the header
 
                 ERRORMSG(_("End of PostScript header not found"));
 
                 // emit the line that was found
-                fprintf(stdout, "%s", (char *)&buffer); 
+                fprintf(stdout, "%s", buffer); 
 
                 // stop scanning the header
                 break;
             }
 
             // encountered some other kind of header line - just emit it
-            fprintf(stdout, "%s", (char *)&buffer); 
+            fprintf(stdout, "%s", buffer); 
         }
 
 
         // Check for each page
         while (!(feof(stdin))) {
-            if (!fgets((char *)&buffer, sizeof(buffer), stdin))
+            if (!fgets(buffer, sizeof(buffer), stdin))
                 break;
-            if (!(memcmp("%%Page:", (char *)&buffer, 7))) {
+            if (!(memcmp("%%Page:", buffer, 7))) {
                 char tmp[sizeof(buffer)];
 
-                if (!fgets((char *)&tmp, sizeof(tmp), stdin)) {
-                    fprintf(stdout, "%s", (char *)&buffer);
+                if (!fgets(tmp, sizeof(tmp), stdin)) {
+                    fprintf(stdout, "%s", buffer);
                     break;
                 }
-                if (!(memcmp("%%BeginPageSetup", (char *)&tmp, 16)))
+                if (!(memcmp("%%BeginPageSetup", tmp, 16)))
                     pageSetup = true;
                 else
-                    fprintf(stdout, "%s", csa);
-                fprintf(stdout, "%s", (char *)&buffer);
-                fprintf(stdout, "%s", (char *)&tmp);
+                    fprintf(stdout, "%s", csa.c_str());
+                fprintf(stdout, "%s", buffer);
+                fprintf(stdout, "%s", tmp);
             } else if (pageSetup && !(memcmp("%%EndPageSetup", 
-                (char *)&buffer, 14))) {
-                fprintf(stdout, "%s", (char *)&buffer);
-                fprintf(stdout, "%s", csa);
+                buffer, 14))) {
+                fprintf(stdout, "%s", buffer);
+                fprintf(stdout, "%s", csa.c_str());
                 pageSetup = false;
             } else 
-                fprintf(stdout, "%s", (char *)&buffer);
+                fprintf(stdout, "%s", buffer);
         }
     }
 
@@ -360,12 +372,6 @@ int main(int argc, char **argv)
     fclose(stdout);
     waitpid(pid, &err, 0);
 
-    if (crd)
-        delete[] crd;
-    if (csa)
-        delete[] csa;
-    if (manufacturer)
-        delete[] manufacturer;
     return WEXITSTATUS(err);
 }
 

@@ -19,7 +19,14 @@
  * 
  */
 #include "algo0x13.h"
-#include <string.h>
+#include <cstring>
+#include <vector>
+#include <memory>
+#include <deque>
+#include <span>
+#include <cstdint>
+#include <algorithm>
+#include <ranges>
 #include "errlog.h"
 #include "request.h"
 #include "printer.h"
@@ -33,146 +40,133 @@
  */
 void Algo0x13::_callback(unsigned char *data, size_t len, void *arg)
 {
-    info_t* info = (info_t *)arg;
+    auto* info = static_cast<info_t *>(arg);
 
     if (!len)
         return;
 
     // It's the first BIH
-    if (!info->last) {
-        bandList_t* bandList;
-        unsigned char *tmp;
-
-        tmp = new unsigned char[len];
-        bandList = new bandList_t;
-        memcpy(tmp, data, len);
-        bandList->band = new BandPlane();
-        bandList->band->setData(tmp, len);
-        bandList->band->setEndian(BandPlane::BigEndian);
-        bandList->band->setCompression(0x13);
-        bandList->next = NULL;
-        *(info->list) = bandList;
-        info->last = bandList;
+    if (info->list->empty()) {
+        std::vector<uint8_t> bih(data, data + len);
+        auto plane = std::make_unique<BandPlane>();
+        plane->setData(std::move(bih));
+        plane->setEndian(BandPlane::Endian::BigEndian);
+        plane->setCompression(0x13);
+        info->list->push_back(std::move(plane));
         if (len != 20)
-            ERRORMSG(_("the first BIG *MUST* be 20 bytes long (currently=%zu"),
-                len);
-        info->data = NULL;
-        info->size = 0;
-
-    // Register the BIH
+            ERRORMSG(_("the first BIH *MUST* be 20 bytes long (currently={})"), len);
     } else {
-        while (len) {
-            unsigned long freeSpace, toCopy;
-
+        while (len > 0) {
             // Full band: register it
-            if (info->size == info->maxSize) {
-                bandList_t* bandList;
-
-                bandList = new bandList_t;
-                bandList->band = new BandPlane();
-                bandList->band->setData(info->data, info->size);
-                bandList->band->setEndian(BandPlane::BigEndian);
-                bandList->band->setCompression(0x13);
-                bandList->next = NULL;
-                info->last->next = bandList;
-                info->last = bandList;
-                info->data = NULL;
-                info->size = 0;
+            if (!info->currentData.empty() && info->currentData.size() == info->maxSize) {
+                auto plane = std::make_unique<BandPlane>();
+                plane->setData(std::move(info->currentData));
+                plane->setEndian(BandPlane::Endian::BigEndian);
+                plane->setCompression(0x13);
+                info->list->push_back(std::move(plane));
+                info->currentData.clear();
             }
 
-            // Allocate a new data buffer if needed
-            if (!info->data)
-                info->data = new unsigned char[info->maxSize];
-
-            // Register data
-            freeSpace = info->maxSize - info->size;
-            toCopy = freeSpace < len ? freeSpace : len;
-            memcpy(info->data + info->size, data, toCopy);
-            info->size += toCopy;
+            // Collect data
+            uint32_t freeSpace = info->maxSize - static_cast<uint32_t>(info->currentData.size());
+            uint32_t toCopy = std::min(freeSpace, static_cast<uint32_t>(len));
+            
+            size_t oldSize = info->currentData.size();
+            info->currentData.resize(oldSize + toCopy);
+            std::ranges::copy(std::span(data, toCopy), info->currentData.begin() + oldSize);
+            
             data += toCopy;
             len -= toCopy;
         }
     }
 }
 
+// LIFECYCLE: Managed by compiler defaults in the header.
+#endif /* DISABLE_JBIG */
 
-
-/*
- * Constructeur - Destructeur
- * Init - Uninit
- */
-Algo0x13::Algo0x13()
-{
-    _compressed = false;
-    _list = NULL;
-}
-
-Algo0x13::~Algo0x13()
-{
-}
-
-
-
+#ifndef DISABLE_JBIG
 /*
  * Routine de compression
  * Compression routine
  */
-BandPlane* Algo0x13::compress(const Request& request, unsigned char *data, 
-        unsigned long width, unsigned long height)
+SP::Result<std::unique_ptr<BandPlane>> Algo0x13::compress(const Request& request, std::span<const uint8_t> data, 
+        uint32_t width, uint32_t height)
 {
     jbg85_enc_state state;
-    unsigned long i, wbytes;
-    info_t info = {&_list, NULL, NULL, 0, 0};
-    BandPlane *plane;
-    bandList_t* tmp;
+    uint32_t i, wbytes;
+    info_t info = {&_list, {}, 0};
 
-    if (!data || !width || !height) {
+    if (width > 32768 || height > 32768 || width == 0 || height == 0) {
+        ERRORMSG(_("Invalid raster dimensions for Algo0x13: %ux%u"), width, height);
+        return SP::Unexpected(SP::Error::InvalidArgument);
+    }
+
+    if (data.empty()) {
         ERRORMSG(_("Invalid given data for compression (0x13)"));
-        return NULL;
+        return SP::Unexpected(SP::Error::InvalidArgument);
     }
 
     // Compress if it's the first time
     if (!_compressed) {
-        info.maxSize = request.printer()->packetSize();
+        if (!request.printer()) {
+            return SP::Unexpected(SP::Error::InvalidArgument);
+        }
+
+        info.maxSize = static_cast<uint32_t>(request.printer()->packetSize());
         if (!info.maxSize) {
             ERRORMSG(_("PacketSize is set to 0!"));
             info.maxSize = 512*1024;
         }
+
+        // Defensive check: prevent overflow in wbytes calculation
+        if (width > 0x1FFFFFFF) {
+             return SP::Unexpected(SP::Error::RasterDimensionTooLarge);
+        }
         wbytes = (width + 7) / 8;
+
+        // Ensure data span is large enough
+        if (data.size() < static_cast<size_t>(wbytes) * height) {
+            ERRORMSG(_("Data span too small for dimensions: %zu < %u*%u"), 
+                     data.size(), wbytes, height);
+            return SP::Unexpected(SP::Error::InvalidArgument);
+        }
+
         jbg85_enc_init(&state, width, height, _callback, &info);
         jbg85_enc_options(&state, JBG_LRLTWO | JBG_TPBON, height, 0);
-        for (i = 0; i < height; i++) {
+
+        for (uint32_t i = 0; i < height; i++) {
+            const size_t rowOffset = static_cast<size_t>(i) * wbytes;
+            const uint8_t* curr = &data[rowOffset];
+            const uint8_t* prev = (i > 0) ? &data[rowOffset - wbytes] : nullptr;
+            const uint8_t* prev2 = (i > 1) ? &data[rowOffset - (2 * wbytes)] : nullptr;
+
             jbg85_enc_lineout(&state,
-                              data + i * wbytes,
-                              data + (i - 1) * wbytes,
-                              data + (i - 2) * wbytes);
+                               const_cast<unsigned char*>(curr),
+                               const_cast<unsigned char*>(prev),
+                               const_cast<unsigned char*>(prev2));
         }
 
         // Register the last band
-        if (info.size) {
-            bandList_t* bandList;
-
-            bandList = new bandList_t;
-            bandList->band = new BandPlane();
-            bandList->band->setData(info.data, info.size);
-            bandList->band->setEndian(BandPlane::BigEndian);
-            bandList->band->setCompression(0x13);
-            bandList->next = NULL;
-            info.last->next = bandList;
+        if (!info.currentData.empty()) {
+            auto plane = std::make_unique<BandPlane>();
+            plane->setData(std::move(info.currentData));
+            plane->setEndian(BandPlane::Endian::BigEndian);
+            plane->setCompression(0x13);
+            _list.push_back(std::move(plane));
         }
         _compressed = true;
     }
 
-    if (!_list)
-        return NULL;
-    tmp = _list;
-    plane = tmp->band;
-    _list = _list->next;
-    delete tmp;
+    if (_list.empty()) {
+        ERRORMSG(_("Algo0x13 list empty after compression"));
+        return SP::Unexpected(SP::Error::LogicError);
+    }
+
+    auto plane = std::move(_list.front());
+    _list.pop_front();
     return plane;
 }
 
 #endif /* DISABLE_JBIG */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
-

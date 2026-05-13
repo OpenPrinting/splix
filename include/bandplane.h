@@ -21,6 +21,12 @@
 #ifndef _BANDPLANE_H_
 #define _BANDPLANE_H_
 
+#include <vector>
+#include <cstdint>
+#include <memory>
+#include <span>
+#include "sp_result.h"
+
 /**
   * @brief This class contains data related to a band plane.
   *
@@ -28,7 +34,7 @@
 class BandPlane
 {
     public:
-        enum Endian {
+        enum class Endian : uint8_t {
             /** Machine dependant */
             Dependant,
             /** Big endian */
@@ -38,37 +44,33 @@ class BandPlane
         };
 
     protected:
-        unsigned char           _colorNr;
-        unsigned long           _size;
-        unsigned char*          _data;
-        unsigned long           _checksum;
-        Endian                  _endian;
-        unsigned char           _compression;
+        uint8_t                 _colorNr = 0;
+        std::vector<uint8_t>    _data;
+        uint32_t                _checksum = 0;
+        Endian                  _endian = Endian::Dependant;
+        uint8_t                 _compression = 0;
 
     public:
         /**
           * Initialize the band plane instance.
           */
-        BandPlane();
+        BandPlane() = default;
         /**
           * Destroy the instance
           */
-        virtual ~BandPlane();
+        virtual ~BandPlane() = default;
 
     public:
         /**
           * Set the color number of this plane.
           * @param nr the color number
           */
-        void                    setColorNr(unsigned char nr) {_colorNr = nr;}
+        void                    setColorNr(uint8_t nr) {_colorNr = nr;}
         /**
           * Set the data buffer.
-          * The buffer will be freed during the destruction of this instance.
           * @param data the data buffer
-          * @param size the size of the data
           */
-        void                    setData(unsigned char *data, 
-                                    unsigned long size);
+        void                    setData(std::vector<uint8_t> data);
         /**
           * Set the endian to use.
           * @param endian the endian to use.
@@ -78,21 +80,25 @@ class BandPlane
          * Set the compression algorithm used.
          * @param compression the compression algorithm used.
          */
-        void                    setCompression(unsigned char compression)
+        void                    setCompression(uint8_t compression)
                                     {_compression = compression;}
 
         /**
           * @return the color number.
           */
-        unsigned char           colorNr() const {return _colorNr;}
+        uint8_t                 colorNr() const {return _colorNr;}
         /**
           * @return the data size.
           */
-        unsigned long           dataSize() const {return _size;}
+        size_t                  dataSize() const {return _data.size();}
         /**
           * @return the data.
           */
-        const unsigned char*    data() const {return _data;}
+        const uint8_t*          data() const {return _data.data();}
+        /**
+          * @return a span viewing the buffer data.
+          */
+        std::span<const uint8_t> data_span() const noexcept { return _data; }
         /**
           * @return the endian to use.
           */
@@ -100,27 +106,25 @@ class BandPlane
         /**
           * @return the checksum.
           */
-        unsigned long           checksum() const {return _checksum;}
+        uint32_t                checksum() const {return _checksum;}
         /**
          * @return the compression algorithm used.
          */
-        unsigned char           compression() const {return _compression;}
+        uint8_t                 compression() const {return _compression;}
 
     public:
         /**
           * Swap this instance on the disk.
           * @param fd the file descriptor where the instance has to be swapped
-          * @return TRUE if the instance has been successfully swapped. 
-          *         Otherwise it returns FALSE.
+          * @return a Result indicating success or error.
           */
-        bool                    swapToDisk(int fd);
+        SP::Result<>            swapToDisk(int fd);
         /**
           * Restore an instance from the disk into memory.
           * @param fd the file descriptor where the instance has been swapped
-          * @return a bandplane instance if it has been successfully restored. 
-          *         Otherwise it returns NULL.
+          * @return a Result containing the bandplane instance or an error.
           */
-        static BandPlane*       restoreIntoMemory(int fd);
+        static SP::Result<std::unique_ptr<BandPlane>> restoreIntoMemory(int fd);
 };
 
 #endif /* _BANDPLANE_H_ */
