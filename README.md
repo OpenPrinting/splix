@@ -8,7 +8,7 @@ Note that older SPL1-based models (ML-12xx, ML-14xx) do not work. Use these prin
 
 See installation instructions in the INSTALL file.
 
-The driver was created by Aurélien Croc (aurelien at ap2c dot org) and contains many contributions from Till Kamppeter (till dot kamppeter at gmail dot com). Development is discontinued as most modern printers do not need drivers any more.
+The driver was created by Aurélien Croc (aurelien at ap2c dot org) and contains many contributions from Till Kamppeter (till dot kamppeter at gmail dot com).
 
 ### Supported models
 
