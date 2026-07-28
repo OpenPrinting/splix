@@ -63,7 +63,9 @@ jobs:
           sed -i 's~rastertoqpdl_LIBS.*:= ~rastertoqpdl_LIBS := -lcupsimage ~' module.mk
           grep 'libjbig' module.mk
           make DRV_ONLY=1 -j4
+          make ppd
           rm -rf optimized/src
+          mv ppd optimized/
 
       - name: Patch for older glibc
         run: |
