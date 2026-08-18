@@ -373,20 +373,13 @@ bool renderPage(const Request& request, Page* page, bool lastPage)
             break;
     }
 
-    width = page->width();
-    height = page->height();
+    width = ceil(300 * (request.printer()->pageWidth() / 72.0));
+    height = ceil(300 * (request.printer()->pageHeight() / 72.0));
 
     if (0x15 == page->compression()) {
         selectedRenderBand = &_renderJBIGBand;
     } else {
         selectedRenderBand = &_renderBand;
-    }
-
-    if (request.printer()->fixedBandWidth() || 0x15 == page->compression()) {
-        // For CLP-310/315 and fixed bandwidth printers, multiply page
-        // dimensions in inches by 300.
-        width = ceil(300 * (request.printer()->pageWidth() / 72.0));
-        height = ceil(300 * (request.printer()->pageHeight() / 72.0));
     }
 
     // Send the page header
