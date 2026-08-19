@@ -40,6 +40,26 @@ HWMargins 12.5 12.5 12.5 12.5
                 Attribute Product "" "(LaserMFP)"
                 Attribute ShortNickName "" "13x"
                 PCFileName "laser13x.ppd"
+            } {
+                ModelName "HP Laser 1003-1008"
+                Attribute Product "" "(LaserPrinter)"
+                Attribute ShortNickName "" "1003"
+                PCFileName "las100x.ppd"
+            } {
+                ModelName "HP Laser MFP 1136-1139 1188"
+                Attribute Product "" "(LaserMFP)"
+                Attribute ShortNickName "" "1188"
+                PCFileName "las11xx.ppd"
+            } {
+                ModelName "HP LaserJet MFP M433"
+                Attribute Product "" "(LaserPrinter)"
+                Attribute ShortNickName "" "M433"
+                PCFileName "ljM433.ppd"
+            } {
+                ModelName "HP LaserJet MFP M436"
+                Attribute Product "" "(LaserPrinter)"
+                Attribute ShortNickName "" "M436"
+                PCFileName "ljM436.ppd"
             }
 
         }
