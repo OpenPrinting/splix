@@ -4,7 +4,7 @@
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; version 2 of the License.
- * 
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,10 +16,13 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *  $Id$
- * 
+ *
  */
 #ifndef _PRINTER_H_
 #define _PRINTER_H_
+
+#include <string>
+#include <string_view>
 
 class Request;
 
@@ -28,36 +31,36 @@ class Request;
   *
   * This class is mainly used by the QPDL render.
   */
-class Printer 
+class Printer
 {
     protected:
-        char*                   _manufacturer;
-        char*                   _model;
-        char*                   _beginPJL;
-        char*                   _endPJL;
+        std::string             _manufacturer;
+        std::string             _model;
+        std::string             _beginPJL;
+        std::string             _endPJL;
 
-        bool                    _color;
-        unsigned long           _qpdlVersion;
-        unsigned long           _bandHeight;
-        bool                    _specialBandWidth;
-        bool                    _fixedBandWidth;
-        unsigned long           _packetSize;
+        bool                    _color = false;
+        unsigned long           _qpdlVersion = 0;
+        unsigned long           _bandHeight = 0;
+        bool                    _specialBandWidth = false;
+        bool                    _fixedBandWidth = false;
+        unsigned long           _packetSize = 0;
 
-        unsigned char           _paperType;
-        unsigned char           _paperSource;
+        unsigned char           _paperType = 0;
+        unsigned char           _paperSource = 0;
 
-        float                   _paperWidth;
-        float                   _paperHeight;
-        
-        unsigned char           _unknownByte1;
-        unsigned char           _unknownByte2;
-        unsigned char           _unknownByte3;
+        float                   _paperWidth = 0.0f;
+        float                   _paperHeight = 0.0f;
 
-        float                   _pageWidth;
-        float                   _pageHeight;
+        unsigned char           _unknownByte1 = 0;
+        unsigned char           _unknownByte2 = 0;
+        unsigned char           _unknownByte3 = 0;
 
-        float                   _hardMarginX;
-        float                   _hardMarginY;
+        float                   _pageWidth = 0.0f;
+        float                   _pageHeight = 0.0f;
+
+        float                   _hardMarginX = 0.0f;
+        float                   _hardMarginY = 0.0f;
 
     public:
         /**
@@ -68,6 +71,12 @@ class Printer
           * Destroy the instance and free the internal memory used.
           */
         virtual ~Printer();
+
+        // Modern Move and Copy operations (Rule of Five)
+        Printer(const Printer&) = default;
+        Printer& operator=(const Printer&) = default;
+        Printer(Printer&&) noexcept = default;
+        Printer& operator=(Printer&&) noexcept = default;
 
     public:
         /**
@@ -99,14 +108,14 @@ class Printer
         /**
           * @return the manufacturer name.
           */
-        const char*             manufacturer() const {return _manufacturer;}
+        std::string_view        manufacturer() const {return _manufacturer;}
         /**
           * @return the model name.
           */
-        const char*             model() const {return _model;}
+        std::string_view        model() const {return _model;}
         /**
           * @return the height of a band.
-          */ 
+          */
         unsigned long           bandHeight() const {return _bandHeight;}
         /**
          * @return TRUE if the printer requires special BandWidth selection
@@ -120,7 +129,7 @@ class Printer
         bool                    fixedBandWidth() const {return _fixedBandWidth;}
         /**
           * @return the maximum size of a packet.
-          */ 
+          */
         unsigned long           packetSize() const {return _packetSize;}
         /**
           * @return the QPDL version.

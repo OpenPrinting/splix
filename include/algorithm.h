@@ -4,7 +4,7 @@
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; version 2 of the License.
- * 
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,16 +16,21 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *  $Id$
- * 
+ *
  */
 #ifndef _ALGORITHM_H_
 #define _ALGORITHM_H_
+
+#include <memory>
+#include <span>
+#include <cstdint>
+#include "sp_result.h"
 
 class Request;
 class BandPlane;
 
 /**
-  * @brief This super class is an interface to implement a compression 
+  * @brief This super class is an interface to implement a compression
   *        algorithm.
   */
 class Algorithm
@@ -36,11 +41,11 @@ class Algorithm
         /**
           * Initialize the instance.
           */
-        Algorithm();
+        Algorithm() = default;
         /**
           * Destroy the instance.
           */
-        virtual ~Algorithm();
+        virtual ~Algorithm() = default;
 
     public:
         /**
@@ -49,33 +54,32 @@ class Algorithm
           * @param data the data to compress
           * @param width the width of the data / band / page
           * @param height the height of the data / band / page
-          * @return a pointer to a @ref BandPlane instance or NULL.
+          * @return a Result containing the @ref BandPlane instance or an error.
           */
-        virtual BandPlane*      compress(const Request& request, 
-                                    unsigned char *data, unsigned long width,
-                                    unsigned long height) = 0;
+        virtual SP::Result<std::unique_ptr<BandPlane>> compress(const Request& request,
+                                     std::span<const uint8_t> data, uint32_t width,
+                                     uint32_t height) = 0;
         /**
           * Reverse line and column.
           * the byte at (x=1, y=0) is placed at (x=0, y=1) etc.
           * This is used by algorithm 0x11 (at least).
           * @return TRUE if this operation is needed. Otherwise returns FALSE.
           */
-        virtual bool            reverseLineColumn() {return false;}
+        virtual bool            reverseLineColumn() const {return false;}
         /**
           * Inverse the byte.
           * Do a NOT operation on each byte.
           * @return TRUE if this operation is needed. Otherwise returns FALSE.
           */
-        virtual bool            inverseByte() {return false;}
+        virtual bool            inverseByte() const {return false;}
         /**
           * Split into bands
-          * @return TRUE if each planes has to ben split into bands. Otherwise 
+          * @return TRUE if each planes has to ben split into bands. Otherwise
           *         it returns FALSE.
           */
-        virtual bool            splitIntoBands() {return false;}
+        virtual bool            splitIntoBands() const {return false;}
 };
 
 #endif /* _ALGORITHM_H_ */
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 smarttab tw=80 cin enc=utf8: */
-

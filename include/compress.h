@@ -4,7 +4,7 @@
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; version 2 of the License.
- * 
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,7 +16,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *  $Id$
- * 
+ *
  */
 #ifndef _COMPRESS_H_
 #define _COMPRESS_H_
@@ -24,7 +24,9 @@
 class Page;
 class Request;
 
-extern bool compressPage(const Request& request, Page* page);
+#include "sp_result.h"
+
+extern SP::Result<> compressPage(const Request& request, Page* page);
 
 #endif /* _COMPRESS_H_ */
 

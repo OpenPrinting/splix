@@ -4,7 +4,7 @@
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; version 2 of the License.
- * 
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,7 +16,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  *  $Id$
- * 
+ *
  */
 #ifndef _ALGO0X13_H_
 #define _ALGO0X13_H_
@@ -24,6 +24,12 @@
 #ifndef DISABLE_JBIG
 
 #include "algorithm.h"
+#include <deque>
+#include <memory>
+#include <vector>
+#include <span>
+#include <cstdint>
+
 extern "C" {
 #   include "jbig85.h"
 }
@@ -34,35 +40,30 @@ extern "C" {
 class Algo0x13 : public Algorithm
 {
     protected:
-        typedef struct bandList_s {
-            BandPlane*          band;
-            struct bandList_s*  next;
-        } bandList_t;
-
-        typedef struct info_s {
-            bandList_t**        list;
-            bandList_t*         last;
-            unsigned char*      data;
-            unsigned long       size;
-            unsigned long       maxSize;
-        } info_t;
+        struct info_t {
+            std::deque<std::unique_ptr<BandPlane>>* list;
+            std::vector<uint8_t> currentData;
+            uint32_t maxSize;
+        };
 
     protected:
-        bool                    _compressed;
-        bandList_t*             _list;
-
+        bool                                    _compressed = false;
+        std::deque<std::unique_ptr<BandPlane>>  _list;
 
     public:
-        Algo0x13();
-        virtual ~Algo0x13();
+        Algo0x13() = default;
+        virtual ~Algo0x13() = default;
 
     public:
         static void             _callback(unsigned char *data, size_t len, void *arg);
 
     public:
-        virtual BandPlane*      compress(const Request& request, 
-                                    unsigned char *data, unsigned long width,
-                                    unsigned long height);
+        virtual SP::Result<std::unique_ptr<BandPlane>> compress(const Request& request,
+                                     std::span<const uint8_t> data, uint32_t width,
+                                     uint32_t height) override;
+        virtual bool            reverseLineColumn() const override {return false;}
+        virtual bool            inverseByte() const override {return false;}
+        virtual bool            splitIntoBands() const override {return false;}
 };
 
 #endif /* DISABLE_JBIG */
