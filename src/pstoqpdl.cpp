@@ -180,9 +180,8 @@ static char *_readCMSFile(PPDFile& ppd, const char *manufacturer, bool csa)
  */
 int main(int argc, char **argv)
 {
-    const char *jobid, *user, *title, *options, *ppdFile, *file;
+    const char *options, *ppdFile, *file;
     const char *paperType, *manufacturer;
-    unsigned long copies;
     bool pageSetup=false;
     char buffer[1024];
     char *crd, *csa;
@@ -195,12 +194,8 @@ int main(int argc, char **argv)
             "[file]\n"), argv[0]);
         return 1;
     }
-    jobid = argv[1];
-    user = argv[2];
-    title = argv[3];
     options = argv[5];
     file = argc == 7 ? argv[6] : NULL;
-    copies = strtol(argv[4], (char **)NULL, 10);
     ppdFile = getenv("PPD");
 
     // Get more information on the SpliX environment (for debugging)
@@ -241,10 +236,8 @@ int main(int argc, char **argv)
             delete[] csa;
             csa = NULL;
         }
-        while (!(feof(stdin))) {
-            fgets((char *)&buffer, sizeof(buffer), stdin);
-            fprintf(stdout, "%s", (char *)&buffer); 
-        }
+        while (fgets((char *)&buffer, sizeof(buffer), stdin))
+            fprintf(stdout, "%s", (char *)&buffer);
     } else {
 
         // Insert the MediaChoice and colour correction information into

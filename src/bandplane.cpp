@@ -19,6 +19,9 @@
  * 
  */
 #include "bandplane.h"
+#include "io_utils.h"
+#include <limits>
+#include <new>
 #include <unistd.h>
 
 /*
@@ -65,13 +68,12 @@ void BandPlane::setData(unsigned char *data, unsigned long size)
  */
 bool BandPlane::swapToDisk(int fd)
 {
-    write(fd, &_colorNr, sizeof(_colorNr));
-    write(fd, &_size, sizeof(_size));
-    write(fd, _data, _size);
-    write(fd, &_checksum, sizeof(_checksum));
-    write(fd, &_endian, sizeof(_endian));
-    write(fd, &_compression, sizeof(_compression));
-    return true;
+    return splix::writeAll(fd, &_colorNr, sizeof(_colorNr)) &&
+        splix::writeAll(fd, &_size, sizeof(_size)) &&
+        splix::writeAll(fd, _data, _size) &&
+        splix::writeAll(fd, &_checksum, sizeof(_checksum)) &&
+        splix::writeAll(fd, &_endian, sizeof(_endian)) &&
+        splix::writeAll(fd, &_compression, sizeof(_compression));
 }
 
 BandPlane* BandPlane::restoreIntoMemory(int fd)
@@ -80,14 +82,31 @@ BandPlane* BandPlane::restoreIntoMemory(int fd)
     BandPlane* plane;
 
     plane = new BandPlane();
-    read(fd, &plane->_colorNr, sizeof(plane->_colorNr));
-    read(fd, &plane->_size, sizeof(plane->_size));
-    data = new unsigned char[plane->_size];
-    read(fd, data, plane->_size);
+    if (!splix::readAll(fd, &plane->_colorNr, sizeof(plane->_colorNr)) ||
+        !splix::readAll(fd, &plane->_size, sizeof(plane->_size))) {
+        delete plane;
+        return NULL;
+    }
+    const std::size_t trailer = sizeof(plane->_checksum) +
+        sizeof(plane->_endian) + sizeof(plane->_compression);
+    if (plane->_size > std::numeric_limits<std::size_t>::max() - trailer ||
+        !splix::canRead(fd, plane->_size + trailer)) {
+        delete plane;
+        return NULL;
+    }
+    data = new (std::nothrow) unsigned char[plane->_size];
+    if (!data || !splix::readAll(fd, data, plane->_size)) {
+        delete[] data;
+        delete plane;
+        return NULL;
+    }
     plane->_data = data;
-    read(fd, &plane->_checksum, sizeof(plane->_checksum));
-    read(fd, &plane->_endian, sizeof(plane->_endian));
-    read(fd, &plane->_compression, sizeof(plane->_compression));
+    if (!splix::readAll(fd, &plane->_checksum, sizeof(plane->_checksum)) ||
+        !splix::readAll(fd, &plane->_endian, sizeof(plane->_endian)) ||
+        !splix::readAll(fd, &plane->_compression, sizeof(plane->_compression))) {
+        delete plane;
+        return NULL;
+    }
 
     return plane;
 }

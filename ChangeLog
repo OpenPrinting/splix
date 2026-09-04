@@ -1,3 +1,16 @@
+Fri Sep  4 12:00:00 2026 Michael Maertzdorf <dutch2005 AT gmail DOT com>
+
+	* Make reduced-paper fixed-width bands fully deterministic by using the
+	  protocol bandwidth as the destination stride and zeroing all padding.
+	* Split compression responsibilities into focused implementation units.
+	* Add sanitizer-backed band-layout regression tests and generated-PPD
+	  characterization for all fixed-bandwidth printer models.
+	* Make compiler diagnostics fatal in test builds, fix the warnings they
+	  exposed, and preserve ML-1520 and unaffected ML-2010 A5 QPDL output
+	  with golden tests.
+	* Check page, band, and plane swap-file I/O so truncation and short I/O
+	  fail safely without leaking descriptors.
+
 Thu Jul 16 21:00:00 2026 ValdikSS <iam AT valdikss DOT org DOT ru>
 
 	--- RELEASE OF THE VERSION V. 2.0.2 ---
