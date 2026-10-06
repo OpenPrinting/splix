@@ -14,13 +14,13 @@
 MediaSize Legal
 MediaSize A4
 MediaSize Executive
-MediaSize Ledger
-MediaSize A3
+// Ledger and A3 removed: SPL printers are Legal max, the firmware rejects
+// them with "INTERNAL ERROR: ILLEGALMEDIASIZE".
 MediaSize Env10
 MediaSize Monarch
 MediaSize C5
 MediaSize DL
-MediaSize B4
+// B4 removed (larger than Legal, see above)
 MediaSize B5
 MediaSize EnvISOB5
 // Not listed
