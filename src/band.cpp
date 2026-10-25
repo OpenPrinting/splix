@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include "errlog.h"
 #include "bandplane.h"
+#include "io_utils.h"
 
 /*
  * Constructeur - Destructeur
@@ -71,10 +72,11 @@ Band::~Band()
  */
 bool Band::swapToDisk(int fd)
 {
-    write(fd, &_bandNr, sizeof(_bandNr));
-    write(fd, &_colors, sizeof(_colors));
-    write(fd, &_width, sizeof(_width));
-    write(fd, &_height, sizeof(_height));
+    if (!splix::writeAll(fd, &_bandNr, sizeof(_bandNr)) ||
+        !splix::writeAll(fd, &_colors, sizeof(_colors)) ||
+        !splix::writeAll(fd, &_width, sizeof(_width)) ||
+        !splix::writeAll(fd, &_height, sizeof(_height)))
+        return false;
     for (unsigned int i=0; i < _colors; i++)
         if (!_planes[i]->swapToDisk(fd))
             return false;
@@ -87,10 +89,13 @@ Band* Band::restoreIntoMemory(int fd)
     Band* band;
 
     band = new Band();
-    read(fd, &band->_bandNr, sizeof(band->_bandNr));
-    read(fd, &colors, sizeof(colors));
-    read(fd, &band->_width, sizeof(band->_width));
-    read(fd, &band->_height, sizeof(band->_height));
+    if (!splix::readAll(fd, &band->_bandNr, sizeof(band->_bandNr)) ||
+        !splix::readAll(fd, &colors, sizeof(colors)) || colors > 4 ||
+        !splix::readAll(fd, &band->_width, sizeof(band->_width)) ||
+        !splix::readAll(fd, &band->_height, sizeof(band->_height))) {
+        delete band;
+        return NULL;
+    }
     for (unsigned int i=0; i < colors; i++) {
         BandPlane *plane = BandPlane::restoreIntoMemory(fd);
         if (!plane) {

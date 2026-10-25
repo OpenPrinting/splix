@@ -8,6 +8,36 @@ Note that older SPL1-based models (ML-12xx, ML-14xx) do not work. Use these prin
 
 See installation instructions in the INSTALL file.
 
+### Fixed-bandwidth protocol handling
+
+Some older SPL2 printers require every compressed row to use the full
+4960-pixel protocol width, even on A5 and other reduced paper sizes. SpliX keeps
+the raster data left-aligned and zero-fills the remaining band area for those
+models. The reusable layout code lives in `src/band_layout.cpp`; the compression
+entry point is split into focused `src/compress_*.inc` implementation units.
+
+Run the focused regression and generated-PPD characterization tests with:
+
+```sh
+sh tests/run_fixed_bandwidth_tests.sh
+sh tests/run_fixed_bandwidth_ppd_test.sh
+sh tests/run_protocol_output_test.sh
+```
+
+The first command requires a C++23 compiler and runs with AddressSanitizer and
+UndefinedBehaviorSanitizer. The second requires `ppdc` and Python 3. The third
+generates an A5 CUPS raster and verifies byte-for-byte QPDL output for both the
+fixed-width ML-1520 and unaffected variable-width ML-2010.
+
+Run the complete normal, no-thread, no-JBIG, and sanitizer matrix in Debian
+stable with:
+
+```sh
+docker build -f tests/Dockerfile -t splix-tests .
+docker run --rm -v "$PWD:/src" -w /src splix-tests \
+  sh tests/run_docker_matrix.sh
+```
+
 The driver was created by Aurélien Croc (aurelien at ap2c dot org) and contains many contributions from Till Kamppeter (till dot kamppeter at gmail dot com). Development is discontinued as most modern printers do not need drivers any more.
 
 ### Supported models

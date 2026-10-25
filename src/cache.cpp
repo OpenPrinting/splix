@@ -242,7 +242,7 @@ static void* _cacheControllerThread(void *_exitVar)
         if (_waitingList && !(_pagesInMemory == CACHESIZE || 
             _pagesInMemory == _pagesInTable)) {
             preloadPage = whatToDo;
-            whatToDo = ~whatToDo;
+            whatToDo = !whatToDo;
         // One of the two thing to do
         } else
             preloadPage = (_waitingList == NULL);
@@ -549,6 +549,7 @@ bool CacheEntry::swapToDisk()
 
     // Swap the instance into the file
     if (!_page->swapToDisk(fd)) {
+        close(fd);
         unlink(_tempFile);
         delete[] _tempFile;
         _tempFile = NULL;
@@ -582,6 +583,7 @@ bool CacheEntry::restoreIntoMemory()
 
     // Restore the instance
     if (!(_page = Page::restoreIntoMemory(fd))) {
+        close(fd);
         ERRORMSG(_("Cannot restore page into memory"));
         return false;
     }

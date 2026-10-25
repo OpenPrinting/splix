@@ -66,7 +66,7 @@ bool Document::load(const Request& request)
  */
 Page* Document::getNextRawPage(const Request& request)
 {
-    cups_page_header_t header;
+    cups_page_header2_t header;
     unsigned long pageWidth, pageWidthInB, pageHeight, clippingX=0, clippingY=0;
     unsigned long documentWidth, documentHeight, lineSize, planeSize, index=0;
     unsigned long bytesToCopy, marginWidthInB=0, marginHeight=0;
@@ -81,7 +81,7 @@ Page* Document::getNextRawPage(const Request& request)
         ERRORMSG(_("The raster hasn't been loaded"));
         return NULL;
     }
-    if (!cupsRasterReadHeader(_raster, &header) || !header.cupsBytesPerLine ||
+    if (!cupsRasterReadHeader2(_raster, &header) || !header.cupsBytesPerLine ||
         !header.PageSize[1]) {
         DEBUGMSG(_("No more pages"));
         _lastPage = true;

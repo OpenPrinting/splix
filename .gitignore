@@ -7,6 +7,7 @@
 .gdb_history
 gmon.out
 .defs.mk
+.build/
 optimized
 ppd/*.drv
 tmp

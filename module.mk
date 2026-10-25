@@ -25,6 +25,7 @@ DISABLE_JBIG		?= 0
 DISABLE_THREADS		?= 0
 DISABLE_BLACKOPTIM	?= 0
 DRV_ONLY		?= 0
+WARNINGS_AS_ERRORS	?= 0
 
 
 # Flags
@@ -35,6 +36,10 @@ rastertoqpdl_LDFLAGS	:= $(LDFLAGS) -L/opt/local/lib
 rastertoqpdl_LIBS	:= `pkg-config --libs cups` -lcupsimage
 pstoqpdl_LDFLAGS	:= $(LDFLAGS)
 pstoqpdl_LIBS		:= `pkg-config --libs cups` -lcupsimage
+
+ifneq ($(WARNINGS_AS_ERRORS),0)
+CXXFLAGS		+= -Werror
+endif
 
 
 # Update compilation flags with defined options
@@ -76,4 +81,5 @@ src_pstoqpdl_cpp_FLAGS	+= -DPSTORASTER=\"$(PSTORASTER)\"
 src_pstoqpdl_cpp_FLAGS	+= -DGSTORASTER=\"$(GSTORASTER)\"
 src_pstoqpdl_cpp_FLAGS	+= -DCUPSPPD=\"$(CUPSPPD)\"
 src_pstoqpdl_cpp_FLAGS	+= -DCUPSPROFILE=\"$(CUPSPROFILE)\"
+src_ppdfile_cpp_FLAGS	+= -Wno-deprecated-declarations
 

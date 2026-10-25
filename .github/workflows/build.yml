@@ -3,10 +3,20 @@ name: Build SpliX
 on:
   push:
     paths:
+      - 'include/**'
+      - 'ppd/**'
       - 'src/**'
+      - 'tests/**'
+      - 'Makefile'
+      - 'module.mk'
   pull_request:
     paths:
+      - 'include/**'
+      - 'ppd/**'
       - 'src/**'
+      - 'tests/**'
+      - 'Makefile'
+      - 'module.mk'
   workflow_dispatch:
 
 jobs:
@@ -62,8 +72,10 @@ jobs:
           # force libcupsimage dynamic linking, as newer cups on newer ubuntu links it from libcups
           sed -i 's~rastertoqpdl_LIBS.*:= ~rastertoqpdl_LIBS := -lcupsimage ~' module.mk
           grep 'libjbig' module.mk
+          sh tests/run_docker_matrix.sh
           make DRV_ONLY=1 -j4
           make ppd
+          python3 tests/fixed_bandwidth_ppd_test.py ppd
           rm -rf optimized/src
           mv ppd optimized/
 

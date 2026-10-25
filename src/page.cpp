@@ -23,6 +23,7 @@
 #include <string.h>
 #include "band.h"
 #include "errlog.h"
+#include "io_utils.h"
 
 /*
  * This magic formula reverse the bit of a byte. ie. the bit 1 becomes the 
@@ -117,77 +118,7 @@ void Page::flushPlanes()
 
 
 
-/*
- * Mise sur disque / Rechargement
- * Swapping / restoring
- */
-bool Page::swapToDisk(int fd)
-{
-    unsigned long i;
-    Band* band;
-
-    if (_planes[0] || _planes[1] || _planes[2] || _planes[3]) {
-        ERRORMSG(_("Cannot swap page instance which still contains bitmap "
-            "representation"));
-        return false;
-    }
-    write(fd, &_xResolution, sizeof(_xResolution));
-    write(fd, &_yResolution, sizeof(_yResolution));
-    write(fd, &_width, sizeof(_width));
-    write(fd, &_height, sizeof(_height));
-    write(fd, &_colors, sizeof(_colors));
-    write(fd, &_pageNr, sizeof(_pageNr));
-    write(fd, &_copiesNr, sizeof(_copiesNr));
-    write(fd, &_compression, sizeof(_compression));
-    write(fd, &_empty, sizeof(_empty));
-    write(fd, &_bandsNr, sizeof(_bandsNr));
-    /* Carefully check if there is BIH data and compression type is 0x15,
-       before saving BIH data to file. */
-    if (( 0x15 == _compression ) && ( _bandsNr > 0 ) && ( NULL != _bih ))
-        write(fd, _bih, 20);
-    for (i=0, band = _firstBand; i < _bandsNr; i++) {
-        if (!band->swapToDisk(fd))
-            return false;
-        band = band->sibling();
-    }
-
-    return true;
-}
-
-Page* Page::restoreIntoMemory(int fd)
-{
-    unsigned long nr;
-    Page* page;
-
-    page = new Page();
-    read(fd, &page->_xResolution, sizeof(page->_xResolution));
-    read(fd, &page->_yResolution, sizeof(page->_yResolution));
-    read(fd, &page->_width, sizeof(page->_width));
-    read(fd, &page->_height, sizeof(page->_height));
-    read(fd, &page->_colors, sizeof(page->_colors));
-    read(fd, &page->_pageNr, sizeof(page->_pageNr));
-    read(fd, &page->_copiesNr, sizeof(page->_copiesNr));
-    read(fd, &page->_compression, sizeof(page->_compression));
-    read(fd, &page->_empty, sizeof(page->_empty));
-    read(fd, &nr, sizeof(nr));
-    /* Check if compression type is 0x15 and that there is at least one
-       image band before reading BIH data. */
-    if (( 0x15 == page->_compression ) && ( nr > 0 )) {
-        unsigned char bih[20];
-        read(fd, bih, 20);
-        page->setBIH(bih);
-    }
-    for (unsigned int i=0; i < nr; i++) {
-        Band *band = Band::restoreIntoMemory(fd);
-        if (!band) {
-            delete page;
-            return NULL;
-        }
-        page->registerBand(band);
-    }
-
-    return page;
-}
+#include "page_io.inc"
 
 void Page::setBIH(const unsigned char *bih_data) {
     if (NULL == _bih)
