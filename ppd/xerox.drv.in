@@ -189,6 +189,7 @@ Manufacturer "Xerox"
             {
                 #import "manualduplex.defs"
                 ModelName "Phaser 3020"
+                Attribute "1284DeviceID" "" "MFG:Xerox;CMD:SPL,URF,FWV,EXT;MDL:Phaser 3020;CLS:PRINTER;CID:XR_GDI3_Class01_Mono;MODE:SPL3,R000105;"
                 PCFileName "ph3020.ppd"
             } {
                 #import "manualduplex.defs"
